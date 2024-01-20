@@ -1,0 +1,60 @@
+version: '3'
+services:
+  php8:
+    container_name: foxtrot-php8
+    hostname: foxtrot-php8
+    build:
+      context: docker
+      dockerfile: Dockerfile
+    volumes:
+      - './config/php/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini'
+      - './config/php/php.ini:/usr/local/etc/php/php.ini'
+      - './www/:/var/www/html/'
+    ports:
+      - "1994:80"
+    tty: true
+    user: 1000:1000
+    working_dir: /var/www/html
+#    command: composer create-project --prefer-dist laravel/laravel .
+    environment:
+      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
+    networks:
+      - foxtrot
+
+  mysql:
+    container_name: foxtrot-mysql
+    hostname: foxtrot-mysql
+    image: mysql:latest
+    volumes:
+      - dwcs-db:/var/lib/mysql
+    ports:
+      - "1995:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: ""
+      MYSQL_ROOT_PASSWORD: "foxtrot"
+      MYSQL_USER: "foxtrot"
+      MYSQL_DATABASE: "foxtrot"
+    networks:
+      - foxtrot
+
+#  phpmyadmin:
+#    container_name: dwcs-phpmyadmin
+#    image: phpmyadmin/phpmyadmin:latest
+#    hostname: phpmyadmin
+#    ports:
+#      - "8082:80"
+#    environment:
+#      PMA_HOST: mysql
+#      PMA_PORT: 3306
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: dwcs
+#
+#    networks:
+#      - dwcsLan
+#      - dwcs
+
+networks:
+  foxtrot:
+    driver: bridge
+volumes:
+  dwcs-db:

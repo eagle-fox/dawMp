@@ -2,60 +2,60 @@ version: '3'
 services:
   php8:
     container_name: fox-php8
-    hostname: php8.docker
+    hostname: php8.fox
     build:
       context: docker
       dockerfile: Dockerfile-php
     volumes:
-      - './www/:/var/www/html/'
+      - './back/www/:/var/www/html/'
     ports:
-      - "8080:80"
+      - "2003:80"
     tty: true
     working_dir: /var/www/html
     environment:
       XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
     networks:
-      - dwcs
+      - foxtrot-bridge
+      - foxtrot-api-lan
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-
-  mysql:
-    container_name: dwcs-mysql
-    hostname: mysql.docker
-    image: mysql:latest
+  nodejs:
+    container_name: fox-nodejs
+    hostname: nodejs.fox
+    build:
+      context: front
+      dockerfile: ../docker/Dockerfile-nodejs
     volumes:
-      - dwcs-db:/var/lib/mysql
+      - './front/:/app/'
+    environment:
+      NODE_ENV: production
     ports:
-      - "3306:3306"
+      - "2004:2004"
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+
+  mariadb:
+    container_name: fox-mariadb
+    hostname: mariadb.fox
+    image: mariadb:latest
+    volumes:
+      - foxtrot-db:/var/lib/mysql
+    ports:
+      - "2005:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_PASSWORD: ""
       MYSQL_DATABASE: dwcs
     networks:
-      - dwcsLan
-      - dwcs
-
-  phpmyadmin:
-    container_name: dwcs-phpmyadmin
-    image: phpmyadmin/phpmyadmin:latest
-    hostname: phpmyadmin
-    ports:
-      - "8082:80"
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: dwcs
-
-    networks:
-      - dwcsLan
-      - dwcs
+      - foxtrot-bridge
+      - foxtrot-api-lan
 
 networks:
-  dwcsLan:
+  foxtrot-api-lan:
     internal: true
-  dwcs:
+  foxtrot-bridge:
     driver: bridge
 volumes:
-  dwcs-db:
+  foxtrot-db:

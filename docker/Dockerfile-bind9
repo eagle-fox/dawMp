@@ -1,9 +1,0 @@
-FROM ubuntu/bind9:latest AS build-bind9
-
-ARG USER_NAME
-ARG UID
-ARG GID
-
-RUN groupadd -g $GID -o $USER_NAME
-RUN useradd -m -u $UID -g $GID -o -s /bin/bash $USER_NAME
-USER $USER_NAME

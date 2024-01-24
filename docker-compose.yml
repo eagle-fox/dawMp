@@ -66,6 +66,8 @@ services:
       - "2005:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    env_file:
+      - .env
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan

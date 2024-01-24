@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"os/exec"
 )
 
@@ -27,23 +28,27 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 	cmd := exec.Command("docker-compose", "up", "--force-recreate", "--build", "-d")
 	err = cmd.Run()
 	if err != nil {
+		log.Printf("Error al recrear Docker Compose: %v", err)
 		http.Error(w, "Error al recrear Docker Compose", http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Fprint(w, "Acción de recrear Docker Compose completada exitosamente")
+	log.Println("Acción de recrear Docker Compose completada exitosamente")
 
 	cmd = exec.Command("git", "fetch")
 	err = cmd.Run()
 	if err != nil {
+		log.Printf("Error al hacer git fetch: %v", err)
 		http.Error(w, "Error al hacer git fetch", http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Fprint(w, "git fetch completado exitosamente")
+	log.Println("git fetch completado exitosamente")
 }
 
 func main() {
+	log.SetOutput(os.Stdout)
+
 	http.HandleFunc("/push", pushHandler)
-	http.ListenAndServe(":2002", nil)
+	log.Fatal(http.ListenAndServe(":2002", nil))
 }

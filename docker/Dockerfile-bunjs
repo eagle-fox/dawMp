@@ -2,9 +2,7 @@
 # see all versions at https://hub.docker.com/r/oven/bun/tags
 FROM oven/bun
 WORKDIR /app
-COPY ./package.json ./
-COPY ./bun.lockb ./
-COPY vite.config.js ./
+COPY package.json /app
 RUN bun install --save-dev
 
 USER bun

@@ -6,6 +6,7 @@ services:
     build:
       context: webhook
       dockerfile: ../docker/Dockerfile-webhook-go
+    privileged: true
     ports:
       - "2002:2002"
     restart: always

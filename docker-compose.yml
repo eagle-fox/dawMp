@@ -6,7 +6,7 @@ services:
       context: webhook
       dockerfile: ../docker/Dockerfile-webhook-go
     ports:
-      - "2003:2003"  # Mapea el puerto 2003 del host al puerto 8080 del contenedor
+      - "2002:2002"
     restart: always
 
   php8:

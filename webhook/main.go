@@ -58,5 +58,5 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/push", pushHandler)
-	http.ListenAndServe(":2003", nil)
+	http.ListenAndServe(":2002", nil)
 }

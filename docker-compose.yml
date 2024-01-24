@@ -27,7 +27,11 @@ services:
       context: front/
       dockerfile: ../docker/Dockerfile-bunjs
     volumes:
-      - './front/:/app/'
+      - './front/public/:/app/public/'
+      - './front/src/:/app/src/'
+      - './vite.config.js:/app/vite.config.js'
+      - './jsconfig.json:/app/jsconfig.json'
+      - 'index.html:/app/index.html'
     ports:
       - "2004:2004"
     networks:

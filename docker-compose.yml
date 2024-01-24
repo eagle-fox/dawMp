@@ -2,6 +2,7 @@ version: '3'
 services:
 
   webhook:
+    container_name: fox-webhook
     build:
       context: webhook
       dockerfile: ../docker/Dockerfile-webhook-go

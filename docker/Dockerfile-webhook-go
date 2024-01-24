@@ -1,0 +1,5 @@
+FROM golang:latest AS golang-builder
+WORKDIR /go/src/app
+COPY . .
+RUN go build -o go-webhook .
+CMD ["./go-webhook"]

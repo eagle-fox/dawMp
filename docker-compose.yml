@@ -11,6 +11,9 @@ services:
       - ".:/go/src/app/dawMp"
     ports:
       - "2002:2002"
+    environment:
+      - GIT_USERNAME="peseoane"
+      - GIT_TOKEN="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"
     restart: always
 
   php8:

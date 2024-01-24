@@ -1,2 +1,5 @@
 {
+  "require": {
+    "ycms/krumo": ">=v0.5.0"
+  }
 }

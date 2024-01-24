@@ -36,6 +36,8 @@ services:
       - foxtrot-api-lan
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - webhook
 
   bun:
     container_name: fox-bun

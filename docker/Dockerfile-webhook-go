@@ -1,9 +1,6 @@
 FROM golang:latest AS golang-builder
 
-RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
-RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
-    chmod +x /usr/local/bin/docker-compose
-RUN apt update && apt install -qy git
+RUN --mount=type=cache,target=/var/cache/apt apt update  && apt install -qy git
 WORKDIR /go/src/app
 RUN git config --global --add safe.directory /go/src/app/dawMp
 COPY . .

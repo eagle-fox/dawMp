@@ -1,3 +1,3 @@
 <?php
 echo 'Hola soy un echo de prueba';
-echo 'Yo tambien';
+echo 'Yo tambien lo soy';

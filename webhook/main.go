@@ -22,7 +22,7 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 	gitUsername := os.Getenv("GIT_USERNAME")
 	gitToken := os.Getenv("GIT_TOKEN")
 
-	cmd := exec.Command("sh", "-c", "cd /go/src/app/dawMp && git pull origin dev-docker")
+	cmd := exec.Command("sh", "-c", "cd /go/src/app/dawMp && git reset --hard && git pull --force origin dev-docker")
 	cmd.Env = append(os.Environ(), "GIT_USERNAME="+gitUsername, "GIT_TOKEN="+gitToken)
 	output, err := cmd.CombinedOutput()
 	if err != nil {

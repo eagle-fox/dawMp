@@ -25,14 +25,16 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cmd := exec.Command("sh", "-c", "cd dawMp && git fetch")
+	cmd := exec.Command("sh", "-c", "cd dawMp && touch hola.txt")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Println("Error al ejecutar git fetch:", err)
+		log.Println("Error al escribir el archivo hola.txt")
+		http.Error(w, "Error al escribir el archivo hola.txt", http.StatusInternalServerError)
 		return
+	} else {
+		log.Println("Archivo hola.txt creado exitosamente. Salida:", string(output))
 	}
 
-	log.Println("git fetch completado exitosamente. Salida:", string(output))
 }
 
 func main() {

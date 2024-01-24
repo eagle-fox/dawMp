@@ -8,7 +8,7 @@ RUN --mount=type=cache,target=/var/cache/apt apt update && apt full-upgrade -qy 
     apt clean -qy && apt autoremove -qy
 
 # COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-COPY --from=composerInstaller /app/vendor /var/www/html/vendor
+COPY --from=composerInstaller /var/www/html/vendor /var/www/html/vendor
 
 RUN mount=type=cache,target='/usr/local/lib/php' \
     && pecl install xdebug

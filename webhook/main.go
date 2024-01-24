@@ -25,17 +25,7 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cmd := exec.Command("docker-compose", "up", "--force-recreate", "--build", "-d")
-	err = cmd.Run()
-	if err != nil {
-		log.Printf("Error al recrear Docker Compose: %v", err)
-		http.Error(w, "Error al recrear Docker Compose", http.StatusInternalServerError)
-		return
-	}
-
-	log.Println("Acción de recrear Docker Compose completada exitosamente")
-
-	cmd = exec.Command("git", "fetch")
+	cmd := exec.Command("git", "fetch")
 	err = cmd.Run()
 	if err != nil {
 		log.Printf("Error al hacer git fetch: %v", err)

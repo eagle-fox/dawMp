@@ -7,6 +7,8 @@ services:
       context: webhook
       dockerfile: ../docker/Dockerfile-webhook-go
     privileged: true
+    volumes:
+      - ".:/go/src/app/dawMp"
     ports:
       - "2002:2002"
     restart: always

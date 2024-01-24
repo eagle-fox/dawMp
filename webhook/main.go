@@ -25,15 +25,14 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cmd := exec.Command("git", "fetch")
-	err = cmd.Run()
+	cmd := exec.Command("sh", "-c", "cd dawMp && git fetch")
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Printf("Error al hacer git fetch: %v", err)
-		http.Error(w, "Error al hacer git fetch", http.StatusInternalServerError)
+		log.Println("Error al ejecutar git fetch:", err)
 		return
 	}
 
-	log.Println("git fetch completado exitosamente")
+	log.Println("git fetch completado exitosamente. Salida:", string(output))
 }
 
 func main() {

@@ -30,7 +30,7 @@ services:
     working_dir: /app
     volumes:
       - './front/:/app/'
-    command: ["bun", "install","&&","bun", "vite"]
+    command: "bun install && bun vite"
     ports:
       - "2004:2004"
     networks:

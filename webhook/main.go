@@ -8,12 +8,6 @@ import (
 )
 
 func pushHandler(w http.ResponseWriter, r *http.Request) {
-	// secret := r.Header.Get("X-Hub-Signature")
-	// if secret != "sha1="+secretKey {
-	// 	http.Error(w, "No autorizado", http.StatusUnauthorized)
-	// 	return
-	// }
-
 	if r.Method != http.MethodPost {
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
 		return
@@ -28,41 +22,20 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 	gitUsername := os.Getenv("GIT_USERNAME")
 	gitToken := os.Getenv("GIT_TOKEN")
 
-	// print git version
-	cmd := exec.Command("git", "version")
-	log.Println("Git version: " + cmd.String())
-
-	// Clonar github.com/peseoane/dawMp la branch dev-docker
-	cmd = exec.Command("git", "clone", "-b", "dev-docker", "https://"+gitUsername+":"+gitToken+"@github.com/peseoane/dawMp")
-	log.Println("Clonando repositorio..." + cmd.String())
-	err = cmd.Run()
+	cmd := exec.Command("sh", "-c", "cd /go/src/app/dawMp && git pull origin dev-docker")
+	cmd.Env = append(os.Environ(), "GIT_USERNAME="+gitUsername, "GIT_TOKEN="+gitToken)
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		http.Error(w, "Error al clonar el repositorio", http.StatusInternalServerError)
-		log.Println(err)
+		log.Println("Error al ejecutar git pull:", err)
 		return
 	}
 
-	log.Println("Repositorio clonado")
-
-	// Ejecutar docker-compose up -d --force-recreate --build
-
-	cmd = exec.Command("docker-compose", "up", "-d", "--force-recreate", "--build")
-	cmd.Dir = "dawMp"
-	err = cmd.Run()
-	if err != nil {
-		http.Error(w, "Error al ejecutar docker-compose", http.StatusInternalServerError)
-		log.Println(err)
-		return
-	}
-
-	log.Println("docker-compose ejecutado")
-
-	return
-
+	log.Println("git pull completado exitosamente. Salida:", string(output))
 }
 
 func main() {
 	log.SetOutput(os.Stdout)
+
 	http.HandleFunc("/push", pushHandler)
 	log.Fatal(http.ListenAndServe(":2002", nil))
 }

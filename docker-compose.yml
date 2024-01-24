@@ -23,9 +23,10 @@ services:
   nodejs:
     container_name: fox-nodejs
     hostname: nodejs.fox
-    build:
-      context: front/
-      dockerfile: ../docker/Dockerfile-bunjs
+    image: oven/bun
+    #build:
+    #  context: front/
+    #  dockerfile: ../docker/Dockerfile-bunjs
     volumes:
       - './front/:/app/'
     command: ["bun i","&&","bun vite"]

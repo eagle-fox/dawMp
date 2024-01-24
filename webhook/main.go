@@ -49,7 +49,8 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("git pull completado exitosamente. Salida:", string(output))
+	log.Println("docker-compose up completado exitosamente. Salida:", string(output))
+
 }
 
 func main() {

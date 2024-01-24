@@ -1,0 +1,1 @@
+![Logotipo circular](./assets/logo_circle.svg)

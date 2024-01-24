@@ -35,7 +35,6 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	log.SetOutput(os.Stdout)
-
 	http.HandleFunc("/push", pushHandler)
 	log.Fatal(http.ListenAndServe(":2002", nil))
 }

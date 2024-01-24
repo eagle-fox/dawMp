@@ -28,7 +28,7 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cmdString := fmt.Sprintf("cd /go/src/app/dawMp && git pull https://%s:%s@github.com/%s/dawMp.git", gitUsername, gitToken, gitUsername)
+	cmdString := fmt.Sprintf("cd /go/src/app/dawMp && git pull --force https://%s:%s@github.com/%s/dawMp.git dev-docker", gitUsername, gitToken, gitUsername)
 	cmd := exec.Command("bash", "-c", cmdString)
 	output, err := cmd.CombinedOutput()
 	log.Println("Ejecutando git pull... Comando:", cmd.String())

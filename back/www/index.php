@@ -1,3 +1,2 @@
 <?php
-declare(strict_types=1);
-echo phpinfo();
+echo 'Hola soy un echo de prueba';

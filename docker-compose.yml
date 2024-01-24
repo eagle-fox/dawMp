@@ -1,5 +1,22 @@
 version: '3'
 services:
+
+  webhook:
+    container_name: fox-webhook
+    build:
+      context: webhook
+      dockerfile: ../docker/Dockerfile-webhook-go
+    ports:
+      - "2002:2002"
+    volumes:
+      - '.:/go/src/app/dawMp'
+    environment:
+      - GIT_USERNAME="peseoane"
+      - GIT_TOKEN="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"
+    restart: always
+    networks:
+      - foxtrot-bridge
+
   php8:
     container_name: fox-php8
     hostname: php8.fox
@@ -20,9 +37,9 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  nodejs:
-    container_name: fox-nodejs
-    hostname: nodejs.fox
+  bun:
+    container_name: fox-bun
+    hostname: bun.fox
     image: oven/bun
     #build:
     #  context: front/

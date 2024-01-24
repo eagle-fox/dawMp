@@ -44,8 +44,5 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	log.SetOutput(os.Stdout)
 	http.HandleFunc("/push", pushHandler)
-	go func() {
-		log.Fatal(http.ListenAndServe(":2002", nil))
-	}()
-	select {}
+	log.Fatal(http.ListenAndServe(":2002", nil))
 }

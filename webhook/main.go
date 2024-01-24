@@ -29,20 +29,29 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 	gitUsername := os.Getenv("GIT_USERNAME")
 	gitToken := os.Getenv("GIT_TOKEN")
 
-	// Verificar que las credenciales estén definidas
-	if gitUsername == "" || gitToken == "" {
-		log.Println("Error: Debes definir GIT_USERNAME y GIT_TOKEN para autenticar en el repositorio privado.")
-		http.Error(w, "Error de autenticación", http.StatusInternalServerError)
-		return
+	// Clonar github.com/peseoane/dawMp la branch dev-docker
+	cmd := exec.Command("git", "clone", "-b", "dev-docker", "https://"+gitUsername+":"+gitToken+"@github.com/peseoane/daw")
+	err = cmd.Run()
+	if err != nil {
+	    http.Error(w, "Error al clonar el repositorio", http.StatusInternalServerError)
+	    log.Println(err)
+	    return
 	}
 
-	// Ejecutar el git pull en el repositorio privado
-	cmd := exec.Command("sh", "-c", "cd  /go/src/app/dawMp && git pull")
-	if err := cmd.Run(); err != nil {
-		log.Println("Error: ", err)
-		http.Error(w, "Error al ejecutar el git pull", http.StatusInternalServerError)
-		return
+	log.Println("Repositorio clonado")
+
+	// Ejecutar docker-compose up -d --force-recreate --build
+
+	cmd = exec.Command("docker-compose", "up", "-d", "--force-recreate", "--build")
+	cmd.Dir = "dawMp"
+	err = cmd.Run()
+	if err != nil {
+	    http.Error(w, "Error al ejecutar docker-compose", http.StatusInternalServerError)
+	    log.Println(err)
+	    return
 	}
+
+	log.Println("docker-compose ejecutado")
 
 	return
 

@@ -37,7 +37,7 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Ejecutar el git pull en el repositorio privado
-	cmd := exec.Command("sh", "-c", "cd dawMp && git pull")
+	cmd := exec.Command("sh", "-c", "cd  /go/src/app/dawMp && git pull")
 	if err := cmd.Run(); err != nil {
 		log.Println("Error: ", err)
 		http.Error(w, "Error al ejecutar el git pull", http.StatusInternalServerError)

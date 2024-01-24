@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -22,7 +23,13 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 	gitUsername := os.Getenv("GIT_USERNAME")
 	gitToken := os.Getenv("GIT_TOKEN")
 
-	cmd := exec.Command("bash", "-c", "env && pwd && cd /go/src/app/dawMp && git pull --force origin dev-docker"+gitUsername+":"+gitToken)
+	if gitUsername == "" || gitToken == "" {
+		http.Error(w, "Error al obtener las variables de entorno", http.StatusInternalServerError)
+		return
+	}
+
+	cmdString := fmt.Sprintf("cd /go/src/app/dawMp && git pull https://%s:%s@github.com/%s/dawMp.git", gitUsername, gitToken, gitUsername)
+	cmd := exec.Command("bash", "-c", cmdString)
 	output, err := cmd.CombinedOutput()
 	log.Println("Ejecutando git pull... Comando:", cmd.String())
 	if err != nil {

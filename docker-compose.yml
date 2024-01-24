@@ -30,6 +30,7 @@ services:
     working_dir: /app
     volumes:
       - './front/:/app/'
+    # Hay que hacerlo así, porque al montar el folder entero, perdemos node_modules durante el montaje
     command: ["/bin/sh", "-c", "bun install && bun vite"]
     ports:
       - "2004:2004"

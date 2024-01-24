@@ -30,6 +30,7 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Clonar github.com/peseoane/dawMp la branch dev-docker
 	cmd := exec.Command("git", "clone", "-b", "dev-docker", "https://"+gitUsername+":"+gitToken+"@github.com/peseoane/dawMp")
+	log.Println("Clonando repositorio..." + cmd.String())
 	err = cmd.Run()
 	if err != nil {
 	    http.Error(w, "Error al clonar el repositorio", http.StatusInternalServerError)

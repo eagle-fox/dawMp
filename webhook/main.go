@@ -25,12 +25,11 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Obtener credenciales de autenticación para el repositorio privado
 	gitUsername := os.Getenv("GIT_USERNAME")
 	gitToken := os.Getenv("GIT_TOKEN")
 
 	// Clonar github.com/peseoane/dawMp la branch dev-docker
-	cmd := exec.Command("git", "clone", "-b", "dev-docker", "https://"+gitUsername+":"+gitToken+"@github.com/peseoane/daw")
+	cmd := exec.Command("git", "clone", "-b", "dev-docker", "https://"+gitUsername+":"+gitToken+"@github.com/peseoane/dawMp")
 	err = cmd.Run()
 	if err != nil {
 	    http.Error(w, "Error al clonar el repositorio", http.StatusInternalServerError)
@@ -59,7 +58,6 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	log.SetOutput(os.Stdout)
-
 	http.HandleFunc("/push", pushHandler)
 	log.Fatal(http.ListenAndServe(":2002", nil))
 }

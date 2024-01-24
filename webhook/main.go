@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -37,19 +36,15 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Configurar las credenciales para el git pull
-	gitCredentials := fmt.Sprintf("%s:%s@", gitUsername, gitToken)
-
 	// Ejecutar el git pull en el repositorio privado
-	cmd := exec.Command("sh", "-c", fmt.Sprintf("cd /ruta/a/tu/repositorio && git pull https://%sgithub.com/usuario/repo.git", gitCredentials))
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		log.Println("Error al hacer git pull:", err)
-		http.Error(w, "Error al hacer git pull", http.StatusInternalServerError)
+	cmd := exec.Command("sh", "-c", "cd dawMp && git pull")
+	if err := cmd.Run(); err != nil {
+		log.Println("Error: ", err)
+		http.Error(w, "Error al ejecutar el git pull", http.StatusInternalServerError)
 		return
-	} else {
-		log.Println("Git pull completado exitosamente. Salida:", string(output))
 	}
+
+	return
 
 }
 

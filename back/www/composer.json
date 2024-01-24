@@ -1,5 +1,6 @@
 {
   "require": {
-    "ycms/krumo": ">=v0.5.0"
+    "ycms/krumo": ">=v0.5.0",
+    "phpmailer/phpmailer": ">=v6.9.1"
   }
 }

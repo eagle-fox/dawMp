@@ -28,14 +28,18 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 	gitUsername := os.Getenv("GIT_USERNAME")
 	gitToken := os.Getenv("GIT_TOKEN")
 
+	// print git version
+	cmd := exec.Command("git", "version")
+	log.Println("Git version: " + cmd.String())
+
 	// Clonar github.com/peseoane/dawMp la branch dev-docker
-	cmd := exec.Command("git", "clone", "-b", "dev-docker", "https://"+gitUsername+":"+gitToken+"@github.com/peseoane/dawMp")
+	cmd = exec.Command("git", "clone", "-b", "dev-docker", "https://"+gitUsername+":"+gitToken+"@github.com/peseoane/dawMp")
 	log.Println("Clonando repositorio..." + cmd.String())
 	err = cmd.Run()
 	if err != nil {
-	    http.Error(w, "Error al clonar el repositorio", http.StatusInternalServerError)
-	    log.Println(err)
-	    return
+		http.Error(w, "Error al clonar el repositorio", http.StatusInternalServerError)
+		log.Println(err)
+		return
 	}
 
 	log.Println("Repositorio clonado")
@@ -46,9 +50,9 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 	cmd.Dir = "dawMp"
 	err = cmd.Run()
 	if err != nil {
-	    http.Error(w, "Error al ejecutar docker-compose", http.StatusInternalServerError)
-	    log.Println(err)
-	    return
+		http.Error(w, "Error al ejecutar docker-compose", http.StatusInternalServerError)
+		log.Println(err)
+		return
 	}
 
 	log.Println("docker-compose ejecutado")

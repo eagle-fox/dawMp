@@ -37,6 +37,9 @@ func pushHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println("git pull completado exitosamente. Salida:", string(output))
+	log.Println("Intentando reconstruir la imagen de docker...")
+
 	cmdString = fmt.Sprintf("cd /go/src/app/dawMp && docker-compose up -d --build --force-recreate")
 	cmd = exec.Command("bash", "-c", cmdString)
 	output, err = cmd.CombinedOutput()

@@ -27,6 +27,7 @@ services:
     #build:
     #  context: front/
     #  dockerfile: ../docker/Dockerfile-bunjs
+    working_dir: /app
     volumes:
       - './front/:/app/'
     command: ["bun", "install","&&","bun", "vite"]

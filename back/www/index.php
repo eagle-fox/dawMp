@@ -1,3 +1,3 @@
 <?php
-krumo(phpinfo());
+echo "Hola Iago";
 echo phpinfo();

@@ -35,9 +35,7 @@ services:
       - foxtrot-api-lan
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    depends_on:
-      - webhook
-    command: ["composer", "install"]
+    command: ["sh", "-c", "composer install --no-interaction && apache2-foreground"]
 
   bun:
     container_name: fox-bun

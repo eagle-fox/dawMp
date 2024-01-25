@@ -37,6 +37,7 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - webhook
+    command: ["composer", "install"]
 
   bun:
     container_name: fox-bun

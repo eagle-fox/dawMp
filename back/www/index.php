@@ -1,2 +1,5 @@
 <?php
-echo 'Hola soy un echo de prueba';
+// Importa el paquete Leaf
+require 'vendor/autoload.php';
+
+echo phpinfo();

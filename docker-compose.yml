@@ -10,9 +10,8 @@ services:
       - "2002:2002"
     volumes:
       - '.:/go/src/app/dawMp'
-    environment:
-      - GIT_USERNAME="peseoane"
-      - GIT_TOKEN="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"
+    env_file:
+      - .env
     restart: always
     networks:
       - foxtrot-bridge
@@ -36,8 +35,7 @@ services:
       - foxtrot-api-lan
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    depends_on:
-      - webhook
+    command: ["sh", "-c", "composer install --no-interaction && apache2-foreground"]
 
   bun:
     container_name: fox-bun
@@ -66,9 +64,9 @@ services:
     ports:
       - "2005:3306"
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_ROOT_PASSWORD: ""
-      MYSQL_DATABASE: dwcs
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    env_file:
+      - .env
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan

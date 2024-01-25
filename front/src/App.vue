@@ -8,7 +8,7 @@ import TheWelcome from './components/TheWelcome.vue'
     <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="TESTE Mi prima usa javascripto y la tuya php" />
+      <HelloWorld msg="Mi prima usa javascripto y la tuya php" />
     </div>
   </header>
 

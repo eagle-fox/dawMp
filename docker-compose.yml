@@ -12,7 +12,6 @@ services:
       - '.:/go/src/app/dawMp'
     env_file:
       - .env
-    restart: always
     networks:
       - foxtrot-bridge
 

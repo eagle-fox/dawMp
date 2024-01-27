@@ -2,4 +2,12 @@
 // Importa el paquete Leaf
 require 'vendor/autoload.php';
 
-echo phpinfo();
+$app = new Leaf\App;
+
+$app->get('/demo', function() {
+    echo "hola mundo";
+});
+
+$app->run();
+
+//echo phpinfo();

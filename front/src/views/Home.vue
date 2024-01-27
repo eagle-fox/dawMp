@@ -1,12 +1,9 @@
 <script setup>
-
+import NavBar from "@/components/NavBar.vue";
 </script>
 
 <template>
-  <div>Router Add</div>
-  <button class="btn btn-primary">test</button>
+  <NavBar></NavBar>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

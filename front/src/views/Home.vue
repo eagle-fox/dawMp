@@ -6,6 +6,4 @@ import NavBar from "@/components/NavBar.vue";
   <NavBar></NavBar>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

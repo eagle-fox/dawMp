@@ -5,32 +5,7 @@ export default {
 </script>
 
 <template>
-  <!-- Button trigger modal -->
-  <button
-    type="button"
-    class="btn btn-primary btn-lg"
-    data-toggle="modal"
-    data-target="#myModal"
-  >
-    Launch demo modal
-  </button>
 
-  <div class="dropdown">
-    <button
-      class="btn btn-secondary dropdown-toggle"
-      type="button"
-      id="dropdownMenuButton1"
-      data-bs-toggle="dropdown"
-      aria-expanded="false"
-    >
-      Check Bootstrap
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-      <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another action</a></li>
-      <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
-  </div>
 
   <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
     <div class="container">

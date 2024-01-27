@@ -39,22 +39,18 @@ services:
   bun:
     container_name: fox-bun
     hostname: bun.fox
-    image: oven/bun
-    #build:
-    #  context: front/
-    #  dockerfile: ../docker/Dockerfile-bunjs
+    build:
+      context: front/
+      dockerfile: ../docker/Dockerfile-bunjs
     working_dir: /app
     volumes:
-      - './front/:/app/'
-    # Hay que hacerlo así, porque al montar el folder entero, perdemos node_modules durante el montaje
-    command: ["/bin/sh", "-c","bun i", "bun vite --watch"]
+      - fox-bun:/app/
     ports:
       - "2004:2024"
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
-    #volumes:
-    #  - fox-bun:/app/
+    command: ["sh", "-c", "bun vite"]
 
   mysql:
     container_name: fox-mysql

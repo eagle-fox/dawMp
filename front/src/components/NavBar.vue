@@ -6,6 +6,7 @@ export default {
 
 <template>
   <!-- Button trigger modal -->
+
   <button
     type="button"
     class="btn btn-primary btn-lg"
@@ -27,7 +28,7 @@ export default {
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
       <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><a class="dropdown-item" href="#">Another dd action</a></li>
       <li><a class="dropdown-item" href="#">Something else here</a></li>
     </ul>
   </div>
@@ -62,7 +63,7 @@ export default {
             Dropdown button
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">THE Action</a>
             <a class="dropdown-item" href="#">Another action</a>
             <a class="dropdown-item" href="#">Something else here</a>
           </div>

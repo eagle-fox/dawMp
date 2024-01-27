@@ -54,16 +54,14 @@ services:
       - foxtrot-bridge
       - foxtrot-api-lan
 
-  mariadb:
-    container_name: fox-mariadb
-    hostname: mariadb.fox
-    image: mariadb:latest
+  mysql:
+    container_name: fox-mysql
+    hostname: mysql.fox
+    image: mysql:latest
     volumes:
-      - foxtrot-db:/var/lib/mysql
+      - fox-eagle-db:/var/lib/mysql
     ports:
       - "2005:3306"
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
     env_file:
       - .env
     networks:
@@ -76,4 +74,4 @@ networks:
   foxtrot-bridge:
     driver: bridge
 volumes:
-  foxtrot-db:
+  fox-eagle-db:

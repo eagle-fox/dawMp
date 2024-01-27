@@ -10,4 +10,4 @@ $app->get('/demo', function() {
 
 $app->run();
 
-echo phpinfo();
+//echo phpinfo();

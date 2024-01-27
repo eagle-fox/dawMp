@@ -4,3 +4,7 @@ dist/
 build/
 *.min.js
 vendor/
+front/node_modules
+front/dist/
+front/build/
+back/vendor/

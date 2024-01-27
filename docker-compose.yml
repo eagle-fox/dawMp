@@ -1,77 +1,81 @@
 version: '3'
 services:
+    webhook:
+        container_name: fox-webhook
+        build:
+            context: webhook
+            dockerfile: ../docker/Dockerfile-webhook-go
+        ports:
+            - '2002:2002'
+        volumes:
+            - '.:/go/src/app/dawMp'
+        env_file:
+            - .env
+        networks:
+            - foxtrot-bridge
 
-  webhook:
-    container_name: fox-webhook
-    build:
-      context: webhook
-      dockerfile: ../docker/Dockerfile-webhook-go
-    ports:
-      - "2002:2002"
-    volumes:
-      - '.:/go/src/app/dawMp'
-    env_file:
-      - .env
-    networks:
-      - foxtrot-bridge
+    php8:
+        container_name: fox-php8
+        hostname: php8.fox
+        build:
+            context: back/
+            dockerfile: ../docker/Dockerfile-php
+        volumes:
+            - './back/www/:/var/www/html/'
+        ports:
+            - '2003:80'
+        tty: true
+        working_dir: /var/www/html
+        environment:
+            XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
+        networks:
+            - foxtrot-bridge
+            - foxtrot-api-lan
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        command:
+            [
+                'sh',
+                '-c',
+                'composer install --no-interaction && apache2-foreground',
+            ]
 
-  php8:
-    container_name: fox-php8
-    hostname: php8.fox
-    build:
-      context: back/
-      dockerfile: ../docker/Dockerfile-php
-    volumes:
-      - './back/www/:/var/www/html/'
-    ports:
-      - "2003:80"
-    tty: true
-    working_dir: /var/www/html
-    environment:
-      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
-    networks:
-      - foxtrot-bridge
-      - foxtrot-api-lan
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    command: ["sh", "-c", "composer install --no-interaction && apache2-foreground"]
+    bun:
+        container_name: fox-bun
+        hostname: bun.fox
+        image: oven/bun
+        #build:
+        #  context: front/
+        #  dockerfile: ../docker/Dockerfile-bunjs
+        working_dir: /app
+        volumes:
+            - './front/:/app/'
+        # Hay que hacerlo así, porque al montar el folder entero, perdemos node_modules durante el montaje
+        command: ['/bin/sh', '-c', 'bun install && bun vite']
+        ports:
+            - '2004:2004'
+        networks:
+            - foxtrot-bridge
+            - foxtrot-api-lan
 
-  bun:
-    container_name: fox-bun
-    hostname: bun.fox
-    image: oven/bun
-    #build:
-    #  context: front/
-    #  dockerfile: ../docker/Dockerfile-bunjs
-    working_dir: /app
-    volumes:
-      - './front/:/app/'
-    # Hay que hacerlo así, porque al montar el folder entero, perdemos node_modules durante el montaje
-    command: ["/bin/sh", "-c", "bun install && bun vite"]
-    ports:
-      - "2004:2004"
-    networks:
-      - foxtrot-bridge
-      - foxtrot-api-lan
-
-  mysql:
-    container_name: fox-mysql
-    hostname: mysql.fox
-    image: mysql:latest
-    volumes:
-      - fox-eagle-db:/var/lib/mysql
-    ports:
-      - "2005:3306"
-    env_file:
-      - .env
-    networks:
-      - foxtrot-bridge
-      - foxtrot-api-lan
+    mysql:
+        container_name: fox-mysql
+        hostname: mysql.fox
+        image: mysql:latest
+        volumes:
+            - fox-eagle-db:/var/lib/mysql
+        ports:
+            - '2005:3306'
+        env_file:
+            - .env
+        networks:
+            - foxtrot-bridge
+            - foxtrot-api-lan
 
 networks:
-  foxtrot-api-lan:
-    internal: true
-  foxtrot-bridge:
-    driver: bridge
+    foxtrot-api-lan:
+        internal: true
+    foxtrot-bridge:
+        driver: bridge
 volumes:
-  fox-eagle-db:
+    fox-eagle-db:

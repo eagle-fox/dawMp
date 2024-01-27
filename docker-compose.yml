@@ -45,15 +45,17 @@ services:
     #  context: front/
     #  dockerfile: ../docker/Dockerfile-bunjs
     working_dir: /app
-    #volumes:
-    #  - './front/:/app/'
+    volumes:
+      - './front/:/app/'
     # Hay que hacerlo así, porque al montar el folder entero, perdemos node_modules durante el montaje
-    # command: ["/bin/sh", "-c", "bun install && bun vite"]
+    command: ["/bin/sh", "-c","bun i", "bun vite --watch"]
     ports:
       - "2004:2024"
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
+    #volumes:
+    #  - fox-bun:/app/
 
   mysql:
     container_name: fox-mysql
@@ -76,3 +78,4 @@ networks:
     driver: bridge
 volumes:
   fox-eagle-db:
+  fox-bun:

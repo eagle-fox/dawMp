@@ -39,31 +39,27 @@ services:
   bun:
     container_name: fox-bun
     hostname: bun.fox
-    image: oven/bun
-    #build:
-    #  context: front/
-    #  dockerfile: ../docker/Dockerfile-bunjs
+    build:
+      context: front/
+      dockerfile: ../docker/Dockerfile-bunjs
     working_dir: /app
     volumes:
-      - './front/:/app/'
-    # Hay que hacerlo así, porque al montar el folder entero, perdemos node_modules durante el montaje
-    command: ["/bin/sh", "-c", "bun install && bun vite"]
+      - fox-bun:/app/
     ports:
-      - "2004:2004"
+      - "2004:2024"
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
+    command: ["sh", "-c", "bun vite"]
 
-  mariadb:
-    container_name: fox-mariadb
-    hostname: mariadb.fox
-    image: mariadb:latest
+  mysql:
+    container_name: fox-mysql
+    hostname: mysql.fox
+    image: mysql:latest
     volumes:
-      - foxtrot-db:/var/lib/mysql
+      - fox-eagle-db:/var/lib/mysql
     ports:
       - "2005:3306"
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
     env_file:
       - .env
     networks:
@@ -76,4 +72,5 @@ networks:
   foxtrot-bridge:
     driver: bridge
 volumes:
-  foxtrot-db:
+  fox-eagle-db:
+  fox-bun:

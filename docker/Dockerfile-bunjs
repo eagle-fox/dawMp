@@ -4,3 +4,5 @@ FROM oven/bun
 WORKDIR /app
 COPY package.json /app
 RUN bun install --save-dev
+COPY . /app
+RUN bun build

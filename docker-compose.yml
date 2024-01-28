@@ -1,95 +1,95 @@
 version: '3'
 services:
-    webhook:
-        container_name: fox-webhook
-        build:
-            context: webhook
-            dockerfile: ../docker/Dockerfile-webhook-go
-        ports:
-            - '2002:2002'
-        volumes:
-            - '.:/go/src/app/dawMp'
-        env_file:
-            - .env
-        networks:
-            - foxtrot-bridge
+  webhook:
+    container_name: fox-webhook
+    build:
+      context: webhook
+      dockerfile: ../docker/Dockerfile-webhook-go
+    ports:
+      - '2002:2002'
+    volumes:
+      - '.:/go/src/app/dawMp'
+    env_file:
+      - .env
+    networks:
+      - foxtrot-bridge
 
-    iot:
-        container_name: fox-iot
-        build:
-            context: iot
-            dockerfile: ../docker/Dockerfile-iot-go
-        ports:
-            - '2006:2006'
-        volumes:
-            - '.:/go/src/app/dawMp'
-        env_file:
-            - .env
-        networks:
-            - foxtrot-api-lan
-            - foxtrot-bridge
+  iot:
+    container_name: fox-iot
+    build:
+      context: iot
+      dockerfile: ../docker/Dockerfile-iot-go
+    ports:
+      - '2006:2006'
+    volumes:
+      - '.:/go/src/app/dawMp'
+    env_file:
+      - .env
+    networks:
+      - foxtrot-api-lan
+      - foxtrot-bridge
 
-    php8:
-        container_name: fox-php8
-        hostname: php8.fox
-        build:
-            context: back/
-            dockerfile: ../docker/Dockerfile-php
-        volumes:
-            - './back/www/:/var/www/html/'
-        ports:
-            - '2003:80'
-        tty: true
-        working_dir: /var/www/html
-        environment:
-            XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
-        networks:
-            - foxtrot-bridge
-            - foxtrot-api-lan
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
-        command:
-            [
-                'sh',
-                '-c',
-                'composer install --no-interaction && apache2-foreground',
-            ]
+  php8:
+    container_name: fox-php8
+    hostname: php8.fox
+    build:
+      context: back/
+      dockerfile: ../docker/Dockerfile-php
+    volumes:
+      - './back/www/:/var/www/html/'
+    ports:
+      - '2003:80'
+    tty: true
+    working_dir: /var/www/html
+    environment:
+      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    command:
+      [
+        'sh',
+        '-c',
+        'composer install --working-dir=$(pwd) --no-interaction && apache2-foreground',
+      ]
 
-    bun:
-        container_name: fox-bun
-        hostname: bun.fox
-        build:
-            context: front/
-            dockerfile: ../docker/Dockerfile-bunjs
-        working_dir: /app
-        volumes:
-            - fox-bun:/app/
-        ports:
-            - '2004:2024'
-        networks:
-            - foxtrot-bridge
-            - foxtrot-api-lan
-        command: ['sh', '-c', 'bun vite']
+  bun:
+    container_name: fox-bun
+    hostname: bun.fox
+    build:
+      context: front/
+      dockerfile: ../docker/Dockerfile-bunjs
+    working_dir: /app
+    volumes:
+      - fox-bun:/app/
+    ports:
+      - '2004:2024'
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+    command: [ 'sh', '-c', 'bun vite' ]
 
-    mysql:
-        container_name: fox-mysql
-        hostname: mysql.fox
-        image: mysql:latest
-        volumes:
-            - fox-eagle-db:/var/lib/mysql
-        ports:
-            - '2005:3306'
-        env_file:
-            - .env
-        networks:
-            - foxtrot-bridge
-            - foxtrot-api-lan
+  mysql:
+    container_name: fox-mysql
+    hostname: mysql.fox
+    image: mysql:latest
+    volumes:
+      - fox-eagle-db:/var/lib/mysql
+    ports:
+      - '2005:3306'
+    env_file:
+      - .env
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
 
 networks:
-    foxtrot-api-lan:
-        internal: true
-    foxtrot-bridge:
-        driver: bridge
+  foxtrot-api-lan:
+    internal: true
+  foxtrot-bridge:
+    driver: bridge
 volumes:
-    fox-eagle-db:
-    fox-bun:
+  fox-eagle-db:
+  fox-bun:

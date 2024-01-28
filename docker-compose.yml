@@ -52,7 +52,7 @@ services:
       [
         'sh',
         '-c',
-        'composer install --working-dir=$(pwd) --no-interaction && apache2-foreground',
+        'composer install --working-dir=$(pwd) --no-interaction && apache2-foreground'
       ]
 
   bun:

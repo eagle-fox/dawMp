@@ -30,6 +30,89 @@
                 "bracketSpacing": true,
                 "semi": false
             }
+        },
+        {
+            "files": "*.json",
+            "options": {
+                "tabWidth": 2,
+                "useTabs": false,
+                "singleQuote": true,
+                "trailingComma": "all",
+                "bracketSpacing": true,
+                "semi": false
+            }
+        },
+        {
+            "files": "*.js",
+            "options": {
+                "tabWidth": 2,
+                "useTabs": false,
+                "singleQuote": true,
+                "trailingComma": "all",
+                "bracketSpacing": true,
+                "semi": false
+            }
+        },
+        {
+            "files": "*.ts",
+            "options": {
+                "tabWidth": 2,
+                "useTabs": false,
+                "singleQuote": true,
+                "trailingComma": "all",
+                "bracketSpacing": true,
+                "semi": false
+            }
+        },
+        {
+            "files": "*.scss",
+            "options": {
+                "tabWidth": 2,
+                "useTabs": false,
+                "singleQuote": true,
+                "trailingComma": "all",
+                "bracketSpacing": true,
+                "semi": false
+            }
+        },
+        {
+            "files": "*.css",
+            "options": {
+                "tabWidth": 2,
+                "useTabs": false,
+                "singleQuote": true,
+                "trailingComma": "all",
+                "bracketSpacing": true,
+                "semi": false
+            }
+        },
+        {
+            "files": "*.html",
+            "options": {
+                "tabWidth": 2,
+                "useTabs": false,
+                "singleQuote": true,
+                "trailingComma": "all",
+                "bracketSpacing": true,
+                "semi": false
+            }
+        },
+        {
+            "files": "*.md",
+            "options": {
+                "tabWidth": 2,
+                "useTabs": false,
+                "singleQuote": true,
+                "trailingComma": "all",
+                "bracketSpacing": true,
+                "semi": false
+            }
+        },
+        {
+            "files": "*.html",
+            "options": {
+                "parser": "html"
+            }
         }
     ]
 }

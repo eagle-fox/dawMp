@@ -36,7 +36,7 @@ services:
       context: back/
       dockerfile: ../docker/Dockerfile-php
     volumes:
-      - './back/www/:/var/www/html/'
+      - './back/:/var/www/html/'
     ports:
       - '2003:80'
     tty: true
@@ -52,7 +52,7 @@ services:
       [
         'sh',
         '-c',
-        'composer install --working-dir=$(pwd) --no-interaction && apache2-foreground',
+        'composer install --working-dir=$(pwd) --no-interaction && apache2-foreground'
       ]
 
   bun:

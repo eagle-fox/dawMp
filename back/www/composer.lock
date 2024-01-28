@@ -30,9 +30,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "license": ["MIT"],
             "authors": [
                 {
                     "name": "Michael Darko",
@@ -43,12 +41,7 @@
             ],
             "description": "Leaf PHP util module",
             "homepage": "https://leafphp.netlify.app/#/",
-            "keywords": [
-                "framework",
-                "leaf",
-                "php",
-                "util"
-            ],
+            "keywords": ["framework", "leaf", "php", "util"],
             "support": {
                 "issues": "https://github.com/leafsphp/anchor/issues",
                 "source": "https://github.com/leafsphp/anchor/tree/v1.5.0"
@@ -99,9 +92,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "license": ["MIT"],
             "authors": [
                 {
                     "name": "Filipe Dobreira",
@@ -159,17 +150,13 @@
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "src/functions.php"
-                ],
+                "files": ["src/functions.php"],
                 "psr-4": {
                     "Leaf\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "license": ["MIT"],
             "authors": [
                 {
                     "name": "Michael Darko",
@@ -180,13 +167,7 @@
             ],
             "description": "Simple straightup data validation",
             "homepage": "https://leafphp.dev/modules/forms/",
-            "keywords": [
-                "form",
-                "framework",
-                "leaf",
-                "php",
-                "validation"
-            ],
+            "keywords": ["form", "framework", "leaf", "php", "validation"],
             "support": {
                 "issues": "https://github.com/leafsphp/form/issues",
                 "source": "https://github.com/leafsphp/form/tree/v2.1"
@@ -223,17 +204,13 @@
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "src/functions.php"
-                ],
+                "files": ["src/functions.php"],
                 "psr-4": {
                     "Leaf\\Http\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "license": ["MIT"],
             "authors": [
                 {
                     "name": "Michael Darko",
@@ -298,17 +275,13 @@
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "src/functions.php"
-                ],
+                "files": ["src/functions.php"],
                 "psr-4": {
                     "Leaf\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "license": ["MIT"],
             "authors": [
                 {
                     "name": "Michael Darko",
@@ -371,9 +344,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "license": ["MIT"],
             "authors": [
                 {
                     "name": "Michael Darko",
@@ -384,13 +355,7 @@
             ],
             "description": "Leaf router module for Leaf PHP.",
             "homepage": "https://leafphp.netlify.app/#/modules/router",
-            "keywords": [
-                "framework",
-                "leaf",
-                "php",
-                "rest",
-                "router"
-            ],
+            "keywords": ["framework", "leaf", "php", "rest", "router"],
             "support": {
                 "issues": "https://github.com/leafsphp/router/issues",
                 "source": "https://github.com/leafsphp/router/tree/v0.2.3"
@@ -455,9 +420,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1-only"
-            ],
+            "license": ["LGPL-2.1-only"],
             "authors": [
                 {
                     "name": "Marcus Bointon",
@@ -517,9 +480,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "license": ["MIT"],
             "authors": [
                 {
                     "name": "PHP-FIG",
@@ -528,11 +489,7 @@
             ],
             "description": "Common interface for logging libraries",
             "homepage": "https://github.com/php-fig/log",
-            "keywords": [
-                "log",
-                "psr",
-                "psr-3"
-            ],
+            "keywords": ["log", "psr", "psr-3"],
             "support": {
                 "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
@@ -557,14 +514,10 @@
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "class.krumo.php"
-                ]
+                "files": ["class.krumo.php"]
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
+            "license": ["LGPL"],
             "authors": [
                 {
                     "name": "Kaloyan K. Tsvetkov",

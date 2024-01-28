@@ -3,10 +3,10 @@ FROM golang:latest AS go-builder
 RUN --mount=type=cache,target=/var/cache/apt apt update  && apt install -qy git
 WORKDIR /go/src/app
 COPY . .
-RUN go build -o go-webhook .
+RUN go build -o go-iot .
 
 # Etapa de ejecución
 FROM debian:latest
 WORKDIR /app
-COPY --from=go-builder /go/src/app/go-webhook /app
-CMD ["./go-webhook"]
+COPY --from=go-builder /go/src/app/go-iot /app
+CMD ["./go-iot"]

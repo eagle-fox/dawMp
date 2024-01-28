@@ -14,6 +14,21 @@ services:
         networks:
             - foxtrot-bridge
 
+    iot:
+        container_name: fox-iot
+        build:
+            context: iot
+            dockerfile: ../docker/Dockerfile-iot-go
+        ports:
+            - '2006:2006'
+        volumes:
+            - '.:/go/src/app/dawMp'
+        env_file:
+            - .env
+        networks:
+            - foxtrot-api-lan
+            - foxtrot-bridge
+
     php8:
         container_name: fox-php8
         hostname: php8.fox

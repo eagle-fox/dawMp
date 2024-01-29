@@ -5,7 +5,7 @@ services:
     container_name: fox-iot
     build:
       context: iot
-      dockerfile: docker/Dockerfile-iot-go
+      dockerfile: ../docker/Dockerfile-iot-go
     ports:
       - '2006:2006'
     volumes:
@@ -21,12 +21,11 @@ services:
     hostname: php8.fox
     build:
       context: back/
-      dockerfile: docker/Dockerfile-php
+      dockerfile: ../docker/Dockerfile-php
     volumes:
       - 'fox-php:/var/www/html/vendor'        # leaf-cli
       - 'fox-php:/var/www/html/api/vendor'    # leaf-api
       - './back/:/var/www/html/'
-
     ports:
       - '2003:80'
     tty: true

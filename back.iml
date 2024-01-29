@@ -2,7 +2,123 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/back" />
+    <content url="file://$MODULE_DIR$/back">
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app" isTestSource="false" packagePrefix="App\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/channels" isTestSource="false" packagePrefix="App\Channels\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/components" isTestSource="false" packagePrefix="App\Components\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/console" isTestSource="false" packagePrefix="App\Console\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/controllers" isTestSource="false" packagePrefix="App\Controllers\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/database/factories" isTestSource="false" packagePrefix="App\Database\Factories\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/database/schema" isTestSource="false" packagePrefix="App\Database\Schema\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/database/seeds" isTestSource="false" packagePrefix="App\Database\Seeds\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/events" isTestSource="false" packagePrefix="App\Events\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/helpers" isTestSource="false" packagePrefix="App\Helpers\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/http" isTestSource="false" packagePrefix="App\Http\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/jobs" isTestSource="false" packagePrefix="App\Jobs\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/lang" isTestSource="false" packagePrefix="App\Lang\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/mail" isTestSource="false" packagePrefix="App\Mail\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/middleware" isTestSource="false" packagePrefix="App\Middleware\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/models" isTestSource="false" packagePrefix="App\Models\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/notifications" isTestSource="false" packagePrefix="App\Notifications\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/scripts" isTestSource="false" packagePrefix="App\Scripts\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/services" isTestSource="false" packagePrefix="App\Services\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/utils" isTestSource="false" packagePrefix="App\Utils\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/views" isTestSource="false" packagePrefix="App\Views\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/app/workers" isTestSource="false" packagePrefix="App\Workers\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/config" isTestSource="false" packagePrefix="Config\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/lib" isTestSource="false" packagePrefix="Lib\" />
+      <sourceFolder url="file://$MODULE_DIR$/back/api/tests" isTestSource="false" packagePrefix="Tests\" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/carbonphp/carbon-doctrine-types" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/doctrine/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/doctrine/dbal" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/doctrine/deprecations" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/doctrine/event-manager" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/doctrine/inflector" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/fakerphp/faker" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/graham-campbell/result-type" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/bus" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/collections" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/console" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/container" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/database" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/events" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/filesystem" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/macroable" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/pipeline" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/support" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/illuminate/view" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/aloe" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/anchor" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/auth" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/blade" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/cors" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/date" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/db" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/exception" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/form" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/fs" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/http" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/leaf" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/logger" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/mvc-core" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/password" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/router" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/leafs/session" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/nesbot/carbon" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/nikic/php-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/phpoption/phpoption" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/psr/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/psr/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/psr/simple-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/psy/psysh" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/console" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/deprecation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/finder" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/polyfill-intl-grapheme" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/polyfill-intl-normalizer" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/polyfill-php73" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/polyfill-php80" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/process" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/service-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/string" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/translation" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/translation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/symfony/var-dumper" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/vlucas/phpdotenv" />
+      <excludeFolder url="file://$MODULE_DIR$/back/api/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/leafs/anchor" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/leafs/cli" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/leafs/exception" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/leafs/form" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/leafs/fs" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/leafs/http" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/leafs/leaf" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/leafs/router" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/nikic/php-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/phpmailer/phpmailer" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/psy/psysh" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/console" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/deprecation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/finder" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/polyfill-intl-grapheme" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/polyfill-intl-normalizer" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/process" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/service-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/string" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/var-dumper" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/ycms/krumo" />
+    </content>
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

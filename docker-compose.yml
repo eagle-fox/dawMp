@@ -36,7 +36,10 @@ services:
       context: back/
       dockerfile: ../docker/Dockerfile-php
     volumes:
+      - 'fox-php:/var/www/html/vendor'        # leaf-cli
+      - 'fox-php:/var/www/html/api/vendor'    # leaf-api
       - './back/:/var/www/html/'
+
     ports:
       - '2003:80'
     tty: true
@@ -52,7 +55,7 @@ services:
       [
         'sh',
         '-c',
-        'composer install --working-dir=$(pwd) --no-interaction && apache2-foreground'
+        'composer install --working-dir=$(pwd) --no-interaction && if [ -d "api" ]; then cd api && composer install --no-interaction; fi && apache2-foreground'
       ]
 
   bun:
@@ -93,3 +96,4 @@ networks:
 volumes:
   fox-eagle-db:
   fox-bun:
+  fox-php:

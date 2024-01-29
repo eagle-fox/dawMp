@@ -1,5 +1,9 @@
 <?php
 
+require __DIR__ . "/vendor/autoload.php";
+
+\Leaf\DevTools::install();
+
 /*
 |--------------------------------------------------------------------------
 | Leaf API

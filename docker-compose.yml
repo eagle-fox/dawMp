@@ -35,6 +35,11 @@ services:
       - foxtrot-api-lan
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+    command: [
+      'bash',
+      '-c',
+      'composer update && apache2-foreground'
+    ]
 
   mysql:
     container_name: fox-mysql

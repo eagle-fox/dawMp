@@ -20,8 +20,5 @@ WORKDIR /var/www
 RUN chown -R www-data:www-data /var/www
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
-COPY api/composer.json /var/www/html/api/composer.json
-COPY api/composer.lock /var/www/html/api/composer.lock
 WORKDIR /var/www/html/api
-RUN composer global update
 CMD ["apache2-foreground"]

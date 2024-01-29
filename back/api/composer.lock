@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6c2e45c329400db648294ae456255d5",
+    "content-hash": "c9da70edf8000595a49297002b1c17df",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -1696,6 +1696,71 @@
                 }
             ],
             "time": "2023-08-03T20:59:45+00:00"
+        },
+        {
+            "name": "leafs/devtools",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leafsphp/devtools.git",
+                "reference": "b9371229a0fd944783affef5b65068ebd407836b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leafsphp/devtools/zipball/b9371229a0fd944783affef5b65068ebd407836b",
+                "reference": "b9371229a0fd944783affef5b65068ebd407836b",
+                "shasum": ""
+            },
+            "require": {
+                "leafs/leaf": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "pestphp/pest": "^1.21",
+                "symfony/var-dumper": "^6.2"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Leaf\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Darko",
+                    "email": "mickdd22@gmail.com",
+                    "homepage": "https://mychi.netlify.app",
+                    "role": "Developer"
+                }
+            ],
+            "description": "DevTools server-side hook for Leaf PHP",
+            "homepage": "https://leafphp.dev/modules/devtools/",
+            "keywords": [
+                "Devtools",
+                "chrome"
+            ],
+            "support": {
+                "issues": "https://github.com/leafsphp/devtools/issues",
+                "source": "https://github.com/leafsphp/devtools/tree/v0.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/leafsphp",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/leaf",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2023-05-10T12:36:28+00:00"
         },
         {
             "name": "leafs/exception",
@@ -4355,6 +4420,79 @@
                 "source": "https://github.com/FakerPHP/Faker/tree/v1.23.1"
             },
             "time": "2024-01-02T13:46:09+00:00"
+        },
+        {
+            "name": "leafs/alchemy",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leafsphp/alchemy.git",
+                "reference": "eb5b00b1d77f777d3c70622a6d9205f1e6e9818f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leafsphp/alchemy/zipball/eb5b00b1d77f777d3c70622a6d9205f1e6e9818f",
+                "reference": "eb5b00b1d77f777d3c70622a6d9205f1e6e9818f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "leafs/fs": "*",
+                "psy/psysh": "^0.10.9|^0.11",
+                "symfony/console": "^5.0|^6.0",
+                "symfony/process": "^5.0|^6.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "*",
+                "phpunit/phpunit": "*"
+            },
+            "bin": [
+                "bin/alchemy"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Leaf\\Alchemy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Darko",
+                    "email": "mickdd22@gmail.com",
+                    "homepage": "https://mychi.netlify.app",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple command line tool for installing and interacting with your leaf apps",
+            "homepage": "https://leafphp.dev/docs/tooling/testing",
+            "keywords": [
+                "leaf",
+                "php",
+                "test",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/leafsphp/alchemy/issues",
+                "source": "https://github.com/leafsphp/alchemy/tree/v1.0.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/leafsphp",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/leaf",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2023-09-28T11:50:43+00:00"
         }
     ],
     "aliases": [],

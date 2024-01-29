@@ -24,3 +24,4 @@ COPY api/composer.json /var/www/html/api/composer.json
 COPY api/composer.lock /var/www/html/api/composer.lock
 WORKDIR /var/www/html/api
 RUN composer update
+CMD ["apache2-foreground"]

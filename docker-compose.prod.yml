@@ -35,7 +35,7 @@ services:
       context: back/
       dockerfile: ../docker/Dockerfile-php
     volumes:
-      - './back/:/var/www/html/api'
+      - './back/api/:/var/www/html/api'
     ports:
       - '2003:80'
     tty: true

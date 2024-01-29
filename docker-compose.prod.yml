@@ -38,8 +38,6 @@ services:
       - './back/api/:/var/www/html/api'
     ports:
       - '2003:80'
-    tty: true
-    working_dir: /var/www/html
     environment:
       XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
     networks:

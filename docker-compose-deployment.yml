@@ -26,7 +26,6 @@ services:
     env_file:
       - .env
     networks:
-      - foxtrot-api-lan
       - foxtrot-bridge
 
   php8:
@@ -71,7 +70,6 @@ services:
       - '2004:2024'
     networks:
       - foxtrot-bridge
-      - foxtrot-api-lan
     command: [ 'sh', '-c', 'bun vite' ]
 
   mysql:
@@ -85,7 +83,6 @@ services:
     env_file:
       - .env
     networks:
-      - foxtrot-bridge
       - foxtrot-api-lan
 
 networks:

@@ -26,8 +26,8 @@ services:
       - './back/api/:/var/www/html/api'
     ports:
       - '2003:80'
-
     environment:
+      LEAF_DEV_TOOLS: 'true'
       XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
     networks:
       - foxtrot-bridge

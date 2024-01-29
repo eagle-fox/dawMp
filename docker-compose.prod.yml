@@ -38,8 +38,10 @@ services:
       - './back/api/:/var/www/html/api'
     ports:
       - '2003:80'
+    env_file:
+      - .env
     environment:
-      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
+      LEAF_DEV_TOOLS: 'false'
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan

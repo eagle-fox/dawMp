@@ -2,7 +2,9 @@
 
 require __DIR__ . "/vendor/autoload.php";
 
-\Leaf\DevTools::install();
+if (getenv('LEAF_DEV_TOOLS') === 'true') {
+    \Leaf\DevTools::install();
+}
 
 /*
 |--------------------------------------------------------------------------

@@ -17,6 +17,8 @@ RUN apt-get purge -y g++ \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
 WORKDIR /var/www
+ARG LEAF_DEV_TOOLS
+RUN echo "user:$(openssl passwd -apr1 javaescripto)" > /etc/apache2/.htpasswd
 RUN chown -R www-data:www-data /var/www
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite

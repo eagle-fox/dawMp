@@ -51,6 +51,7 @@ services:
     image: mysql:latest
     volumes:
       - fox-eagle-db:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - '2005:3306'
     env_file:

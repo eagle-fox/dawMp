@@ -35,27 +35,23 @@ services:
       context: back/
       dockerfile: ../docker/Dockerfile-php
     volumes:
-      - 'fox-php:/var/www/html/vendor'        # leaf-cli
-      - 'fox-php:/var/www/html/api/vendor'    # leaf-api
-      - './back/:/var/www/html/'
-
+      - './back/api/:/var/www/html/api'
     ports:
       - '2003:80'
-    tty: true
-    working_dir: /var/www/html
+    env_file:
+      - .env
     environment:
-      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
+      LEAF_DEV_TOOLS: 'false'
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    command:
-      [
-        'sh',
-        '-c',
-        'composer install --working-dir=$(pwd) --no-interaction && if [ -d "api" ]; then cd api && composer install --no-interaction; fi && apache2-foreground'
-      ]
+    command: [
+      'bash',
+      '-c',
+      'composer update && apache2-foreground'
+    ]
 
   bun:
     container_name: fox-bun

@@ -23,18 +23,22 @@ services:
       context: back/
       dockerfile: ../docker/Dockerfile-php
     volumes:
-      - './back/:/var/www/html/'
+      - './back/api/:/var/www/html/api'
     ports:
       - '2003:80'
-    tty: true
-    working_dir: /var/www/html
     environment:
+      LEAF_DEV_TOOLS: 'true'
       XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+    command: [
+      'bash',
+      '-c',
+      'composer update && apache2-foreground'
+    ]
 
   mysql:
     container_name: fox-mysql
@@ -59,3 +63,4 @@ networks:
 volumes:
   fox-eagle-db:
   fox-bun:
+  fox-php:

@@ -1,23 +1,14 @@
-FROM php:8.3-apache
-RUN --mount=type=cache,target=/var/cache/apt  apt-get update && apt-get install -y --no-install-recommends \
+FROM php:8.3-apache AS build-php
+WORKDIR /var/www/html
+RUN --mount=type=cache,target=/var/cache/apt apt-get update && apt-get install -y --no-install-recommends \
     libzip-dev \
     wget \
     git \
     unzip
-RUN mount=type=cache,target='/usr/local/lib/php' \
-    && pecl install xdebug
-RUN docker-php-ext-install zip pdo pdo_mysql mysqli
+RUN mount=type=cache,target='/usr/local/lib/php' && pecl install xdebug
+RUN docker-php-ext-install zip pdo pdo_mysql mysqli && docker-php-ext-enable zip pdo pdo_mysql mysqli
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer global require leafs/cli
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite
-
-COPY composer.json /var/www/html/composer.json
-COPY composer.lock /var/www/html/composer.lock
-RUN composer global install
-
 RUN ln -s /root/.composer/vendor/bin/leaf /usr/local/bin/leaf
 # If you have a custom PHP ini file you can uncomment this line
 # COPY ./php.ini /usr/local/etc/php/php.ini
@@ -25,6 +16,11 @@ RUN apt-get purge -y g++ \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
-WORKDIR /var/www/html
+WORKDIR /var/www
+ARG LEAF_DEV_TOOLS
+RUN echo "user:$(openssl passwd -apr1 javaescripto)" > /etc/apache2/.htpasswd
 RUN chown -R www-data:www-data /var/www
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+RUN a2enmod rewrite
+WORKDIR /var/www/html/api
 CMD ["apache2-foreground"]

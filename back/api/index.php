@@ -3,6 +3,12 @@ require __DIR__ . "/vendor/autoload.php";
 
 \Leaf\DevTools::install();
 
+require __DIR__ . "/vendor/autoload.php";
+
+if (getenv('LEAF_DEV_TOOLS') === 'true') {
+    \Leaf\DevTools::install();
+}
+
 /*
 |--------------------------------------------------------------------------
 | Leaf API

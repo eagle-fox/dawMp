@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9da70edf8000595a49297002b1c17df",
+    "content-hash": "a6fe19ed11597cfd0233b1c522851918",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -4420,79 +4420,6 @@
                 "source": "https://github.com/FakerPHP/Faker/tree/v1.23.1"
             },
             "time": "2024-01-02T13:46:09+00:00"
-        },
-        {
-            "name": "leafs/alchemy",
-            "version": "v1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/leafsphp/alchemy.git",
-                "reference": "eb5b00b1d77f777d3c70622a6d9205f1e6e9818f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/alchemy/zipball/eb5b00b1d77f777d3c70622a6d9205f1e6e9818f",
-                "reference": "eb5b00b1d77f777d3c70622a6d9205f1e6e9818f",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "leafs/fs": "*",
-                "psy/psysh": "^0.10.9|^0.11",
-                "symfony/console": "^5.0|^6.0",
-                "symfony/process": "^5.0|^6.0"
-            },
-            "require-dev": {
-                "pestphp/pest": "*",
-                "phpunit/phpunit": "*"
-            },
-            "bin": [
-                "bin/alchemy"
-            ],
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/functions.php"
-                ],
-                "psr-4": {
-                    "Leaf\\Alchemy\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Darko",
-                    "email": "mickdd22@gmail.com",
-                    "homepage": "https://mychi.netlify.app",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A simple command line tool for installing and interacting with your leaf apps",
-            "homepage": "https://leafphp.dev/docs/tooling/testing",
-            "keywords": [
-                "leaf",
-                "php",
-                "test",
-                "testing"
-            ],
-            "support": {
-                "issues": "https://github.com/leafsphp/alchemy/issues",
-                "source": "https://github.com/leafsphp/alchemy/tree/v1.0.3"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/leafsphp",
-                    "type": "github"
-                },
-                {
-                    "url": "https://opencollective.com/leaf",
-                    "type": "open_collective"
-                }
-            ],
-            "time": "2023-09-28T11:50:43+00:00"
         }
     ],
     "aliases": [],

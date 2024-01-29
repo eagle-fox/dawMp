@@ -35,10 +35,7 @@ services:
       context: back/
       dockerfile: ../docker/Dockerfile-php
     volumes:
-      - 'fox-php:/var/www/html/vendor'        # leaf-cli
-      - 'fox-php:/var/www/html/api/vendor'    # leaf-api
-      - './back/:/var/www/html/'
-
+      - './back/:/var/www/html/api'
     ports:
       - '2003:80'
     tty: true
@@ -50,12 +47,6 @@ services:
       - foxtrot-api-lan
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    command:
-      [
-        'sh',
-        '-c',
-        'composer install --working-dir=$(pwd) --no-interaction && if [ -d "api" ]; then cd api && composer install --no-interaction; fi && apache2-foreground'
-      ]
 
   bun:
     container_name: fox-bun

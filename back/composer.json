@@ -1,8 +1,0 @@
-{
-    "require": {
-        "ycms/krumo": ">=v0.5.0",
-        "phpmailer/phpmailer": ">=v6.0.1",
-        "leafs/leaf": "^3.5",
-        "leafs/cli": "^2.11"
-    }
-}

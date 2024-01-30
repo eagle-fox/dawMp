@@ -1,0 +1,10 @@
+// Paquete de idioma Ingles
+
+export default {
+    welcome: 'Welcome',
+    home: 'Home',
+    lang_es: 'Spanish',
+    lang_sh: 'English',
+    lang_de: 'German',
+    home_t1: 'Start locating your pet right now!'
+};

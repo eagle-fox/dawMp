@@ -1,4 +1,5 @@
 <script>
+import Cookies from 'js-cookie';
 export default {
   name: 'NavBar',
     methods: {
@@ -8,23 +9,38 @@ export default {
             if (locale === 'es') {
                 this.languageToggleIcon = 'src/assets/flags/es.svg';
                 this.currentLanguageFlagAltText = 'es_flag';
+                this.createLanguageCookie('es');
             } else if (locale === 'en') {
                 this.languageToggleIcon = 'src/assets/flags/sh.svg';
                 this.currentLanguageFlagAltText = 'sh_flag';
+                this.createLanguageCookie('en');
             } else if (locale === 'de') {
                 this.languageToggleIcon = 'src/assets/flags/de.svg';
                 this.currentLanguageFlagAltText = 'de_flag';
+                this.createLanguageCookie('de');
             }
         },
+        createLanguageCookie(data){
+            Cookies.set('languageCookie', data, { expires: 7, sameSite: 'None', secure: true  });
+        },
+        getCookieValue() {
+            return Cookies.get('languageCookie');
+        },
+        changeLanguageCookie(){
+            if(this.getCookieValue())
+                this.changeLanguage(this.getCookieValue())
+        }
     },
     data(){
       return{
           languageToggleIcon: 'src/assets/flags/es.svg',
           currentLanguageFlagAltText: 'es_flag',
       }
+    },
+    mounted() {
+        this.changeLanguageCookie();
     }
 }
-
 
 </script>
 
@@ -40,29 +56,33 @@ export default {
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#">{{ $t('home') }}</a>
-                </div>
-            </div>
-            <div class="dropstart">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img :src="languageToggleIcon" width="32" :alt="currentLanguageFlagAltText" class="flag-icon">
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
-                    <li class="d-flex justify-content-center align-items-center">
-                        <img src="../assets/flags/es.svg" width="32" alt="es_flag">
-                        <a class="dropdown-item w-50" @click="changeLanguage('es')" href="#">{{ $t('lang_es') }}</a>
-                    </li>
-                    <li class="d-flex justify-content-center align-items-center">
-                        <img src="../assets/flags/sh.svg" width="32" alt="sh_flag">
-                        <a class="dropdown-item w-50" @click="changeLanguage('en')" href="#">{{ $t('lang_sh') }}</a>
-                    </li>
-                    <li class="d-flex justify-content-center align-items-center">
-                        <img src="../assets/flags/de.svg" width="32" alt="de_flag">
-                        <a class="dropdown-item w-50" @click="changeLanguage('de')" href="#">{{ $t('lang_de') }}</a>
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">{{ $t('home') }}</a>
                     </li>
                 </ul>
+                <div class="dropstart">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img :src="languageToggleIcon" width="32" :alt="currentLanguageFlagAltText" class="flag-icon">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                        <li class="d-flex justify-content-center align-items-center">
+                            <img src="../assets/flags/es.svg" width="32" alt="es_flag">
+                            <a class="dropdown-item w-50" @click="changeLanguage('es')" href="#">{{ $t('lang_es') }}</a>
+                        </li>
+                        <li class="d-flex justify-content-center align-items-center">
+                            <img src="../assets/flags/sh.svg" width="32" alt="sh_flag">
+                            <a class="dropdown-item w-50" @click="changeLanguage('en')" href="#">{{ $t('lang_sh') }}</a>
+                        </li>
+                        <li class="d-flex justify-content-center align-items-center">
+                            <img src="../assets/flags/de.svg" width="32" alt="de_flag">
+                            <a class="dropdown-item w-50" @click="changeLanguage('de')" href="#">{{ $t('lang_de') }}</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
 
         </div>
     </nav>

@@ -1,6 +1,6 @@
 <script setup>
 import NavBar from '@/components/NavBar.vue'
-import { IconMapPinFilled } from '@tabler/icons-vue';
+import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue';
 
 </script>
 
@@ -19,11 +19,29 @@ import { IconMapPinFilled } from '@tabler/icons-vue';
         </div>
 
         <div class="bg-primary w-100 d-flex justify-content-center align-items-center p-4 flex-md-row flex-column">
-            <div class="container max-width-xxl w-25 p-4 text-light">
-                <h4>{{$t('home_t3')}}</h4>
+            <div class="max-width-xxl p-4 text-light textFormat">
+                <h4 class="text-center">{{$t('home_t3')}}</h4>
             </div>
-            <div class="container max-width-xxl w-25 p-4 text-light bg-secondary d-flex justify-content-center align-items-center" style="height: 200px">
-                Image
+
+            <div class="max-width-xxl p-4 text-light d-flex justify-content-center align-items-center gap-4 flex-column">
+                <h5>{{$t('home_t4')}}</h5>
+                <div class="d-flex justify-content-center align-items-center flex-column gap-2" style="max-width: 70%">
+
+                    <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
+                        <IconMap2 size="32" class="mt-2" color="black"></IconMap2>
+                        <div class="text-dark">{{$t('home_bd1')}}</div>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
+                        <IconMapPinFilled size="32" class="mt-2" color="black"></IconMapPinFilled>
+                        <div class="text-dark ">{{$t('home_bd2')}}</div>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
+                        <IconChartHistogram size="32" class="mt-2" color="black"></IconChartHistogram>
+                        <div class="text-dark">{{$t('home_bd3')}}</div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -55,6 +73,20 @@ import { IconMapPinFilled } from '@tabler/icons-vue';
     }
     50% {
         transform: translateY(-2px);
+    }
+}
+
+.textFormat{
+    width: 30%;
+}
+
+.caract{
+    max-width: 60%;
+}
+
+@media only screen and (max-width: 860px) {
+    .textFormat{
+        width: 100%;
     }
 }
 

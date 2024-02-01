@@ -4,24 +4,18 @@ export default {
   name: 'NavBar',
     methods: {
         changeLanguage(locale) {
-            this.$i18n.locale = locale;
-
-            if (locale === 'es') {
-                this.languageToggleIcon = 'src/assets/flags/es.svg';
-                this.currentLanguageFlagAltText = 'es_flag';
-                this.createLanguageCookie('es');
-            } else if (locale === 'en') {
-                this.languageToggleIcon = 'src/assets/flags/sh.svg';
-                this.currentLanguageFlagAltText = 'sh_flag';
-                this.createLanguageCookie('en');
-            } else if (locale === 'de') {
-                this.languageToggleIcon = 'src/assets/flags/de.svg';
-                this.currentLanguageFlagAltText = 'de_flag';
-                this.createLanguageCookie('de');
-            }else if (locale === 'gl') {
-                this.languageToggleIcon = 'src/assets/flags/gl.svg';
-                this.currentLanguageFlagAltText = 'gl_flag';
-                this.createLanguageCookie('gl');
+            const languageMappings = {
+                es: { icon: 'es.svg', altText: 'es_flag' },
+                en: { icon: 'sh.svg', altText: 'sh_flag' },
+                de: { icon: 'de.svg', altText: 'de_flag' },
+                gl: { icon: 'gl.svg', altText: 'gl_flag' },
+            };
+            if (languageMappings[locale]) {
+                const { icon, altText } = languageMappings[locale];
+                this.languageToggleIcon = `src/assets/flags/${icon}`;
+                this.currentLanguageFlagAltText = altText;
+                this.createLanguageCookie(locale);
+                this.$i18n.locale = locale;
             }
         },
         // System for creating and loading cookies for the automatic language change chosen by the user.
@@ -65,7 +59,7 @@ export default {
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">{{ $t('home') }}</a>
+                        <a class="nav-link active" aria-current="page" href="#">{{ $t('miscelaneus.home') }}</a>
                     </li>
                 </ul>
                 <div class="dropstart">
@@ -75,19 +69,19 @@ export default {
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                         <li class="d-flex justify-content-center align-items-center">
                             <img src="../assets/flags/es.svg" width="32" alt="es_flag">
-                            <a class="dropdown-item w-50" @click="changeLanguage('es')" href="#">{{ $t('lang_es') }}</a>
+                            <a class="dropdown-item w-50" @click="changeLanguage('es')" href="#">{{ $t('lang.lang_es') }}</a>
                         </li>
                         <li class="d-flex justify-content-center align-items-center">
                             <img src="../assets/flags/gl.svg" width="32" alt="gl_flag">
-                            <a class="dropdown-item w-50" @click="changeLanguage('gl')" href="#">{{ $t('lang_gl') }}</a>
+                            <a class="dropdown-item w-50" @click="changeLanguage('gl')" href="#">{{ $t('lang.lang_gl') }}</a>
                         </li>
                         <li class="d-flex justify-content-center align-items-center">
                             <img src="../assets/flags/sh.svg" width="32" alt="sh_flag">
-                            <a class="dropdown-item w-50" @click="changeLanguage('en')" href="#">{{ $t('lang_sh') }}</a>
+                            <a class="dropdown-item w-50" @click="changeLanguage('en')" href="#">{{ $t('lang.lang_sh') }}</a>
                         </li>
                         <li class="d-flex justify-content-center align-items-center">
                             <img src="../assets/flags/de.svg" width="32" alt="de_flag">
-                            <a class="dropdown-item w-50" @click="changeLanguage('de')" href="#">{{ $t('lang_de') }}</a>
+                            <a class="dropdown-item w-50" @click="changeLanguage('de')" href="#">{{ $t('lang.lang_de') }}</a>
                         </li>
                     </ul>
                 </div>

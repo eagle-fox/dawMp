@@ -20,6 +20,7 @@ export default {
                 this.createLanguageCookie('de');
             }
         },
+        // System for creating and loading cookies for the automatic language change chosen by the user.
         createLanguageCookie(data){
             Cookies.set('languageCookie', data, { expires: 7, sameSite: 'None', secure: true  });
         },

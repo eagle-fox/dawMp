@@ -5,6 +5,7 @@ export default {
     lang_es: 'Spanish',
     lang_sh: 'English',
     lang_de: 'German',
+    lang_gl: 'Galician',
     home_t1: 'Start locating your pet right now!',
     home_t2: 'Anywhere, anytime. Keep your pet safe.',
     home_t3: 'We provide our users with an interactive map to track their pet at all times. It has high precision and detail.',

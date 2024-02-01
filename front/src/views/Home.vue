@@ -9,37 +9,37 @@ import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue
     <main class="mt-5 d-flex justify-content-center align-items-center flex-column gap-2">
         <div class="d-flex justify-content-center align-items-center flex-column gap-5 p-10">
             <div>
-                <h1 class="text-center">{{ $t('home_t1') }}</h1>
-                <p class="text-center">{{$t('home_t2')}}</p>
+                <h1 class="text-center">{{ $t('home.home_t1') }}</h1>
+                <p class="text-center">{{$t('home.home_t2')}}</p>
             </div>
 
             <div>
-                <button class="btn btn-primary text-center">{{$t('home_bt1')}} <IconMapPinFilled class="mb-1 levitate"></IconMapPinFilled></button>
+                <router-link to="/login" class="btn btn-primary text-center">{{$t('home.home_bt1')}} <IconMapPinFilled class="mb-1 levitate"></IconMapPinFilled></router-link>
             </div>
         </div>
 
         <div class="bg-primary w-100 d-flex justify-content-center align-items-center p-4 flex-md-row flex-column">
             <div class="max-width-xxl p-4 text-light textFormat">
-                <h4 class="text-center">{{$t('home_t3')}}</h4>
+                <h4 class="text-center">{{$t('home.home_t3')}}</h4>
             </div>
 
             <div class="max-width-xxl p-4 text-light d-flex justify-content-center align-items-center gap-4 flex-column">
-                <h5>{{$t('home_t4')}}</h5>
+                <h5>{{$t('home.home_t4')}}</h5>
                 <div class="d-flex justify-content-center align-items-center flex-column gap-2" style="max-width: 70%">
 
                     <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
                         <IconMap2 size="32" class="mt-2" color="black"></IconMap2>
-                        <div class="text-dark">{{$t('home_bd1')}}</div>
+                        <div class="text-dark">{{$t('home.home_bd1')}}</div>
                     </div>
 
                     <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
                         <IconMapPinFilled size="32" class="mt-2" color="black"></IconMapPinFilled>
-                        <div class="text-dark ">{{$t('home_bd2')}}</div>
+                        <div class="text-dark ">{{$t('home.home_bd2')}}</div>
                     </div>
 
                     <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
                         <IconChartHistogram size="32" class="mt-2" color="black"></IconChartHistogram>
-                        <div class="text-dark">{{$t('home_bd3')}}</div>
+                        <div class="text-dark">{{$t('home.home_bd3')}}</div>
                     </div>
                 </div>
             </div>

@@ -1,83 +1,104 @@
 <script>
+import Cookies from 'js-cookie';
 export default {
   name: 'NavBar',
+    methods: {
+        changeLanguage(locale) {
+            this.$i18n.locale = locale;
+
+            if (locale === 'es') {
+                this.languageToggleIcon = 'src/assets/flags/es.svg';
+                this.currentLanguageFlagAltText = 'es_flag';
+                this.createLanguageCookie('es');
+            } else if (locale === 'en') {
+                this.languageToggleIcon = 'src/assets/flags/sh.svg';
+                this.currentLanguageFlagAltText = 'sh_flag';
+                this.createLanguageCookie('en');
+            } else if (locale === 'de') {
+                this.languageToggleIcon = 'src/assets/flags/de.svg';
+                this.currentLanguageFlagAltText = 'de_flag';
+                this.createLanguageCookie('de');
+            }else if (locale === 'gl') {
+                this.languageToggleIcon = 'src/assets/flags/gl.svg';
+                this.currentLanguageFlagAltText = 'gl_flag';
+                this.createLanguageCookie('gl');
+            }
+        },
+        createLanguageCookie(data){
+            Cookies.set('languageCookie', data, { expires: 7, sameSite: 'None', secure: true  });
+        },
+        getCookieValue() {
+            return Cookies.get('languageCookie');
+        },
+        changeLanguageCookie(){
+            if(this.getCookieValue())
+                this.changeLanguage(this.getCookieValue())
+        }
+    },
+    data(){
+      return{
+          // Default language
+          languageToggleIcon: 'src/assets/flags/es.svg',
+          currentLanguageFlagAltText: 'es_flag',
+      }
+    },
+    mounted() {
+        this.changeLanguageCookie();
+    }
 }
+
 </script>
 
 <template>
-  <!-- Button trigger modal -->
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex justify-content-center align-items-center gap-2" href="#">
+                <img src="../assets/logo_circle.svg" alt="Logo" width="48" class="d-inline-block align-text-top">
+                Eagle Fox
+            </a>
 
-  <button
-    class="btn btn-primary btn-lg"
-    data-target="#myModal"
-    data-toggle="modal"
-    type="button"
-  >
-    Launch demo modal
-  </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 
-  <div class="dropdown">
-    <button
-      id="dropdownMenuButton1"
-      aria-expanded="false"
-      class="btn btn-secondary dropdown-toggle"
-      data-bs-toggle="dropdown"
-      type="button"
-    >
-      Check Bootstrap
-    </button>
-    <ul aria-labelledby="dropdownMenuButton1" class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another dd action</a></li>
-      <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
-  </div>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">{{ $t('home') }}</a>
+                    </li>
+                </ul>
+                <div class="dropstart">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img :src="languageToggleIcon" width="32" :alt="currentLanguageFlagAltText" class="flag-icon">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                        <li class="d-flex justify-content-center align-items-center">
+                            <img src="../assets/flags/es.svg" width="32" alt="es_flag">
+                            <a class="dropdown-item w-50" @click="changeLanguage('es')" href="#">{{ $t('lang_es') }}</a>
+                        </li>
+                        <li class="d-flex justify-content-center align-items-center">
+                            <img src="../assets/flags/gl.svg" width="32" alt="gl_flag">
+                            <a class="dropdown-item w-50" @click="changeLanguage('gl')" href="#">{{ $t('lang_gl') }}</a>
+                        </li>
+                        <li class="d-flex justify-content-center align-items-center">
+                            <img src="../assets/flags/sh.svg" width="32" alt="sh_flag">
+                            <a class="dropdown-item w-50" @click="changeLanguage('en')" href="#">{{ $t('lang_sh') }}</a>
+                        </li>
+                        <li class="d-flex justify-content-center align-items-center">
+                            <img src="../assets/flags/de.svg" width="32" alt="de_flag">
+                            <a class="dropdown-item w-50" @click="changeLanguage('de')" href="#">{{ $t('lang_de') }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-    <div class="container">
-      <a class="navbar-brand me-2" href="https://mdbgo.com/">
-        <img
-          alt="Eagle-fox logo"
-          height="48"
-          loading="lazy"
-          src="../assets/logo_circle.svg"
-        />
-      </a>
 
-      <div id="navbarButtonsExample" class="collapse navbar-collapse">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link fs-5" href="#">EagleFox</a>
-          </li>
-        </ul>
-
-        <div class="dropdown">
-          <button
-            id="dropdownMenuButton"
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="btn btn-secondary dropdown-toggle"
-            data-toggle="dropdown"
-            type="button"
-          >
-            Dropdown button
-          </button>
-          <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
-            <a class="dropdown-item" href="#">THE Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
         </div>
-
-        <div class="d-flex align-items-center">
-          <button class="btn btn-primary px-3 me-2">Login</button>
-          <button class="btn btn-primary me-3" type="button">
-            Sign up for free
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
+    </nav>
 </template>
 
-<style scoped></style>
+<style scoped>
+.flag-icon {
+    margin-left: 3px;
+}
+</style>

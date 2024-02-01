@@ -18,6 +18,10 @@ export default {
                 this.languageToggleIcon = 'src/assets/flags/de.svg';
                 this.currentLanguageFlagAltText = 'de_flag';
                 this.createLanguageCookie('de');
+            }else if (locale === 'gl') {
+                this.languageToggleIcon = 'src/assets/flags/gl.svg';
+                this.currentLanguageFlagAltText = 'gl_flag';
+                this.createLanguageCookie('gl');
             }
         },
         // System for creating and loading cookies for the automatic language change chosen by the user.
@@ -34,6 +38,7 @@ export default {
     },
     data(){
       return{
+          // Default language
           languageToggleIcon: 'src/assets/flags/es.svg',
           currentLanguageFlagAltText: 'es_flag',
       }
@@ -71,6 +76,10 @@ export default {
                         <li class="d-flex justify-content-center align-items-center">
                             <img src="../assets/flags/es.svg" width="32" alt="es_flag">
                             <a class="dropdown-item w-50" @click="changeLanguage('es')" href="#">{{ $t('lang_es') }}</a>
+                        </li>
+                        <li class="d-flex justify-content-center align-items-center">
+                            <img src="../assets/flags/gl.svg" width="32" alt="gl_flag">
+                            <a class="dropdown-item w-50" @click="changeLanguage('gl')" href="#">{{ $t('lang_gl') }}</a>
                         </li>
                         <li class="d-flex justify-content-center align-items-center">
                             <img src="../assets/flags/sh.svg" width="32" alt="sh_flag">

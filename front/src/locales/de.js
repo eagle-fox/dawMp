@@ -5,6 +5,7 @@ export default {
     lang_es: 'Spanisch',
     lang_sh: 'Englisch',
     lang_de: 'Deutsch',
+    lang_gl: 'Gallego',
     home_t1: 'Starten Sie die Lokalisierung Ihres Haustiers jetzt!',
     home_t2: 'Überall, jederzeit. Halten Sie Ihr Haustier sicher.',
     home_t3: 'Wir bieten unseren Benutzern eine interaktive Karte, um ihr Haustier jederzeit im Auge zu behalten. Sie hat eine hohe Präzision und Detailgenauigkeit.',

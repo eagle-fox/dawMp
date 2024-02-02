@@ -2,7 +2,6 @@
 import NavBar from '@/components/NavBar.vue'
 import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue';
 import { ref } from 'vue'
-import Mapa from "@/components/Mapa.vue";
 
 
 export default {
@@ -13,7 +12,6 @@ export default {
     };
   },
   components:{
-    Mapa,
     IconMapPinFilled,
     IconMap2,
     IconChartHistogram,
@@ -64,7 +62,6 @@ export default {
 
 <template>
   <NavBar></NavBar>
-  <Mapa></Mapa>
   <main class="mt-5 d-flex justify-content-center align-items-center flex-column gap-2">
     <div class="d-flex justify-content-center align-items-center flex-column gap-5 p-10">
       <div>

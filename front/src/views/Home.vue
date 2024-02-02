@@ -25,17 +25,13 @@ export default {
     },
     methods: {
         handleScroll() {
-            // Verifica si el componente es visible en la pantalla
             const rect = this.$refs.autoFillInput.getBoundingClientRect();
             const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
 
-            // Si es visible, ejecuta la función fillInput
             if (isVisible) {
                 this.$nextTick(() => {
                     this.fillInput('1e38fc04-5779-4561 ', 100);
                 });
-
-                // Elimina el event listener después de ejecutar la función si solo quieres que se ejecute una vez
                 window.removeEventListener('scroll', this.handleScroll);
             }
         },
@@ -105,10 +101,11 @@ export default {
             </div>
         </div>
 
-        <div class="p-4 d-flex w-100">
-            <div class=" flex-column gap-1 ">
-                <h3 class="mx-width">{{ $t('home.home_t5') }}</h3>
-                <p class="mx-width">{{$t('home.home_t6')}}</p>
+        <div class="p-4 d-flex w-100 justify-content-center align-items-center flex-md-row flex-column resizeGap ">
+
+            <div class=" flex-column gap-1 d-flex justify-content-center align-items-center mx-width-card">
+                <h3 class="">{{ $t('home.home_t5') }}</h3>
+                <p class="adjustText">{{$t('home.home_t6')}}</p>
                 <img src="../assets/test.png" class="testImage" width="400px" alt="">
             </div>
 
@@ -126,7 +123,6 @@ export default {
                 </div>
             </div>
         </div>
-
     </main>
 </template>
 
@@ -163,21 +159,41 @@ export default {
     transform: rotate3d(4, 1, 1, -25deg);
 }
 
-.mx-width{
-    max-width: 30%;
+.adjustText{
+    max-width: 600px;
+    height: auto;
+    overflow: auto;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.mx-width-card{
+    max-width: 80%;
+}
+
+.resizeGap{
+    gap: 200px;
 }
 
 .textFormat{
     width: 30%;
 }
 
-.caract{
-    max-width: 60%;
-}
-
 @media only screen and (max-width: 860px) {
     .textFormat{
         width: 100%;
+    }
+    .testImage{
+        width: 250px;
+    }
+    .mx-width{
+        max-width: 100%;
+    }
+    .adjustText{
+        max-width: 100%;
+    }
+    .resizeGap{
+        gap: 70px;
     }
 }
 

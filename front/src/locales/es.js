@@ -33,13 +33,9 @@ let loginTextPackage = {
     login_username: 'Nombre',
     login_email: 'Correo electronico',
     login_password: 'Contraseña',
-<<<<<<< HEAD
-    login_rpassword: 'Repite las contraseña'
-=======
     login_rpassword: 'Repite las contraseña',
     login_message: 'Nunca compartiremos tu correo electrónico con nadie.',
     login_message1: 'Crear cuenta'
->>>>>>> 807948c8b209dc0cb6b136ba94f49d04b02436dd
 }
 
 export default {

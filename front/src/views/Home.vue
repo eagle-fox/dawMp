@@ -1,6 +1,6 @@
 <script >
 import NavBar from '@/components/NavBar.vue'
-import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue';
+import { IconMapPinFilled, IconMap2, IconChartHistogram, IconCheck} from '@tabler/icons-vue';
 import { ref } from 'vue'
 
 
@@ -15,6 +15,7 @@ export default {
     IconMapPinFilled,
     IconMap2,
     IconChartHistogram,
+    IconCheck,
     NavBar
   },
   mounted() {
@@ -62,7 +63,7 @@ export default {
 
 <template>
   <NavBar></NavBar>
-  <main class="mt-5 d-flex justify-content-center align-items-center flex-column gap-2">
+  <main class="mt-5 d-flex justify-content-center align-items-center flex-column gap-4">
     <div class="d-flex justify-content-center align-items-center flex-column gap-5 p-10">
       <div>
         <h1 class="text-center">{{ $t('home.home_t1') }}</h1>
@@ -84,41 +85,55 @@ export default {
         <div class="d-flex justify-content-center align-items-center flex-column gap-2" style="max-width: 70%">
 
           <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
-            <IconMap2 size="32" class="mt-2" color="black"></IconMap2>
-            <div class="text-dark">{{$t('home.home_bd1')}}</div>
+            <IconMap2 size="32" class="mt-2 hiddenMobile" color="black" ></IconMap2>
+            <div class="text-dark ml-4">{{$t('home.home_bd1')}}</div>
           </div>
 
           <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
-            <IconMapPinFilled size="32" class="mt-2" color="black"></IconMapPinFilled>
+            <IconMapPinFilled size="32" class="mt-2 hiddenMobile" color="black"></IconMapPinFilled>
             <div class="text-dark ">{{$t('home.home_bd2')}}</div>
           </div>
 
           <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
-            <IconChartHistogram size="32" class="mt-2" color="black"></IconChartHistogram>
+            <IconChartHistogram size="32" class="mt-2 hiddenMobile" color="black"></IconChartHistogram>
             <div class="text-dark">{{$t('home.home_bd3')}}</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="p-4 d-flex w-100 justify-content-center align-items-center flex-md-row flex-column resizeGap ">
+    <div class="d-flex justify-content-center align-items-center flex-column gap-2 mt-4 ">
+      <h2 class="text-center">{{ $t('home.home_t11') }}</h2>
+      <div class="p-4 d-flex w-100 justify-content-center flex-md-row flex-column resizeGap mt-4 alignMobile">
 
-      <div class=" flex-column gap-1 d-flex justify-content-center align-items-center mx-width-card">
-        <h3 class="">{{ $t('home.home_t5') }}</h3>
-        <p class="adjustText">{{$t('home.home_t6')}}</p>
-        <img src="../assets/test.png" class="testImage" width="400px" alt="">
-      </div>
+        <div class=" flex-column gap-1 d-flex justify-content-center align-items-center mx-width-card">
+          <h3 class="">{{ $t('home.home_t5') }}</h3>
+          <p class="adjustText">{{$t('home.home_t6')}}</p>
+          <img src="../assets/test.png" class="testImage" width="400px" alt="">
+        </div>
 
-      <div class="d-flex flex-column gap-1">
-        <h3>{{ $t('home.home_t7') }}</h3>
-        <p class="">{{$t('home.home_t8')}}</p>
+        <div class="d-flex flex-column gap-1">
+          <h3>{{ $t('home.home_t7') }}</h3>
+          <p class="">{{$t('home.home_t8')}}</p>
 
-        <div class="mt-4 shadow p-3 rounded">
-          <label for="exampleInputEmail1" class="form-label">{{$t('home.home_js1')}}</label>
-          <input type="text" class="form-control" id="autoFill" ref="autoFillInput" @input="handleInput">
+          <div class="mt-4 shadow p-3 rounded">
+            <label for="exampleInputEmail1" class="form-label">{{$t('home.home_js1')}}</label>
+            <input type="text" class="form-control" id="autoFill" ref="autoFillInput" @input="handleInput">
 
-          <div class="mt-4">
-            <button type="submit" class="btn btn-primary">{{$t('home.home_js2')}}</button>
+            <div class="mt-4">
+              <button type="submit" class="btn btn-primary">{{$t('home.home_js2')}}</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column gap-1">
+          <h3>{{ $t('home.home_t9') }}</h3>
+          <p class="">{{$t('home.home_t10')}}</p>
+
+          <div class="d-flex justify-content-center align-items-center mt-4">
+            <div class="checkGreen d-flex justify-content-center align-items-center">
+              <IconCheck :size="50" color="#1D711DFF"></IconCheck>
+            </div>
           </div>
         </div>
       </div>
@@ -155,6 +170,17 @@ export default {
   }
 }
 
+.checkGreen{
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background-color: #4ce54c;
+
+  box-shadow: 0px 0px 20px 12px rgba(79,255,48,1);
+
+
+}
+
 .testImage{
   transform: rotate3d(4, 1, 1, -25deg);
 }
@@ -165,6 +191,7 @@ export default {
   overflow: auto;
   word-wrap: break-word;
   white-space: normal;
+
 }
 
 .mx-width-card{
@@ -194,6 +221,12 @@ export default {
   }
   .resizeGap{
     gap: 70px;
+  }
+  .hiddenMobile{
+    display: none;
+  }
+  .alignMobile{
+    align-items: center;
   }
 }
 

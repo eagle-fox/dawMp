@@ -1,6 +1,66 @@
-<script setup>
+<script >
 import NavBar from '@/components/NavBar.vue'
 import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue';
+import { ref } from 'vue'
+
+
+export default {
+    name:'Home',
+    data() {
+        return {
+            inputText: ''
+        };
+    },
+    components:{
+        IconMapPinFilled,
+        IconMap2,
+        IconChartHistogram,
+        NavBar
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);
+    },
+    methods: {
+        handleScroll() {
+            // Verifica si el componente es visible en la pantalla
+            const rect = this.$refs.autoFillInput.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+
+            // Si es visible, ejecuta la función fillInput
+            if (isVisible) {
+                this.$nextTick(() => {
+                    this.fillInput('1e38fc04-5779-4561 ', 100);
+                });
+
+                // Elimina el event listener después de ejecutar la función si solo quieres que se ejecute una vez
+                window.removeEventListener('scroll', this.handleScroll);
+            }
+        },
+        fillInput(text, speed) {
+            const inputElement = this.$refs.autoFillInput;
+            let index = 0;
+
+            function fill() {
+                if (index < text.length) {
+                    inputElement.value += text.charAt(index);
+                    index++;
+                    setTimeout(fill, speed);
+                }
+            }
+            fill();
+        },
+        handleInput(event) {
+            if (event.target.value.length < this.inputText.length) {
+                event.target.value = this.inputText;
+            } else {
+                this.inputText = event.target.value;
+            }
+        }
+    }
+};
 
 </script>
 
@@ -44,6 +104,29 @@ import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue
                 </div>
             </div>
         </div>
+
+        <div class="p-4 d-flex w-100">
+            <div class=" flex-column gap-1 ">
+                <h3 class="mx-width">{{ $t('home.home_t5') }}</h3>
+                <p class="mx-width">{{$t('home.home_t6')}}</p>
+                <img src="../assets/test.png" class="testImage" width="400px" alt="">
+            </div>
+
+            <div class="d-flex flex-column gap-1">
+                <h3>{{ $t('home.home_t7') }}</h3>
+                <p class="">{{$t('home.home_t8')}}</p>
+
+                <div class="mt-4 shadow p-3 rounded">
+                    <label for="exampleInputEmail1" class="form-label">{{$t('home.home_js1')}}</label>
+                    <input type="text" class="form-control" id="autoFill" ref="autoFillInput" @input="handleInput">
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">{{$t('home.home_js2')}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 </template>
 
@@ -74,6 +157,14 @@ import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue
     50% {
         transform: translateY(-2px);
     }
+}
+
+.testImage{
+    transform: rotate3d(4, 1, 1, -25deg);
+}
+
+.mx-width{
+    max-width: 30%;
 }
 
 .textFormat{

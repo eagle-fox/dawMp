@@ -1,6 +1,7 @@
 <script setup>
 import NavBar from '@/components/NavBar.vue'
 import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue';
+import Mapa from "@/components/Mapa.vue";
 
 </script>
 
@@ -9,7 +10,8 @@ import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue
     <main class="mt-5 d-flex justify-content-center align-items-center flex-column gap-2">
         <div class="d-flex justify-content-center align-items-center flex-column gap-5 p-10">
             <div>
-                <h1 class="text-center">{{ $t('home.home_t1') }}</h1>
+              <Mapa></Mapa>
+              <h1 class="text-center">{{ $t('home.home_t1') }}</h1>
                 <p class="text-center">{{$t('home.home_t2')}}</p>
             </div>
 

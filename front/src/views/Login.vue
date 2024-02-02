@@ -1,4 +1,7 @@
 <script setup>
+import Cookies from 'js-cookie';
+
+
 
 </script>
 

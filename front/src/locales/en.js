@@ -22,8 +22,19 @@ let homeTextPackage = {
     home_bt1: 'Get Started',
 }
 
+let loginTextPackage = {
+    login_t1: 'Login',
+    login_username: 'Username',
+    login_email: 'Email',
+    login_password: 'Password',
+    login_rpassword: 'Repeat password',
+    login_message: 'We will never share your email with anyone.',
+    login_message1: 'Create account'
+}
+
 export default {
     home: homeTextPackage,
     lang: langTextPackage,
+    login: loginTextPackage,
     miscelaneus: miscelaneusTextPackage
 };

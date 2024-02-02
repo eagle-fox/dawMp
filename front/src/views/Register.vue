@@ -5,7 +5,7 @@
 <template>
   <div class="vh-100 d-flex justify-content-center align-items-center">
     <div class="shadow p-4 rounded">
-      <h3 class="text-center">{{ $t('register.register_t1') }}</h3>
+      <h3 class="text-center">{{ $t('login.login_message1') }}</h3>
       <form>
         <div class="mb-3">
           <label for="username" class="form-label">{{ $t('login.login_username') }}</label>
@@ -24,7 +24,7 @@
           <label for="repeatPassword" class="form-label">{{ $t('login.login_rpassword') }}</label>
           <input type="password" class="form-control" id="repeatPassword"/>
         </div>
-        <button type="submit" class="btn btn-primary">{{ $t('register.bt_t1') }}</button>
+        <button type="submit" class="btn btn-primary">{{ $t('login.login_message1') }}</button>
       </form>
     </div>
   </div>

@@ -25,11 +25,12 @@ let homeTextPackage = {
 
 let loginTextPackage = {
     login_t1: 'Iniciar Sesion',
-    login_username: 'Nombre de usuario',
+    login_username: 'Nombre',
     login_email: 'Correo electronico',
     login_password: 'Contraseña',
-    login_rpassword: 'Repite las contraseña'
-
+    login_rpassword: 'Repite las contraseña',
+    login_message: 'Nunca compartiremos tu correo electrónico con nadie.',
+    login_message1: 'Crear cuenta'
 }
 
 export default {

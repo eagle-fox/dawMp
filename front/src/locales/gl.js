@@ -6,7 +6,7 @@ let miscelaneusTextPackage = {
 
 let langTextPackage = {
     lang_es: 'Español',
-    lang_sh: 'Ingles',
+    lang_sh: 'Inglés',
     lang_de: 'Alemán',
     lang_gl: 'Galego'
 }
@@ -22,8 +22,19 @@ let homeTextPackage = {
     home_bt1: 'Comezar',
 }
 
+let loginTextPackage = {
+    login_t1: 'Iniciar Sesión',
+    login_username: 'Nombre de usuario',
+    login_email: 'Correo electrónico',
+    login_password: 'Contraseña',
+    login_rpassword: 'Repetir contraseña',
+    login_message: 'Nunca compartiremos tu correo electrónico con nadie.',
+    login_message1: 'Crear cuenta'
+}
+
 export default {
     home: homeTextPackage,
     lang: langTextPackage,
+    login: loginTextPackage,
     miscelaneus: miscelaneusTextPackage
 };

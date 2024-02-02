@@ -1,7 +1,10 @@
 <script setup>
 import NavBar from '@/components/NavBar.vue'
 import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue';
+<<<<<<< HEAD
 import Mapa from "@/components/Mapa.vue";
+=======
+>>>>>>> db78cb2c12deac467fc03329829d1687a6af529b
 
 </script>
 

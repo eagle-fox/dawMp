@@ -2,7 +2,6 @@
 let miscelaneusTextPackage = {
     welcome: 'Bienvenido',
     home: 'Inicio'
-
 }
 
 let langTextPackage = {
@@ -29,7 +28,6 @@ let loginTextPackage = {
     login_email: 'Correo electronico',
     login_password: 'Contraseña',
     login_rpassword: 'Repite las contraseña'
-
 }
 
 export default {

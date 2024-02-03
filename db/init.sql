@@ -2,12 +2,6 @@ DROP DATABASE IF EXISTS `eagle-fox`;
 CREATE DATABASE IF NOT EXISTS `eagle-fox` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `eagle-fox`;
 
-CREATE TABLE IF NOT EXISTS `rol`
-(
-    `id`   int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name` varchar(255) NOT NULL
-) ENGINE = InnoDB;
-
 CREATE TABLE IF NOT EXISTS `user`
 (
     `id`               int                                   NOT NULL AUTO_INCREMENT PRIMARY KEY,

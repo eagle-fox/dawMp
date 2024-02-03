@@ -31,6 +31,17 @@ let homeTextPackage = {
     home_bt1: 'Comenzar',
 }
 
+let animalRegisterForm = {
+    arf_t1: 'Resgistra a tu mascota',
+    arf_t2: 'Nombre de tu mascota',
+    arf_t3: 'Raza',
+    arf_js1: 'Codigo no valido',
+    arf_b1: 'Perro',
+    arf_b2: 'Gato',
+    arf_b3: 'Conejo',
+    arf_b4: 'Hamster',
+}
+
 let loginTextPackage = {
     login_t1: 'Iniciar Sesion',
     login_username: 'Nombre',
@@ -45,5 +56,6 @@ export default {
     home: homeTextPackage,
     lang: langTextPackage,
     login: loginTextPackage,
+    form_a: animalRegisterForm,
     miscelaneus: miscelaneusTextPackage
 };

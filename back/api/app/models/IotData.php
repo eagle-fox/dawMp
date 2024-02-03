@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-/**
- * Class User
- *
- * @package App\Models
- */
-class user extends Model
+use Leaf\Model;
+
+class IotData extends Model
 {
     /**
      * The model's default values for attributes.
@@ -17,13 +14,8 @@ class user extends Model
      * @var array
      */
     protected $attributes = [
-        'nombre' => '',
-        'nombre_segundo' => null,
-        'apellido_primero' => '',
-        'apellido_segundo' => '',
-        'email' => '',
-        'password' => '',
-        'rol' => Rol::GUEST,
+        'device' => null,
+        'location' => '',
     ];
 
     /**
@@ -38,7 +30,7 @@ class user extends Model
      *
      * @var string
      */
-    protected $table = 'user';
+    protected $table = 'iot_data';
 
     /**
      * La clave primaria, por defecto, es 'id'.
@@ -60,16 +52,7 @@ class user extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'nombre', 'nombre_segundo', 'apellido_primero', 'apellido_segundo', 'email', 'password', 'rol',
-    ];
-
-    /**
-     * Los atributos que deben ser ocultados para serialización etc.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
+        'id', 'device', 'location',
     ];
 
     /**
@@ -79,4 +62,11 @@ class user extends Model
      */
     public $timestamps = true;
 
+    /**
+     * Get the iot device that owns the data.
+     */
+    public function device()
+    {
+        return $this->belongsTo(IotDevice::class);
+    }
 }

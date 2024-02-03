@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "leafs/aloe": "dev-master",
+        "leafs/aloe": "^1.4",
         "illuminate/console": "^8.75",
         "leafs/blade": "*",
         "leafs/mvc-core": "dev-main",

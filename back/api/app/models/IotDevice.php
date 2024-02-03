@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-/**
- * Class User
- *
- * @package App\Models
- */
-class user extends Model
+use Leaf\Model;
+
+class IotDevice extends Model
 {
     /**
      * The model's default values for attributes.
@@ -17,13 +14,8 @@ class user extends Model
      * @var array
      */
     protected $attributes = [
-        'nombre' => '',
-        'nombre_segundo' => null,
-        'apellido_primero' => '',
-        'apellido_segundo' => '',
-        'email' => '',
-        'password' => '',
-        'rol' => Rol::GUEST,
+        'uuid' => '',
+        'token' => '',
     ];
 
     /**
@@ -38,7 +30,7 @@ class user extends Model
      *
      * @var string
      */
-    protected $table = 'user';
+    protected $table = 'iot_devices';
 
     /**
      * La clave primaria, por defecto, es 'id'.
@@ -60,16 +52,7 @@ class user extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'nombre', 'nombre_segundo', 'apellido_primero', 'apellido_segundo', 'email', 'password', 'rol',
-    ];
-
-    /**
-     * Los atributos que deben ser ocultados para serialización etc.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
+        'id', 'uuid', 'token',
     ];
 
     /**
@@ -78,5 +61,4 @@ class user extends Model
      * @var bool
      */
     public $timestamps = true;
-
 }

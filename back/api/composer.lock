@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9da70edf8000595a49297002b1c17df",
+    "content-hash": "7036064d41a14c79cd99e762753b4b92",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -170,16 +170,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.8.0",
+            "version": "3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "d244f2e6e6bf32bff5174e6729b57214923ecec9"
+                "reference": "c9ea252cdce4da324ede3d6c5913dd89f769afd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/d244f2e6e6bf32bff5174e6729b57214923ecec9",
-                "reference": "d244f2e6e6bf32bff5174e6729b57214923ecec9",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/c9ea252cdce4da324ede3d6c5913dd89f769afd2",
+                "reference": "c9ea252cdce4da324ede3d6c5913dd89f769afd2",
                 "shasum": ""
             },
             "require": {
@@ -195,9 +195,9 @@
                 "doctrine/coding-standard": "12.0.0",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2023.1",
-                "phpstan/phpstan": "1.10.56",
+                "phpstan/phpstan": "1.10.57",
                 "phpstan/phpstan-strict-rules": "^1.5",
-                "phpunit/phpunit": "9.6.15",
+                "phpunit/phpunit": "9.6.16",
                 "psalm/plugin-phpunit": "0.18.4",
                 "slevomat/coding-standard": "8.13.1",
                 "squizlabs/php_codesniffer": "3.8.1",
@@ -263,7 +263,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.8.0"
+                "source": "https://github.com/doctrine/dbal/tree/3.8.1"
             },
             "funding": [
                 {
@@ -279,7 +279,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-25T21:44:02+00:00"
+            "time": "2024-02-03T17:33:49+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -1241,20 +1241,20 @@
         },
         {
             "name": "leafs/aloe",
-            "version": "dev-master",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/aloe.git",
-                "reference": "713ff39ddad83f29d19917b5f4b5c90902f2c885"
+                "reference": "1fed3d2e577b6c32f5377a18ed12049c165b750f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/aloe/zipball/713ff39ddad83f29d19917b5f4b5c90902f2c885",
-                "reference": "713ff39ddad83f29d19917b5f4b5c90902f2c885",
+                "url": "https://api.github.com/repos/leafsphp/aloe/zipball/1fed3d2e577b6c32f5377a18ed12049c165b750f",
+                "reference": "1fed3d2e577b6c32f5377a18ed12049c165b750f",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "*",
+                "illuminate/support": "^8.73",
                 "leafs/fs": "^1.0",
                 "leafs/mvc-core": "*",
                 "psy/psysh": "^0.10.9|^0.11",
@@ -1264,7 +1264,6 @@
             "require-dev": {
                 "leafs/leaf": "*"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1284,7 +1283,7 @@
                 }
             ],
             "description": "Overpowered command line tool for your leaf apps.",
-            "homepage": "https://leafphp.dev/docs/mvc/console.html",
+            "homepage": "https://leafphp.dev/aloe-cli/",
             "keywords": [
                 "bash",
                 "cli",
@@ -1295,7 +1294,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/aloe/issues",
-                "source": "https://github.com/leafsphp/aloe/tree/master"
+                "source": "https://github.com/leafsphp/aloe/tree/v1.4.2"
             },
             "funding": [
                 {
@@ -1307,7 +1306,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2023-09-12T20:04:33+00:00"
+            "time": "2023-09-03T22:28:50+00:00"
         },
         {
             "name": "leafs/anchor",
@@ -4498,7 +4497,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "leafs/aloe": 20,
         "leafs/mvc-core": 20
     },
     "prefer-stable": true,

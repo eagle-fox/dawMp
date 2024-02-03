@@ -24,6 +24,7 @@ services:
       dockerfile: ../docker/Dockerfile-php
     volumes:
       - './back/api/:/var/www/html/api'
+      - './.env:/var/www/html/api/.env'
     ports:
       - '2003:80'
     env_file:

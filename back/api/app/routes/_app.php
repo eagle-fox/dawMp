@@ -15,4 +15,4 @@ app()->get('/v0/dumpTables', function () {
     response()->json($tables);
 });
 
-app()->resource('/user/(\d+)', 'UsersController');
+app()->resource('/users', 'UsersController');

@@ -1,4 +1,5 @@
-*.lockb
+bun.lockb
+front/bun.lockb
 .env
 vendor
 # Created by https://www.toptal.com/developers/gitignore/api/vue,vuejs,laravel,phpstorm,visualstudiocode,intellij,webstorm+all,go,goland

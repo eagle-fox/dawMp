@@ -59,7 +59,7 @@ export default {
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">{{ $t('miscelaneus.home') }}</a>
+                        <router-link to="/" class="nav-link active" aria-current="page" href="#">{{ $t('miscelaneus.home') }}</router-link>
                     </li>
                 </ul>
                 <div class="dropstart">

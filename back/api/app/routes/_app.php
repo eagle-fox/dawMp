@@ -16,3 +16,5 @@ app()->get('/v0/dumpTables', function () {
 });
 
 app()->resource('/users', 'UsersController');
+app()->post('/users/loginByEmailAndPassword', 'UsersController@login');
+app()->post('/users/loginByTokenAndEmail', 'UsersController@loginByTokenAndEmail');

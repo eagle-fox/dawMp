@@ -34,6 +34,10 @@ class UsersController extends Controller
         $user->email = request()->get('email');
         $user->password = request()->get('password');
         $user->rol = request()->get('rol');
+
+        $user->token = bin2hex(random_bytes(16)); // 16 bytes == 32 chars
+        $user->locked = false;
+
         $user->save();
         $this->response->json($user);
     }
@@ -78,4 +82,29 @@ class UsersController extends Controller
         // $row = User::find($id);
         // $row->delete();
     }
+
+    public function loginByEmailAndPassword() {
+        $email = request()->get('email');
+        $password = request()->get('password');
+        $user = User::where('email', $email)->where('password', $password)->first();
+        if ($user) {
+            $user->token = bin2hex(random_bytes(16)); // Generate a new token
+            $user->save();
+            response()->json($user);
+        } else {
+            response()->json(['message' => 'Usuario o contraseña incorrectos'], 401);
+        }
+    }
+
+    public function loginByTokenAndEmail() {
+        $email = request()->get('email');
+        $token = request()->get('token');
+        $user = User::where('email', $email)->where('token', $token)->first();
+        if ($user) {
+            response()->json($user);
+        } else {
+            response()->json(['message' => 'Token o email incorrectos'], 401);
+        }
+    }
+
 }

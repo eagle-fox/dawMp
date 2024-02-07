@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 
 
 // Paquete para la gestion de idiomas.
@@ -25,7 +26,7 @@ import userSession from './assets/userSession.js'
 
 const app = createApp(App)
 
-app.use(router).use(i18n).mount('#app')
+app.use(router).use(store).use(i18n).mount('#app')
 
 const userSessionInstance = new userSession('', '', '');
 app.config.globalProperties.$userSession = userSessionInstance;

@@ -4,16 +4,27 @@ import Cookies from 'js-cookie';
 export default {
   name: 'App',
   methods: {
-    getCookieSession() {
-      return Cookies.get('sessionUser');
-    },
-    createDefaultSession() {
-      this.$userSession.setData('Default', 'Default', 'Default');
-      console.log(this.$userSession);
+    // Método para crear una nueva userSession
+    createNewUserSession() {
+      // Datos para la nueva userSession
+      const userData = {
+        firstName: 'Nuevo',
+        lastName: 'Usuario',
+        role: 'Sesión'
+      };
+
+
+      this.$store.dispatch('createNewUserSession', userData)
+          .then(() => {
+            console.log('Nueva userSession creada:', this.$store.getters.getUserSession);
+          })
+          .catch(error => {
+            console.error('Error al crear la nueva userSession:', error);
+          });
     }
   },
   mounted() {
-    this.createDefaultSession();
+    this.createNewUserSession();
   }
 }
 

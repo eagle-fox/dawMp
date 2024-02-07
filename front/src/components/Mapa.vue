@@ -16,7 +16,9 @@ export default {
 
     let state = reactive({
       lat: 40.416775,
-      lon: -3.703790
+      lon: -3.703790,
+      map: null,
+      marker: null
     });
 
     onMounted(() => {
@@ -33,15 +35,44 @@ export default {
     });
 
     const changePos = () => {
+      function obtenerPosicion(position){
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        return [latitude, longitude];
+      }
 
-      state.marker.setLatLng([40.417, -3.704]).bindPopup('Nueva posición');
-      state.map.setView([40.417, -3.704], 30);
+      function errorC(error){
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            console.error("El usuario denegó la solicitud de geolocalización.");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            console.error("La información de ubicación no está disponible.");
+            break;
+          case error.TIMEOUT:
+            console.error("Se ha excedido el tiempo de espera para obtener la ubicación.");
+            break;
+          case error.UNKNOWN_ERROR:
+            console.error("Se produjo un error desconocido al obtener la ubicación.");
+            break;
+        }
+      }
 
-      state.lat = 40.417;
-      state.lon = -3.704;
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const newPosition = obtenerPosicion(position);
+            state.marker.setLatLng(newPosition).bindPopup('Nueva posición').openPopup();
+            state.map.setView(newPosition, 30);
+          },
+          errorC
+        );
+      } else {
+        console.error("La geolocalización no es compatible con este navegador.");
+      }
     };
 
-    return {mapElement, changePos};
+    return { mapElement, changePos };
   },
 };
 </script>

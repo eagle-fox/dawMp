@@ -4,7 +4,7 @@ use App\Models\User;
 use App\Controllers\UsersController;
 
 app()->resource('/users', 'UsersController');
-
+app()->put('/users/{id}', 'UsersController@update');
 /**
 * Endpoint to create temporary by email and password
 * @param string $email

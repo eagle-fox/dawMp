@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 use Exception;
+use Leaf\Auth;
 
 class UsersController extends Controller
 {
@@ -45,9 +46,15 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        /**
-        if ($this->request->get('token') == 'admin') {
-            $user = User::find($id);
+        // $auth = new Auth();
+        // check if the email and token provided are valid and is ADMIN or the RESOURCE OWNER
+
+        $user = request()->get('user');
+        $password = request()->get('password');
+
+        $check = User::query()->where('email', $user)->where('password', $password)->first();
+        if ($check->rol == 'ADMIN' || $check->id == $id) {
+            $user = User::query()->find($id);
             if ($user) {
                 response()->json($user);
             } else {
@@ -55,9 +62,7 @@ class UsersController extends Controller
             }
         } else {
             response()->json(['message' => 'No tienes permisos para ver este usuario'], 401);
-        } */
-
-        response()->json(User::find($id));
+        }
 
     }
 
@@ -67,7 +72,7 @@ class UsersController extends Controller
     public function update($id)
     {
         try {
-            $user = User::find($id);
+            $user = User::query()->find($id);
             if ($user) {
                 $user->nombre = request()->get('nombre');
                 $user->nombre_segundo = request()->get('nombre_segundo');
@@ -76,7 +81,6 @@ class UsersController extends Controller
                 $user->email = request()->get('email');
                 $user->password = request()->get('password');
                 $user->rol = request()->get('rol');
-                $user->locked = request()->get('locked');
                 $user->save();
                 response()->json($user);
             } else {
@@ -110,7 +114,7 @@ class UsersController extends Controller
         try {
             $email = request()->get('email');
             $password = request()->get('password');
-            $user = User::where('email', $email)->where('password', $password)->first();
+            $user = User::query()->where('email', $email)->where('password', $password)->first();
             if ($user) {
                 $user->token = bin2hex(random_bytes(16)); // Generate a new token
                 $user->save();
@@ -132,7 +136,7 @@ class UsersController extends Controller
         try {
             $email = request()->get('email');
             $token = request()->get('token');
-            $user = User::where('email', $email)->where('token', $token)->first();
+            $user = User::query()->where('email', $email)->where('token', $token)->first();
             if ($user) {
                 response()->json($user, 200);
             } else {
@@ -151,7 +155,7 @@ class UsersController extends Controller
     {
         try {
             $token = request()->get('token');
-            $user = User::where('token', $token)->first();
+            $user = User::query()->where('token', $token)->first();
             if ($user) {
                 response()->json($user, 200);
             } else {
@@ -168,7 +172,23 @@ class UsersController extends Controller
 
     public function logout()
     {
-
+        try {
+            $token = request()->get('token');
+            $user = User::query()->where('token', $token)->first();
+            if ($user) {
+                $user->token = null;
+                $user->save();
+                response()->json(['message' => 'Sesión cerrada'], 200);
+            } else {
+                response()->json(['message' => 'Token incorrecto'], 401);
+            }
+        } catch (Exception $e) {
+            $message = 'Error al cerrar sesión';
+            if (getenv('leaftools_dev')) {
+                $message .= ': ' . $e->getMessage();
+            }
+            response()->json(['message' => $message], 500);
+        }
     }
 
 }

@@ -6,6 +6,9 @@ export default {
     name: 'Login',
     components: {
         NavBar
+    },
+    mounted() {
+      console.log(this.$userSession);
     }
 }
 

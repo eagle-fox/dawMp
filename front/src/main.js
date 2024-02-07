@@ -16,12 +16,16 @@ const i18n = createI18n({
 });
 
 
-
 // Estilos globales para Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 
+import userSession from './assets/userSession.js'
+
+
 const app = createApp(App)
 
 app.use(router).use(i18n).mount('#app')
-app.config.globalProperties.$username = 'Juan'
+
+const userSessionInstance = new userSession('', '', '');
+app.config.globalProperties.$userSession = userSessionInstance;

@@ -1,17 +1,16 @@
 class userSession {
     static #instance;
-
-    constructor() {
-        
+    constructor(name, email, token) {
         // Verificamos si ya hay una instancia, si no existe la crea.
-        
         if (userSession.#instance) {
             return userSession.#instance;
         }
 
         // userSession variables
+        this.name = name;
+        this.email = email;
+        this.token = token;
 
-        this.data = "Example";
         userSession.#instance = this;
     }
 
@@ -19,8 +18,14 @@ class userSession {
         return this.data;
     }
 
-    setData(newData) {
-        this.data = newData;
+    setData(name, email, token) {
+        this.name = name;
+        this.email = email;
+        this.token = token;
+    }
+
+    parseTokenInfo(token) {
+        parseInt(token);
     }
 
     static getInstance() {

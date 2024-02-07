@@ -2,7 +2,6 @@
 let miscelaneusTextPackage = {
     welcome: 'Bienvenido',
     home: 'Inicio'
-
 }
 
 let langTextPackage = {
@@ -21,12 +20,26 @@ let homeTextPackage = {
     home_t6: 'Dentro de la caja de tu collar Eagle Fox habra una tarjeta con el codigo del collar, deberas introducir ese codigo en la seccion de Resgitro Mascota',
     home_t7: 'Introduce el codigo !!',
     home_t8: 'Con el codigo proporcionado podras regsitrar a tu mascota ',
+    home_t9: 'Listo, ya puedes ver a tu mascota !!',
+    home_t10: 'Ahora ya podras usar todas las caracteristicas de monitorio de tu pequeño peludo',
+    home_t11: '¿Como configurar tu collar Eagle Fox?',
     home_bd1: 'Posicionamiento de tus mascotas en un mapa en tiempo real',
     home_bd2: 'Poner puntos de interes y estabecler rutas personalizadas',
     home_bd3:  'Obtener informacion sobre la tu mascota, como tiempo de paseo, Kcal gastadas ...',
-    home_js1: 'Introduce el codigo del collar.',
+    home_js1: 'Introduce el codigo del collar',
     home_js2: 'Registrar Mascota 🐱',
     home_bt1: 'Comenzar',
+}
+
+let animalRegisterForm = {
+    arf_t1: 'Resgistra a tu mascota',
+    arf_t2: 'Nombre de tu mascota',
+    arf_t3: 'Raza',
+    arf_js1: 'Codigo no valido',
+    arf_b1: 'Perro',
+    arf_b2: 'Gato',
+    arf_b3: 'Conejo',
+    arf_b4: 'Hamster',
 }
 
 let loginTextPackage = {
@@ -43,5 +56,6 @@ export default {
     home: homeTextPackage,
     lang: langTextPackage,
     login: loginTextPackage,
+    form_a: animalRegisterForm,
     miscelaneus: miscelaneusTextPackage
 };

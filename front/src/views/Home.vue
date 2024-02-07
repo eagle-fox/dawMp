@@ -1,137 +1,153 @@
-<script >
+<script>
 import NavBar from '@/components/NavBar.vue'
-import { IconMapPinFilled, IconMap2, IconChartHistogram} from '@tabler/icons-vue';
+import { IconMapPinFilled, IconMap2, IconChartHistogram, IconCheck } from '@tabler/icons-vue'
 import { ref } from 'vue'
 
 
 export default {
-    name:'Home',
+    name: 'Home',
     data() {
         return {
-            inputText: ''
-        };
+            inputText: '',
+        }
     },
-    components:{
+    components: {
         IconMapPinFilled,
         IconMap2,
         IconChartHistogram,
-        NavBar
+        IconCheck,
+        NavBar,
     },
     mounted() {
-        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('scroll', this.handleScroll)
+
     },
     destroyed() {
-        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('scroll', this.handleScroll)
     },
     methods: {
         handleScroll() {
-            // Verifica si el componente es visible en la pantalla
-            const rect = this.$refs.autoFillInput.getBoundingClientRect();
-            const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+            const rect = this.$refs.autoFillInput.getBoundingClientRect()
+            const isVisible = rect.top < window.innerHeight && rect.bottom >= 0
 
-            // Si es visible, ejecuta la función fillInput
             if (isVisible) {
                 this.$nextTick(() => {
-                    this.fillInput('1e38fc04-5779-4561 ', 100);
-                });
-
-                // Elimina el event listener después de ejecutar la función si solo quieres que se ejecute una vez
-                window.removeEventListener('scroll', this.handleScroll);
+                    this.fillInput('1e38fc04-5779-4561 ', 100)
+                })
+                window.removeEventListener('scroll', this.handleScroll)
             }
         },
         fillInput(text, speed) {
-            const inputElement = this.$refs.autoFillInput;
-            let index = 0;
+            const inputElement = this.$refs.autoFillInput
+            let index = 0
 
             function fill() {
                 if (index < text.length) {
-                    inputElement.value += text.charAt(index);
-                    index++;
-                    setTimeout(fill, speed);
+                    inputElement.value += text.charAt(index)
+                    index++
+                    setTimeout(fill, speed)
                 }
             }
-            fill();
+
+            fill()
         },
         handleInput(event) {
             if (event.target.value.length < this.inputText.length) {
-                event.target.value = this.inputText;
+                event.target.value = this.inputText
             } else {
-                this.inputText = event.target.value;
+                this.inputText = event.target.value
             }
-        }
-    }
-};
+        },
+    },
+}
 
 </script>
 
 <template>
     <NavBar></NavBar>
-    <main class="mt-5 d-flex justify-content-center align-items-center flex-column gap-2">
+    <main class="mt-5 d-flex justify-content-center align-items-center flex-column gap-4">
         <div class="d-flex justify-content-center align-items-center flex-column gap-5 p-10">
             <div>
                 <h1 class="text-center">{{ $t('home.home_t1') }}</h1>
-                <p class="text-center">{{$t('home.home_t2')}}</p>
+                <p class="text-center">{{ $t('home.home_t2') }}</p>
             </div>
 
             <div>
-                <router-link to="/login" class="btn btn-primary text-center">{{$t('home.home_bt1')}} <IconMapPinFilled class="mb-1 levitate"></IconMapPinFilled></router-link>
+                <router-link to="/login" class="btn btn-primary text-center">{{ $t('home.home_bt1') }}
+                    <IconMapPinFilled class="mb-1 levitate"></IconMapPinFilled>
+                </router-link>
             </div>
         </div>
 
         <div class="bg-primary w-100 d-flex justify-content-center align-items-center p-4 flex-md-row flex-column">
             <div class="max-width-xxl p-4 text-light textFormat">
-                <h4 class="text-center">{{$t('home.home_t3')}}</h4>
+                <h4 class="text-center">{{ $t('home.home_t3') }}</h4>
             </div>
 
-            <div class="max-width-xxl p-4 text-light d-flex justify-content-center align-items-center gap-4 flex-column">
-                <h5>{{$t('home.home_t4')}}</h5>
+            <div
+                class="max-width-xxl p-4 text-light d-flex justify-content-center align-items-center gap-4 flex-column">
+                <h5>{{ $t('home.home_t4') }}</h5>
                 <div class="d-flex justify-content-center align-items-center flex-column gap-2" style="max-width: 70%">
 
                     <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
-                        <IconMap2 size="32" class="mt-2" color="black"></IconMap2>
-                        <div class="text-dark">{{$t('home.home_bd1')}}</div>
+                        <IconMap2 size="32" class="mt-2 hiddenMobile" color="black"></IconMap2>
+                        <div class="text-dark ml-4">{{ $t('home.home_bd1') }}</div>
                     </div>
 
                     <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
-                        <IconMapPinFilled size="32" class="mt-2" color="black"></IconMapPinFilled>
-                        <div class="text-dark ">{{$t('home.home_bd2')}}</div>
+                        <IconMapPinFilled size="32" class="mt-2 hiddenMobile" color="black"></IconMapPinFilled>
+                        <div class="text-dark ">{{ $t('home.home_bd2') }}</div>
                     </div>
 
                     <div class="d-flex justify-content-center gap-4 bg-light p-2 rounded">
-                        <IconChartHistogram size="32" class="mt-2" color="black"></IconChartHistogram>
-                        <div class="text-dark">{{$t('home.home_bd3')}}</div>
+                        <IconChartHistogram size="32" class="mt-2 hiddenMobile" color="black"></IconChartHistogram>
+                        <div class="text-dark">{{ $t('home.home_bd3') }}</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="p-4 d-flex w-100">
-            <div class=" flex-column gap-1 ">
-                <h3 class="mx-width">{{ $t('home.home_t5') }}</h3>
-                <p class="mx-width">{{$t('home.home_t6')}}</p>
-                <img src="../assets/test.png" class="testImage" width="400px" alt="">
-            </div>
+        <div class="d-flex justify-content-center align-items-center flex-column gap-2 mt-4 ">
+            <h2 class="text-center">{{ $t('home.home_t11') }}</h2>
+            <div class="p-4 d-flex w-100 justify-content-center flex-md-row flex-column resizeGap mt-4 alignMobile">
 
-            <div class="d-flex flex-column gap-1">
-                <h3>{{ $t('home.home_t7') }}</h3>
-                <p class="">{{$t('home.home_t8')}}</p>
+                <div class=" flex-column gap-1 d-flex justify-content-center align-items-center mx-width-card">
+                    <h3 class="">{{ $t('home.home_t5') }}</h3>
+                    <p class="adjustText">{{ $t('home.home_t6') }}</p>
+                    <img src="../assets/test.png" class="testImage" width="400px" alt="">
+                </div>
 
-                <div class="mt-4 shadow p-3 rounded">
-                    <label for="exampleInputEmail1" class="form-label">{{$t('home.home_js1')}}</label>
-                    <input type="text" class="form-control" id="autoFill" ref="autoFillInput" @input="handleInput">
+                <div class="d-flex flex-column gap-1">
+                    <h3>{{ $t('home.home_t7') }}</h3>
+                    <p class="">{{ $t('home.home_t8') }}</p>
 
-                    <div class="mt-4">
-                        <button type="submit" class="btn btn-primary">{{$t('home.home_js2')}}</button>
+                    <div class="mt-4 shadow p-3 rounded">
+                        <label for="exampleInputEmail1" class="form-label">{{ $t('home.home_js1') }}</label>
+                        <input type="text" class="form-control" id="autoFill" ref="autoFillInput" @input="handleInput">
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">{{ $t('home.home_js2') }}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-1">
+                    <h3>{{ $t('home.home_t9') }}</h3>
+                    <p class="">{{ $t('home.home_t10') }}</p>
+
+                    <div class="d-flex justify-content-center align-items-center mt-4">
+                        <div class="checkGreen d-flex justify-content-center align-items-center">
+                            <IconCheck :size="50" color="#1D711DFF"></IconCheck>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </main>
 </template>
 
 <style scoped>
-*{
+* {
     font-family: 'BaseFontTest2';
 }
 
@@ -159,39 +175,83 @@ export default {
     }
 }
 
-.testImage{
+.checkGreen {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: #4ce54c;
+
+    box-shadow: 0px 0px 20px 12px rgba(79, 255, 48, 1);
+
+
+}
+
+.testImage {
     transform: rotate3d(4, 1, 1, -25deg);
 }
 
-.mx-width{
-    max-width: 30%;
+.adjustText {
+    max-width: 600px;
+    height: auto;
+    overflow: auto;
+    word-wrap: break-word;
+    white-space: normal;
+
 }
 
-.textFormat{
+.mx-width-card {
+    max-width: 80%;
+}
+
+.resizeGap {
+    gap: 200px;
+}
+
+.textFormat {
     width: 30%;
 }
 
-.caract{
-    max-width: 60%;
-}
-
 @media only screen and (max-width: 860px) {
-    .textFormat{
+    .textFormat {
         width: 100%;
+    }
+
+    .testImage {
+        width: 250px;
+    }
+
+    .mx-width {
+        max-width: 100%;
+    }
+
+    .adjustText {
+        max-width: 100%;
+    }
+
+    .resizeGap {
+        gap: 70px;
+    }
+
+    .hiddenMobile {
+        display: none;
+    }
+
+    .alignMobile {
+        align-items: center;
     }
 }
 
-.markPos{
+.markPos {
     position: relative;
     top: -20px;
     left: 200px;
 }
 
-.levitate{
+.levitate {
     animation: animationLevitate 2s ease-in-out infinite;
 }
 
-.p-10{
+.p-10 {
     padding: 60px;
 }
 </style>

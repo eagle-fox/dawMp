@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 
 
-
 // Paquete para la gestion de idiomas.
 // Vue I18n -> https://kazupon.github.io/vue-i18n
 
@@ -21,4 +20,12 @@ const i18n = createI18n({
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 
-createApp(App).use(router).use(i18n).mount('#app')
+import userSession from './assets/userSession.js'
+
+
+const app = createApp(App)
+
+app.use(router).use(i18n).mount('#app')
+
+const userSessionInstance = new userSession('', '', '');
+app.config.globalProperties.$userSession = userSessionInstance;

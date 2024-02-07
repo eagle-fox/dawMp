@@ -58,7 +58,6 @@ services:
       - foxtrot-bridge
       - foxtrot-api-lan
 
-
   chema:
     image: schemaspy/schemaspy
     volumes:

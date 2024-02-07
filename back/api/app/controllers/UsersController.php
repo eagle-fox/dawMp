@@ -12,14 +12,6 @@ class UsersController extends Controller
      */
     public function index()
     {
-        /*
-        |--------------------------------------------------------------------------
-        |
-        | This is an example which retrieves all the data (rows)
-        | from our model. You can un-comment it to use this
-        | example
-        |
-        */
         response()->json(User::all());
     }
 
@@ -53,7 +45,20 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        /**
+        if ($this->request->get('token') == 'admin') {
+            $user = User::find($id);
+            if ($user) {
+                response()->json($user);
+            } else {
+                response()->json(['message' => 'Usuario no encontrado'], 404);
+            }
+        } else {
+            response()->json(['message' => 'No tienes permisos para ver este usuario'], 401);
+        } */
+
+        response()->json(User::find($id));
+
     }
 
     /**
@@ -61,15 +66,25 @@ class UsersController extends Controller
      */
     public function update($id)
     {
-        /*
-        |--------------------------------------------------------------------------
-        |
-        | This is an example which edits a particular row.
-        | You can un-comment it to use this example
-        |
-        */ // $row = User::find($id);
-        // $row->column = request()->get('column');
-        // $row->save();
+        try {
+            $user = User::find($id);
+            if ($user) {
+                $user->nombre = request()->get('nombre');
+                $user->nombre_segundo = request()->get('nombre_segundo');
+                $user->apellido_primero = request()->get('apellido_primero');
+                $user->apellido_segundo = request()->get('apellido_segundo');
+                $user->email = request()->get('email');
+                $user->password = request()->get('password');
+                $user->rol = request()->get('rol');
+                $user->locked = request()->get('locked');
+                $user->save();
+                response()->json($user);
+            } else {
+                response()->json(['message' => 'Usuario no encontrado'], 404);
+            }
+        } catch (Exception $e) {
+            response()->json(['message' => 'Error al actualizar el usuario: motivo: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -77,14 +92,17 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        /*
-        |--------------------------------------------------------------------------
-        |
-        | This is an example which deletes a particular row.
-        | You can un-comment it to use this example
-        |
-        */ // $row = User::find($id);
-        // $row->delete();
+        try {
+            $user = User::find($id);
+            if ($user) {
+                $user->delete();
+                response()->json(['message' => 'Usuario eliminado']);
+            } else {
+                response()->json(['message' => 'Usuario no encontrado'], 404);
+            }
+        } catch (Exception $e) {
+            response()->json(['message' => 'Error al eliminar el usuario: motivo: ' . $e->getMessage()], 500);
+        }
     }
 
     public function loginByEmailAndPassword()
@@ -96,7 +114,7 @@ class UsersController extends Controller
             if ($user) {
                 $user->token = bin2hex(random_bytes(16)); // Generate a new token
                 $user->save();
-                response()->json($user);
+                response()->json($user, 200);
             } else {
                 response()->json(['message' => 'Usuario o contraseña incorrectos'], 401);
             }
@@ -116,7 +134,7 @@ class UsersController extends Controller
             $token = request()->get('token');
             $user = User::where('email', $email)->where('token', $token)->first();
             if ($user) {
-                response()->json($user);
+                response()->json($user, 200);
             } else {
                 response()->json(['message' => 'Token o email incorrectos'], 401);
             }
@@ -128,4 +146,29 @@ class UsersController extends Controller
             response()->json(['message' => $message], 500);
         }
     }
+
+    public function loginByToken()
+    {
+        try {
+            $token = request()->get('token');
+            $user = User::where('token', $token)->first();
+            if ($user) {
+                response()->json($user, 200);
+            } else {
+                response()->json(['message' => 'Token incorrecto'], 401);
+            }
+        } catch (Exception $e) {
+            $message = 'Error al iniciar sesión';
+            if (getenv('leaftools_dev')) {
+                $message .= ': ' . $e->getMessage();
+            }
+            response()->json(['message' => $message], 500);
+        }
+    }
+
+    public function logout()
+    {
+
+    }
+
 }

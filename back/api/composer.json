@@ -27,7 +27,7 @@
         "leafs/leaf": "^3.3",
         "leafs/logger": "*",
         "leafs/cors": "*",
-        "leafs/auth": "*",
+        "leafs/auth": "^2.3",
         "leafs/db": "*",
         "leafs/devtools": "^0.1.0"
     },

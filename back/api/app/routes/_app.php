@@ -15,4 +15,21 @@ app()->get('/v0/dumpTables', function () {
     response()->json($tables);
 });
 
-app()->resource('/user/(\d+)', 'UsersController');
+app()->resource('/users', 'UsersController');
+/**
+ * Endpoint to create temporary by email and password
+ * @param string $email
+ * @param string $password
+ *
+ * @return user | false
+ */
+app()->post('/users/loginByEmailAndPassword', 'UsersController@login');
+
+/**
+ * Endpoint to login by token and email
+ * @param string $token
+ * @param string $email
+ *
+ * @return user | false
+ */
+app()->post('/users/loginByTokenAndEmail', 'UsersController@loginByTokenAndEmail');

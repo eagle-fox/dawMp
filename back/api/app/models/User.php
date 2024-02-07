@@ -24,6 +24,8 @@ class user extends Model
         'email' => '',
         'password' => '',
         'rol' => Rol::GUEST,
+        'token' => null,
+        'locked' => false,
     ];
 
     /**
@@ -60,7 +62,7 @@ class user extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'nombre', 'nombre_segundo', 'apellido_primero', 'apellido_segundo', 'email', 'password', 'rol',
+        'id', 'nombre', 'nombre_segundo', 'apellido_primero', 'apellido_segundo', 'email', 'password', 'rol', 'token', 'locked',
     ];
 
     /**

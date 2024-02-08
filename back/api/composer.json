@@ -25,7 +25,7 @@
         "leafs/blade": "*",
         "leafs/mvc-core": "dev-main",
         "leafs/leaf": "^3.3",
-        "leafs/logger": "*",
+        "leafs/logger": "^1.3",
         "leafs/cors": "*",
         "leafs/auth": "^2.3",
         "leafs/db": "*",

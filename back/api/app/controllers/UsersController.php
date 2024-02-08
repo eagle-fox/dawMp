@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace app\controllers;
 
 use App\Models\User;
 use Exception;
@@ -12,20 +12,11 @@ class UsersController extends Controller
      */
     public function index()
     {
-        try {
-            $user = Utils::autenticate();
-            if ($user && $user->rol == 'ADMIN') {
-                $users = User::all();
-                response()->json($users);
-            } else {
-                response()->json(['message' => 'No tienes permisos para ver los usuarios'], 401);
-            }
-        } catch (Exception $e) {
-            $message = 'Error al mostrar los usuarios';
-            if (getenv('leaftools_dev')) {
-                $message .= ': ' . $e->getMessage();
-            }
-            response()->json(['message' => $message], 500);
+        if (Utils::autenticate()) {
+            $users = User::query()->get();
+            response()->json($users);
+        } else {
+            response()->json(['message' => 'No tienes permisos para ver los usuarios'], 401);
         }
     }
 

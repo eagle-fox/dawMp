@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace app\controllers;
 
 use App\Models\User;
 
@@ -23,17 +23,27 @@ class Utils
 
     public static function autenticate()
     {
-        $headers = request()->headers();
-        $token = '';
-        if (isset($headers['Authorization'])) {
-            $matches = array();
-            preg_match('/Bearer (.*)/', $headers['Authorization'], $matches);
-            if (isset($matches[1])) {
-                $token = $matches[1];
+        $headers = request()->headers('Authorization');
+        if ($headers) {
+            $parts = explode(' ', $headers);
+            if (count($parts) == 2) {
+                if ($parts[0] == 'Bearer') {
+                    // Token-based authentication
+                    $token = $parts[1];
+                    $user = User::query()->where('token', $token)->first();
+                    if ($user) {
+                        return $user;
+                    }
+                } elseif ($parts[0] == 'Basic') {
+                    // Basic authentication
+                    list($email, $password) = explode(':', base64_decode($parts[1]));
+                    $user = User::query()->where('email', $email)->first();
+                    if ($user && hash('sha256', $password) == $user->password) {
+                        return $user;
+                    }
+                }
             }
         }
-
-        return User::query()->where('token', $token)->first();
+        return false;
     }
-
 }

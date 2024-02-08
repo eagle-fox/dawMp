@@ -154,7 +154,16 @@ class UsersController extends Controller
     public function loginByToken()
     {
         try {
-            $token = request()->get('token');
+            $headers = request()->headers();
+            $token = '';
+            if(isset($headers['Authorization'])){
+                $matches = array();
+                preg_match('/Bearer (.*)/', $headers['Authorization'], $matches);
+                if(isset($matches[1])){
+                    $token = $matches[1];
+                }
+            }
+
             $user = User::query()->where('token', $token)->first();
             if ($user) {
                 response()->json($user, 200);

@@ -11,7 +11,7 @@ const store = createStore({
         createNewUserSession({ commit }, userData) {
             return new Promise((resolve, reject) => {
                 try {
-                    const newUserSession = new userSession(userData.firstName, userData.email, userData.token);
+                    const newUserSession = new userSession(userData.name, userData.email, userData.token);
                     commit('setUserSession', newUserSession);
                     resolve();
                 } catch (error) {

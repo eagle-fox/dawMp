@@ -1,6 +1,6 @@
 class userSession {
     static #instance;
-    constructor(name, email, token) {
+    constructor(name, email, role, token) {
         // Verificamos si ya hay una instancia, si no existe la crea.
         if (userSession.#instance) {
             return userSession.#instance;
@@ -9,6 +9,7 @@ class userSession {
         // userSession variables
         this.name = name;
         this.email = email;
+        this.role = role
         this.token = token;
 
         userSession.#instance = this;
@@ -22,10 +23,6 @@ class userSession {
         this.name = name;
         this.email = email;
         this.token = token;
-    }
-
-    parseTokenInfo(token) {
-        parseInt(token);
     }
 
     static getInstance() {

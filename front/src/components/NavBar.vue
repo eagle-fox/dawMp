@@ -21,7 +21,7 @@ export default {
         },
         // System for creating and loading cookies for the automatic language change chosen by the user.
         createLanguageCookie(data) {
-            Cookies.set('languageCookie', data, { expires: 7, sameSite: 'None', secure: true })
+            Cookies.set('languageCookie', data, { expires: 365, sameSite: 'None', secure: true })
         },
         getCookieValue() {
             return Cookies.get('languageCookie')
@@ -46,7 +46,7 @@ export default {
             this.$store.dispatch('clearUserSession', this.generateUUID())
                 .then(() => {
                     console.log(this.$store.getters.getUserSession)
-                    Cookies.set('sessionCookie',this.$store.getters.getUserSession.token, { expires: null, sameSite: 'None', secure: true })
+                    Cookies.remove('sessionCookie')
                 })
                 .catch(error => {
                     console.error('Error al crear la nueva userSession:', error)

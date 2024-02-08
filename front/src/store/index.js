@@ -8,6 +8,9 @@ const store = createStore({
         },
         clearSession(state, clearData){
             state.userSession.setData(clearData.name, clearData.email, clearData.role, clearData.token)
+        },
+        makeVisitorSession(state, clearData){
+            state.userSession = new userSession(clearData.name, clearData.email, clearData.role)
         }
     },
     actions: {
@@ -22,7 +25,24 @@ const store = createStore({
                 }
             });
         },
-        clearUserSession({ commit }, newToken){
+        clearUserSession({ commit }){
+            return new Promise((resolve, reject) => {
+                try {
+
+                    let clearData = {
+                        name: 'unknow',
+                        email: 'unknow@gmail.com',
+                        role: 'unknow',
+                        token: ''
+                    }
+                    commit('clearSession', clearData);
+                    resolve();
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        },
+        makeVisitorSession({ commit }){
             return new Promise((resolve, reject) => {
                 try {
 
@@ -30,9 +50,9 @@ const store = createStore({
                         name: 'visitor',
                         email: 'visitor@gmail.com',
                         role: 'visitor',
-                        token: newToken
+                        token: null
                     }
-                    commit('clearSession', clearData);
+                    commit('makeVisitorSession', clearData);
                     resolve();
                 } catch (error) {
                     reject(error);

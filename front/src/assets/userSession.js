@@ -19,9 +19,10 @@ class userSession {
         return this.data;
     }
 
-    setData(name, email, token) {
+    setData(name, email,role ,token) {
         this.name = name;
         this.email = email;
+        this.role = role;
         this.token = token;
     }
 

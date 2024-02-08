@@ -3,30 +3,23 @@
 use App\Models\User;
 use App\Controllers\UsersController;
 
-app()->resource('/users', 'UsersController');
+/*
+ * Todas las rutas REQUIEREN autenticación basada en Bearer token.
+ */
+
+// INDEX - Mostrar todos los usuarios
+app()->get('/users', 'UsersController@index');
+
+// STORE - Crear un nuevo usuario
+app()->post('/users', 'UsersController@store');
+
+// SHOW - Mostrar un usuario existente
+app()->get('/users/{id}', 'UsersController@show');
+
+// POST/PUT/PATCH - Actualizar un usuario existente
 app()->put('/users/{id}', 'UsersController@update');
-/**
-* Endpoint to create temporary by email and password
-* @param string $email
-* @param string $password
-*/
-app()->post('/users/loginByEmailAndPassword', 'UsersController@loginByEmailAndPassword');
+app()->patch('/users/{id}', 'UsersController@update');
+app()->post('/users/{id}', 'UsersController@update');
 
-/**
-* Endpoint to login by token and email
-* @param string $token
-* @param string $email
-*/
-app()->post('/users/loginByTokenAndEmail', 'UsersController@loginByTokenAndEmail');
-
-/**
- * Endpoint to login by token
- * @param string $token
- */
-app()->post('/users/loginByToken', 'UsersController@loginByToken');
-
-/**
- * Endpoint to logout
- * @param string $token
- */
-app()->post('/users/logout', 'UsersController@logout');
+// DELETE - Eliminar un usuario existente
+app()->delete('/users/{id}', 'UsersController@destroy');

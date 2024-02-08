@@ -11,6 +11,7 @@ namespace App\Models;
  */
 class user extends Model
 {
+
     /**
      * The model's default values for attributes.
      *
@@ -27,6 +28,7 @@ class user extends Model
         'token' => null,
         'locked' => false,
     ];
+
 
     /**
      * Formato compatible con DateTime de MySQL.
@@ -64,6 +66,11 @@ class user extends Model
     protected $fillable = [
         'id', 'nombre', 'nombre_segundo', 'apellido_primero', 'apellido_segundo', 'email', 'password', 'rol', 'token', 'locked',
     ];
+
+    public function getFillable()
+    {
+        return $this->fillable;
+    }
 
     /**
      * Los atributos que deben ser ocultados para serialización etc.

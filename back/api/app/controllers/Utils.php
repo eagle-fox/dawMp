@@ -1,7 +1,7 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Controllers;
+
 use App\Models\User;
 
 class Utils
@@ -21,7 +21,7 @@ class Utils
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 
-    public static function authenticateByToken()
+    public static function autenticate()
     {
         $headers = request()->headers();
         $token = '';
@@ -35,6 +35,5 @@ class Utils
 
         return User::query()->where('token', $token)->first();
     }
-
 
 }

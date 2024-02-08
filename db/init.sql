@@ -24,6 +24,9 @@ CREATE TABLE IF NOT EXISTS `user`
     `updated_at`       datetime                              NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
+INSERT INTO `user` (`nombre`, `apellido_primero`, `apellido_segundo`, `email`, `password`, `rol`, `locked`)
+VALUES ('Águila', 'Calva','Americana','eagle@usa.com', 'eagle,fox', 'ADMIN', FALSE);
+
 CREATE TABLE IF NOT EXISTS `log`
 (
     `id`         int          NOT NULL AUTO_INCREMENT PRIMARY KEY,

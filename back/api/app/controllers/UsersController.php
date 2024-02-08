@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\User;
 use Exception;
-use Leaf\Auth;
 
 class UsersController extends Controller
 {
@@ -13,29 +12,46 @@ class UsersController extends Controller
      */
     public function index()
     {
-        response()->json(User::all());
+        try {
+            $user = Utils::authenticateByToken();
+            if ($user && $user->rol == 'ADMIN') {
+                $users = User::all();
+                response()->json($users);
+            } else {
+                response()->json(['message' => 'No tienes permisos para ver los usuarios'], 401);
+            }
+        } catch (Exception $e) {
+            $message = 'Error al mostrar los usuarios';
+            if (getenv('leaftools_dev')) {
+                $message .= ': ' . $e->getMessage();
+            }
+            response()->json(['message' => $message], 500);
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store()
+    public function store(): void
     {
         try {
-            $user = new User;
-            $user->nombre = request()->get('nombre');
-            $user->nombre_segundo = request()->get('nombre_segundo');
-            $user->apellido_primero = request()->get('apellido_primero');
-            $user->apellido_segundo = request()->get('apellido_segundo');
-            $user->email = request()->get('email');
-            $user->password = request()->get('password');
-            $user->rol = request()->get('rol');
+            $user = Utils::authenticateByToken();
+            if ($user && $user->rol == 'ADMIN') {
+                $newUser = new User;
+                $fields = $newUser->getFillable();
+                $requestData = request()->try($fields);
 
-            $user->token = bin2hex(random_bytes(16)); // 16 bytes == 32 chars
-            $user->locked = false;
+                foreach ($requestData as $field => $value) {
+                    $newUser->$field = $value;
+                }
 
-            $user->save();
-            $this->response->json($user);
+                $newUser->token = Utils::generateToken();
+                $newUser->save();
+                response()->json($newUser);
+
+            } else {
+                response()->json(['message' => 'No tienes permisos para crear un usuario'], 401);
+            }
         } catch (Exception $e) {
             $this->response->json(['message' => 'Error al crear el usuario: motivo: ' . $e->getMessage()], 500);
         }
@@ -46,24 +62,25 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        // $auth = new Auth();
-        // check if the email and token provided are valid and is ADMIN or the RESOURCE OWNER
-
-        $user = request()->get('user');
-        $password = request()->get('password');
-
-        $check = User::query()->where('email', $user)->where('password', $password)->first();
-        if ($check->rol == 'ADMIN' || $check->id == $id) {
-            $user = User::query()->find($id);
-            if ($user) {
-                response()->json($user);
+        try {
+            $user = Utils::authenticateByToken();
+            if ($user && ($user->rol == 'ADMIN' || $user->id == $id)) {
+                $user = User::query()->find($id);
+                if ($user) {
+                    response()->json($user);
+                } else {
+                    response()->json(['message' => 'Usuario no encontrado'], 404);
+                }
             } else {
-                response()->json(['message' => 'Usuario no encontrado'], 404);
+                response()->json(['message' => 'No tienes permisos para ver este usuario'], 401);
             }
-        } else {
-            response()->json(['message' => 'No tienes permisos para ver este usuario'], 401);
+        } catch (Exception $e) {
+            $message = 'Error al mostrar el usuario';
+            if (getenv('leaftools_dev')) {
+                $message .= ': ' . $e->getMessage();
+            }
+            response()->json(['message' => $message], 500);
         }
-
     }
 
     /**
@@ -72,22 +89,38 @@ class UsersController extends Controller
     public function update($id)
     {
         try {
-            $user = User::query()->find($id);
-            if ($user) {
-                $user->nombre = request()->get('nombre');
-                $user->nombre_segundo = request()->get('nombre_segundo');
-                $user->apellido_primero = request()->get('apellido_primero');
-                $user->apellido_segundo = request()->get('apellido_segundo');
-                $user->email = request()->get('email');
-                $user->password = request()->get('password');
-                $user->rol = request()->get('rol');
-                $user->save();
-                response()->json($user);
+            $user = Utils::authenticateByToken();
+            if ($user && ($user->rol == 'ADMIN' || $user->id == $id)) {
+                $userToUpdate = User::query()->find($id);
+                if ($userToUpdate) {
+                    $fields = $userToUpdate->getFillable();
+                    $requestData = request()->try($fields);
+
+                    $missingFields = array_diff($fields, array_keys($requestData));
+
+                    if ($_SERVER['REQUEST_METHOD'] === 'PUT' && !empty($missingFields)) {
+                        response()->json(['message' => 'Faltan campos requeridos para la actualización completa: ' . implode(', ', $missingFields)], 400);
+                        return;
+                    }
+
+                    foreach ($requestData as $field => $value) {
+                        $userToUpdate->$field = $value;
+                    }
+
+                    $userToUpdate->save();
+                    response()->json($userToUpdate);
+                } else {
+                    response()->json(['message' => 'Usuario no encontrado'], 404);
+                }
             } else {
-                response()->json(['message' => 'Usuario no encontrado'], 404);
+                response()->json(['message' => 'No tienes permisos para actualizar este usuario'], 401);
             }
         } catch (Exception $e) {
-            response()->json(['message' => 'Error al actualizar el usuario: motivo: ' . $e->getMessage()], 500);
+            $message = 'Error al actualizar el usuario';
+            if (getenv('leaftools_dev')) {
+                $message .= ': ' . $e->getMessage();
+            }
+            response()->json(['message' => $message], 500);
         }
     }
 
@@ -97,102 +130,20 @@ class UsersController extends Controller
     public function destroy($id)
     {
         try {
-            $user = User::find($id);
-            if ($user) {
-                $user->delete();
-                response()->json(['message' => 'Usuario eliminado']);
-            } else {
-                response()->json(['message' => 'Usuario no encontrado'], 404);
-            }
-        } catch (Exception $e) {
-            response()->json(['message' => 'Error al eliminar el usuario: motivo: ' . $e->getMessage()], 500);
-        }
-    }
-
-    public function loginByEmailAndPassword()
-    {
-        try {
-            $email = request()->get('email');
-            $password = request()->get('password');
-            $user = User::query()->where('email', $email)->where('password', $password)->first();
-            if ($user) {
-                $user->token = bin2hex(random_bytes(16)); // Generate a new token
-                $user->save();
-                response()->json($user, 200);
-            } else {
-                response()->json(['message' => 'Usuario o contraseña incorrectos'], 401);
-            }
-        } catch (Exception $e) {
-            $message = 'Error al iniciar sesión';
-            if (getenv('leaftools_dev')) {
-                $message .= ': ' . $e->getMessage();
-            }
-            response()->json(['message' => $message], 500);
-        }
-    }
-
-    public function loginByTokenAndEmail()
-    {
-        try {
-            $email = request()->get('email');
-            $token = request()->get('token');
-            $user = User::query()->where('email', $email)->where('token', $token)->first();
-            if ($user) {
-                response()->json($user, 200);
-            } else {
-                response()->json(['message' => 'Token o email incorrectos'], 401);
-            }
-        } catch (Exception $e) {
-            $message = 'Error al iniciar sesión';
-            if (getenv('leaftools_dev')) {
-                $message .= ': ' . $e->getMessage();
-            }
-            response()->json(['message' => $message], 500);
-        }
-    }
-
-    public function loginByToken()
-    {
-        try {
-            $headers = request()->headers();
-            $token = '';
-            if(isset($headers['Authorization'])){
-                $matches = array();
-                preg_match('/Bearer (.*)/', $headers['Authorization'], $matches);
-                if(isset($matches[1])){
-                    $token = $matches[1];
+            $user = Utils::authenticateByToken();
+            if ($user && $user->rol == 'ADMIN') {
+                $user = User::query()->find($id);
+                if ($user) {
+                    $user->delete();
+                    response()->json(['message' => 'Usuario eliminado']);
+                } else {
+                    response()->json(['message' => 'Usuario no encontrado'], 404);
                 }
-            }
-
-            $user = User::query()->where('token', $token)->first();
-            if ($user) {
-                response()->json($user, 200);
             } else {
-                response()->json(['message' => 'Token incorrecto'], 401);
+                response()->json(['message' => 'No tienes permisos para eliminar este usuario'], 401);
             }
         } catch (Exception $e) {
-            $message = 'Error al iniciar sesión';
-            if (getenv('leaftools_dev')) {
-                $message .= ': ' . $e->getMessage();
-            }
-            response()->json(['message' => $message], 500);
-        }
-    }
-
-    public function logout()
-    {
-        try {
-            $token = request()->get('token');
-            $user = User::query()->where('token', $token)->first();
-            if ($user) {
-                $user->token = null;
-                $user->save();
-                response()->json(['message' => 'Sesión cerrada'], 200);
-            } else {
-                response()->json(['message' => 'Token incorrecto'], 401);
-            }
-        } catch (Exception $e) {
-            $message = 'Error al cerrar sesión';
+            $message = 'Error al eliminar el usuario';
             if (getenv('leaftools_dev')) {
                 $message .= ': ' . $e->getMessage();
             }

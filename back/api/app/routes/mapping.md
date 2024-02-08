@@ -1,0 +1,9 @@
+| Verb           | URI                  | Action  |
+| -------------- | -------------------- | ------- |
+| GET            | /photos              | index   |
+| GET            | /photos/create       | create  |
+| POST           | /photos              | store   |
+| GET            | /photos/             | show    |
+| GET            | /photos/{photo}/edit | edit    |
+| POST/PUT/PATCH | /photos/             | update  |
+| DELETE         | /photos/             | destroy |

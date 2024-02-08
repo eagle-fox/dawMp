@@ -22,7 +22,10 @@ CREATE TABLE IF NOT EXISTS `user`
     `locked`           boolean                               NOT NULL DEFAULT FALSE,
     `created_at`       datetime                              NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`       datetime                              NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE = InnoDB;
+    ) ENGINE = InnoDB;
+
+INSERT INTO `user` (`nombre`, `apellido_primero`, `apellido_segundo`, `email`, `password`, `rol`, token, `locked`)
+VALUES ('Águila', 'Calva', 'Americana', 'eagle@fox.com',SHA2('eaglefox',256), 'ADMIN', UUID(), FALSE);
 
 CREATE TABLE IF NOT EXISTS `log`
 (
@@ -33,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `log`
     `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`user`) REFERENCES `user` (`id`)
-) ENGINE = InnoDB;
+    ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `iot_devices`
 (
@@ -44,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `iot_devices`
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX `idx_uuid` (`uuid`) USING HASH COMMENT 'Sólo soporta igualdad'
 
-) ENGINE = InnoDB;
+    ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `iot_devices_user`
 (
@@ -55,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `iot_devices_user`
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`user`) REFERENCES `user` (`id`),
     FOREIGN KEY (`device`) REFERENCES `iot_devices` (`id`)
-) ENGINE = InnoDB;
+    ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `iot_data`
 (
@@ -66,4 +69,4 @@ CREATE TABLE IF NOT EXISTS `iot_data`
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     SPATIAL INDEX `idx_location` (`location`),
     FOREIGN KEY (`device`) REFERENCES `iot_devices` (`id`)
-) ENGINE = InnoDB;
+    ) ENGINE = InnoDB;

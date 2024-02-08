@@ -1,0 +1,44 @@
+###
+# @name getUsuarios
+GET http://localhost:2003/api/usuarios
+Accept: application/json
+
+###
+# @name getUsuario
+GET http://localhost:2003/api/usuarios/1
+Accept: application/json
+
+###
+# @name crearUsuario
+POST http://localhost:2003/api/usuarios
+Content-Type: application/json
+Accept: application/json
+
+{
+    "nombre": "Nuevo Usuario",
+    "apellido_primero": "Apellido",
+    "apellido_segundo": "Segundo Apellido",
+    "email": "nuevo@usuario.com",
+    "password": "contraseña",
+    "rol": "USER"
+}
+
+###
+# @name actualizarUsuario
+PUT http://localhost:2003/api/usuarios/1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "nombre": "Usuario Actualizado",
+    "apellido_primero": "Apellido",
+    "apellido_segundo": "Segundo Apellido",
+    "email": "actualizado@usuario.com",
+    "password": "contraseña",
+    "rol": "USER"
+}
+
+###
+# @name eliminarUsuario
+DELETE http://localhost:2003/api/usuarios/1
+Accept: application/json

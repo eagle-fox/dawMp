@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace app\controllers;
 
 use App\Models\User;
 use Exception;
@@ -12,20 +12,11 @@ class UsersController extends Controller
      */
     public function index()
     {
-        try {
-            $user = Utils::authenticateByToken();
-            if ($user && $user->rol == 'ADMIN') {
-                $users = User::all();
-                response()->json($users);
-            } else {
-                response()->json(['message' => 'No tienes permisos para ver los usuarios'], 401);
-            }
-        } catch (Exception $e) {
-            $message = 'Error al mostrar los usuarios';
-            if (getenv('leaftools_dev')) {
-                $message .= ': ' . $e->getMessage();
-            }
-            response()->json(['message' => $message], 500);
+        if (Utils::autenticate()) {
+            $users = User::query()->get();
+            response()->json($users);
+        } else {
+            response()->json(['message' => 'No tienes permisos para ver los usuarios'], 401);
         }
     }
 
@@ -34,8 +25,9 @@ class UsersController extends Controller
      */
     public function store(): void
     {
+
         try {
-            $user = Utils::authenticateByToken();
+            $user = Utils::autenticate();
             if ($user && $user->rol == 'ADMIN') {
                 $newUser = new User;
                 $fields = $newUser->getFillable();
@@ -63,7 +55,7 @@ class UsersController extends Controller
     public function show($id)
     {
         try {
-            $user = Utils::authenticateByToken();
+            $user = Utils::autenticate();
             if ($user && ($user->rol == 'ADMIN' || $user->id == $id)) {
                 $user = User::query()->find($id);
                 if ($user) {
@@ -89,7 +81,7 @@ class UsersController extends Controller
     public function update($id)
     {
         try {
-            $user = Utils::authenticateByToken();
+            $user = Utils::autenticate();
             if ($user && ($user->rol == 'ADMIN' || $user->id == $id)) {
                 $userToUpdate = User::query()->find($id);
                 if ($userToUpdate) {
@@ -130,7 +122,7 @@ class UsersController extends Controller
     public function destroy($id)
     {
         try {
-            $user = Utils::authenticateByToken();
+            $user = Utils::autenticate();
             if ($user && $user->rol == 'ADMIN') {
                 $user = User::query()->find($id);
                 if ($user) {

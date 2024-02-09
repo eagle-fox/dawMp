@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Client;
 use App\Models\User;
 
 class Utils {
@@ -87,4 +88,15 @@ class Utils {
         return null;
     }
 
+    public static function isIpLocked(): bool
+    {
+        $ip = request()->getIp();
+        $client = Client::query()->where('ipv4', ip2long($ip))->first();
+
+        if ($client instanceof Client) {
+            return $client->locked;
+        }
+
+        return false;
+    }
 }

@@ -9,14 +9,7 @@ namespace App\Models;
  *
  * @package App\Models
  */class User extends Model {
-    public int $id;
-    public string $nombre;
-    public string $nombre_segundo;
-    public string $apellido_primero;
-    public string $apellido_segundo;
-    public string $email;
-    public string $password;
-    public string $rol;
+
 
     protected $attributes = [
         "nombre" => "",

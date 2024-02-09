@@ -26,15 +26,15 @@ CREATE TABLE IF NOT EXISTS `clients`
 (
     `id`         int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `ipv4`       int UNSIGNED NOT NULL COMMENT 'https://shorturl.at/cdGZ2',
-    `token`      char(36)                           DEFAULT UUID(),
-    `locked`           boolean                      NOT NULL DEFAULT FALSE,
+    `token`      char(36)     NOT NULL COMMENT '128 bits UUID (RFC 4122)',
+    `locked`     boolean      NOT NULL DEFAULT FALSE,
     `client`     int          REFERENCES `user` (`id`),
     `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
-INSERT INTO `user` (`nombre`, `apellido_primero`, `apellido_segundo`, `email`, `password`, `rol`, token, `locked`)
-VALUES ('Águila', 'Calva', 'Americana', 'eagle@fox.com', SHA2('eaglefox', 256), 'ADMIN', UUID(), FALSE);
+INSERT INTO `user` (`nombre`, `apellido_primero`, `apellido_segundo`, `email`, `password`, `rol`)
+VALUES ('admin', 'admin', 'admin', 'admin@admin.com', 'admin', 'ADMIN');
 
 CREATE TABLE IF NOT EXISTS `log`
 (

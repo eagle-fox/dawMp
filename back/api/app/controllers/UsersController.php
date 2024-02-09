@@ -18,6 +18,9 @@ class UsersController extends Controller
             $this->logAction("Unauthorized attempt to view all users");
             response()->json(["message" => "No tienes permisos para ver los usuarios"], 401,);
         }
+
+
+
         try {
             response()->json(User::query()->get());
             $this->logAction("Viewed all users");
@@ -66,21 +69,17 @@ class UsersController extends Controller
      */
     public function show($id): void
     {
-        if (!Utils::autenticate("ADMIN")) {
-            $this->logAction("Unauthorized attempt to view user with id: " . $id);
+        if (Utils::autenticate("ADMIN")) {
             response()->json(["message" => "No tienes permisos para ver este usuario"], 401,);
         }
         try {
             $user = User::query()->find($id);
             if ($user) {
                 response()->json($user);
-                $this->logAction("Viewed user with id: " . $id);
             } else {
                 response()->json(["message" => "Usuario no encontrado"], 404,);
-                $this->logAction("Failed to view user with id: " . $id . " - User not found");
             }
         } catch (Exception $e) {
-            $this->logAction("Error viewing user with id: " . $id . " - " . $e->getMessage());
             if (getenv("leaftools_dev")) {
                 response()->json(["message" => "Error al mostrar el usuario: " . $e->getMessage()], 500,);
             }
@@ -149,12 +148,7 @@ class UsersController extends Controller
      * Log an action in the log table.
      */
     private function logAction(string $message): void
-    {
-        $log = new Log();
-        $log->user = Utils::getUserFromAutentication()->id;
-        $log->client = Client::query()->where('token', Utils::getUserFromAutentication()->token)->first()->id;
-        $log->message = $message;
-        $log->save();
+{
     }
 
     /**

@@ -45,7 +45,7 @@ class Utils {
                         ->first();
                     if (
                         $user instanceof User &&
-                        hash("sha256", $password) == $user->getPassword() &&
+                        hash("sha256", $password) == $user->password &&
                         $user->rol == $rol
                     ) {
                         return true;
@@ -56,7 +56,7 @@ class Utils {
         return false;
     }
 
-    public static function getUserFromAutentication(): ?User {
+    public static function getUserFromAutentication(): User | False {
         $headers = request()->headers("Authorization");
         if ($headers) {
             $parts = explode(" ", $headers);
@@ -85,7 +85,7 @@ class Utils {
                 }
             }
         }
-        return null;
+        return False;
     }
 
     public static function isIpLocked(): bool
@@ -99,4 +99,22 @@ class Utils {
 
         return false;
     }
+
+
+    public static function registerClient($user)
+    {
+        $newClient = new Client();
+        $newClient->ipv4 = request()->getIp();
+        $newClient->token = Utils::generateUUID();
+
+        // check if the header contains auth basic or bearer, on that case search the client and save it, if not, is
+        // null
+        $user = Utils::getUserFromAutentication();
+        if ($user instanceof User) {
+            $newClient->client = $user->id;
+        }
+
+        $newClient->save();
+    }
+
 }

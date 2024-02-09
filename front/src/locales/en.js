@@ -20,7 +20,7 @@ let homeTextPackage = {
     home_t7: 'Enter the code !!',
     home_t8: 'With the provided code, you can register your pet ',
     home_t9: 'Ready, now you can see your pet!!',
-    home_t10: 'Now you can use all the monitoring features of your little furry friend.',
+    home_t10: 'Now you can use all the monitoring features of your fluffy friend.',
     home_t11: 'How to set up your Eagle Fox collar?',
     home_bd1: 'Real-time positioning of your pets on a map',
     home_bd2: 'Add points of interest and establish custom routes',

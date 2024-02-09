@@ -9,8 +9,9 @@ export default {
                 es: { icon: 'es.svg', altText: 'es_flag' },
                 en: { icon: 'sh.svg', altText: 'sh_flag' },
                 de: { icon: 'de.svg', altText: 'de_flag' },
-                gl: { icon: 'gl.svg', altText: 'gl_flag' },
+                gl: { icon: 'gl.svg', altText: 'gl_flag' }
             }
+
             if (languageMappings[locale]) {
                 const { icon, altText } = languageMappings[locale]
                 this.languageToggleIcon = `src/assets/flags/${icon}`

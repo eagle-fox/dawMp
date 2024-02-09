@@ -62,14 +62,16 @@ class IotDevicesUser extends Model {
     /**
      * Get the user that owns the iot device.
      */
-    public function user() {
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Get the iot device that belongs to the user.
      */
-    public function device() {
+    public function device(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(IotDevice::class);
     }
 }

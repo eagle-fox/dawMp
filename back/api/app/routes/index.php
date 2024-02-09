@@ -1,7 +1,5 @@
 <?php
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Set up 404 handler
@@ -13,7 +11,7 @@
 |
 */
 app()->set404(function () {
-	response()->json('Resource not found', 404, true);
+    response()->json("Resource not found", 404, true);
 });
 
 /*
@@ -27,7 +25,7 @@ app()->set404(function () {
 |
 */
 app()->setErrorHandler(function () {
-    response()->json('An error occured, our team has been notified', 500, true);
+    response()->json("An error occured, our team has been notified", 500, true);
 });
 
 /*
@@ -39,7 +37,7 @@ app()->setErrorHandler(function () {
 | the controller namespace first.
 |
 */
-app()->setNamespace('\App\Controllers');
+app()->setNamespace("\App\Controllers");
 
 /*
 |--------------------------------------------------------------------------

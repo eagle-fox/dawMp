@@ -9,8 +9,17 @@ namespace App\Models;
  *
  * @package App\Models
  */
-class user extends Model
-{
+class user extends Model {
+    public int $id;
+    public string $token;
+    public string $nombre;
+    public string $nombre_segundo;
+    public string $apellido_primero;
+    public string $apellido_segundo;
+    public string $email;
+    public string $password;
+    public string $rol;
+    public bool $locked;
 
     /**
      * The model's default values for attributes.
@@ -18,38 +27,37 @@ class user extends Model
      * @var array
      */
     protected $attributes = [
-        'nombre' => '',
-        'nombre_segundo' => null,
-        'apellido_primero' => '',
-        'apellido_segundo' => '',
-        'email' => '',
-        'password' => '',
-        'rol' => Rol::GUEST,
-        'token' => null,
-        'locked' => false,
+        "nombre" => "",
+        "nombre_segundo" => null,
+        "apellido_primero" => "",
+        "apellido_segundo" => "",
+        "email" => "",
+        "password" => "",
+        "rol" => Rol::GUEST,
+        "token" => null,
+        "locked" => false,
     ];
-
 
     /**
      * Formato compatible con DateTime de MySQL.
      *
      * @var string
      */
-    protected $dateFormat = 'Y-m-d H:i:s';
+    protected $dateFormat = "Y-m-d H:i:s";
 
     /**
      * Exactamente el nombre de la tabla que se va a utilizar desde el DDL.
      *
      * @var string
      */
-    protected $table = 'user';
+    protected $table = "user";
 
     /**
      * La clave primaria, por defecto, es 'id'.
      *
      * @var int
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = "id";
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -64,11 +72,19 @@ class user extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'nombre', 'nombre_segundo', 'apellido_primero', 'apellido_segundo', 'email', 'password', 'rol', 'token', 'locked',
+        "id",
+        "nombre",
+        "nombre_segundo",
+        "apellido_primero",
+        "apellido_segundo",
+        "email",
+        "password",
+        "rol",
+        "token",
+        "locked",
     ];
 
-    public function getFillable()
-    {
+    public function getFillable() {
         return $this->fillable;
     }
 
@@ -77,9 +93,7 @@ class user extends Model
      *
      * @var array
      */
-    protected $hidden = [
-        'password',
-    ];
+    protected $hidden = ["password"];
 
     /**
      * Todas va con sellado de tiempo.
@@ -87,5 +101,6 @@ class user extends Model
      * @var bool
      */
     public $timestamps = true;
+
 
 }

@@ -6,16 +6,15 @@ namespace App\Models;
 
 use Leaf\Model;
 
-class IotData extends Model
-{
+class IotData extends Model {
     /**
      * The model's default values for attributes.
      *
      * @var array
      */
     protected $attributes = [
-        'device' => null,
-        'location' => '',
+        "device" => null,
+        "location" => "",
     ];
 
     /**
@@ -23,21 +22,21 @@ class IotData extends Model
      *
      * @var string
      */
-    protected $dateFormat = 'Y-m-d H:i:s';
+    protected $dateFormat = "Y-m-d H:i:s";
 
     /**
      * Exactamente el nombre de la tabla que se va a utilizar desde el DDL.
      *
      * @var string
      */
-    protected $table = 'iot_data';
+    protected $table = "iot_data";
 
     /**
      * La clave primaria, por defecto, es 'id'.
      *
      * @var int
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = "id";
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -51,9 +50,7 @@ class IotData extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'id', 'device', 'location',
-    ];
+    protected $fillable = ["id", "device", "location"];
 
     /**
      * Todas va con sellado de tiempo.
@@ -65,8 +62,7 @@ class IotData extends Model
     /**
      * Get the iot device that owns the data.
      */
-    public function device()
-    {
+    public function device() {
         return $this->belongsTo(IotDevice::class);
     }
 }

@@ -6,16 +6,15 @@ namespace App\Models;
 
 use Leaf\Model;
 
-class Log extends Model
-{
+class Log extends Model {
     /**
      * The model's default values for attributes.
      *
      * @var array
      */
     protected $attributes = [
-        'user' => null,
-        'message' => '',
+        "user" => null,
+        "message" => "",
     ];
 
     /**
@@ -23,21 +22,21 @@ class Log extends Model
      *
      * @var string
      */
-    protected $dateFormat = 'Y-m-d H:i:s';
+    protected $dateFormat = "Y-m-d H:i:s";
 
     /**
      * Exactamente el nombre de la tabla que se va a utilizar desde el DDL.
      *
      * @var string
      */
-    protected $table = 'log';
+    protected $table = "log";
 
     /**
      * La clave primaria, por defecto, es 'id'.
      *
      * @var int
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = "id";
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -51,9 +50,7 @@ class Log extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'id', 'user', 'message',
-    ];
+    protected $fillable = ["id", "user", "message"];
 
     /**
      * Todas va con sellado de tiempo.
@@ -65,8 +62,7 @@ class Log extends Model
     /**
      * Get the user that owns the log.
      */
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo(User::class);
     }
 }

@@ -8,18 +8,18 @@ use App\Controllers\UsersController;
  */
 
 // INDEX - Mostrar todos los usuarios
-app()->get('/users', 'UsersController@index');
+app()->get("/users", "UsersController@index");
 
 // STORE - Crear un nuevo usuario
-app()->post('/users', 'UsersController@store');
+app()->post("/users", "UsersController@store");
 
 // SHOW - Mostrar un usuario existente
-app()->get('/users/{id}', 'UsersController@show');
+app()->get("/users/{id}", "UsersController@show");
 
 // POST/PUT/PATCH - Actualizar un usuario existente
-app()->put('/users/{id}', 'UsersController@update');
-app()->patch('/users/{id}', 'UsersController@update');
-app()->post('/users/{id}', 'UsersController@update');
+app()->put("/users/{id}", "UsersController@update");
+app()->patch("/users/{id}", "UsersController@update");
+app()->post("/users/{id}", "UsersController@update");
 
 // DELETE - Eliminar un usuario existente
-app()->delete('/users/{id}', 'UsersController@destroy');
+app()->delete("/users/{id}", "UsersController@destroy");

@@ -9,7 +9,6 @@ use Random\RandomException;
 
 class Utils
 {
-
     /**
      * For simplicity, we use a 32 character UUID as a token.
      * @param $length int our DB is RFC 4122 compliant so we use 32
@@ -18,14 +17,10 @@ class Utils
      */
     public static function generateUUID($length = 32): string
     {
-        // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
         $data = $data ?? random_bytes(16);
         assert(strlen($data) == 16);
-        // Set version to 0100
         $data[6] = chr((ord($data[6]) & 0x0f) | 0x40);
-        // Set bits 6-7 to 10
         $data[8] = chr((ord($data[8]) & 0x3f) | 0x80);
-        // Output the 36 character UUID.
         return vsprintf("%s%s-%s-%s-%s-%s%s%s", str_split(bin2hex($data), 4));
     }
 
@@ -75,58 +70,51 @@ class Utils
         $parts = explode(" ", $headers);
 
         if ($parts[0] == "Bearer") {
-            $token = $parts[1];
-            $user = self::getUserFromToken($token);
-            if (!$user) {
-                if (getenv("LEAF_DEV_TOOLS")) {
-                    response()->json(["message" => "Invalid credentials"], 401);
-                }
-                return False;
-            }
+            return self::authenticateWithBearer($parts[1]);
         } elseif ($parts[0] == "Basic") {
-            $user = self::getUserFromBasic($parts[1]);
-            if (!$user) {
-                if (getenv("LEAF_DEV_TOOLS")) {
-                    response()->json(["message" => "Invalid credentials"], 401);
-                }
-                return False;
-            }
-            $ip = request()->getIp();
-            $clients = self::getClientsFromUser($user);
-            if (count($clients) > 0) {
-                foreach ($clients as $client) {
-                    if ($client->ipv4 == $ip) {
-                        return $user;
-                    }
-                }
-            }
-            self::registerClient($user);
-            return $user;
-
+            return self::authenticateWithBasic($parts[1]);
         } else {
-            response()->json(["message" => "Unsupported authentication method"], 401);
+            self::handleAuthenticationError("Unsupported authentication method");
+            return False;
+        }
+    }
+
+    private static function authenticateWithBearer(string $token): User|false
+    {
+        $user = self::getUserFromToken($token);
+        if (!$user) {
+            self::handleAuthenticationError("Invalid credentials");
+        }
+        return $user;
+    }
+
+    private static function authenticateWithBasic(string $credentials): User|false
+    {
+        $user = self::getUserFromBasic($credentials);
+        if (!$user) {
+            self::handleAuthenticationError("Invalid credentials");
             return False;
         }
 
-        return False;
-    }
-
-    public static function getClientsFromUser($user): Collection|array
-    {
-        return Client::query()->where("client", $user->id)->get();
-    }
-
-    /**
-     */
-    public static function getConnectedClient(User $user): Client|false
-    {
+        $ip = request()->getIp();
         $clients = self::getClientsFromUser($user);
-        foreach ($clients as $client) {
-            if ($client->ipv4 == request()->getIp() || $client->token == request()->headers("Authorization")) {
-                return $client;
+        if (count($clients) > 0) {
+            foreach ($clients as $client) {
+                if ($client->ipv4 == $ip) {
+                    return $user;
+                }
             }
         }
-        return False;
+
+        self::registerClient($user);
+        return $user;
+    }
+
+    private static function handleAuthenticationError(string $message): void
+    {
+        if (getenv("LEAF_DEV_TOOLS")) {
+            response()->json(["message" => $message], 401);
+        }
     }
 
     /**
@@ -143,4 +131,24 @@ class Utils
         $newClient->save();
     }
 
+    public static function getClientsFromUser($user): Collection|array
+    {
+        return Client::query()->where("client", $user->id)->get();
+    }
+
+    /**
+     * Get the connected client from the user
+     * @param User $user
+     * @return Client|False
+     */
+    public static function getConnectedClient(User $user): Client|false
+    {
+        $clients = self::getClientsFromUser($user);
+        foreach ($clients as $client) {
+            if ($client->ipv4 == request()->getIp() || $client->token == request()->headers("Authorization")) {
+                return $client;
+            }
+        }
+        return False;
+    }
 }

@@ -2,70 +2,39 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace app\models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Leaf\Model;
 
 class IotData extends Model
 {
-    /**
-     * The model's default values for attributes.
-     *
-     * @var array
-     */
+    public int $id;
+    public int $device;
+    public float $latitude;
+    public float $longitude;
+
     protected $attributes = [
-        'device' => null,
-        'location' => '',
+        "device"    => 0,
+        "latitude"  => 0.0,
+        "longitude" => 0.0,
     ];
 
-    /**
-     * Formato compatible con DateTime de MySQL.
-     *
-     * @var string
-     */
-    protected $dateFormat = 'Y-m-d H:i:s';
-
-    /**
-     * Exactamente el nombre de la tabla que se va a utilizar desde el DDL.
-     *
-     * @var string
-     */
-    protected $table = 'iot_data';
-
-    /**
-     * La clave primaria, por defecto, es 'id'.
-     *
-     * @var int
-     */
-    protected $primaryKey = 'id';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
+    protected $dateFormat = "Y-m-d H:i:s";
+    protected $table = "iot_data";
+    protected $primaryKey = "id";
     public $incrementing = true;
 
-    /**
-     * Los atributos accesibles para el modelo en masa.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'id', 'device', 'location',
+        "id",
+        "device",
+        "latitude",
+        "longitude",
     ];
 
-    /**
-     * Todas va con sellado de tiempo.
-     *
-     * @var bool
-     */
     public $timestamps = true;
 
-    /**
-     * Get the iot device that owns the data.
-     */
-    public function device()
+    public function device(): BelongsTo
     {
         return $this->belongsTo(IotDevice::class);
     }

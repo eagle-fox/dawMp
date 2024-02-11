@@ -6,16 +6,15 @@ namespace App\Models;
 
 use Leaf\Model;
 
-class IotDevicesUser extends Model
-{
+class IotDevicesUser extends Model {
     /**
      * The model's default values for attributes.
      *
      * @var array
      */
     protected $attributes = [
-        'user' => null,
-        'device' => null,
+        "user" => null,
+        "device" => null,
     ];
 
     /**
@@ -23,21 +22,21 @@ class IotDevicesUser extends Model
      *
      * @var string
      */
-    protected $dateFormat = 'Y-m-d H:i:s';
+    protected $dateFormat = "Y-m-d H:i:s";
 
     /**
      * Exactamente el nombre de la tabla que se va a utilizar desde el DDL.
      *
      * @var string
      */
-    protected $table = 'iot_devices_user';
+    protected $table = "iot_devices_user";
 
     /**
      * La clave primaria, por defecto, es 'id'.
      *
      * @var int
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = "id";
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -51,9 +50,7 @@ class IotDevicesUser extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'id', 'user', 'device',
-    ];
+    protected $fillable = ["id", "user", "device"];
 
     /**
      * Todas va con sellado de tiempo.
@@ -65,7 +62,7 @@ class IotDevicesUser extends Model
     /**
      * Get the user that owns the iot device.
      */
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -73,7 +70,7 @@ class IotDevicesUser extends Model
     /**
      * Get the iot device that belongs to the user.
      */
-    public function device()
+    public function device(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(IotDevice::class);
     }

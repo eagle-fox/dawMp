@@ -1,154 +1,212 @@
 <?php
 
-namespace App\Controllers;
+namespace app\controllers;
 
-use App\Models\User;
+use app\models\client;
+use app\models\log;
+use app\models\user;
 use Exception;
+use Random\RandomException;
 
 class UsersController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Obtenemos una lista de todos los usuarios, incluyendo sus clientes.
+     * Solamente los administradores pueden ver todos los usuarios.
+     * @throws RandomException
      */
-    public function index()
+    public function index(): void
     {
+        if (!Utils::autenticate("ADMIN")) {
+            response()->json(["message" => "No tienes permisos para ver los usuarios"], 401,);
+            return;
+        }
+
         try {
-            $user = Utils::authenticateByToken();
-            if ($user && $user->rol == 'ADMIN') {
-                $users = User::all();
-                response()->json($users);
-            } else {
-                response()->json(['message' => 'No tienes permisos para ver los usuarios'], 401);
-            }
+            $currUser = Utils::getUserFromAutentication();
+            $currClient = Utils::getConnectedClient($currUser);
+            $users = User::query()->get();
+            $this->logAction($currUser, $currClient, "Viewed all users");
+            response()->json($users);
         } catch (Exception $e) {
-            $message = 'Error al mostrar los usuarios';
-            if (getenv('leaftools_dev')) {
-                $message .= ': ' . $e->getMessage();
+            if (getenv("LEAF_DEV_TOOLS")) {
+                response()->json(["message" => "Error al mostrar los usuarios: " . $e->getMessage()], 500,);
             }
-            response()->json(['message' => $message], 500);
+            response()->json(["message" => "Error al mostrar los usuarios"], 500);
         }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Para crear un usuario, se necesita ser administrador o no estar bloqueado por IP.
+     * @return void
      */
     public function store(): void
     {
+
+        /**
+         * if (!Utils::autenticate("ADMIN")) {
+         * $this->logAction("Unauthorized attempt to create a new user");
+         * response()->json(["message" => "No tienes permisos para crear un usuario"], 401,);
+         * return;
+         * }*/
+
         try {
-            $user = Utils::authenticateByToken();
-            if ($user && $user->rol == 'ADMIN') {
-                $newUser = new User;
-                $fields = $newUser->getFillable();
-                $requestData = request()->try($fields);
-
-                foreach ($requestData as $field => $value) {
-                    $newUser->$field = $value;
-                }
-
-                $newUser->token = Utils::generateToken();
-                $newUser->save();
-                response()->json($newUser);
-
-            } else {
-                response()->json(['message' => 'No tienes permisos para crear un usuario'], 401);
+            $currUser = Utils::getUserFromAutentication();
+            $currClient = Utils::getConnectedClient($currUser);
+            if ($currClient->locked===1) {
+                $this->logAction($currUser, $currClient, "Unauthorized attempt to create a new user");
+                response()->json(["message" => "No tienes permisos para crear un usuario"], 401,);
+                return;
             }
+
+            $newUser = new User();
+            $this->fillUserData($newUser);
+
         } catch (Exception $e) {
-            $this->response->json(['message' => 'Error al crear el usuario: motivo: ' . $e->getMessage()], 500);
+            /* Esta variable se manda por el docker-compose, en producción no vamos a darle muchos detalles al
+            usuario obviamente. */
+            $message = "Error al crear el usuario";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
+            }
+            response()->json(["message" => $message], 500);
         }
     }
 
     /**
-     * Display the specified resource.
+     * Aquí mostramos un usuario en específico, el administrador puede consultar cualquier usuario pero el usuario
+     * solamente puede ver su información para recuperar por ejemplo, el TOKEN de sesión o ver donde ha iniciado.
+     * @param $id
+     * @return void
+     * @throws RandomException
      */
-    public function show($id)
+    public function show($id): void
     {
+        if (!Utils::autenticate("ADMIN") || !Utils::getUserFromAutentication()->id == $id) {
+            response()->json(["message" => "No tienes permisos para ver este usuario"], 401);
+            return;
+        }
         try {
-            $user = Utils::authenticateByToken();
-            if ($user && ($user->rol == 'ADMIN' || $user->id == $id)) {
-                $user = User::query()->find($id);
-                if ($user) {
-                    response()->json($user);
-                } else {
-                    response()->json(['message' => 'Usuario no encontrado'], 404);
-                }
+            $user = User::query()->find($id);
+            if ($user) {
+                response()->json($user);
             } else {
-                response()->json(['message' => 'No tienes permisos para ver este usuario'], 401);
+                response()->json(["message" => "Usuario no encontrado"], 404,);
             }
         } catch (Exception $e) {
-            $message = 'Error al mostrar el usuario';
-            if (getenv('leaftools_dev')) {
-                $message .= ': ' . $e->getMessage();
+            $message = "Error al mostrar el usuario";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
             }
-            response()->json(['message' => $message], 500);
+            response()->json(["message" => $message], 500);
         }
     }
 
     /**
      * Update the specified resource in storage.
+     * @throws RandomException
      */
-    public function update($id)
+    public function update($id): void
     {
+        if (!Utils::autenticate("ADMIN") || !Utils::getUserFromAutentication()->id == $id) {
+            response()->json(["message" => "No tienes permisos para actualizar este usuario"], 401);
+            return;
+        }
         try {
-            $user = Utils::authenticateByToken();
-            if ($user && ($user->rol == 'ADMIN' || $user->id == $id)) {
-                $userToUpdate = User::query()->find($id);
-                if ($userToUpdate) {
-                    $fields = $userToUpdate->getFillable();
-                    $requestData = request()->try($fields);
-
-                    $missingFields = array_diff($fields, array_keys($requestData));
-
-                    if ($_SERVER['REQUEST_METHOD'] === 'PUT' && !empty($missingFields)) {
-                        response()->json(['message' => 'Faltan campos requeridos para la actualización completa: ' . implode(', ', $missingFields)], 400);
-                        return;
-                    }
-
-                    foreach ($requestData as $field => $value) {
-                        $userToUpdate->$field = $value;
-                    }
-
-                    $userToUpdate->save();
-                    response()->json($userToUpdate);
-                } else {
-                    response()->json(['message' => 'Usuario no encontrado'], 404);
+            $user = User::query()->find($id);
+            if ($user instanceof User) {
+                if (\Leaf\Http\Request::getMethod() === "PUT") {
+                    // For PUT requests, we update all fields
+                    $this->fillUserData($user);
+                } else if (\Leaf\Http\Request::getMethod() === "PATCH") {
+                    // For PATCH requests, we update only the fields that are present in the request
+                    $this->fillUserData($user, false);
                 }
+                response()->json($user);
             } else {
-                response()->json(['message' => 'No tienes permisos para actualizar este usuario'], 401);
+                response()->json(["message" => "Usuario no encontrado"], 404,);
             }
         } catch (Exception $e) {
-            $message = 'Error al actualizar el usuario';
-            if (getenv('leaftools_dev')) {
-                $message .= ': ' . $e->getMessage();
+            $message = "Error al actualizar el usuario";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
             }
-            response()->json(['message' => $message], 500);
+            response()->json(["message" => $message], 500);
         }
     }
 
     /**
      * Remove the specified resource from storage.
+     * @throws RandomException
      */
-    public function destroy($id)
+    public function destroy($id): void
     {
+        if (!Utils::autenticate("ADMIN")) {
+            response()->json(["message" => "No tienes permisos para borrar este usuario"], 401);
+            return;
+        }
+        if (Utils::getUserFromAutentication()->id == $id) {
+            response()->json(["message" => "No puedes borrar tu propio usuario"], 401);
+            return;
+        }
+
         try {
-            $user = Utils::authenticateByToken();
-            if ($user && $user->rol == 'ADMIN') {
-                $user = User::query()->find($id);
-                if ($user) {
-                    $user->delete();
-                    response()->json(['message' => 'Usuario eliminado']);
-                } else {
-                    response()->json(['message' => 'Usuario no encontrado'], 404);
+            $user = User::query()->find($id);
+            $log = Log::query()->where("user", $id)->get();
+            $clients = Client::query()->where("client", $id)->get();
+            if ($user instanceof User) {
+                foreach ($log as $l) {
+                    $l->delete();
                 }
+                foreach ($clients as $c) {
+                    $c->delete();
+                }
+                $user->delete();
+                response()->json(["message" => "Usuario eliminado"]);
             } else {
-                response()->json(['message' => 'No tienes permisos para eliminar este usuario'], 401);
+                response()->json(["message" => "Usuario no encontrado"], 404,);
             }
         } catch (Exception $e) {
-            $message = 'Error al eliminar el usuario';
-            if (getenv('leaftools_dev')) {
-                $message .= ': ' . $e->getMessage();
+            $message = "Error al eliminar el usuario";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
             }
-            response()->json(['message' => $message], 500);
+            response()->json(["message" => $message], 500);
         }
     }
 
+    /**
+     * Log an action in the log table.
+     */
+    private function logAction(User $user, Client $client, string $msg): void
+    {
+        $log = new Log();
+        $log->user = $user->id;
+        $log->client = $client->id;
+        $log->message = $msg;
+        $log->save();
+    }
+
+    /**
+     * @param user $user
+     * @param bool $requireAllFields
+     * @return void
+     * @throws Exception
+     */
+    private function fillUserData(user $user, bool $requireAllFields = true): void
+    {
+        $fields = $user->getFillableFields();
+        foreach ($fields as $field) {
+            if (request()->get($field) !== null) {
+                if ($field === 'password') {
+                    $user->$field = hash("sha256", request()->get($field));
+                } else {
+                    $user->$field = request()->get($field);
+                }
+            } elseif ($requireAllFields) {
+                throw new Exception("Missing field: $field");
+            }
+        }
+        $user->save();
+    }
 }

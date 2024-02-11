@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\Client;
-use App\Models\User;
+use app\models\client;
+use app\models\user;
 use Illuminate\Database\Eloquent\Collection;
 use Random\RandomException;
 
@@ -31,8 +31,12 @@ class Utils
      */
     public static function getUserFromToken(string $token): User|false
     {
-        $user = User::query()->where("token", $token)->first();
-        return $user instanceof User ? $user : False;
+        $client = Client::query()->where("token", $token)->first();
+        if ($client instanceof Client && property_exists($client, 'client')) {
+            $user = User::query()->where("id", $client->client)->first();
+            return $user instanceof User ? $user : False;
+        }
+        return False;
     }
 
     /**
@@ -66,6 +70,10 @@ class Utils
      */
     public static function getUserFromAutentication(): User|false
     {
+        if (!request()->headers("Authorization")) {
+            self::handleAuthenticationError("No authentication header");
+            return False;
+        }
         $headers = request()->headers("Authorization");
         $parts = explode(" ", $headers);
 
@@ -88,6 +96,9 @@ class Utils
         return $user;
     }
 
+    /**
+     * @throws RandomException
+     */
     private static function authenticateWithBasic(string $credentials): User|false
     {
         $user = self::getUserFromBasic($credentials);

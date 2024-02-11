@@ -115,11 +115,11 @@ class UsersController extends Controller
         try {
             $user = User::query()->find($id);
             if ($user instanceof User) {
-                if (request()->isMethod('put')) {
-                    // For PUT requests, we expect all fields to be present
+                if (\Leaf\Http\Request::getMethod() === "PUT") {
+                    // For PUT requests, we update all fields
                     $this->fillUserData($user);
-                } elseif (request()->isMethod('patch')) {
-                    // For PATCH requests, we only update the provided fields
+                } else if (\Leaf\Http\Request::getMethod() === "PATCH") {
+                    // For PATCH requests, we update only the fields that are present in the request
                     $this->fillUserData($user, false);
                 }
                 response()->json($user);
@@ -193,7 +193,7 @@ class UsersController extends Controller
      * @return void
      * @throws Exception
      */
-    private function fillUserData(user $user, $requireAllFields = true): void
+    private function fillUserData(user $user, bool $requireAllFields = true): void
     {
         $fields = $user->getFillableFields();
         foreach ($fields as $field) {

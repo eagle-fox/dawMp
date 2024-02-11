@@ -8,84 +8,49 @@ namespace App\Models;
  * Class User
  *
  * @package App\Models
- */
-class user extends Model
-{
+ */class User extends Model {
 
-    /**
-     * The model's default values for attributes.
-     *
-     * @var array
-     */
     protected $attributes = [
-        'nombre' => '',
-        'nombre_segundo' => null,
-        'apellido_primero' => '',
-        'apellido_segundo' => '',
-        'email' => '',
-        'password' => '',
-        'rol' => Rol::GUEST,
-        'token' => null,
-        'locked' => false,
+        "nombre" => "",
+        "nombre_segundo" => "",
+        "apellido_primero" => "",
+        "apellido_segundo" => "",
+        "email" => "",
+        "password" => "",
+        "rol" => "USER",
     ];
 
-
-    /**
-     * Formato compatible con DateTime de MySQL.
-     *
-     * @var string
-     */
-    protected $dateFormat = 'Y-m-d H:i:s';
-
-    /**
-     * Exactamente el nombre de la tabla que se va a utilizar desde el DDL.
-     *
-     * @var string
-     */
-    protected $table = 'user';
-
-    /**
-     * La clave primaria, por defecto, es 'id'.
-     *
-     * @var int
-     */
-    protected $primaryKey = 'id';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
+    protected $dateFormat = "Y-m-d H:i:s";
+    protected $table = "user";
+    protected $primaryKey = "id";
     public $incrementing = true;
-
     /**
-     * Los atributos accesibles para el modelo en masa.
+     * The relations to eager load on every query.
      *
      * @var array
      */
+    protected $with = ['clients'];
+
+    /**
+     * Get the clients for the user.
+     */
+    public function clients()
+    {
+        return $this->hasMany(Client::class, 'client');
+    }
     protected $fillable = [
-        'id', 'nombre', 'nombre_segundo', 'apellido_primero', 'apellido_segundo', 'email', 'password', 'rol', 'token', 'locked',
+        "nombre",
+        "nombre_segundo",
+        "apellido_primero",
+        "apellido_segundo",
+        "email",
+        "password",
+        "rol",
     ];
 
-    public function getFillable()
+    public $timestamps = true;
+    public function getFillableFields(): array
     {
         return $this->fillable;
     }
-
-    /**
-     * Los atributos que deben ser ocultados para serialización etc.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-    ];
-
-    /**
-     * Todas va con sellado de tiempo.
-     *
-     * @var bool
-     */
-    public $timestamps = true;
-
 }

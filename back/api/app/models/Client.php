@@ -3,11 +3,6 @@
 namespace app\models;
 
 class Client extends Model {
-    public int $id;
-    public int $ipv4;
-    public string $token;
-    public bool $locked;
-    public int $client;
 
     protected $attributes = [
         "ipv4" => 0,

@@ -7,11 +7,6 @@ namespace app\models;
 use Leaf\Model;
 
 class Log extends Model {
-    public int $id;
-    public int $user;
-    public int $client;
-    public string $message;
-    public string $created;
 
     protected $attributes = [
         "user" => 0,

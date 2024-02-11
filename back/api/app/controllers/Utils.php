@@ -101,15 +101,20 @@ class Utils {
     }
 
 
-    public static function registerClient($user)
+    public static function registerClient(): void
     {
         $newClient = new Client();
-        $newClient->ipv4 = request()->getIp();
+        $newClient->ipv4 = ip2long(request()->getIp());
         $newClient->token = Utils::generateUUID();
 
-        // check if the header contains auth basic or bearer, on that case search the client and save it, if not, is
-        // null
+        error_log($newClient->ipv4);
+
         $user = Utils::getUserFromAutentication();
+
+        error_log($user->id);
+        error_log($user->email);
+        error_log($user->rol);
+
         if ($user instanceof User) {
             $newClient->client = $user->id;
         }

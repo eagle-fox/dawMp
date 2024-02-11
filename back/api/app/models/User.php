@@ -10,7 +10,6 @@ namespace App\Models;
  * @package App\Models
  */class User extends Model {
 
-
     protected $attributes = [
         "nombre" => "",
         "nombre_segundo" => "",

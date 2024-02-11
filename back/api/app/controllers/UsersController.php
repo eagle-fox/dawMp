@@ -14,15 +14,18 @@ class UsersController extends Controller
      */
     public function index(): void
     {
+        Utils::registerClient();
         if (Utils::autenticate("ADMIN")) {
             $this->logAction("Unauthorized attempt to view all users");
             response()->json(["message" => "No tienes permisos para ver los usuarios"], 401,);
         }
 
-
-
         try {
-            response()->json(User::query()->get());
+            $users = User::query()->get();
+            foreach ($users as $user) {
+                $user->clients = Client::query()->where('client', $user->id)->get();
+            }
+            response()->json($users);
             $this->logAction("Viewed all users");
         } catch (Exception $e) {
             $this->logAction("Error viewing all users: " . $e->getMessage());

@@ -22,6 +22,9 @@ CREATE TABLE IF NOT EXISTS `user`
     `updated_at`       datetime                     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
+INSERT INTO `user` (`nombre`, `apellido_primero`, `apellido_segundo`, `email`, `password`, `rol`)
+VALUES ('admin', 'admin', 'admin', 'admin@admin.com', 'admin', 'ADMIN');
+
 CREATE TABLE IF NOT EXISTS `clients`
 (
     `id`         int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -33,8 +36,19 @@ CREATE TABLE IF NOT EXISTS `clients`
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
-INSERT INTO `user` (`nombre`, `apellido_primero`, `apellido_segundo`, `email`, `password`, `rol`)
-VALUES ('admin', 'admin', 'admin', 'admin@admin.com', 'admin', 'ADMIN');
+/**
+    Vista para mostrar la IP en formato legible porque la estamos guardando como un int unsigned.
+ */
+CREATE VIEW `v_clients` AS
+SELECT
+    `id`,
+    INET_NTOA(`ipv4`) AS `ipv4`,
+    `token`,
+    `locked`,
+    `client`,
+    `created_at`,
+    `updated_at`
+FROM `clients`;
 
 CREATE TABLE IF NOT EXISTS `log`
 (

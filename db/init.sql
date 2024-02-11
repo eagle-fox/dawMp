@@ -54,9 +54,8 @@ CREATE TABLE IF NOT EXISTS `log`
 (
     `id`         int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `user`       int          NOT NULL,
-    `client`    int          NOT NULL,
+    `client`     int          NOT NULL,
     `message`    varchar(255) NOT NULL COMMENT 'Principalmente para control de acceso (no necesariamente los de Apache)',
-    `created`    datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`user`) REFERENCES `user` (`id`),

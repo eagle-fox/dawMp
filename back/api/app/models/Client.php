@@ -30,4 +30,14 @@ class Client extends Model {
     {
         return $this->belongsTo(User::class, 'client');
     }
+
+    /**
+     * Since the ipv4 is stored as an integer, we need to convert it to a string to be "clear" for the user.
+     * @param $value
+     * @return false|string
+     */
+    public function getIpv4Attribute($value)
+    {
+        return long2ip($value);
+    }
 }

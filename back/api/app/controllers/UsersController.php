@@ -53,7 +53,7 @@ class UsersController extends Controller
         try {
             $currUser = Utils::getUserFromAutentication();
             $currClient = Utils::getConnectedClient($currUser);
-            if ($currClient->locked) {
+            if ($currClient->locked===1) {
                 $this->logAction($currUser, $currClient, "Unauthorized attempt to create a new user");
                 response()->json(["message" => "No tienes permisos para crear un usuario"], 401,);
                 return;
@@ -141,14 +141,26 @@ class UsersController extends Controller
      */
     public function destroy($id): void
     {
-        if (!Utils::autenticate("ADMIN") || !Utils::getUserFromAutentication()->id == $id) {
+        if (!Utils::autenticate("ADMIN")) {
             response()->json(["message" => "No tienes permisos para borrar este usuario"], 401);
             return;
         }
+        if (Utils::getUserFromAutentication()->id == $id) {
+            response()->json(["message" => "No puedes borrar tu propio usuario"], 401);
+            return;
+        }
+
         try {
             $user = User::query()->find($id);
+            $log = Log::query()->where("user", $id)->get();
+            $clients = Client::query()->where("client", $id)->get();
             if ($user instanceof User) {
-                $user->clients()->delete();
+                foreach ($log as $l) {
+                    $l->delete();
+                }
+                foreach ($clients as $c) {
+                    $c->delete();
+                }
                 $user->delete();
                 response()->json(["message" => "Usuario eliminado"]);
             } else {
@@ -185,7 +197,7 @@ class UsersController extends Controller
     {
         $fields = $user->getFillableFields();
         foreach ($fields as $field) {
-            if (request()->has($field)) {
+            if (request()->get($field) !== null) {
                 if ($field === 'password') {
                     $user->$field = hash("sha256", request()->get($field));
                 } else {

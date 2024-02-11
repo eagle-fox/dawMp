@@ -2,9 +2,9 @@
 
 namespace app\controllers;
 
-use app\models\Client;
-use App\Models\Log;
-use App\Models\User;
+use app\models\client;
+use app\models\log;
+use app\models\user;
 use Exception;
 use Random\RandomException;
 
@@ -18,20 +18,20 @@ class UsersController extends Controller
     public function index(): void
     {
         if (!Utils::autenticate("ADMIN")) {
-            $this->logAction("Unauthorized attempt to view all users");
             response()->json(["message" => "No tienes permisos para ver los usuarios"], 401,);
             return;
         }
 
         try {
+            $currUser = Utils::getUserFromAutentication();
+            $currClient = Utils::getConnectedClient($currUser);
             $users = User::query()->get();
             foreach ($users as $user) {
                 $user->clients = Client::query()->where('client', $user->id)->get();
             }
+            $this->logAction($currUser, $currClient, "Viewed all users");
             response()->json($users);
-            $this->logAction("Viewed all users");
         } catch (Exception $e) {
-            $this->logAction("Error viewing all users: " . $e->getMessage());
             if (getenv("LEAF_DEV_TOOLS")) {
                 response()->json(["message" => "Error al mostrar los usuarios: " . $e->getMessage()], 500,);
             }
@@ -184,8 +184,13 @@ class UsersController extends Controller
     /**
      * Log an action in the log table.
      */
-    private function logAction(string $message): void
-{
+    private function logAction(User $user, Client $client, string $msg): void
+    {
+        $log = new Log();
+        $log->user = $user->id;
+        $log->client = $client->id;
+        $log->message = $msg;
+        $log->save();
     }
 
 }

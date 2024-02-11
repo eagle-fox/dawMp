@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Client;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Random\RandomException;
 
 class Utils
@@ -73,13 +74,22 @@ class Utils
         $headers = request()->headers("Authorization");
         $parts = explode(" ", $headers);
 
-        $token = "";
         if ($parts[0] == "Bearer") {
             $token = $parts[1];
             $user = self::getUserFromToken($token);
         } elseif ($parts[0] == "Basic") {
             $user = self::getUserFromBasic($parts[1]);
-            $token = Client::query()->where("client", $user->id)->first()->token;
+            $ip = request()->getIp();
+            $clients = self::getClientsFromUser($user);
+            if (count($clients) > 0) {
+                foreach ($clients as $client) {
+                    if ($client->ipv4 == $ip) {
+                        return $user;
+                    }
+                }
+            }
+            self::registerClient($user);
+
         } else {
             response()->json(["message" => "Invalid authentication method"], 401);
             return False;
@@ -90,32 +100,26 @@ class Utils
             return False;
         }
 
-        // At this point... if there is no token, we generate one...
-        $token = $token === "" ? self::generateUUID() : $token;
-
-        $clients = self::getClientsFromUser($user);
-        if (count($clients) > 0) {
-            foreach ($clients as $client) {
-                if ($client->token == $token || $client->ipv4 == request()->getIp()) {
-                    // Esto PUEDE ser lioso... cuando accedemos por getIp o setIp nos convierte automáticamente el
-                    // ip dir a unsigned int, pero si hiciéramos una query hay que hacer el ip2long dado que, no
-                    // recogemos un objeto formateado si no accedemos a RAW SQL (fuera de la vista!)
-                    $client->ipv4 = request()->getIp();
-                    $client->token = $token;
-                    $client->save();
-                    return $user;
-                }
-            }
-        }
-
-        self::registerClient($user);
-
         return False;
     }
 
-    public static function getClientsFromUser($user): \Illuminate\Database\Eloquent\Collection|array
+    public static function getClientsFromUser($user): Collection|array
     {
         return Client::query()->where("client", $user->id)->get();
+    }
+
+    /**
+     * @throws RandomException
+     */
+    public static function getConnectedClient(User $user): Client|false
+    {
+        $clients = self::getClientsFromUser($user);
+        foreach ($clients as $client) {
+            if ($client->ipv4 == request()->getIp() || $client->token == request()->headers("Authorization")) {
+                return $client;
+            }
+        }
+        return False;
     }
 
     /**

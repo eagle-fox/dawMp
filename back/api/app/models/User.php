@@ -26,7 +26,6 @@ namespace App\Models;
     public $incrementing = true;
 
     protected $fillable = [
-        "id",
         "nombre",
         "nombre_segundo",
         "apellido_primero",

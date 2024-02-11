@@ -12,7 +12,6 @@ class Log extends Model {
         "user" => 0,
         "client" => 0,
         "message" => "",
-        "created" => "",
     ];
 
     protected $dateFormat = "Y-m-d H:i:s";
@@ -21,11 +20,9 @@ class Log extends Model {
     public $incrementing = true;
 
     protected $fillable = [
-        "id",
         "user",
         "client",
         "message",
-        "created",
     ];
 
     public $timestamps = true;

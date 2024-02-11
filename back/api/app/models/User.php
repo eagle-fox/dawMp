@@ -24,7 +24,20 @@ namespace App\Models;
     protected $table = "user";
     protected $primaryKey = "id";
     public $incrementing = true;
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['clients'];
 
+    /**
+     * Get the clients for the user.
+     */
+    public function clients()
+    {
+        return $this->hasMany(Client::class, 'client');
+    }
     protected $fillable = [
         "nombre",
         "nombre_segundo",
@@ -36,4 +49,8 @@ namespace App\Models;
     ];
 
     public $timestamps = true;
+    public function getFillableFields(): array
+    {
+        return $this->fillable;
+    }
 }

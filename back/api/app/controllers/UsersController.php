@@ -26,9 +26,6 @@ class UsersController extends Controller
             $currUser = Utils::getUserFromAutentication();
             $currClient = Utils::getConnectedClient($currUser);
             $users = User::query()->get();
-            foreach ($users as $user) {
-                $user->clients = Client::query()->where('client', $user->id)->get();
-            }
             $this->logAction($currUser, $currClient, "Viewed all users");
             response()->json($users);
         } catch (Exception $e) {
@@ -42,44 +39,33 @@ class UsersController extends Controller
     /**
      * Para crear un usuario, se necesita ser administrador o no estar bloqueado por IP.
      * @return void
-     * @throws RandomException
      */
     public function store(): void
     {
 
         /**
-        if (!Utils::autenticate("ADMIN")) {
-            $this->logAction("Unauthorized attempt to create a new user");
-            response()->json(["message" => "No tienes permisos para crear un usuario"], 401,);
-            return;
-        }*/
+         * if (!Utils::autenticate("ADMIN")) {
+         * $this->logAction("Unauthorized attempt to create a new user");
+         * response()->json(["message" => "No tienes permisos para crear un usuario"], 401,);
+         * return;
+         * }*/
 
         try {
+            $currUser = Utils::getUserFromAutentication();
+            $currClient = Utils::getConnectedClient($currUser);
+            if ($currClient->locked) {
+                $this->logAction($currUser, $currClient, "Unauthorized attempt to create a new user");
+                response()->json(["message" => "No tienes permisos para crear un usuario"], 401,);
+                return;
+            }
+
             $newUser = new User();
-            $newUser->nombre = request()->get("nombre");
-            $newUser->nombre_segundo = request()->get("nombre_segundo");
-            $newUser->apellido_primero = request()->get("apellido_primero");
-            $newUser->apellido_segundo = request()->get("apellido_segundo");
-            $newUser->email = request()->get("email");
-            $newUser->password = hash("sha256", request()->get("password"));
-            $newUser->rol = request()->get("rol");
-            $newUser->save();
-
-            $newClient = new Client();
-            $newClient->ipv4 = request()->getIp();
-            $newClient->token = Utils::generateUUID();
-            $newClient->client = $newUser->id;
-            $newClient->save();
-
-            $newUser->clients = Client::query()->where('client', $newUser->id)->get();
-            response()->json($newUser);
-            $this->logAction("Created a new user");
+            $this->fillUserData($newUser);
 
         } catch (Exception $e) {
-            $this->logAction("Error creating a new user: " . $e->getMessage());
-            $message = "Error al crear el usuario";
             /* Esta variable se manda por el docker-compose, en producción no vamos a darle muchos detalles al
             usuario obviamente. */
+            $message = "Error al crear el usuario";
             if (getenv("LEAF_DEV_TOOLS")) {
                 $message .= ": " . $e->getMessage();
             }
@@ -108,10 +94,11 @@ class UsersController extends Controller
                 response()->json(["message" => "Usuario no encontrado"], 404,);
             }
         } catch (Exception $e) {
-            if (getenv("leaftools_dev")) {
-                response()->json(["message" => "Error al mostrar el usuario: " . $e->getMessage()], 500,);
+            $message = "Error al mostrar el usuario";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
             }
-            response()->json(["message" => "Error al mostrar el usuario"], 500);
+            response()->json(["message" => $message], 500);
         }
     }
 
@@ -128,26 +115,23 @@ class UsersController extends Controller
         try {
             $user = User::query()->find($id);
             if ($user instanceof User) {
-                $user->nombre = request()->get("nombre");
-                $user->nombre_segundo = request()->get("nombre_segundo");
-                $user->apellido_primero = request()->get("apellido_primero");
-                $user->apellido_segundo = request()->get("apellido_segundo");
-                $user->email = request()->get("email");
-                $user->password = hash("sha256", request()->get("password"));
-                $user->rol = request()->get("rol");
-                $user->save();
+                if (request()->isMethod('put')) {
+                    // For PUT requests, we expect all fields to be present
+                    $this->fillUserData($user);
+                } elseif (request()->isMethod('patch')) {
+                    // For PATCH requests, we only update the provided fields
+                    $this->fillUserData($user, false);
+                }
                 response()->json($user);
-                $this->logAction("Updated user with id: " . $id);
             } else {
                 response()->json(["message" => "Usuario no encontrado"], 404,);
-                $this->logAction("Failed to update user with id: " . $id . " - User not found");
             }
         } catch (Exception $e) {
-            $this->logAction("Error updating user with id: " . $id . " - " . $e->getMessage());
-            if (getenv("leaftools_dev")) {
-                response()->json(["message" => "Error al actualizar el usuario: " . $e->getMessage()], 500,);
+            $message = "Error al actualizar el usuario";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
             }
-            response()->json(["message" => "Error al actualizar el usuario"], 500);
+            response()->json(["message" => $message], 500);
         }
     }
 
@@ -163,21 +147,19 @@ class UsersController extends Controller
         }
         try {
             $user = User::query()->find($id);
-            if ($user) {
+            if ($user instanceof User) {
+                $user->clients()->delete();
                 $user->delete();
-                Client::query()->where('client', $id)->delete();
-                response()->json(["message" => "Usuario y clientes asociados eliminados correctamente"]);
-                $this->logAction("Deleted user with id: " . $id);
+                response()->json(["message" => "Usuario eliminado"]);
             } else {
                 response()->json(["message" => "Usuario no encontrado"], 404,);
-                $this->logAction("Failed to delete user with id: " . $id . " - User not found");
             }
         } catch (Exception $e) {
-            $this->logAction("Error deleting user with id: " . $id . " - " . $e->getMessage());
+            $message = "Error al eliminar el usuario";
             if (getenv("LEAF_DEV_TOOLS")) {
-                response()->json(["message" => "Error al eliminar el usuario: " . $e->getMessage()], 500,);
+                $message .= ": " . $e->getMessage();
             }
-            response()->json(["message" => "Error al eliminar el usuario"], 500);
+            response()->json(["message" => $message], 500);
         }
     }
 
@@ -193,4 +175,26 @@ class UsersController extends Controller
         $log->save();
     }
 
+    /**
+     * @param user $user
+     * @param bool $requireAllFields
+     * @return void
+     * @throws Exception
+     */
+    private function fillUserData(user $user, $requireAllFields = true): void
+    {
+        $fields = $user->getFillableFields();
+        foreach ($fields as $field) {
+            if (request()->has($field)) {
+                if ($field === 'password') {
+                    $user->$field = hash("sha256", request()->get($field));
+                } else {
+                    $user->$field = request()->get($field);
+                }
+            } elseif ($requireAllFields) {
+                throw new Exception("Missing field: $field");
+            }
+        }
+        $user->save();
+    }
 }

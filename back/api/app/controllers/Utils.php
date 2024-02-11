@@ -77,8 +77,20 @@ class Utils
         if ($parts[0] == "Bearer") {
             $token = $parts[1];
             $user = self::getUserFromToken($token);
+            if (!$user) {
+                if (getenv("LEAF_DEV_TOOLS")) {
+                    response()->json(["message" => "Invalid credentials"], 401);
+                }
+                return False;
+            }
         } elseif ($parts[0] == "Basic") {
             $user = self::getUserFromBasic($parts[1]);
+            if (!$user) {
+                if (getenv("LEAF_DEV_TOOLS")) {
+                    response()->json(["message" => "Invalid credentials"], 401);
+                }
+                return False;
+            }
             $ip = request()->getIp();
             $clients = self::getClientsFromUser($user);
             if (count($clients) > 0) {
@@ -89,14 +101,10 @@ class Utils
                 }
             }
             self::registerClient($user);
+            return $user;
 
         } else {
-            response()->json(["message" => "Invalid authentication method"], 401);
-            return False;
-        }
-
-        if (!$user) {
-            // UNAUTHORIZED
+            response()->json(["message" => "Unsupported authentication method"], 401);
             return False;
         }
 
@@ -109,7 +117,6 @@ class Utils
     }
 
     /**
-     * @throws RandomException
      */
     public static function getConnectedClient(User $user): Client|false
     {

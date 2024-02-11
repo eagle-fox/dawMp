@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `clients`
     `ipv4`       int UNSIGNED NOT NULL COMMENT 'https://shorturl.at/cdGZ2',
     `token`      char(36)     NOT NULL COMMENT '128 bits UUID (RFC 4122)',
     `locked`     boolean      NOT NULL DEFAULT FALSE,
-    `client`     int          REFERENCES `user` (`id`),
+    `client`     int REFERENCES `user` (`id`),
     `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
@@ -40,14 +40,13 @@ CREATE TABLE IF NOT EXISTS `clients`
     Vista para mostrar la IP en formato legible porque la estamos guardando como un int unsigned.
  */
 CREATE VIEW `v_clients` AS
-SELECT
-    `id`,
-    INET_NTOA(`ipv4`) AS `ipv4`,
-    `token`,
-    `locked`,
-    `client`,
-    `created_at`,
-    `updated_at`
+SELECT `id`,
+       INET_NTOA(`ipv4`) AS `ipv4`,
+       `token`,
+       `locked`,
+       `client`,
+       `created_at`,
+       `updated_at`
 FROM `clients`;
 
 CREATE TABLE IF NOT EXISTS `log`
@@ -61,6 +60,23 @@ CREATE TABLE IF NOT EXISTS `log`
     FOREIGN KEY (`user`) REFERENCES `user` (`id`),
     FOREIGN KEY (`client`) REFERENCES `clients` (`id`)
 ) ENGINE = InnoDB;
+
+/**
+  Vista para mostrar el nombre del usuario y el cliente en lugar de sus ids con formato "humano"
+ */
+
+CREATE VIEW `v_log` AS
+SELECT `log`.`id`,
+       `user`.`nombre`             AS `usuario`,
+       INET_NTOA(`clients`.`ipv4`) AS `cliente`,
+       `log`.`message`,
+       `log`.`created_at`,
+       `log`.`updated_at`
+FROM `log`
+         JOIN `user` ON `log`.`user` = `user`.`id`
+         JOIN `clients` ON `log`.`client` = `clients`.`id`;
+
+
 
 CREATE TABLE IF NOT EXISTS `iot_devices`
 (
@@ -86,13 +102,13 @@ CREATE TABLE IF NOT EXISTS `iot_devices_user`
 
 CREATE TABLE IF NOT EXISTS `iot_data`
 (
-    `id`         int      NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `device`     int      NOT NULL,
+    `id`         int            NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `device`     int            NOT NULL,
     # `location`   POINT    NOT NULL,
     `latitude`   DECIMAL(10, 8) NOT NULL,
     `longitude`  DECIMAL(11, 8) NOT NULL,
-    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `created_at` datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     # SPATIAL INDEX `idx_location` (`location`),
     FOREIGN KEY (`device`) REFERENCES `iot_devices` (`id`)
 ) ENGINE = InnoDB;

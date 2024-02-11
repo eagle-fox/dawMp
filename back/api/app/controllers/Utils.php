@@ -6,7 +6,8 @@ use app\models\Client;
 use App\Models\User;
 use Random\RandomException;
 
-class Utils {
+class Utils
+{
 
     /**
      * For simplicity, we use a 32 character UUID as a token.
@@ -14,7 +15,8 @@ class Utils {
      * @return string
      * @throws RandomException
      */
-    public static function generateUUID($length = 32): string {
+    public static function generateUUID($length = 32): string
+    {
         // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
         $data = $data ?? random_bytes(16);
         assert(strlen($data) == 16);
@@ -27,64 +29,13 @@ class Utils {
     }
 
     /**
-     * Verify if the token is valid and the user has the required rol to access the endpoint
-     * Bearer Token is a token that is sent in the header of the request (the UUID)
-     * @param $token string
-     * @param $rol string
-     * @return bool
-     */
-    public static function authenticateWithBearerToken($token, $rol): bool {
-        $user = User::query()
-            ->where("token", $token)
-            ->first();
-        return $user instanceof User && $user->rol == $rol;
-    }
-
-    /**
-     * Verify if the credentials are valid and the user has the required rol to access the endpoint
-     * Basic Auth is a base64 encoded string with the email and password separated by a colon
-     * @param $credentials string
-     * @param $rol string
-     * @return bool
-     */
-    public static function authenticateWithBasicAuth($credentials, $rol): bool {
-        [$email, $password] = explode(":", base64_decode($credentials));
-        $user = User::query()
-            ->where("email", $email)
-            ->first();
-        return $user instanceof User && hash("sha256", $password) == $user->password && $user->rol == $rol;
-    }
-
-    /**
-     * Verify if the user has the required rol to access the endpoint
-     * By default, the rol is ADMIN during development stages
-     * @param string $rol
-     * @return bool
-     */
-    public static function autenticate(string $rol = "ADMIN"): bool {
-        $headers = request()->headers("Authorization");
-        if ($headers) {
-            $parts = explode(" ", $headers);
-            if (count($parts) == 2) {
-                if ($parts[0] == "Bearer") {
-                    return self::authenticateWithBearerToken($parts[1], $rol);
-                } elseif ($parts[0] == "Basic") {
-                    return self::authenticateWithBasicAuth($parts[1], $rol);
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * Get the user from the token
      * @param $token string
      * @return User|False
      */
-    public static function getUserFromToken(string $token): User | False {
-        $user = User::query()
-            ->where("token", $token)
-            ->first();
+    public static function getUserFromToken(string $token): User|false
+    {
+        $user = User::query()->where("token", $token)->first();
         return $user instanceof User ? $user : False;
     }
 
@@ -93,47 +44,79 @@ class Utils {
      * @param $credentials string
      * @return User|False
      */
-    public static function getUserFromBasic(string $credentials): User | False {
+    public static function getUserFromBasic(string $credentials): User|false
+    {
         [$email, $password] = explode(":", base64_decode($credentials));
-        $user = User::query()
-            ->where("email", $email)
-            ->first();
+        $user = User::query()->where("email", $email)->first();
         return $user instanceof User ? $user : False;
     }
 
     /**
-     * Get the user from the authentication header, dosen't matter if it's Bearer or Basic is handled outside.
-     * @return User|False
+     * @throws RandomException
      */
-    public static function getUserFromAutentication(): User | False {
-        $headers = request()->headers("Authorization");
-        if ($headers) {
-            $parts = explode(" ", $headers);
-            if (count($parts) == 2) {
-                if ($parts[0] == "Bearer") {
-                    return self::getUserFromToken($parts[1]);
-                } elseif ($parts[0] == "Basic") {
-                    return self::getUserFromBasic($parts[1]);
-                }
-            }
+    public static function autenticate($rol = "ADMIN"): bool
+    {
+        $user = self::getUserFromAutentication();
+        if ($user instanceof User) {
+            return $user->rol == $rol;
         }
         return False;
     }
 
     /**
-     * Verify if the IP is locked, IPs are stored as unsigned integers in the DB!
-     * @return bool
+     * Get the user from the authentication header, dosen't matter if it's Bearer or Basic is handled outside.
+     * @return User|False
+     * @throws RandomException
      */
-    public static function isIpLocked(): bool
+    public static function getUserFromAutentication(): User|false
     {
-        $ip = request()->getIp();
-        $client = Client::query()->where('ipv4', ip2long($ip))->first();
+        $headers = request()->headers("Authorization");
+        $parts = explode(" ", $headers);
 
-        if ($client instanceof Client) {
-            return $client->locked;
+        $token = "";
+        if ($parts[0] == "Bearer") {
+            $token = $parts[1];
+            $user = self::getUserFromToken($token);
+        } elseif ($parts[0] == "Basic") {
+            $user = self::getUserFromBasic($parts[1]);
+        } else {
+            response()->json(["message" => "Invalid authentication method"], 401);
+            return False;
         }
 
-        return false;
+        if (!$user) {
+            // UNAUTHORIZED
+            return False;
+        }
+
+        /**
+         * Obtenemos una lista de los tokenes activo, si su IP ha variado lo actualizamos,
+         * si no existe, lo creamos.
+         */
+        $clients = self::getClientsFromUser($user);
+        if (count($clients) > 0) {
+            foreach ($clients as $client) {
+                if ($client->token == $token) {
+                    $client->ipv4 = request()->getIp();
+                    $client->save();
+                    return $user;
+                }
+                if ($client->ipv4 == request()->getIp()) {
+                    $client->token = $token;
+                    $client->save();
+                    return $user;
+                }
+            }
+        }
+
+        self::registerClient($user);
+
+        return False;
+    }
+
+    public static function getClientsFromUser($user)
+    {
+        return Client::query()->where("client", $user->id)->get();
     }
 
     /**
@@ -141,20 +124,13 @@ class Utils {
      * Here the FK is the user id, if the user is not authenticated, the client is registered could be NULL
      * @throws RandomException
      */
-    public static function registerClient(): void
+    public static function registerClient($user): void
     {
         $newClient = new Client();
-        $newClient->ipv4 = ip2long(request()->getIp());
-        $newClient->token = Utils::generateUUID();
-
-        $user = Utils::getUserFromAutentication();
-
-        if ($user instanceof User) {
-            $newClient->client = $user->id;
-        } else {
-            $newClient->client = null;
-        }
-
+        $newClient->ipv4 = request()->getIp();
+        $newClient->token = self::generateUUID();
+        $newClient->client = $user->id;
         $newClient->save();
     }
+
 }

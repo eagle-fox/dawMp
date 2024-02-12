@@ -16,6 +16,5 @@ use Leaf\Factory as Base;
  * We have already initialized faker and the Str for you
  * which you can use on $this->faker and $this->str respectively
  */
-class Factory extends Base
-{
+class Factory extends Base {
 }

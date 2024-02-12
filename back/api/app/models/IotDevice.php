@@ -6,16 +6,15 @@ namespace App\Models;
 
 use Leaf\Model;
 
-class IotDevice extends Model
-{
+class IotDevice extends Model {
     /**
      * The model's default values for attributes.
      *
      * @var array
      */
     protected $attributes = [
-        'uuid' => '',
-        'token' => '',
+        "uuid" => "",
+        "token" => "",
     ];
 
     /**
@@ -23,21 +22,21 @@ class IotDevice extends Model
      *
      * @var string
      */
-    protected $dateFormat = 'Y-m-d H:i:s';
+    protected $dateFormat = "Y-m-d H:i:s";
 
     /**
      * Exactamente el nombre de la tabla que se va a utilizar desde el DDL.
      *
      * @var string
      */
-    protected $table = 'iot_devices';
+    protected $table = "iot_devices";
 
     /**
      * La clave primaria, por defecto, es 'id'.
      *
      * @var int
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = "id";
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -51,9 +50,7 @@ class IotDevice extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'id', 'uuid', 'token',
-    ];
+    protected $fillable = ["id", "uuid", "token"];
 
     /**
      * Todas va con sellado de tiempo.

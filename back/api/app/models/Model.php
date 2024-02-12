@@ -8,6 +8,5 @@ namespace App\Models;
  * The base model provides a space to set atrributes
  * that are common to all models
  */
-class Model extends \Leaf\Model
-{
+class Model extends \Leaf\Model {
 }

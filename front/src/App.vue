@@ -1,40 +1,60 @@
 <script>
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 
 export default {
   name: 'App',
   methods: {
 
-    createNewUserSession() {
+    createNewUserSession(userToken) {
 
-      const userData = {
-        firstName: 'Nuevo',
-        email: 'Usuario',
-        token: this.generateUUID()
-      };
+      // With the token of the user we must make the request to the
+      // API to obtain the information of the user, if the token is not
+      // registered we create a visitor session.
+
+      // API Request in developtment
+
+      if(!this.checkToken(userToken)){
+          return false
+      }
+
+      let userData = {
+        name: 'Unknow',
+        email: 'unknow@gmail.com',
+        role: 'unknow',
+        token: userToken
+      }
 
       this.$store.dispatch('createNewUserSession', userData)
           .then(() => {
-            console.log('Nueva userSession creada:', this.$store.getters.getUserSession);
+            console.log(this.$store.getters.getUserSession)
           })
           .catch(error => {
-            console.error('Error al crear la nueva userSession:', error);
-          });
+            console.error('Error al crear la nueva userSession:', error)
+          })
     },
-
-    // Only test function
-
-    generateUUID() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (Math.random() * 16) | 0,
-            v = c === 'x' ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      });
+    checkToken(token) {
+      const regex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+      return regex.test(token);
+    },
+    loadUserSessionCookie() {
+      if (Cookies.get('sessionCookie')) {
+        this.createNewUserSession(Cookies.get('sessionCookie'));
+      }else{
+        this.$store.dispatch('makeVisitorSession')
+            .then(() => {
+              console.log(this.$store.getters.getUserSession)
+            })
+            .catch(error => {
+              console.error('Error al crear la nueva userSession:', error)
+            })
+      }
     }
+
+
   },
   mounted() {
-    this.createNewUserSession();
-  }
+    this.loadUserSessionCookie()
+  },
 }
 
 </script>

@@ -1,5 +1,6 @@
 <?php
 
+use app\middlewares\AuthMiddleware;
 use App\Models\User;
 use App\Controllers\UsersController;
 
@@ -7,8 +8,9 @@ use App\Controllers\UsersController;
  * Todas las rutas REQUIEREN autenticación basada en Bearer token.
  */
 
+app()->use(new AuthMiddleware());
 // INDEX - Mostrar todos los usuarios
-app()->get("/users", "UsersController@index");
+app()->get("/users",['middleware' => 'auth', "UsersController@index"]);
 
 // STORE - Crear un nuevo usuario
 app()->post("/users", "UsersController@store");

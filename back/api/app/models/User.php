@@ -36,7 +36,7 @@ namespace App\Models;
      */
     public function clients()
     {
-        return $this->hasMany(Client::class, 'client');
+        return $this->hasMany(Client::class, 'user');
     }
     protected $fillable = [
         "nombre",

@@ -61,6 +61,20 @@ CREATE TABLE IF NOT EXISTS `log`
     FOREIGN KEY (`client`) REFERENCES `clients` (`id`)
 ) ENGINE = InnoDB;
 
+/** Autoclean */
+DELIMITER $$
+CREATE EVENT IF NOT EXISTS `delete_old_logs`
+ON SCHEDULE EVERY 1 HOUR
+DO
+    BEGIN
+        DECLARE `log_count` INT;
+        SELECT COUNT(*) INTO `log_count` FROM `log`;
+        IF `log_count` > 1024 THEN
+            DELETE FROM `log` ORDER BY `created_at` LIMIT 512;
+        END IF;
+    END$$
+DELIMITER ;
+
 /**
   Vista para mostrar el nombre del usuario y el cliente en lugar de sus ids con formato "humano"
  */
@@ -76,13 +90,10 @@ FROM `log`
          JOIN `user` ON `log`.`user` = `user`.`id`
          JOIN `clients` ON `log`.`client` = `clients`.`id`;
 
-
-
 CREATE TABLE IF NOT EXISTS `iot_devices`
 (
     `id`         int      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `uuid`       CHAR(36) NOT NULL UNIQUE COMMENT '128 bits UUID (RFC 4122)',
-    `token`      CHAR(64) NOT NULL UNIQUE COMMENT '256 bits token',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX `idx_uuid` (`uuid`) USING HASH COMMENT 'Sólo soporta igualdad'
@@ -112,3 +123,13 @@ CREATE TABLE IF NOT EXISTS `iot_data`
     # SPATIAL INDEX `idx_location` (`location`),
     FOREIGN KEY (`device`) REFERENCES `iot_devices` (`id`)
 ) ENGINE = InnoDB;
+
+/** If data is older than 30 days, delete it */
+DELIMITER $$
+CREATE EVENT IF NOT EXISTS `delete_old_iot_data`
+ON SCHEDULE EVERY 1 DAY
+DO
+    BEGIN
+        DELETE FROM `iot_data` WHERE `created_at` < DATE_SUB(NOW(), INTERVAL 30 DAY);
+    END$$
+DELIMITER ;

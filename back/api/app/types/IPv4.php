@@ -24,10 +24,15 @@ class IPv4 implements JsonSerializable
 
     public function jsonSerialize(): string
     {
-        return $this->__toString();
+        return $this->getHumanReadable();
     }
 
     public function __toString(): string
+    {
+        return $this->ipv4;
+    }
+
+    public function getHumanReadable(): string
     {
         return long2ip($this->ipv4);
     }

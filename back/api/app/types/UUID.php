@@ -2,11 +2,12 @@
 
 namespace app\types;
 
+use JsonSerializable;
 use Random\RandomException;
 
-class UUID
+class UUID implements JsonSerializable
 {
-    private $uuid;
+    private string $uuid;
 
     public function __construct($uuid = null)
     {
@@ -50,4 +51,8 @@ class UUID
         return $this->uuid;
     }
 
+    public function jsonSerialize(): string
+    {
+        return $this->uuid;
+    }
 }

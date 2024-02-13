@@ -18,7 +18,7 @@ use InvalidArgumentException;
 class MiddlewareBuilder
 {
     private UUID $bearerToken;
-    private IPv4 $ip;
+    private IPv4 $ipv4;
     private User $user;
     private Email $email;
     private Password $password;
@@ -36,24 +36,24 @@ class MiddlewareBuilder
     {
         $this->targetRol = $targetRol;
         $this->debug = getenv("LEAF_DEV_TOOLS") === "true";
-        $this->getHeaders();
-        $this->getAuthMethod();
-        $this->getCurrentIp();
-        $this->getUser();
-        $this->getUserToken();
-        $this->getClient();
+        $this->setHeaders();
+        $this->setAuthMethod();
+        $this->setCurrentIp();
+        $this->setCurrentUser();
+        $this->setUserToken();
+        $this->setClient();
         $this->checkRol();
     }
 
-    private function getCurrentIp()
+    private function setCurrentIp(): void
     {
-        $this->ip = new IPv4(app()->request()->getIp());
+        $this->ipv4 = new IPv4(app()->request()->getIp());
     }
 
     /**
      * @throws Exception
      */
-    private function getUser(): void
+    private function setCurrentUser(): void
     {
         switch ($this->authMethod) {
             case AuthMethods::BEARER:
@@ -89,7 +89,7 @@ class MiddlewareBuilder
     }
 
 
-    private function getHeaders(): void
+    private function setHeaders(): void
     {
         $buffer = app()->request()->headers("Authorization");
         if ($buffer) {
@@ -103,7 +103,7 @@ class MiddlewareBuilder
 
     }
 
-    private function getAuthMethod(): void
+    private function setAuthMethod(): void
     {
         $parts = explode(" ", $this->headers);
         if ($parts[0] == "Bearer") {
@@ -121,11 +121,11 @@ class MiddlewareBuilder
         }
     }
 
-    private function getUserToken(): void
+    private function setUserToken(): void
     {
-        $clients = Client::query()->where("user", $this->user->id);
+        $clients = Client::query()->where("user", $this->user->id)->get();
         foreach ($clients as $client) {
-            if ($client->ipv4 == $this->ip) {
+            if ($client->ipv4 == $this->ipv4) {
                 $this->bearerToken = $client->token;
                 return;
             }
@@ -133,28 +133,27 @@ class MiddlewareBuilder
         $this->bearerToken = new UUID();
     }
 
-    private function getClient(): void
+    private function setClient(): void
     {
-        $found = false;
-        $clients = Client::query()->where("user", $this->user->id)->get();
-        foreach ($clients as $client) {
-            if ($client->ipv4 == $this->ip) {
-                $this->client = $client;
-                $this->client->token = $this->bearerToken;
-                $this->client->save();
-                $found = true;
-            }
+        $client = Client::query()
+            ->where("user", $this->user->id)
+            ->where("ipv4", $this->ipv4)
+            ->where("token", $this->bearerToken)
+            ->first();
+
+        if ($client instanceof Client) {
+            $this->client = $client;
+            return;
         }
-        if (!$found) {
-            $this->registerClient();
-        }
+
+        $this->registerClient();
     }
 
     private function registerClient(): void
     {
         $this->client = new Client();
         $this->client->user = $this->user->id;
-        $this->client->ipv4 = $this->ip;
+        $this->client->ipv4 = $this->ipv4;
         $this->client->token = $this->bearerToken;
         $this->client->save();
     }

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\types\IPv4;
+use app\types\UUID;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Client extends Model
@@ -43,6 +44,16 @@ class Client extends Model
     public function setIpv4Attribute(IPv4 $ipv4): void
     {
         $this->attributes['ipv4'] = $ipv4;
+    }
+
+    public function getTokenAttribute($value): UUID
+    {
+        return new UUID($value);
+    }
+
+    public function setTokenAttribute(UUID $uuid): void
+    {
+        $this->attributes['token'] = $uuid;
     }
 
     public function setLockedAttribute($value)

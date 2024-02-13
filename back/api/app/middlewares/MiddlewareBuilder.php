@@ -90,8 +90,6 @@ class MiddlewareBuilder
                 break;
 
             default:
-                $this->log->message = "Unsupported authentication method";
-                $this->log->save();
                 throw new InvalidArgumentException("Unsupported authentication method");
         }
     }
@@ -104,9 +102,6 @@ class MiddlewareBuilder
             $this->headers = $buffer;
             return;
         }
-        $this->log = new Log();
-        $this->log->message = "No Authorization or unsupported header found";
-        $this->log->save();
         throw new InvalidArgumentException("No Authorization or unsupported header found");
 
     }

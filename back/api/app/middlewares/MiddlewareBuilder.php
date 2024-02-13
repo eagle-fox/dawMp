@@ -59,7 +59,10 @@ class MiddlewareBuilder
             }
             $this->user = $user->user;
         } elseif ($this->authMethod == AuthMethods::BASIC) {
-            $user = User::query()->where("email", $this->email)->first();
+            $user = User::query()
+                ->where("email", $this->email->getEmail())
+                ->where("password", $this->password->getHashedPassword())
+                ->first();
             if (!$user instanceof User) {
                 throw new Exception('User not found');
             }

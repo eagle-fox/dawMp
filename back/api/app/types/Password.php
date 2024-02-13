@@ -60,4 +60,10 @@ class Password
     {
         return $this->hashedPassword;
     }
+
+    public function __toString(): string
+    {
+        return $this->hashedPassword;
+    }
+
 }

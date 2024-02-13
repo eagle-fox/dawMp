@@ -38,4 +38,9 @@ class Email
         return $this->extension;
     }
 
+    public function getEmail(): string
+    {
+        return $this->localPart . '@' . $this->domain . '.' . $this->extension;
+    }
+
 }

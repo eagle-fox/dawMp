@@ -1,10 +1,3 @@
-<template>
-  <div>
-    <div ref="mapElement" style="height: 600px; width: 800px;"></div>
-    <button @click="changePos">Cambiar Posición</button>
-  </div>
-</template>
-
 <script>
 import { ref, onMounted, reactive } from 'vue';
 import L from 'leaflet';
@@ -21,6 +14,13 @@ export default {
       marker: null
     });
 
+    let state2 = reactive({
+      lat: 42.2406,
+      lon: -8.7207,
+      map: null,
+      marker: null
+    });
+
     onMounted(() => {
       const map = L.map(mapElement.value).setView([state.lat, state.lon], 30);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -28,10 +28,14 @@ export default {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
 
-      const marker = L.marker([state.lat, state.lon]).addTo(map).bindPopup('La prima del ricardo');
+      // Example for placing several markers on the map
+
+      const marker = L.marker([state.lat, state.lon]).addTo(map).bindPopup('Marker 1 ');
+      const marker2 = L.marker([state2.lat, state2.lon]).addTo(map).bindPopup('Marker 2');
+      
 
       state.map = map;
-      state.marker = marker;
+      state.markers = [marker, marker2]
     });
 
     const changePos = () => {
@@ -76,3 +80,46 @@ export default {
   },
 };
 </script>
+
+
+<template>
+  <div class="mt-4">
+    <div ref="mapElement" class="viewerMap"></div>
+
+    <div class="d-flex justify-content-center mt-4 buttonsSlayer">
+      <button class="btn btn-primary" @click="changePos">Cambiar Posición</button>
+    </div>
+  </div>
+</template>
+
+
+<style scoped>
+
+.viewerMap{
+  width: 600px;
+  height: 500px;
+
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 700px) {
+  .viewerMap{
+    width: 500px;
+    height: 350px;
+  }
+}
+
+
+@media screen and (max-width: 550px) {
+  .viewerMap{
+    width: 350px;
+    height: 300px;
+
+  }
+
+  .buttonsSlayer{
+    flex-direction: column;
+  }
+}
+
+</style>

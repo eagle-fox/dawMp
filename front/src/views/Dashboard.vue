@@ -1,12 +1,21 @@
-<script setup>
-import AnimalForm from "@/components/AnimalForm.vue";
+<script>
 import NavBar from "@/components/NavBar.vue";
+import Mapa from "@/components/Mapa.vue";
+
+export default {
+  name: "Dashboard",
+  components: {
+    NavBar,
+    Mapa
+  }
+}
+
 </script>
 
 <template>
   <NavBar></NavBar>
   <div class="d-flex justify-content-center align-items-center ">
-    <AnimalForm></AnimalForm>
+    <Mapa></Mapa>
   </div>
 </template>
 

@@ -10,6 +10,10 @@ class userSession {
         this.name = name;
         this.email = email;
         this.role = role
+
+        if(!this.#checkTokenFormat()){
+            token = null;
+        }
         this.token = token;
 
         userSession.#instance = this;
@@ -17,6 +21,10 @@ class userSession {
 
     getData() {
         return this.data;
+    }
+
+    #checkTokenFormat(token) {
+        return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(token);
     }
 
     setData(name, email,role ,token) {

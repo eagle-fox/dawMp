@@ -40,7 +40,7 @@ class MiddlewareBuilder
         $this->setAuthMethod();
         $this->setCurrentIp();
         $this->setCurrentUser();
-        $this->setUserToken();
+        $this->updateTokenPerIp();
         $this->setClient();
         $this->checkRol();
     }
@@ -57,11 +57,19 @@ class MiddlewareBuilder
     {
         switch ($this->authMethod) {
             case AuthMethods::BEARER:
-                $user = Client::query()->with('user')->where("token", $this->bearerToken)->first();
+                $this->readBearerToken();
+                $client = Client::query()->where("token", $this->bearerToken)->first();
+                if (!$client instanceof Client) {
+                    throw new Exception('Client not found');
+                }
+                $user = User::query()->where("id", $client->user)->first();
                 if (!$user instanceof User) {
                     throw new Exception('User not found');
                 }
-                $this->user = $user->user;
+                if ($user->locked) {
+                    throw new Exception('User is locked');
+                }
+                $this->user = $user;
                 break;
 
             case AuthMethods::BASIC:
@@ -121,7 +129,13 @@ class MiddlewareBuilder
         }
     }
 
-    private function setUserToken(): void
+    private function readBearerToken():void
+    {
+        $parts = explode(" ", $this->headers);
+        $this->bearerToken = new UUID($parts[1]);
+    }
+
+    private function updateTokenPerIp(): void
     {
         $clients = Client::query()->where("user", $this->user->id)->get();
         foreach ($clients as $client) {

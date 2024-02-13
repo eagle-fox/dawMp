@@ -16,14 +16,14 @@ CREATE TABLE IF NOT EXISTS `user`
     `apellido_primero` varchar(255)                 NOT NULL,
     `apellido_segundo` varchar(255)                 NOT NULL,
     `email`            varchar(255)                 NOT NULL UNIQUE,
-    `password`         varchar(255)                 NOT NULL,
+    `password`         char(64)                     NOT NULL,
     `rol`              enum ('ADMIN', 'USER','IOT') NOT NULL DEFAULT 'USER',
     `created_at`       datetime                     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`       datetime                     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
 INSERT INTO `user` (`nombre`, `apellido_primero`, `apellido_segundo`, `email`, `password`, `rol`)
-VALUES ('admin', 'admin', 'admin', 'admin@admin.com', 'admin', 'ADMIN');
+VALUES ('admin', 'admin', 'admin', 'admin@admin.com', SHA2('admin',256), 'ADMIN');
 
 CREATE TABLE IF NOT EXISTS `clients`
 (

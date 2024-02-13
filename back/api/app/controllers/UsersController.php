@@ -6,6 +6,7 @@ use app\middlewares\MiddlewareBuilder;
 use app\models\client;
 use app\models\log;
 use app\models\user;
+use app\types\Rol;
 use Exception;
 use Random\RandomException;
 
@@ -19,7 +20,7 @@ class UsersController extends Controller
     public function index(): void
     {
         try {
-            new MiddlewareBuilder();
+            new MiddlewareBuilder(Rol::ADMIN);
             $users = User::query()->get();
             response()->json($users);
         } catch (Exception $e) {

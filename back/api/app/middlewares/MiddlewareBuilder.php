@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace app\middlewares;
 
 use app\models\Client;
+use app\models\Log;
 use app\models\User;
 use app\types\AuthMethods;
 use app\types\Email;
@@ -26,6 +27,7 @@ class MiddlewareBuilder
     private AuthMethods $authMethod;
     private bool $debug;
     private string $headers;
+    private Log $log;
 
     /**
      * @throws Exception
@@ -40,6 +42,7 @@ class MiddlewareBuilder
         $this->getUser();
         $this->getUserToken();
         $this->getClient();
+        $this->checkRol();
     }
 
     private function getCurrentIp()
@@ -52,31 +55,52 @@ class MiddlewareBuilder
      */
     private function getUser(): void
     {
-        if ($this->authMethod == AuthMethods::BEARER) {
-            $user = Client::query()->where("token", $this->bearerToken)->first();
-            if (!$user instanceof User) {
-                throw new Exception('User not found');
-            }
-            $this->user = $user->user;
-        } elseif ($this->authMethod == AuthMethods::BASIC) {
-            $user = User::query()
-                ->where("email", $this->email->getEmail())
-                ->where("password", $this->password->getHashedPassword())
-                ->first();
-            if (!$user instanceof User) {
-                throw new Exception('User not found');
-            }
-            $this->user = $user;
+        switch ($this->authMethod) {
+            case AuthMethods::BEARER:
+                $user = Client::query()->with('user')->where("token", $this->bearerToken)->first();
+                if (!$user instanceof User) {
+                    throw new Exception('User not found');
+                }
+                $this->user = $user->user;
+                break;
+
+            case AuthMethods::BASIC:
+                $user = User::query()->where("email", $this->email->getEmail())->first();
+                if (!$user instanceof User) {
+                    throw new Exception('User not found');
+                }
+                if ($user->locked) {
+                    throw new Exception('User is locked');
+                }
+                if ($user->password != $this->password->getHashedPassword()) {
+                    if ($this->debug) {
+                        throw new Exception('Invalid password');
+                    }
+                    throw new Exception('Invalid email or password');
+                }
+                $this->user = $user;
+                break;
+
+            default:
+                $this->log->message = "Unsupported authentication method";
+                $this->log->save();
+                throw new InvalidArgumentException("Unsupported authentication method");
         }
     }
 
 
     private function getHeaders(): void
     {
-        $this->headers = app()->request()->headers("Authorization");
-        if (!$this->headers) {
-            throw new InvalidArgumentException("No Authorization header found");
+        $buffer = app()->request()->headers("Authorization");
+        if ($buffer) {
+            $this->headers = $buffer;
+            return;
         }
+        $this->log = new Log();
+        $this->log->message = "No Authorization or unsupported header found";
+        $this->log->save();
+        throw new InvalidArgumentException("No Authorization or unsupported header found");
+
     }
 
     private function getAuthMethod(): void
@@ -99,10 +123,10 @@ class MiddlewareBuilder
 
     private function getUserToken(): void
     {
-        $client = Client::query()->where("user", $this->user->id);
-        foreach ($client as $c) {
-            if ($c->ipv4 == $this->ip) {
-                $this->bearerToken = $c->token;
+        $clients = Client::query()->where("user", $this->user->id);
+        foreach ($clients as $client) {
+            if ($client->ipv4 == $this->ip) {
+                $this->bearerToken = $client->token;
                 return;
             }
         }
@@ -138,6 +162,19 @@ class MiddlewareBuilder
     public function build(): MiddlewareBuilder
     {
         return $this;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function checkRol(): void
+    {
+        if ($this->user->rol !== $this->targetRol) {
+            if ($this->debug) {
+                throw new Exception("Insufficient permissions: was required {$this->targetRol} but got {$this->user->rol}");
+            }
+            throw new Exception("Insufficient permissions");
+        }
     }
 
 }

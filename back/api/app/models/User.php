@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace app\models;
 
+use app\types\Rol;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -37,6 +38,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     public function clients(): HasMany
     {
         return $this->hasMany(Client::class, 'user');
+    }
+
+    public function setRolAttribute(Rol $rol): void
+    {
+        $this->attributes['rol'] = $rol->value;
+    }
+
+    public function getRolAttribute($value): Rol
+    {
+        return Rol::from($value);
     }
 
     protected $fillable = [

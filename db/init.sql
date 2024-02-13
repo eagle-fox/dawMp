@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `clients`
     `ipv4`       int UNSIGNED NOT NULL COMMENT 'https://shorturl.at/cdGZ2',
     `token`      char(36)     NOT NULL COMMENT '128 bits UUID (RFC 4122)',
     `locked`     boolean      NOT NULL DEFAULT FALSE,
-    `user`     int REFERENCES `user` (`id`),
+    `user`       int REFERENCES `user` (`id`),
     `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
@@ -52,8 +52,8 @@ FROM `clients`;
 CREATE TABLE IF NOT EXISTS `log`
 (
     `id`         int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `user`       int          NOT NULL,
-    `client`     int          NOT NULL,
+    `user`       int          ,
+    `client`     int          ,
     `message`    varchar(255) NOT NULL COMMENT 'Principalmente para control de acceso (no necesariamente los de Apache)',
     `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

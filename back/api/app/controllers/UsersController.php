@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\middlewares\MiddlewareBuilder;
 use app\models\client;
 use app\models\log;
 use app\models\user;
@@ -17,22 +18,16 @@ class UsersController extends Controller
      */
     public function index(): void
     {
-        if (!Utils::autenticate("ADMIN")) {
-            response()->json(["message" => "No tienes permisos para ver los usuarios"], 401,);
-            return;
-        }
-
         try {
-            $currUser = Utils::getUserFromAutentication();
-            $currClient = Utils::getConnectedClient($currUser);
+            new MiddlewareBuilder();
             $users = User::query()->get();
-            $this->logAction($currUser, $currClient, "Viewed all users");
             response()->json($users);
         } catch (Exception $e) {
+            $msg = "Error al mostrar los usuarios";
             if (getenv("LEAF_DEV_TOOLS")) {
-                response()->json(["message" => "Error al mostrar los usuarios: " . $e->getMessage()], 500,);
+                $msg .= ": " . $e->getMessage();
             }
-            response()->json(["message" => "Error al mostrar los usuarios"], 500);
+            response()->json(["message" => $msg], 500);
         }
     }
 

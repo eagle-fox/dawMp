@@ -1,8 +1,8 @@
 <?php
-
 declare(strict_types=1);
+namespace app\models;
 
-namespace App\Models;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class User
@@ -34,10 +34,11 @@ namespace App\Models;
     /**
      * Get the clients for the user.
      */
-    public function clients()
+    public function clients(): HasMany
     {
-        return $this->hasMany(Client::class, 'client');
+        return $this->hasMany(Client::class, 'user');
     }
+
     protected $fillable = [
         "nombre",
         "nombre_segundo",

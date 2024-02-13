@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `clients`
     `ipv4`       int UNSIGNED NOT NULL COMMENT 'https://shorturl.at/cdGZ2',
     `token`      char(36)     NOT NULL COMMENT '128 bits UUID (RFC 4122)',
     `locked`     boolean      NOT NULL DEFAULT FALSE,
-    `client`     int REFERENCES `user` (`id`),
+    `user`     int REFERENCES `user` (`id`),
     `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
@@ -44,7 +44,7 @@ SELECT `id`,
        INET_NTOA(`ipv4`) AS `ipv4`,
        `token`,
        `locked`,
-       `client`,
+       `user`,
        `created_at`,
        `updated_at`
 FROM `clients`;

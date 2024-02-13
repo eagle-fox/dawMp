@@ -11,7 +11,7 @@ class Client extends Model
         "ipv4"   => 0,
         "token"  => "",
         "locked" => false,
-        "client" => 0,
+        "user" => 0,
     ];
 
     protected $dateFormat = "Y-m-d H:i:s";
@@ -24,14 +24,14 @@ class Client extends Model
         "ipv4",
         "token",
         "locked",
-        "client",
+        "user",
     ];
 
     public $timestamps = true;
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'client');
+        return $this->belongsTo(User::class, 'user');
     }
 
     /**

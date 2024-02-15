@@ -20,7 +20,7 @@ const i18n = createI18n({
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 
-import userSession from './assets/userSession.js'
+import userSession from './assets/js/userSession.js'
 
 
 const app = createApp(App)

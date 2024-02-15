@@ -43,6 +43,15 @@ services:
       'composer update && apache2-foreground'
     ]
 
+  phpdoc:
+    container_name: fox-phpdoc
+    image: phpdoc/phpdoc
+    volumes:
+      - './back/api/app:/data'
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+
   mysql:
     container_name: fox-mysql
     hostname: mysql.fox

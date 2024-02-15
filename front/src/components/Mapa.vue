@@ -25,7 +25,7 @@ export default {
       const map = L.map(mapElement.value).setView([state.lat, state.lon], 30);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">FBI</a>'
       }).addTo(map);
 
       // Example for placing several markers on the map

@@ -1,8 +1,10 @@
 <?php
-
 declare(strict_types=1);
+namespace app\models;
 
-namespace App\Models;
+use app\types\Rol;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use InvalidArgumentException;
 
 /**
  * Class User
@@ -34,10 +36,37 @@ namespace App\Models;
     /**
      * Get the clients for the user.
      */
-    public function clients()
+    public function clients(): HasMany
     {
-        return $this->hasMany(Client::class, 'client');
+        return $this->hasMany(Client::class, 'user');
     }
+
+    public function setRolAttribute($rol)
+    {
+        if (is_string($rol)) {
+            $rol = Rol::from($rol);
+        }
+
+        if (!$rol instanceof Rol) {
+            throw new InvalidArgumentException('Invalid type for rol');
+        }
+
+        $this->attributes['rol'] = $rol;
+    }
+
+    public function getRolAttribute($rol)
+    {
+        if ($rol instanceof Rol) {
+            $rol = $rol->getValue(); // Assuming Rol has a getValue() method that returns the string representation
+        }
+
+        if (!is_string($rol)) {
+            throw new InvalidArgumentException('Invalid type for rol');
+        }
+
+        return Rol::from($rol);
+    }
+
     protected $fillable = [
         "nombre",
         "nombre_segundo",

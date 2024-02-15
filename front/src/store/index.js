@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import userSession from '../assets/userSession';
+import userSession from '../assets/js/userSession';
 
 const store = createStore({
     mutations: {

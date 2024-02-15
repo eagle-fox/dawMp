@@ -1,9 +1,6 @@
 bun.lockb
-front/bun.lockb
 .env
 vendor
-httpRequests
-**/httpRequests
 # Created by https://www.toptal.com/developers/gitignore/api/vue,vuejs,laravel,phpstorm,visualstudiocode,intellij,webstorm+all,go,goland
 # Edit at https://www.toptal.com/developers/gitignore?templates=vue,vuejs,laravel,phpstorm,visualstudiocode,intellij,webstorm+all,go,goland
 
@@ -412,3 +409,4 @@ dist/
 
 # End of https://www.toptal.com/developers/gitignore/api/vue,vuejs,laravel,phpstorm,visualstudiocode,intellij,webstorm+all,go,goland
 /chema/output/
+/back/api/app/.phpdoc/

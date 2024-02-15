@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\types\IPv4;
+use app\types\UUID;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Client extends Model
@@ -11,7 +13,7 @@ class Client extends Model
         "ipv4"   => 0,
         "token"  => "",
         "locked" => false,
-        "client" => 0,
+        "user" => 0,
     ];
 
     protected $dateFormat = "Y-m-d H:i:s";
@@ -24,29 +26,34 @@ class Client extends Model
         "ipv4",
         "token",
         "locked",
-        "client",
+        "user",
     ];
 
     public $timestamps = true;
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'client');
+        return $this->belongsTo(User::class, 'user');
     }
 
-    /**
-     * Since the ipv4 is stored as an integer, we need to convert it to a string to be "clear" for the user.
-     * @param $value
-     * @return false|string
-     */
-    public function getIpv4Attribute($value)
+    public function getIpv4Attribute($value): IPv4
     {
-        return long2ip($value);
+        return new IPv4($value);
     }
 
-    public function setIpv4Attribute($value)
+    public function setIpv4Attribute(IPv4 $ipv4): void
     {
-        $this->attributes['ipv4'] = ip2long($value);
+        $this->attributes['ipv4'] = $ipv4;
+    }
+
+    public function getTokenAttribute($value): UUID
+    {
+        return new UUID($value);
+    }
+
+    public function setTokenAttribute(UUID $uuid): void
+    {
+        $this->attributes['token'] = $uuid;
     }
 
     public function setLockedAttribute($value)

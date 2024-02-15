@@ -4,9 +4,10 @@ RUN --mount=type=cache,target=/var/cache/apt apt-get update && apt-get install -
     libzip-dev \
     wget \
     git \
-    unzip
+    unzip \
+    libsodium-dev
 RUN mount=type=cache,target='/usr/local/lib/php' && pecl install xdebug
-RUN docker-php-ext-install zip pdo pdo_mysql mysqli && docker-php-ext-enable zip pdo pdo_mysql mysqli
+RUN docker-php-ext-install zip pdo pdo_mysql mysqli sodium && docker-php-ext-enable zip sodium pdo pdo_mysql mysqli
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN ln -s /root/.composer/vendor/bin/leaf /usr/local/bin/leaf
 # If you have a custom PHP ini file you can uncomment this line

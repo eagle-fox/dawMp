@@ -8,6 +8,7 @@ use app\models\Log;
 use app\models\User;
 use app\types\Rol;
 use Exception;
+use Leaf\Http\Request;
 use Random\RandomException;
 
 class UsersController extends Controller
@@ -15,7 +16,6 @@ class UsersController extends Controller
     /**
      * Obtenemos una lista de todos los usuarios, incluyendo sus clientes.
      * Solamente los administradores pueden ver todos los usuarios.
-     * @throws RandomException
      */
     public function index(): void
     {
@@ -38,7 +38,7 @@ class UsersController extends Controller
      */
     public function store(): void
     {
-        # new Middleware(Rol::GUEST);
+        $auth = new Middleware(Rol::GUEST);
 
         /**
          * if (!Utils::autenticate("ADMIN")) {
@@ -48,15 +48,17 @@ class UsersController extends Controller
          * }*/
 
         try {
-            $currUser = new User();
-            if ($currClient->locked===1) {
-                $this->logAction($currUser, $currClient, "Unauthorized attempt to create a new user");
-                response()->json(["message" => "No tienes permisos para crear un usuario"], 401,);
+            $currUser = $auth->getUser();
+            $currClient = $auth->getClient();
+            if ($currClient->locked === 1) {
+                $this->logAction($currUser, $currClient);
+                response()->json(["message" => "No tienes permisos para crear un usuario"], 401);
                 return;
             }
 
             $newUser = new User();
             $this->fillUserData($newUser);
+            response()->json($newUser);
 
         } catch (Exception $e) {
             /* Esta variable se manda por el docker-compose, en producción no vamos a darle muchos detalles al
@@ -70,105 +72,14 @@ class UsersController extends Controller
     }
 
     /**
-     * Aquí mostramos un usuario en específico, el administrador puede consultar cualquier usuario pero el usuario
-     * solamente puede ver su información para recuperar por ejemplo, el TOKEN de sesión o ver donde ha iniciado.
-     * @param $id
-     * @return void
-     * @throws RandomException
-     */
-    public function show($id): void
-    {
-        new Middleware(Rol::USER);
-
-        try {
-            $user = User::query()->find($id);
-            if ($user) {
-                response()->json($user);
-            } else {
-                response()->json(["message" => "Usuario no encontrado"], 404,);
-            }
-        } catch (Exception $e) {
-            $message = "Error al mostrar el usuario";
-            if (getenv("LEAF_DEV_TOOLS")) {
-                $message .= ": " . $e->getMessage();
-            }
-            response()->json(["message" => $message], 500);
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @throws RandomException
-     */
-    public function update($id): void
-    {
-        new Middleware(Rol::USER);
-
-        try {
-            $user = User::query()->find($id);
-            if ($user instanceof User) {
-                if (\Leaf\Http\Request::getMethod() === "PUT") {
-                    // For PUT requests, we update all fields
-                    $this->fillUserData($user);
-                } else if (\Leaf\Http\Request::getMethod() === "PATCH") {
-                    // For PATCH requests, we update only the fields that are present in the request
-                    $this->fillUserData($user, false);
-                }
-                response()->json($user);
-            } else {
-                response()->json(["message" => "Usuario no encontrado"], 404,);
-            }
-        } catch (Exception $e) {
-            $message = "Error al actualizar el usuario";
-            if (getenv("LEAF_DEV_TOOLS")) {
-                $message .= ": " . $e->getMessage();
-            }
-            response()->json(["message" => $message], 500);
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @throws RandomException
-     */
-    public function destroy($id): void
-    {
-        new Middleware(Rol::USER);
-
-        try {
-            $user = User::query()->find($id);
-            $log = Log::query()->where("user", $id)->get();
-            $clients = Client::query()->where("client", $id)->get();
-            if ($user instanceof User) {
-                foreach ($log as $l) {
-                    $l->delete();
-                }
-                foreach ($clients as $c) {
-                    $c->delete();
-                }
-                $user->delete();
-                response()->json(["message" => "Usuario eliminado"]);
-            } else {
-                response()->json(["message" => "Usuario no encontrado"], 404,);
-            }
-        } catch (Exception $e) {
-            $message = "Error al eliminar el usuario";
-            if (getenv("LEAF_DEV_TOOLS")) {
-                $message .= ": " . $e->getMessage();
-            }
-            response()->json(["message" => $message], 500);
-        }
-    }
-
-    /**
      * Log an action in the log table.
      */
-    private function logAction(User $user, Client $client, string $msg): void
+    private function logAction(User $user, Client $client): void
     {
         $log = new Log();
         $log->user = $user->id;
         $log->client = $client->id;
-        $log->message = $msg;
+        $log->message = "Unauthorized attempt to create a new user";
         $log->save();
     }
 
@@ -193,5 +104,89 @@ class UsersController extends Controller
             }
         }
         $user->save();
+    }
+
+    /**
+     * Aquí mostramos un usuario en específico, el administrador puede consultar cualquier usuario pero el usuario
+     * solamente puede ver su información para recuperar por ejemplo, el TOKEN de sesión o ver donde ha iniciado.
+     * @param $id
+     * @return void
+     * @throws RandomException|Exception
+     */
+    public function show($id): void
+    {
+        $auth = new Middleware(Rol::GUEST, $id);
+        try {
+            response()->json(User::query()->find($id));
+        } catch (Exception $e) {
+            $message = "Error al mostrar el usuario";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
+            }
+            response()->json(["message" => $message], 500);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     * @throws Exception
+     */
+    public function update($id): void
+    {
+        $auth = new Middleware(Rol::USER, $id);
+
+        try {
+            $user = User::query()->find($id);
+            if (Request::getMethod() === "PUT" && $user instanceof User) {
+                // For PUT requests, we update all fields
+                $this->fillUserData($user);
+            } else if (Request::getMethod() === "PATCH" && $user instanceof User) {
+                // For PATCH requests, we update only the fields that are present in the request
+                $this->fillUserData($user, false);
+                response()->json($user);
+            } else {
+                response()->json(["message" => "Usuario no encontrado"], 404);
+            }
+        } catch (Exception $e) {
+            $message = "Error al actualizar el usuario";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
+            }
+            response()->json(["message" => $message], 500);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @throws Exception
+     */
+    public function destroy($id): void
+    {
+        $auth = new Middleware(Rol::USER, $id);
+
+        try {
+            $user = User::query()->find($id);
+            if (!$user) {
+                response()->json(["message" => "Usuario no encontrado"], 404);
+                return;
+            }
+
+            $log = Log::query()->where("user", $id)->get();
+            $clients = Client::query()->where("user", $id)->get();
+            foreach ($log as $l) {
+                $l->delete();
+            }
+            foreach ($clients as $c) {
+                $c->delete();
+            }
+            $user->delete();
+            response()->json(["message" => "Usuario eliminado"]);
+        } catch (Exception $e) {
+            $message = "Error al eliminar el usuario";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
+            }
+            response()->json(["message" => $message], 500);
+        }
     }
 }

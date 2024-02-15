@@ -17,6 +17,15 @@ use InvalidArgumentException;
 
 class Middleware
 {
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getClient(): Client
+    {
+        return $this->client;
+    }
     private UUID $bearerToken;
     private IPv4 $ipv4;
     private User $user;
@@ -28,11 +37,12 @@ class Middleware
     private bool $debug;
     private string $headers;
     private Log $log;
+    private int $targetId;
 
     /**
      * @throws Exception
      */
-    public function __construct(Rol $targetRol = Rol::ADMIN)
+    public function __construct(Rol $targetRol = Rol::ADMIN, int $targetId = null)
     {
         $this->targetRol = $targetRol;
         $this->debug = getenv("LEAF_DEV_TOOLS") === "true";
@@ -43,6 +53,35 @@ class Middleware
         $this->updateTokenPerIp();
         $this->setClient();
         $this->checkRol();
+    }
+
+    private function setHeaders(): void
+    {
+        $buffer = app()->request()->headers("Authorization");
+        if ($buffer) {
+            $this->headers = $buffer;
+            return;
+        }
+        throw new InvalidArgumentException("No Authorization or unsupported header found");
+
+    }
+
+    private function setAuthMethod(): void
+    {
+        $parts = explode(" ", $this->headers);
+        if ($parts[0] == "Bearer") {
+            $this->bearerToken = new UUID($parts[1]);
+            $this->authMethod = AuthMethods::BEARER;
+        } elseif ($parts[0] == "Basic") {
+            $this->authMethod = AuthMethods::BASIC;
+            $credentials = base64_decode($parts[1]);
+            $credentials = explode(":", $credentials);
+            $this->email = new Email($credentials[0]);
+            $this->password = new Password($credentials[1]);
+
+        } else {
+            throw new InvalidArgumentException("Unsupported authentication method");
+        }
     }
 
     private function setCurrentIp(): void
@@ -94,37 +133,7 @@ class Middleware
         }
     }
 
-
-    private function setHeaders(): void
-    {
-        $buffer = app()->request()->headers("Authorization");
-        if ($buffer) {
-            $this->headers = $buffer;
-            return;
-        }
-        throw new InvalidArgumentException("No Authorization or unsupported header found");
-
-    }
-
-    private function setAuthMethod(): void
-    {
-        $parts = explode(" ", $this->headers);
-        if ($parts[0] == "Bearer") {
-            $this->bearerToken = new UUID($parts[1]);
-            $this->authMethod = AuthMethods::BEARER;
-        } elseif ($parts[0] == "Basic") {
-            $this->authMethod = AuthMethods::BASIC;
-            $credentials = base64_decode($parts[1]);
-            $credentials = explode(":", $credentials);
-            $this->email = new Email($credentials[0]);
-            $this->password = new Password($credentials[1]);
-
-        } else {
-            throw new InvalidArgumentException("Unsupported authentication method");
-        }
-    }
-
-    private function readBearerToken():void
+    private function readBearerToken(): void
     {
         $parts = explode(" ", $this->headers);
         $this->bearerToken = new UUID($parts[1]);
@@ -144,11 +153,7 @@ class Middleware
 
     private function setClient(): void
     {
-        $client = Client::query()
-            ->where("user", $this->user->id)
-            ->where("ipv4", $this->ipv4)
-            ->where("token", $this->bearerToken)
-            ->first();
+        $client = Client::query()->where("user", $this->user->id)->where("ipv4", $this->ipv4)->where("token", $this->bearerToken)->first();
 
         if ($client instanceof Client) {
             $this->client = $client;
@@ -167,16 +172,27 @@ class Middleware
         $this->client->save();
     }
 
-    public function build(): Middleware
-    {
-        return $this;
-    }
-
     /**
      * @throws Exception
      */
     private function checkRol(): void
     {
+        if ($this->targetRol === Rol::GUEST) {
+            return;
+        }
+
+        if ($this->targetRol === Rol::USER) {
+            if ($this->user->rol === Rol::ADMIN) {
+                return;
+            }
+            if ($this->targetId != null && $this->user->id === $this->targetId) {
+                return;
+            }
+            if ($this->debug) {
+                throw new Exception("Insufficient permissions: was required {$this->targetRol} but got {$this->user->rol}");
+            }
+            throw new Exception("Insufficient permissions");
+        }
 
         if ($this->user->rol !== $this->targetRol) {
             if ($this->debug) {
@@ -184,6 +200,11 @@ class Middleware
             }
             throw new Exception("Insufficient permissions");
         }
+    }
+
+    public function build(): Middleware
+    {
+        return $this;
     }
 
 }

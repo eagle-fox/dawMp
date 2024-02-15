@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\types\Rol;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use InvalidArgumentException;
 
 /**
  * Class User
@@ -40,14 +41,30 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
         return $this->hasMany(Client::class, 'user');
     }
 
-    public function setRolAttribute(Rol $rol): void
+    public function setRolAttribute($rol)
     {
-        $this->attributes['rol'] = $rol->value;
+        if (is_string($rol)) {
+            $rol = Rol::fromValue($rol);
+        }
+
+        if (!$rol instanceof Rol) {
+            throw new InvalidArgumentException('Invalid type for rol');
+        }
+
+        $this->attributes['rol'] = $rol;
     }
 
-    public function getRolAttribute($value): Rol
+    public function getRolAttribute($rol)
     {
-        return Rol::from($value);
+        if ($rol instanceof Rol) {
+            $rol = $rol->getValue(); // Assuming Rol has a getValue() method that returns the string representation
+        }
+
+        if (!is_string($rol)) {
+            throw new InvalidArgumentException('Invalid type for rol');
+        }
+
+        return Rol::from($rol);
     }
 
     protected $fillable = [

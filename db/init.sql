@@ -70,7 +70,12 @@ DO
         DECLARE `log_count` INT;
         SELECT COUNT(*) INTO `log_count` FROM `log`;
         IF `log_count` > 1024 THEN
-            DELETE FROM `log` ORDER BY `created_at` LIMIT 512;
+            CREATE TEMPORARY TABLE `temp_log` AS
+            SELECT `id` FROM `log` ORDER BY `created_at` LIMIT 512;
+
+            DELETE FROM `log` WHERE `id` IN (SELECT `id` FROM `temp_log`);
+
+            DROP TEMPORARY TABLE `temp_log`;
         END IF;
     END$$
 DELIMITER ;

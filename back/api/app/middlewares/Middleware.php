@@ -28,7 +28,7 @@ class Middleware
     private bool $debug;
     private string $headers;
     private Log $log;
-    private int $targetId;
+    private mixed $targetId;
 
     /**
      * @throws Exception
@@ -175,7 +175,7 @@ class Middleware
                 return;
 
             case Rol::USER:
-                if ($this->user->id === $this->targetId) {
+                if ($this->targetId != null && $this->user->id === $this->targetId) {
                     return;
                 }
                 break;

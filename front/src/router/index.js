@@ -22,6 +22,11 @@ const routes = [
     name: 'Dashboard',
     component: () => import('../views/Dashboard.vue'), // Lazy load component
   },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import('../views/Profile.vue'), // Lazy load component
+  }
 ]
 
 const router = createRouter({

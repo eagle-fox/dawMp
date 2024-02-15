@@ -36,6 +36,6 @@ class IotData extends Model
 
     public function device(): BelongsTo
     {
-        return $this->belongsTo(IotDevice::class);
+        return $this->belongsTo(IotDevice::class, 'device');
     }
 }

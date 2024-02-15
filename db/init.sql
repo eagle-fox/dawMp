@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `user`
 ) ENGINE = InnoDB;
 
 INSERT INTO `user` (`nombre`, `apellido_primero`, `apellido_segundo`, `email`, `password`, `rol`)
-VALUES ('admin', 'admin', 'admin', 'admin@admin.com', SHA2('admin',256), 'ADMIN');
+VALUES ('admin', 'admin', 'admin', 'admin@admin.com', SHA2('admin', 256), 'ADMIN');
 
 CREATE TABLE IF NOT EXISTS `clients`
 (
@@ -52,8 +52,8 @@ FROM `clients`;
 CREATE TABLE IF NOT EXISTS `log`
 (
     `id`         int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `user`       int          ,
-    `client`     int          ,
+    `user`       int,
+    `client`     int,
     `message`    varchar(255) NOT NULL COMMENT 'Principalmente para control de acceso (no necesariamente los de Apache)',
     `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -64,8 +64,8 @@ CREATE TABLE IF NOT EXISTS `log`
 /** Autoclean */
 DELIMITER $$
 CREATE EVENT IF NOT EXISTS `delete_old_logs`
-ON SCHEDULE EVERY 1 HOUR
-DO
+    ON SCHEDULE EVERY 1 HOUR
+    DO
     BEGIN
         DECLARE `log_count` INT;
         SELECT COUNT(*) INTO `log_count` FROM `log`;
@@ -99,21 +99,11 @@ CREATE TABLE IF NOT EXISTS `iot_devices`
 (
     `id`         int      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `uuid`       CHAR(36) NOT NULL UNIQUE COMMENT '128 bits UUID (RFC 4122)',
-    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX `idx_uuid` (`uuid`) USING HASH COMMENT 'Sólo soporta igualdad'
-
-) ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `iot_devices_user`
-(
-    `id`         int      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `user`       int      NOT NULL,
-    `device`     int      NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`user`) REFERENCES `user` (`id`),
-    FOREIGN KEY (`device`) REFERENCES `iot_devices` (`id`)
+    INDEX `idx_uuid` (`uuid`) USING HASH COMMENT 'Sólo soporta igualdad',
+    FOREIGN KEY (`user`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `iot_data`
@@ -132,8 +122,8 @@ CREATE TABLE IF NOT EXISTS `iot_data`
 /** If data is older than 30 days, delete it */
 DELIMITER $$
 CREATE EVENT IF NOT EXISTS `delete_old_iot_data`
-ON SCHEDULE EVERY 1 DAY
-DO
+    ON SCHEDULE EVERY 1 DAY
+    DO
     BEGIN
         DELETE FROM `iot_data` WHERE `created_at` < DATE_SUB(NOW(), INTERVAL 30 DAY);
     END$$

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace app\models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Leaf\Model;
 
 class IotDevice extends Model {
@@ -58,4 +59,9 @@ class IotDevice extends Model {
      * @var bool
      */
     public $timestamps = true;
+
+    public function data(): HasMany
+    {
+        return $this->hasMany(IotData::class, 'device');
+    }
 }

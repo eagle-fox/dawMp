@@ -2,10 +2,10 @@
 
 namespace app\controllers;
 
-use app\middlewares\MiddlewareBuilder;
-use app\models\client;
-use app\models\log;
-use app\models\user;
+use app\middlewares\Middleware;
+use app\models\Client;
+use app\models\Log;
+use app\models\User;
 use app\types\Rol;
 use Exception;
 use Random\RandomException;
@@ -20,7 +20,7 @@ class UsersController extends Controller
     public function index(): void
     {
         try {
-            new MiddlewareBuilder(Rol::ADMIN);
+            new Middleware(Rol::ADMIN);
             $users = User::query()->get();
             response()->json($users);
         } catch (Exception $e) {
@@ -38,6 +38,7 @@ class UsersController extends Controller
      */
     public function store(): void
     {
+        # new Middleware(Rol::GUEST);
 
         /**
          * if (!Utils::autenticate("ADMIN")) {
@@ -47,8 +48,7 @@ class UsersController extends Controller
          * }*/
 
         try {
-            $currUser = Utils::getUserFromAutentication();
-            $currClient = Utils::getConnectedClient($currUser);
+            $currUser = new User();
             if ($currClient->locked===1) {
                 $this->logAction($currUser, $currClient, "Unauthorized attempt to create a new user");
                 response()->json(["message" => "No tienes permisos para crear un usuario"], 401,);
@@ -78,10 +78,8 @@ class UsersController extends Controller
      */
     public function show($id): void
     {
-        if (!Utils::autenticate("ADMIN") || !Utils::getUserFromAutentication()->id == $id) {
-            response()->json(["message" => "No tienes permisos para ver este usuario"], 401);
-            return;
-        }
+        new Middleware(Rol::USER);
+
         try {
             $user = User::query()->find($id);
             if ($user) {
@@ -104,10 +102,8 @@ class UsersController extends Controller
      */
     public function update($id): void
     {
-        if (!Utils::autenticate("ADMIN") || !Utils::getUserFromAutentication()->id == $id) {
-            response()->json(["message" => "No tienes permisos para actualizar este usuario"], 401);
-            return;
-        }
+        new Middleware(Rol::USER);
+
         try {
             $user = User::query()->find($id);
             if ($user instanceof User) {
@@ -137,14 +133,7 @@ class UsersController extends Controller
      */
     public function destroy($id): void
     {
-        if (!Utils::autenticate("ADMIN")) {
-            response()->json(["message" => "No tienes permisos para borrar este usuario"], 401);
-            return;
-        }
-        if (Utils::getUserFromAutentication()->id == $id) {
-            response()->json(["message" => "No puedes borrar tu propio usuario"], 401);
-            return;
-        }
+        new Middleware(Rol::USER);
 
         try {
             $user = User::query()->find($id);

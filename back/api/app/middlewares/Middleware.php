@@ -15,7 +15,7 @@ use app\types\UUID;
 use Exception;
 use InvalidArgumentException;
 
-class MiddlewareBuilder
+class Middleware
 {
     private UUID $bearerToken;
     private IPv4 $ipv4;
@@ -167,7 +167,7 @@ class MiddlewareBuilder
         $this->client->save();
     }
 
-    public function build(): MiddlewareBuilder
+    public function build(): Middleware
     {
         return $this;
     }
@@ -177,6 +177,7 @@ class MiddlewareBuilder
      */
     private function checkRol(): void
     {
+
         if ($this->user->rol !== $this->targetRol) {
             if ($this->debug) {
                 throw new Exception("Insufficient permissions: was required {$this->targetRol} but got {$this->user->rol}");

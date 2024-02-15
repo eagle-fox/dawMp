@@ -17,15 +17,6 @@ use InvalidArgumentException;
 
 class Middleware
 {
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function getClient(): Client
-    {
-        return $this->client;
-    }
     private UUID $bearerToken;
     private IPv4 $ipv4;
     private User $user;
@@ -45,6 +36,7 @@ class Middleware
     public function __construct(Rol $targetRol = Rol::ADMIN, int $targetId = null)
     {
         $this->targetRol = $targetRol;
+        $this->targetId = $targetId;
         $this->debug = getenv("LEAF_DEV_TOOLS") === "true";
         $this->setHeaders();
         $this->setAuthMethod();
@@ -177,29 +169,29 @@ class Middleware
      */
     private function checkRol(): void
     {
-        if ($this->targetRol === Rol::GUEST) {
-            return;
+        switch ($this->targetRol) {
+            case Rol::ADMIN:
+            case Rol::GUEST:
+                return;
+
+            case Rol::USER:
+                if ($this->user->id === $this->targetId) {
+                    return;
+                }
+                break;
         }
 
-        if ($this->targetRol === Rol::USER) {
-            if ($this->user->rol === Rol::ADMIN) {
-                return;
-            }
-            if ($this->targetId != null && $this->user->id === $this->targetId) {
-                return;
-            }
-            if ($this->debug) {
-                throw new Exception("Insufficient permissions: was required {$this->targetRol} but got {$this->user->rol}");
-            }
-            throw new Exception("Insufficient permissions");
-        }
+        throw new Exception("Insufficient permissions: was required " . $this->targetRol->getName() . " but got " . $this->user->rol->getName());
+    }
 
-        if ($this->user->rol !== $this->targetRol) {
-            if ($this->debug) {
-                throw new Exception("Insufficient permissions: was required {$this->targetRol} but got {$this->user->rol}");
-            }
-            throw new Exception("Insufficient permissions");
-        }
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getClient(): Client
+    {
+        return $this->client;
     }
 
     public function build(): Middleware

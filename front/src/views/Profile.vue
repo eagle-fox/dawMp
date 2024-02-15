@@ -31,11 +31,14 @@ export default {
         },testConnectionApi(){
             const connectionApiInstance = new ConnectionApi();
             connectionApiInstance.testAxios();
+        },testAppendApi(){
+            const connectionApiInstance = new ConnectionApi();
+            connectionApiInstance.makeUser();
         }
     }
     ,mounted() {
         // this.checkValidationToken(this.$userSession.token);
-        this.testConnectionApi();
+        // this.testConnectionApi();
     }
 }
 
@@ -46,7 +49,7 @@ export default {
 
 
     <div>
-
+        <button class="btn btn-primary" @click="testAppendApi">Test Add User</button>
     </div>
 </template>
 

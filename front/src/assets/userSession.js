@@ -31,6 +31,10 @@ class userSession {
         this.name = name;
         this.email = email;
         this.role = role;
+        
+        if(!this.#checkTokenFormat()){
+            token = null;
+        }
         this.token = token;
     }
 
@@ -38,7 +42,6 @@ class userSession {
         if (!userSession.#instance) {
             userSession.#instance = new userSession();
         }
-
         return userSession.#instance;
     }
 }

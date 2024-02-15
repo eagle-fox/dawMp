@@ -8,14 +8,14 @@ export default {
     const mapElement = ref(null);
 
     let state = reactive({
-      lat: 40.416775,
-      lon: -3.703790,
+      lat: 40.2451186,
+      lon: -3.7020313,
       map: null,
       marker: null
     });
 
     let state2 = reactive({
-      lat: 42.2406,
+      lat: 40.2451541,
       lon: -8.7207,
       map: null,
       marker: null
@@ -30,15 +30,15 @@ export default {
 
       // Example for placing several markers on the map
 
-      const marker = L.marker([state.lat, state.lon]).addTo(map).bindPopup('Marker 1 ');
+      const marker = L.marker([state.lat, state.lon]).addTo(map).bindPopup('Casa del Puto del Carlos');
       const marker2 = L.marker([state2.lat, state2.lon]).addTo(map).bindPopup('Marker 2');
       
-
       state.map = map;
       state.markers = [marker, marker2]
     });
 
     const changePos = () => {
+      
       function obtenerPosicion(position){
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
@@ -108,7 +108,6 @@ export default {
     height: 350px;
   }
 }
-
 
 @media screen and (max-width: 550px) {
   .viewerMap{

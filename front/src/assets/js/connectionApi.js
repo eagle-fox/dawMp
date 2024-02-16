@@ -47,9 +47,10 @@ class ConnectionApi {
 
       const response = await axios.post(`${devConfig.apiServer}/users`, formData, { headers });
 
-      console.log('Axios works! Response:', response.data);
+      // console.log('Axios works! Response:', response.data.message);
+      return true;
     } catch (error) {
-      console.error('Axios error:', error.message);
+      console.error('Axios error. Response from server:', error.response.data.message);
     }
   }
 }

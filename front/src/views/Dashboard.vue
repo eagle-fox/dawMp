@@ -7,6 +7,14 @@ export default {
   components: {
     NavBar,
     Mapa
+  },
+  data() {
+    return {
+      puntos: [
+        { latitud: 40.416775, longitud: -5.703790, name: 'tobi' },
+        { latitud: 46.2406, longitud: -8.7207, name: 'sancho' }
+      ]
+    }
   }
 }
 
@@ -15,7 +23,7 @@ export default {
 <template>
   <NavBar></NavBar>
   <div class="d-flex justify-content-center align-items-center ">
-    <Mapa></Mapa>
+    <Mapa :puntos="puntos"/>
   </div>
 </template>
 

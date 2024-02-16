@@ -1,51 +1,78 @@
-import axios from "axios";
+import axios from 'axios'
+
+// Import configuration
+
+import config from '../config.json'
+let devConfig = config.devConfig
 
 class ConnectionApi {
+
   constructor() {
     if (!ConnectionApi.instance) {
-      this.axiosInstance = axios.create();
-      ConnectionApi.instance = this;
+      this.axiosInstance = axios.create()
+      ConnectionApi.instance = this
     }
 
-    return ConnectionApi.instance;
+    return ConnectionApi.instance
   }
 
   async testAxios() {
     try {
-      // Test Axios connection  
+      // Test Axios connection
 
-      const response = await this.axiosInstance.get('https://jsonplaceholder.typicode.com/todos/1');
-      console.log('Axios works! Response:', response.data);
+      const response = await this.axiosInstance.get(
+        'https://jsonplaceholder.typicode.com/todos/1',
+      )
+      console.log('Axios works! Response:', response.data)
+      console.log(devConfig.apiServer)
     } catch (error) {
-      console.error('Axios error:', error.message);
+      console.error('Axios error:', error.message)
     }
   }
 
-  async makeUser() {
+  async makeUser(userData) {
     try {
-      // Datos para enviar en el cuerpo de la solicitud
-      const formData = new FormData();
-      formData.append('nombre', 'Yeison');
-      formData.append('nombre_segundo', 'Rascado');
-      formData.append('apellido_primero', 'González');
-      formData.append('apellido_segundo', 'Rascado');
-      formData.append('email', 'theyeison@yeison.com');
-      formData.append('password', 'yeison');
-      formData.append('rol', 'ADMIN');
+      const formData = new FormData()
 
-      // Configuración de los encabezados
+      let userPropertiesRequired = [
+        'nombre',
+        'nombre_segundo',
+        'apellido_primero',
+        'apellido_segundo',
+        'email',
+        'password',
+      ]
+
+      userPropertiesRequired.forEach((key) => {
+        if (userData.hasOwnProperty(key)) {
+          formData.append(key, userData[key])
+        } else {
+          console.error(`Campo obligatorio '${key}' no proporcionado.`)
+        }
+      })
+      
+      formData.append('rol', 'ADMIN')
+
       const headers = {
-        'Authorization': 'Basic YWRtaW5AYWRtaW4uY29tOmFkbWlu',
+        Authorization: `Basic ${devConfig.authCode}`,
         'Content-Type': 'multipart/form-data',
-      };
+      }
 
-      const response = await axios.post('http://localhost:2003/users', formData, { headers });
+      const response = await axios.post(
+        `${devConfig.apiServer}/users`,
+        formData,
+        { headers },
+      )
 
-      console.log('Axios works! Response:', response.data);
+      // console.log('Axios works! Response:', response.data.message);
+      return true
     } catch (error) {
-      console.error('Axios error:', error.message);
+      console.error(
+        'Axios error. Response from server:',
+        error.response.data.message,
+      )
     }
   }
 }
 
-export default ConnectionApi;
+export default ConnectionApi

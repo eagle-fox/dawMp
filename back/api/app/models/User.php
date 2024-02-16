@@ -44,7 +44,7 @@ use InvalidArgumentException;
     public function setRolAttribute($rol)
     {
         if (is_string($rol)) {
-            $rol = Rol::fromValue($rol);
+            $rol = Rol::from($rol);
         }
 
         if (!$rol instanceof Rol) {

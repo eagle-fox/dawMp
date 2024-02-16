@@ -31,6 +31,9 @@ export default {
         },testConnectionApi(){
             const connectionApiInstance = new ConnectionApi();
             connectionApiInstance.testAxios();
+        },testAppendApi(){
+            const connectionApiInstance = new ConnectionApi();
+            connectionApiInstance.makeUser();
         }
     }
     ,mounted() {
@@ -44,10 +47,11 @@ export default {
 <template>
     <NavBar></NavBar>
 
-
     <div>
-
+        <button class="btn btn-primary" @click="testAppendApi">Test Add User</button>
     </div>
+
+    
 </template>
 
 <style>

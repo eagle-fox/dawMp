@@ -13,6 +13,7 @@ use Random\RandomException;
 
 class UsersController extends Controller
 {
+
     /**
      * Obtenemos una lista de todos los usuarios, incluyendo sus clientes.
      * Solamente los administradores pueden ver todos los usuarios.

@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace app\models;
 
+use app\types\UUID;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Leaf\Model;
 
+/**
+ * @property UUID $uuid
+ * @property User $user
+ * @property IotData $data
+ */
 class IotDevice extends Model {
     /**
      * The model's default values for attributes.
@@ -15,7 +22,7 @@ class IotDevice extends Model {
      */
     protected $attributes = [
         "uuid" => "",
-        "token" => "",
+        "user" => "",
     ];
 
     /**
@@ -51,7 +58,7 @@ class IotDevice extends Model {
      *
      * @var array
      */
-    protected $fillable = ["id", "uuid", "token"];
+    protected $fillable = ["uuid", "user"];
 
     /**
      * Todas va con sellado de tiempo.
@@ -60,8 +67,18 @@ class IotDevice extends Model {
      */
     public $timestamps = true;
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function data(): HasMany
     {
         return $this->hasMany(IotData::class, 'device');
+    }
+
+    public function getFillable(): array
+    {
+        return $this->fillable;
     }
 }

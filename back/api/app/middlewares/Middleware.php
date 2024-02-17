@@ -171,6 +171,7 @@ class Middleware
     {
         switch ($this->targetRol) {
             case Rol::ADMIN:
+            case Rol::IOT:
             case Rol::GUEST:
                 return;
 
@@ -179,6 +180,7 @@ class Middleware
                     return;
                 }
                 break;
+
         }
 
         throw new Exception("Insufficient permissions: was required " . $this->targetRol->getName() . " but got " . $this->user->rol->getName());

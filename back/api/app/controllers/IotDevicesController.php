@@ -52,7 +52,11 @@ class IotDevicesController extends Controller
             $ownership = app()->request()->get("user");
             $auth = new Middleware(Rol::USER, $ownership);
             $device = IotDevice::query()->find($id);
-            response()->json(["message" => "Device", "device" => $device]);
+            if ($device === null) {
+                response()->json(["message" => "Device not found"], 404);
+            } else {
+                response()->json(["message" => "Device found", "device" => $device]);
+            }
         } catch (Exception $e) {
             $msg = "Error al mostrar el dispositivo";
             if (getenv("LEAF_DEV_TOOLS")) {

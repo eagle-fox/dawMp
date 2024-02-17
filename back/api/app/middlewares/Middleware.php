@@ -179,6 +179,9 @@ class Middleware
                 if ($this->targetId != null && $this->user->id === $this->targetId) {
                     return;
                 }
+                if ($this->user->rol->equals(Rol::ADMIN)){
+                    return;
+                }
                 break;
 
         }

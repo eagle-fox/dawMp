@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace app\models;
 
+use app\types\Email;
+use app\types\Password;
 use app\types\Rol;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use InvalidArgumentException;
@@ -9,6 +11,14 @@ use InvalidArgumentException;
 /**
  * Class User
  *
+ * @property Rol $rol
+ * @property string $nombre
+ * @property string $nombre_segundo
+ * @property string $apellido_primero
+ * @property string $apellido_segundo
+ * @property Email $email
+ * @property Password $password
+ * @property Client[] $clients
  * @package App\Models
  */class User extends Model {
 

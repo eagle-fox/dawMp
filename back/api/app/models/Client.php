@@ -6,6 +6,15 @@ use app\types\IPv4;
 use app\types\UUID;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Class Client
+ * @property int $id
+ * @property IPv4 $ipv4
+ * @property UUID $token
+ * @property bool $locked
+ * @property User $user
+ * @package App\Models
+ */
 class Client extends Model
 {
 

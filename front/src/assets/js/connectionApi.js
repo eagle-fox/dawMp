@@ -71,6 +71,8 @@ class ConnectionApi {
         'Axios error. Response from server:',
         error.response.data.message,
       )
+
+      return error.response.data.message
     }
   }
 }

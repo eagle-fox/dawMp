@@ -1,7 +1,8 @@
 // Spanish language package
 let miscelaneusTextPackage = {
     welcome: 'Bienvenido',
-    home: 'Inicio'
+    home: 'Inicio',
+    loading: 'Cargando'
 }
 
 let langTextPackage = {

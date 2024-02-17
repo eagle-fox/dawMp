@@ -10,18 +10,18 @@ use InvalidArgumentException;
 
 /**
  * Class User
- *
- * @property Rol $rol
+ * @property int $id
  * @property string $nombre
  * @property string $nombre_segundo
  * @property string $apellido_primero
  * @property string $apellido_segundo
  * @property Email $email
  * @property Password $password
+ * @property Rol $rol
  * @property Client[] $clients
- * @property int $id
  * @package App\Models
- */class User extends Model {
+ */
+class User extends Model {
 
     protected $attributes = [
         "nombre" => "",

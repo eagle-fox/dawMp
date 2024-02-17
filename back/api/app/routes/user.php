@@ -13,6 +13,8 @@ app()->get("/users", "UsersController@index");
 // STORE - Crear un nuevo usuario
 app()->post("/users", "UsersController@store");
 
+app()->post("/users/login", "UsersController@login");
+
 // SHOW - Mostrar un usuario existente
 app()->get("/users/{id}", "UsersController@show");
 

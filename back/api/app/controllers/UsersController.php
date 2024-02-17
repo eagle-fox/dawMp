@@ -6,6 +6,7 @@ use app\middlewares\MiddlewareUser;
 use app\models\Client;
 use app\models\Log;
 use app\models\User;
+use app\types\IPv4;
 use app\types\Rol;
 use app\types\UUID;
 use Exception;
@@ -48,11 +49,11 @@ class UsersController extends Controller
 
             $client = new Client();
             $client->user = $newUser->id;
-            $client->ip = $auth->ipv4;
+            $client->ipv4 = $auth->ipv4;
             $client->token = new UUID();
             $client->save();
 
-            response()->json($newUser);
+            response()->json(["user" => $newUser, "client" => $client]);
 
         } catch (Exception $e) {
             /* Esta variable se manda por el docker-compose, en producción no vamos a darle muchos detalles al
@@ -107,13 +108,27 @@ class UsersController extends Controller
      * @return void
      * @throws RandomException|Exception
      */
-    public function show($id): void
+    public function show($id=null): void
     {
         try {
             $auth = new MiddlewareUser(Rol::USER, $id);
             response()->json(User::query()->find($id));
         } catch (Exception $e) {
             $message = "Error al mostrar el usuario";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
+            }
+            response()->json(["message" => $message], 500);
+        }
+    }
+
+    public function login(): void
+    {
+        try {
+            $auth = new MiddlewareUser(Rol::USER);
+            response()->json(["message" => "Bienvenido", "user" => $auth->user]);
+        } catch (Exception $e) {
+            $message = "Error al iniciar sesión";
             if (getenv("LEAF_DEV_TOOLS")) {
                 $message .= ": " . $e->getMessage();
             }

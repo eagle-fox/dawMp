@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Client
- *
+ * @property int $id
  * @property IPv4 $ipv4
  * @property UUID $token
  * @property bool $locked
  * @property User $user
- * @property IPv4 $ip
  * @package App\Models
  */
 class Client extends Model

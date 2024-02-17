@@ -19,10 +19,10 @@ class MiddlewareUser
 {
     private UUID $bearerToken;
     public IPv4 $ipv4;
-    private User $user;
+    public User $user;
     private Email $email;
     private Password $password;
-    private Client $client;
+    public Client $client;
     private Rol $targetRol;
     private AuthMethods $authMethod;
     private bool $debug;
@@ -38,12 +38,20 @@ class MiddlewareUser
         $this->targetRol = $targetRol;
         $this->targetId = $targetId;
         $this->debug = getenv("LEAF_DEV_TOOLS") === "true";
-        $this->setHeaders();
-        $this->setAuthMethod();
+
+        if ($targetRol != Rol::GUEST) {
+            $this->setHeaders();
+            $this->setAuthMethod();
+        }
+
         $this->setCurrentIp();
-        $this->setCurrentUser();
-        $this->updateTokenPerIp();
-        $this->setClient();
+
+        if ($this->targetRol != Rol::GUEST) {
+            $this->setCurrentUser();
+            $this->updateTokenPerIp();
+            $this->setClient();
+        }
+
         $this->checkRol();
     }
 
@@ -159,7 +167,7 @@ class MiddlewareUser
     {
         $this->client = new Client();
         $this->client->user = $this->user->id;
-        $this->client->ipv4 = $this->ipv4;
+        $this->client->ipv4 = new IPv4(app()->request()->getIp());
         $this->client->token = $this->bearerToken;
         $this->client->save();
     }

@@ -15,10 +15,10 @@ use app\types\UUID;
 use Exception;
 use InvalidArgumentException;
 
-class Middleware
+class MiddlewareUser
 {
     private UUID $bearerToken;
-    private IPv4 $ipv4;
+    public IPv4 $ipv4;
     private User $user;
     private Email $email;
     private Password $password;
@@ -171,10 +171,9 @@ class Middleware
     {
         switch ($this->targetRol) {
             case Rol::ADMIN:
-            case Rol::IOT:
+            // case Rol::IOT:
             case Rol::GUEST:
                 return;
-
             case Rol::USER:
                 if ($this->targetId != null && $this->user->id === $this->targetId) {
                     return;
@@ -183,9 +182,7 @@ class Middleware
                     return;
                 }
                 break;
-
         }
-
         throw new Exception("Insufficient permissions: was required " . $this->targetRol->getName() . " but got " . $this->user->rol->getName());
     }
 
@@ -199,7 +196,7 @@ class Middleware
         return $this->client;
     }
 
-    public function build(): Middleware
+    public function build(): MiddlewareUser
     {
         return $this;
     }

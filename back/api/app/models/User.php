@@ -19,6 +19,7 @@ use InvalidArgumentException;
  * @property Email $email
  * @property Password $password
  * @property Client[] $clients
+ * @property int $id
  * @package App\Models
  */class User extends Model {
 

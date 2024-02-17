@@ -10,16 +10,16 @@ USE `eagle-fox`;
 
 CREATE TABLE IF NOT EXISTS `user`
 (
-    `id`               int                          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `nombre`           varchar(255)                 NOT NULL,
-    `nombre_segundo`   varchar(255)                          DEFAULT NULL,
-    `apellido_primero` varchar(255)                 NOT NULL,
-    `apellido_segundo` varchar(255)                 NOT NULL,
-    `email`            varchar(255)                 NOT NULL UNIQUE,
-    `password`         char(64)                     NOT NULL,
-    `rol`              enum ('ADMIN', 'USER','IOT') NOT NULL DEFAULT 'USER',
-    `created_at`       datetime                     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at`       datetime                     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    `id`               int                    NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `nombre`           varchar(255)           NOT NULL,
+    `nombre_segundo`   varchar(255)                    DEFAULT NULL,
+    `apellido_primero` varchar(255)           NOT NULL,
+    `apellido_segundo` varchar(255)           NOT NULL,
+    `email`            varchar(255)           NOT NULL UNIQUE,
+    `password`         char(64)               NOT NULL,
+    `rol`              enum ('ADMIN', 'USER') NOT NULL DEFAULT 'USER',
+    `created_at`       datetime               NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`       datetime               NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
 INSERT INTO `user` (`nombre`, `apellido_primero`, `apellido_segundo`, `email`, `password`, `rol`)
@@ -97,12 +97,13 @@ FROM `log`
 
 CREATE TABLE IF NOT EXISTS `iot_devices`
 (
-    `id`         int      NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `uuid`       CHAR(36) NOT NULL UNIQUE COMMENT '128 bits UUID (RFC 4122)',
-    `user`       int      NOT NULL,
-    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX `idx_uuid` (`uuid`) USING HASH COMMENT 'Sólo soporta igualdad',
+    `id`         int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `token`      CHAR(36)     NOT NULL UNIQUE COMMENT '128 bits UUID (RFC 4122)',
+    `name`       varchar(255) NOT NULL,
+    `user`       int          NOT NULL,
+    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX `idx_token` (`token`) USING HASH COMMENT 'Sólo soporta igualdad',
     FOREIGN KEY (`user`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB;
 

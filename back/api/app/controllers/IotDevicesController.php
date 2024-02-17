@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\middlewares\Middleware;
+use app\middlewares\MiddlewareUser;
 use app\models\IotDevice;
 use app\types\Rol;
 use app\types\UUID;
@@ -14,7 +14,7 @@ class IotDevicesController extends Controller
     public function index(): void
     {
         try {
-            $auth = new Middleware(Rol::ADMIN);
+            $auth = new MiddlewareUser(Rol::ADMIN);
             $devices = IotDevice::query()->get();
             response()->json(["message" => "All devices", "devices" => $devices]);
         } catch (Exception $e) {
@@ -30,7 +30,7 @@ class IotDevicesController extends Controller
     {
         try {
             $ownership = app()->request()->get("user");
-            $auth = new Middleware(Rol::USER, $ownership);
+            $auth = new MiddlewareUser(Rol::USER, $ownership);
             $uuidIotDevice = new UUID(app()->request()->get("uuid"));
             $newDevice = new IotDevice();
             $newDevice->uuid = $uuidIotDevice;
@@ -50,7 +50,7 @@ class IotDevicesController extends Controller
     {
         try {
             $ownership = app()->request()->get("user");
-            $auth = new Middleware(Rol::USER, $ownership);
+            $auth = new MiddlewareUser(Rol::USER, $ownership);
             $device = IotDevice::query()->find($id);
             if ($device === null) {
                 response()->json(["message" => "Device not found"], 404);
@@ -70,7 +70,7 @@ class IotDevicesController extends Controller
     {
         try {
             $ownership = app()->request()->get("user");
-            $auth = new Middleware(Rol::USER, $ownership);
+            $auth = new MiddlewareUser(Rol::USER, $ownership);
             $device = IotDevice::query()->find($id);
             if ($device instanceof IotDevice) {
                 if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {

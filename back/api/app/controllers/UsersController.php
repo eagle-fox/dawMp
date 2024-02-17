@@ -2,11 +2,12 @@
 
 namespace app\controllers;
 
-use app\middlewares\Middleware;
+use app\middlewares\MiddlewareUser;
 use app\models\Client;
 use app\models\Log;
 use app\models\User;
 use app\types\Rol;
+use app\types\UUID;
 use Exception;
 use Leaf\Http\Request;
 use Random\RandomException;
@@ -21,7 +22,7 @@ class UsersController extends Controller
     public function index(): void
     {
         try {
-            $auth = new Middleware(Rol::ADMIN);
+            $auth = new MiddlewareUser(Rol::ADMIN);
             $users = User::query()->get();
             response()->json($users);
         } catch (Exception $e) {
@@ -41,9 +42,16 @@ class UsersController extends Controller
     {
 
         try {
-            $auth = new Middleware(Rol::GUEST);
+            $auth = new MiddlewareUser(Rol::GUEST);
             $newUser = new User();
             $this->fillUserData($newUser);
+
+            $client = new Client();
+            $client->user = $newUser->id;
+            $client->ip = $auth->ipv4;
+            $client->token = new UUID();
+            $client->save();
+
             response()->json($newUser);
 
         } catch (Exception $e) {
@@ -102,7 +110,7 @@ class UsersController extends Controller
     public function show($id): void
     {
         try {
-            $auth = new Middleware(Rol::USER, $id);
+            $auth = new MiddlewareUser(Rol::USER, $id);
             response()->json(User::query()->find($id));
         } catch (Exception $e) {
             $message = "Error al mostrar el usuario";
@@ -121,7 +129,7 @@ class UsersController extends Controller
     {
 
         try {
-            $auth = new Middleware(Rol::USER, $id);
+            $auth = new MiddlewareUser(Rol::USER, $id);
             $user = User::query()->find($id);
             if (Request::getMethod() === "PUT" && $user instanceof User) {
                 // For PUT requests, we update all fields
@@ -150,7 +158,7 @@ class UsersController extends Controller
     {
 
         try {
-            $auth = new Middleware(Rol::USER, $id);
+            $auth = new MiddlewareUser(Rol::USER, $id);
             $user = User::query()->find($id);
             if (!$user) {
                 response()->json(["message" => "Usuario no encontrado"], 404);

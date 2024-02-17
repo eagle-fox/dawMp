@@ -21,8 +21,9 @@ class IotDevice extends Model {
      * @var array
      */
     protected $attributes = [
-        "uuid" => "",
+        "token" => "",
         "user" => "",
+        "name" => "",
     ];
 
     /**
@@ -58,7 +59,7 @@ class IotDevice extends Model {
      *
      * @var array
      */
-    protected $fillable = ["uuid", "user"];
+    protected $fillable = ["uuid", "user", "name"];
 
     /**
      * Todas va con sellado de tiempo.
@@ -81,4 +82,15 @@ class IotDevice extends Model {
     {
         return $this->fillable;
     }
+
+    public function getTokenAttribute($value): UUID
+    {
+        return new UUID($value);
+    }
+
+    public function setTokenAttribute(UUID $uuid): void
+    {
+        $this->attributes['token'] = $uuid;
+    }
+
 }

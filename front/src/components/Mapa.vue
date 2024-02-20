@@ -35,11 +35,20 @@ export default {
           state.map = map
           state.markers.push(marker)
 
+          function getIconSize(zoom) {
+            const baseSize = 50
+            const scaleFactor = 1.5
+            return Math.max(
+              baseSize * Math.pow(scaleFactor, zoom - 15),
+              baseSize,
+            )
+          }
+
           props.puntos.forEach((punto) => {
             const cowIcon = L.divIcon({
-              iconUrl: './assets/pointers/animal.svg',
-              iconSize: [38, 15],
-              iconAnchor: [22, 24],
+              html: '<img src="src/assets/pointers/animal.svg" width="50" height="50" style="top: 50%; left: 50%; transform: translate(-50%,-50%);">',
+              iconSize: [0, 0],
+              iconAnchor: [0, 0],
             })
             const marker = L.marker([punto.latitud, punto.longitud], {
               icon: cowIcon,

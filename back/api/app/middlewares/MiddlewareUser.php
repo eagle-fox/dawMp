@@ -15,14 +15,14 @@ use app\types\UUID;
 use Exception;
 use InvalidArgumentException;
 
-class Middleware
+class MiddlewareUser
 {
     private UUID $bearerToken;
-    private IPv4 $ipv4;
-    private User $user;
+    public IPv4 $ipv4;
+    public User $user;
     private Email $email;
     private Password $password;
-    private Client $client;
+    public Client $client;
     private Rol $targetRol;
     private AuthMethods $authMethod;
     private bool $debug;
@@ -38,12 +38,20 @@ class Middleware
         $this->targetRol = $targetRol;
         $this->targetId = $targetId;
         $this->debug = getenv("LEAF_DEV_TOOLS") === "true";
-        $this->setHeaders();
-        $this->setAuthMethod();
+
+        if ($targetRol != Rol::GUEST) {
+            $this->setHeaders();
+            $this->setAuthMethod();
+        }
+
         $this->setCurrentIp();
-        $this->setCurrentUser();
-        $this->updateTokenPerIp();
-        $this->setClient();
+
+        if ($this->targetRol != Rol::GUEST) {
+            $this->setCurrentUser();
+            $this->updateTokenPerIp();
+            $this->setClient();
+        }
+
         $this->checkRol();
     }
 
@@ -159,7 +167,7 @@ class Middleware
     {
         $this->client = new Client();
         $this->client->user = $this->user->id;
-        $this->client->ipv4 = $this->ipv4;
+        $this->client->ipv4 = new IPv4(app()->request()->getIp());
         $this->client->token = $this->bearerToken;
         $this->client->save();
     }
@@ -171,16 +179,18 @@ class Middleware
     {
         switch ($this->targetRol) {
             case Rol::ADMIN:
+            // case Rol::IOT:
             case Rol::GUEST:
                 return;
-
             case Rol::USER:
                 if ($this->targetId != null && $this->user->id === $this->targetId) {
                     return;
                 }
+                if ($this->user->rol->equals(Rol::ADMIN)){
+                    return;
+                }
                 break;
         }
-
         throw new Exception("Insufficient permissions: was required " . $this->targetRol->getName() . " but got " . $this->user->rol->getName());
     }
 
@@ -194,7 +204,7 @@ class Middleware
         return $this->client;
     }
 
-    public function build(): Middleware
+    public function build(): MiddlewareUser
     {
         return $this;
     }

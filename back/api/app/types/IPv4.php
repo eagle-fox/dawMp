@@ -2,6 +2,7 @@
 
 namespace app\types;
 
+use InvalidArgumentException;
 use JsonSerializable;
 
 class IPv4 implements JsonSerializable
@@ -10,16 +11,21 @@ class IPv4 implements JsonSerializable
 
     public function __construct($ipv4)
     {
-        if (is_string($ipv4)) {
-            if (!filter_var($ipv4, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                throw new \InvalidArgumentException("Invalid IPv4 address");
-            }
-            $this->ipv4 = ip2long($ipv4);
-        } elseif (is_int($ipv4)) {
-            $this->ipv4 = $ipv4;
-        } else {
-            throw new \InvalidArgumentException("Invalid argument type for IPv4 address");
+        if ($ipv4 instanceof IPv4) {
+            $this->ipv4 = $ipv4->ipv4;
+            return;
         }
+
+        if (is_numeric($ipv4)) {
+            $ipv4 = long2ip(intval($ipv4));
+        }
+
+        if (is_string($ipv4) && filter_var($ipv4, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $this->ipv4 = ip2long($ipv4);
+            return;
+        }
+
+        throw new InvalidArgumentException("Invalid argument type for IPv4 address");
     }
 
     public function jsonSerialize(): string

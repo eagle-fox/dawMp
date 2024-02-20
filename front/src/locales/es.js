@@ -1,7 +1,8 @@
 // Spanish language package
 let miscelaneusTextPackage = {
     welcome: 'Bienvenido',
-    home: 'Inicio'
+    home: 'Inicio',
+    loading: 'Cargando'
 }
 
 let langTextPackage = {
@@ -45,6 +46,9 @@ let animalRegisterForm = {
 let loginTextPackage = {
     login_t1: 'Iniciar Sesion',
     login_username: 'Nombre',
+    login_secondName: 'Segundo Nombre',
+    login_firtsSubname: 'Primer Apellido',
+    login_secondSubname: 'Segundo Apellido',
     login_email: 'Correo electronico',
     login_password: 'Contraseña',
     login_rpassword: 'Repite las contraseña',

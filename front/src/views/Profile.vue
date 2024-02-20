@@ -1,7 +1,6 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
 import ConnectionApi from '../assets/js/connectionApi.js'
-// import axios from 'axios';
 
 export default {
     name: 'Profile',
@@ -15,28 +14,38 @@ export default {
     }
 
 
-    ,methods: {
-        checkValidationToken(token){
+    , methods: {
+        checkValidationToken(token) {
             // Verification to avoid accessing the profile without a valid user token
 
-            if(token == null || !token){
+            if (token == null || !token) {
                 console.error(`Redirecting to home, /profile is not allowed | token: ${token}`)
                 this.$router.push('/');
             }
         },
-        loadLocalData(token){
+        loadLocalData(token) {
             // Request to the API of the user's information through his authentication token.
 
 
-        },testConnectionApi(){
+        }, testConnectionApi() {
             const connectionApiInstance = new ConnectionApi();
             connectionApiInstance.testAxios();
-        },testAppendApi(){
+        }, testAppendApi() {
             const connectionApiInstance = new ConnectionApi();
-            connectionApiInstance.makeUser();
+
+            let userData = {
+                nombre: 'Yeison',
+                nombre_segundo: 'Rascado',
+                apellido_primero: 'González',
+                apellido_segundo: 'Rascado',
+                email: 'perico@yeison.com',
+                password: 'yeison',
+            }
+
+            connectionApiInstance.makeUser(userData);
         }
     }
-    ,mounted() {
+    , mounted() {
         // this.checkValidationToken(this.$userSession.token);
         this.testConnectionApi();
     }
@@ -50,10 +59,6 @@ export default {
     <div>
         <button class="btn btn-primary" @click="testAppendApi">Test Add User</button>
     </div>
-
-    
 </template>
 
-<style>
-
-</style>
+<style></style>

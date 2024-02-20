@@ -2,7 +2,11 @@
 let miscelaneusTextPackage = {
     welcome: 'Bienvenido',
     home: 'Inicio',
-    loading: 'Cargando'
+    loading: 'Cargando',
+    mounths: 'Meses',
+    years: 'Años',
+    date: 'Fecha',
+    age: 'Edad',
 }
 
 let langTextPackage = {

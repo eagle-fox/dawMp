@@ -1,19 +1,19 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import Mapa from "@/components/Mapa.vue";
+import PetCard from "@/components/PetCard.vue";
 
 export default {
   name: "Dashboard",
   components: {
     NavBar,
-    Mapa
+    Mapa,
+    PetCard
   },
   data() {
     return {
-      puntos: [
-        { latitud: 40.416775, longitud: -5.703790, name: 'tobi' },
-        { latitud: 46.2406, longitud: -8.7207, name: 'sancho' }
-      ]
+      petname: "Charly",
+      petdate: "29/08/2023"
     }
   }
 }
@@ -22,11 +22,15 @@ export default {
 
 <template>
   <NavBar></NavBar>
-  <div class="d-flex justify-content-center align-items-center ">
-    <Mapa :puntos="puntos"/>
+
+  <div class="pets-view p-4 ">
+    <PetCard :petName=petname :petDate=petdate ></PetCard>
   </div>
+  
 </template>
 
 <style scoped>
-
+  .pets-view{
+    max-width: 500px;
+  }
 </style>

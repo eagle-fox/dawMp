@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-
 // Paquete para la gestion de idiomas.
 // Vue I18n -> https://kazupon.github.io/vue-i18n
 
@@ -17,7 +16,7 @@ const i18n = createI18n({
 });
 
 // Estilos globales para Bootstrap
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap'
 
 import userSession from './assets/js/userSession.js'

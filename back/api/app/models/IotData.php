@@ -7,12 +7,18 @@ namespace app\models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Leaf\Model;
 
+/**
+ * Class IotData
+ *
+ * @property int $id
+ * @property float $latitude
+ * @property float $longitude
+ * @property IotDevice $device
+ * @package App\Models
+ */
+
 class IotData extends Model
 {
-    public int $id;
-    public int $device;
-    public float $latitude;
-    public float $longitude;
 
     protected $attributes = [
         "device"    => 0,
@@ -26,7 +32,6 @@ class IotData extends Model
     public $incrementing = true;
 
     protected $fillable = [
-        "id",
         "device",
         "latitude",
         "longitude",
@@ -36,6 +41,7 @@ class IotData extends Model
 
     public function device(): BelongsTo
     {
-        return $this->belongsTo(IotDevice::class);
+        return $this->belongsTo(IotDevice::class, 'device');
     }
+
 }

@@ -121,7 +121,7 @@ export default {
             <div class="shadow p-4 rounded" id="formMakeUser">
                 <h3 class="text-center mb-4">{{ $t('login.login_message1') }}</h3>
                 <form @submit.prevent="handleSubmit">
-                    <div class="mb-3 d-flex gap-2">
+                    <div class="mb-3 d-flex gap-2 form-media">
                         <div>
                             <label for="name" class="form-label">{{ $t('login.login_username') }}</label>
                             <input v-model="formData.name" type="text" class="form-control" id="name" />
@@ -131,7 +131,7 @@ export default {
                             <input v-model="formData.secondName" type="text" class="form-control" id="secondName" />
                         </div>
                     </div>
-                    <div class="mb-3 d-flex gap-2">
+                    <div class="mb-3 d-flex gap-2 form-media">
                         <div>
                             <label for="firtsSubname" class="form-label">{{ $t('login.login_firtsSubname') }}</label>
                             <input v-model="formData.firstSubname" type="text" class="form-control" id="firtsSubname" />
@@ -175,5 +175,15 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+@media only screen and (max-width: 560px) {
+    .form-media{
+        flex-direction: column;
+    }
+
+    .main-container {
+        margin-top: 40px;
+    }
 }
 </style>

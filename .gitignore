@@ -4,6 +4,9 @@ vendor
 # Created by https://www.toptal.com/developers/gitignore/api/vue,vuejs,laravel,phpstorm,visualstudiocode,intellij,webstorm+all,go,goland
 # Edit at https://www.toptal.com/developers/gitignore?templates=vue,vuejs,laravel,phpstorm,visualstudiocode,intellij,webstorm+all,go,goland
 
+### Front ###
+config.json
+
 ### Go ###
 # If you prefer the allow list template instead of the deny list, see community template:
 # https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore

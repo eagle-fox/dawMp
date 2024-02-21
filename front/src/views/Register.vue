@@ -160,10 +160,6 @@ export default {
             </div>
         </div>
     </div>
-
-    <div>
-        <button class="btn btn-primary" @click="showError('Error','formMakeUser')"></button>
-    </div>
 </template>
 
 <style scoped>

@@ -100,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `iot_devices`
     `id`         int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `token`      CHAR(36)     NOT NULL UNIQUE COMMENT '128 bits UUID (RFC 4122)',
     `name`       varchar(255) NOT NULL,
+    `icon`       varchar(255) NOT NULL,
     `user`       int          NOT NULL,
     `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

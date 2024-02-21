@@ -22,6 +22,7 @@ class Client extends Model
         "ipv4"   => 0,
         "token"  => "",
         "locked" => false,
+        ""
         "user" => 0,
     ];
 

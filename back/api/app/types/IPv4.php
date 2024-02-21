@@ -9,14 +9,14 @@ class IPv4 implements JsonSerializable
 {
     private int $ipv4;
 
-    public function __construct($ipv4)
+    public function __construct(IPv4 | string | int $ipv4)
     {
         if ($ipv4 instanceof IPv4) {
             $this->ipv4 = $ipv4->ipv4;
             return;
         }
 
-        if (is_numeric($ipv4)) {
+        if (is_numeric($ipv4) || is_int($ipv4)) {
             $ipv4 = long2ip(intval($ipv4));
         }
 

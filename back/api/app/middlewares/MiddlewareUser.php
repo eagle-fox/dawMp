@@ -63,7 +63,6 @@ class MiddlewareUser
             return;
         }
         throw new InvalidArgumentException("No Authorization or unsupported header found");
-
     }
 
     private function setAuthMethod(): void

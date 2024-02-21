@@ -13,7 +13,8 @@ export default {
   data() {
     return {
       petname: "Charly",
-      petdate: "29/08/2023"
+      petdate: "29/08/2023",
+      petspecies: "dog"
     }
   }
 }
@@ -23,8 +24,8 @@ export default {
 <template>
   <NavBar></NavBar>
 
-  <div class="pets-view p-4 ">
-    <PetCard :petName=petname :petDate=petdate ></PetCard>
+  <div class="pets-view p-4 d-flex flex-column gap-4">
+    <PetCard :petName="petname" :petDate="petdate" :petSpecies="petspecies" ></PetCard>
   </div>
   
 </template>

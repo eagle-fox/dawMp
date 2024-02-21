@@ -10,12 +10,14 @@ export default {
     },
     data() {
         return {
-            calcAge: null
+            calcAge: null,
+            petSpecieFileUrl: null,
         }
     },
     props: {
         petName: String,
-        petDate: String
+        petDate: String,
+        petSpecies: String,
     }, methods: {
         calculateAge(birthday) {
             let birthday_arr = birthday.split("/");
@@ -30,11 +32,20 @@ export default {
             } else {
                 this.calcAge = calculatedAgeYears + ' ' + this.$t('miscelaneus.years');
             }
+            console.log(this.petSpecies);
+        },
+        chargeSpecieImage(specie){
+            this.petSpecieFileUrl = specie+'.svg'
         }
+
+        
 
     }, mounted() {
         this.calculateAge(this.petDate);
+        this.chargeSpecieImage(this.petSpecies);
     }
+
+    // https://www.svgrepo.com/collection/animals-15/
 
 
 }
@@ -43,7 +54,7 @@ export default {
 
 <template>
     <div class="card">
-        <img src="../assets/pointers/animal.png" class="animal-image" alt="">
+        <img :src="'../src/assets/pointers/' + this.petSpecieFileUrl " class="animal-image" alt="">
         <div class="card-body">
             <h5 class="card-title">{{ petName }}</h5>
             <div>
@@ -51,7 +62,6 @@ export default {
                 </div>
                 <div>{{ $t('miscelaneus.age') }}: {{ this.calcAge }} <IconCalendar :size="20" class="mb-1"></IconCalendar>
                 </div>
-
             </div>
         </div>
 

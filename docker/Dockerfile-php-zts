@@ -325,7 +325,7 @@ RUN chown -R leaf:leaf /var/www/html
 RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini
 RUN echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/xdebug.ini
 RUN echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/xdebug.ini
-RUN echo "extension=parallel.so" > /usr/local/etc/php/conf.d/parallel.ini
+RUN echo "extension=parallel.so" > /usr/local/etc/php/conf.d/parallel.iniº
 USER leaf
 RUN composer require leafs/cli leafs/devtools
 ENV PATH="/var/www/html/vendor/bin:${PATH}"

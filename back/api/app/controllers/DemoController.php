@@ -16,7 +16,16 @@ class DemoController extends Controller
     {
         $faker = Factory::create();
 
-        for ($i = 0; $i < 10; $i++) {
+        $totalUsers = 128;
+        $totalClientsPerUser = 5;
+        $totalDevicesPerUser = 128;
+        $totalDataPerDevice = 128;
+
+        $totalOperations = $totalUsers * ($totalClientsPerUser + $totalDevicesPerUser * $totalDataPerDevice);
+        $completedOperations = 0;
+        $etaFormatted = "Calculating...";
+
+        for ($i = 0; $i < $totalUsers; $i++) {
             $user = new User();
             $user->nombre = $faker->firstName;
             $user->nombre_segundo = $faker->firstName;
@@ -25,18 +34,18 @@ class DemoController extends Controller
             $user->email = $faker->unique()->safeEmail;
             $user->password = password_hash('password', PASSWORD_BCRYPT);
             $user->save();
+            $completedOperations++;
 
-            for ($j = 0; $j < 3; $j++) {
+            for ($j = 0; $j < $totalClientsPerUser; $j++) {
                 $client = new Client();
                 $client->user = $user->id;
                 $client->ipv4 = new IPv4($faker->ipv4);
                 $client->token = new UUID();
                 $client->save();
-                error_log("Client created: " . $client->id);
+                $completedOperations++;
             }
 
-            error_log("User created: " . $user->id);
-            for ($j = 0; $j < 10; $j++) {
+            for ($j = 0; $j < $totalDevicesPerUser; $j++) {
                 $device = new IotDevice();
                 $device->user = $user->id; // Assign the user's id
                 $device->token = new UUID();
@@ -44,17 +53,24 @@ class DemoController extends Controller
                 $device->name = $faker->word;
                 $device->especie = $faker->word;
                 $device->save();
-                error_log("Device created: " . $device->id);
+                $completedOperations++;
 
-                for ($k = 0; $k < 1024; $k++) {
+                for ($k = 0; $k < $totalDataPerDevice; $k++) {
                     $iotData = new IotData();
                     $iotData->device = $device->id;
                     $iotData->latitude = $faker->latitude;
                     $iotData->longitude = $faker->longitude;
                     $iotData->save();
+                    $completedOperations++;
+                    if ($completedOperations % 100 == 0) {
+                        $etaSeconds = ($totalOperations - $completedOperations) / $completedOperations * (microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]);
+                        $etaSecondsRounded = round($etaSeconds);
+                        $etaFormatted = gmdate("H:i:s", $etaSecondsRounded);
+                    }
+                    error_log("ETA $etaFormatted  Progress: $completedOperations / $totalOperations");
                 }
-                error_log("Data created: " . $iotData->id);
             }
+
         }
 
         response()->json(["message" => "Random data created"]);

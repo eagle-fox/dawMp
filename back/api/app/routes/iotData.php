@@ -2,10 +2,10 @@
 
 namespace app\routes;
 
-app()->get("/iotData", "iotDataController@index");
-app()->post("/iotData", "iotDataController@store");
-app()->get("/iotData/{id}", "iotDataController@show");
-app()->put("/iotData/{id}", "iotDataController@update");
-app()->patch("/iotData/{id}", "iotDataController@update");
-app()->post("/iotData/{id}", "iotDataController@update");
-app()->delete("/iotData/{id}", "iotDataController@destroy");
+app()->get("/iotData", "IotDataController@index");
+app()->post("/iotData", "IotDataController@store");
+app()->get("/iotData/{id}", "IotDataController@show");
+app()->put("/iotData/{id}", "IotDataController@update");
+app()->patch("/iotData/{id}", "IotDataController@update");
+app()->post("/iotData/{id}", "IotDataController@update");
+app()->delete("/iotData/{id}", "IotDataController@destroy");

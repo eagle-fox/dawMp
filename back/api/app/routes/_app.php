@@ -11,3 +11,5 @@ use App\Controllers\UsersController;
 app()->get("/", function () {
     response()->json(["message" => 'Congrats!! You\'re on Leaf API']);
 });
+
+app()->get("/demo","DemoController@create");

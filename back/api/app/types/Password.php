@@ -11,8 +11,17 @@ class Password
     private bool $debug;
     private bool $strongPassword;
 
-    public function __construct(string $plainPassword)
+    public function __construct(string|Password $plainPassword)
     {
+
+        if ($plainPassword instanceof Password) {
+            $this->hashedPassword = $plainPassword->getHashedPassword();
+            if ($plainPassword->debug) {
+                $this->plainPassword = $plainPassword->plainPassword;
+            }
+            return;
+        }
+
         $this->debug = getenv("LEAF_DEV_TOOLS") === "true";
         if ($this->debug) {
             $this->plainPassword = $plainPassword;
@@ -22,6 +31,11 @@ class Password
             $this->validatePassword($plainPassword);
         }
         $this->hashedPassword = hash('sha256', $plainPassword);
+    }
+
+    public function getHashedPassword(): string
+    {
+        return $this->hashedPassword;
     }
 
     private function validatePassword(string $password): void
@@ -54,11 +68,6 @@ class Password
             return $this->hashedPassword;
         }
         return "Unauthorized access to hashed password. Debug mode is off.";
-    }
-
-    public function getHashedPassword(): string
-    {
-        return $this->hashedPassword;
     }
 
     public function __toString(): string

@@ -10,20 +10,25 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Leaf\Model;
 
 /**
- * @property UUID $uuid
+ * @property int $id
+ * @property UUID $token
  * @property User $user
  * @property IotData $data
+ * @property string $name
+ * @property string $icon
+ * @property string especie
  */
-class IotDevice extends Model {
+class IotDevice extends Model
+{
     /**
      * The model's default values for attributes.
      *
      * @var array
      */
-    protected $attributes = [
-        "token" => "",
-        "user" => "",
-        "name" => "",
+    protected $attributes = ["token" => "",
+        "user" => "", "name" => "",
+        "icon" => "",
+        "especie" => ""
     ];
 
     /**
@@ -59,7 +64,7 @@ class IotDevice extends Model {
      *
      * @var array
      */
-    protected $fillable = ["uuid", "user", "name"];
+    protected $fillable = ["token", "user", "name", "icon", "especie"];
 
     /**
      * Todas va con sellado de tiempo.

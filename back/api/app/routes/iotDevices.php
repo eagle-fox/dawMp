@@ -8,18 +8,18 @@ use App\Controllers\UsersController;
  */
 
 // INDEX - Mostrar todos los usuarios
-app()->get("/iotDevices", "iotDevicesController@index");
+app()->get("/iotDevices", "IotDevicesController@index");
 
 // STORE - Crear un nuevo usuario
-app()->post("/iotDevices", "iotDevicesController@store");
+app()->post("/iotDevices", "IotDevicesController@store");
 
 // SHOW - Mostrar un usuario existente
-app()->get("/iotDevices/{id}", "iotDevicesController@show");
+app()->get("/iotDevices/{id}", "IotDevicesController@show");
 
 // POST/PUT/PATCH - Actualizar un usuario existente
-app()->put("/iotDevices/{id}", "iotDevicesController@update");
-app()->patch("/iotDevices/{id}", "iotDevicesController@update");
-app()->post("/iotDevices/{id}", "iotDevicesController@update");
+app()->put("/iotDevices/{id}", "IotDevicesController@update");
+app()->patch("/iotDevices/{id}", "IotDevicesController@update");
+app()->post("/iotDevices/{id}", "IotDevicesController@update");
 
 // DELETE - Eliminar un usuario existente
-app()->delete("/iotDevices/{id}", "iotDevices@destroy");
+app()->delete("/iotDevices/{id}", "IotDevicesController@destroy");

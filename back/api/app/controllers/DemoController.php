@@ -25,52 +25,59 @@ class DemoController extends Controller
         $completedOperations = 0;
         $etaFormatted = "Calculating...";
 
+        $runtimes = [];
         for ($i = 0; $i < $totalUsers; $i++) {
-            $user = new User();
-            $user->nombre = $faker->firstName;
-            $user->nombre_segundo = $faker->firstName;
-            $user->apellido_primero = $faker->lastName;
-            $user->apellido_segundo = $faker->lastName;
-            $user->email = $faker->unique()->safeEmail;
-            $user->password = password_hash('password', PASSWORD_BCRYPT);
-            $user->save();
-            $completedOperations++;
-
-            for ($j = 0; $j < $totalClientsPerUser; $j++) {
-                $client = new Client();
-                $client->user = $user->id;
-                $client->ipv4 = new IPv4($faker->ipv4);
-                $client->token = new UUID();
-                $client->save();
-                $completedOperations++;
-            }
-
-            for ($j = 0; $j < $totalDevicesPerUser; $j++) {
-                $device = new IotDevice();
-                $device->user = $user->id; // Assign the user's id
-                $device->token = new UUID();
-                $device->icon = $faker->word;
-                $device->name = $faker->word;
-                $device->especie = $faker->word;
-                $device->save();
+            $runtimes[$i] = new Runtime();
+            $runtimes[$i]->run(function () use ($faker, $totalClientsPerUser, $totalDevicesPerUser, $totalDataPerDevice, &$completedOperations, $totalOperations) {
+                $user = new User();
+                $user->nombre = $faker->firstName;
+                $user->nombre_segundo = $faker->firstName;
+                $user->apellido_primero = $faker->lastName;
+                $user->apellido_segundo = $faker->lastName;
+                $user->email = $faker->unique()->safeEmail;
+                $user->password = password_hash('password', PASSWORD_BCRYPT);
+                $user->save();
                 $completedOperations++;
 
-                for ($k = 0; $k < $totalDataPerDevice; $k++) {
-                    $iotData = new IotData();
-                    $iotData->device = $device->id;
-                    $iotData->latitude = $faker->latitude;
-                    $iotData->longitude = $faker->longitude;
-                    $iotData->save();
+                for ($j = 0; $j < $totalClientsPerUser; $j++) {
+                    $client = new Client();
+                    $client->user = $user->id;
+                    $client->ipv4 = new IPv4($faker->ipv4);
+                    $client->token = new UUID();
+                    $client->save();
                     $completedOperations++;
-                    if ($completedOperations % 100 == 0) {
-                        $etaSeconds = ($totalOperations - $completedOperations) / $completedOperations * (microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]);
-                        $etaSecondsRounded = round($etaSeconds);
-                        $etaFormatted = gmdate("H:i:s", $etaSecondsRounded);
-                        error_log("ETA $etaFormatted  Progress: % " . round($completedOperations / $totalOperations * 100, 2));
+                }
+
+                for ($j = 0; $j < $totalDevicesPerUser; $j++) {
+                    $device = new IotDevice();
+                    $device->user = $user->id; // Assign the user's id
+                    $device->token = new UUID();
+                    $device->icon = $faker->word;
+                    $device->name = $faker->word;
+                    $device->especie = $faker->word;
+                    $device->save();
+                    $completedOperations++;
+
+                    for ($k = 0; $k < $totalDataPerDevice; $k++) {
+                        $iotData = new IotData();
+                        $iotData->device = $device->id;
+                        $iotData->latitude = $faker->latitude;
+                        $iotData->longitude = $faker->longitude;
+                        $iotData->save();
+                        $completedOperations++;
+                        if ($completedOperations % 100 == 0) {
+                            $etaSeconds = ($totalOperations - $completedOperations) / $completedOperations * (microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]);
+                            $etaSecondsRounded = round($etaSeconds);
+                            $etaFormatted = gmdate("H:i:s", $etaSecondsRounded);
+                            error_log("ETA $etaFormatted  Progress: % " . round($completedOperations / $totalOperations * 100, 2));
+                        }
                     }
                 }
-            }
+            });
+        }
 
+        foreach ($runtimes as $runtime) {
+            $runtime->close();
         }
 
         response()->json(["message" => "Random data created"]);

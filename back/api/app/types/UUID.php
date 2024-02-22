@@ -9,8 +9,13 @@ class UUID implements JsonSerializable
 {
     private string $uuid;
 
-    public function __construct($uuid = null)
+    public function __construct(string | UUID $uuid = null)
     {
+        if ($uuid instanceof UUID) {
+            $this->uuid = $uuid->uuid;
+            return;
+        }
+
         if ($uuid !== null) {
             if (!$this->isValidUUID($uuid)) {
                 throw new \InvalidArgumentException("Invalid UUID");

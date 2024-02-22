@@ -1,7 +1,8 @@
 <?php
 
 namespace app\controllers;
-
+ini_set('max_execution_time', 0);
+ini_set('memory_limit', '4096M');
 use app\models\Client;
 use app\models\IotDevice;
 use app\models\User;
@@ -16,9 +17,9 @@ class DemoController extends Controller
     {
         $faker = Factory::create();
 
-        $totalUsers = 128;
-        $totalClientsPerUser = 5;
-        $totalDevicesPerUser = 128;
+        $totalUsers = 8;
+        $totalClientsPerUser = 8;
+        $totalDevicesPerUser = 8;
         $totalDataPerDevice = 128;
 
         $totalOperations = $totalUsers * ($totalClientsPerUser + $totalDevicesPerUser * $totalDataPerDevice);

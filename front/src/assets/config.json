@@ -2,6 +2,15 @@
     "devConfig": {
         "apiServer":"http://localhost:2003",
         "authCode": "YWRtaW5AYWRtaW4uY29tOmFkbWlu"
+    },
+    "styleAssets": {
+        "animalPointers": {
+            "dog": "pointers/dog.svg",
+            "cat": "pointers/cat.svg",
+            "cow": "pointers/cow.svg",
+            "pig": "pointers/pig.svg",
+            "sheep": "pointers/sheep.svg"
+        }
     }
 }
 

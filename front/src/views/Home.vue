@@ -147,24 +147,7 @@ export default {
 </template>
 
 <style scoped>
-* {
-    font-family: 'BaseFontTest2';
-}
 
-@font-face {
-    font-family: 'BaseFont';
-    src: url("../assets/fonts/PTSans-Regular.ttf");
-}
-
-@font-face {
-    font-family: 'BaseFontTest';
-    src: url("../assets/fonts/Outfit-Regular.ttf");
-}
-
-@font-face {
-    font-family: 'BaseFontTest2';
-    src: url("../assets/fonts/Outfit-Light.ttf");
-}
 
 @keyframes animationLevitate {
     0%, 100% {
@@ -254,4 +237,5 @@ export default {
 .p-10 {
     padding: 60px;
 }
+
 </style>

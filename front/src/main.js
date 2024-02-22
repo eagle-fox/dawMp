@@ -19,6 +19,9 @@ const i18n = createI18n({
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap'
 
+// Aplicar estilos globales
+import './assets/base.css'
+
 import userSession from './assets/js/userSession.js'
 
 

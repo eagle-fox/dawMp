@@ -1,5 +1,6 @@
 <script>
 import { IconCalendar, IconCake, IconSettings } from '@tabler/icons-vue';
+import { styleAssets } from '@/assets/config.json';
 
 export default {
     name: 'PetCard',
@@ -19,6 +20,7 @@ export default {
         petDate: String,
         petSpecies: String,
     }, methods: {
+        
         calculateAge(birthday) {
             let birthday_arr = birthday.split("/");
             let birthday_date = new Date(birthday_arr[2], birthday_arr[1] - 1, birthday_arr[0]);
@@ -32,21 +34,28 @@ export default {
             } else {
                 this.calcAge = calculatedAgeYears + ' ' + this.$t('miscelaneus.years');
             }
-            console.log(this.petSpecies);
+            console.log(styleAssets);
         },
         chargeSpecieImage(specie){
-            this.petSpecieFileUrl = specie+'.svg'
-        }
 
-        
+            let animalDictionary = styleAssets.animalPointers;
+
+            if (specie in animalDictionary){
+                this.petSpecieFileUrl = animalDictionary[specie];
+            }else{
+                let  animalKeysArray = Object.keys(animalDictionary);
+                let animalAleatorio = animalKeysArray[Math.floor(Math.random() * animalKeysArray.length)];
+
+                this.petSpecieFileUrl = animalDictionary[animalAleatorio];
+
+            }
+
+        }
 
     }, mounted() {
         this.calculateAge(this.petDate);
         this.chargeSpecieImage(this.petSpecies);
     }
-
-    // https://www.svgrepo.com/collection/animals-15/
-
 
 }
 
@@ -54,7 +63,7 @@ export default {
 
 <template>
     <div class="card">
-        <img :src="'../src/assets/pointers/' + this.petSpecieFileUrl " class="animal-image" alt="">
+        <img :src="'../src/assets/' + this.petSpecieFileUrl " class="animal-image" alt="">
         <div class="card-body">
             <h5 class="card-title">{{ petName }}</h5>
             <div>
@@ -85,7 +94,7 @@ export default {
 }
 
 .animal-image {
-    width: 65px;
+    width: 55px;
     margin-bottom: 10px;
-    margin-left: 10px;
+    margin-left: 15px;
 }</style>

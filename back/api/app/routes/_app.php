@@ -9,9 +9,6 @@ use App\Models\User;
 use App\Controllers\UsersController;
 
 app()->get("/", function () {
-    $user = new User();
-    $user->nombre = "John";
-    $user->nombre_segundo = "Doe";
     response()->json(["message" => 'Congrats!! You\'re on Leaf API']);
 });
 

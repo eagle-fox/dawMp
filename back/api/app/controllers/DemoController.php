@@ -66,8 +66,8 @@ class DemoController extends Controller
                         $etaSeconds = ($totalOperations - $completedOperations) / $completedOperations * (microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]);
                         $etaSecondsRounded = round($etaSeconds);
                         $etaFormatted = gmdate("H:i:s", $etaSecondsRounded);
+                        error_log("ETA $etaFormatted  Progress: % " . round($completedOperations / $totalOperations * 100, 2));
                     }
-                    error_log("ETA $etaFormatted  Progress: $completedOperations / $totalOperations");
                 }
             }
 

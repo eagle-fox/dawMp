@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Client;
 use app\models\IotDevice;
 use app\models\User;
 use app\models\IotData;
+use app\types\IPv4;
 use app\types\UUID;
 use Faker\Factory;
 
@@ -24,13 +26,25 @@ class DemoController extends Controller
             $user->password = password_hash('password', PASSWORD_BCRYPT);
             $user->save();
 
+            for ($j = 0; $j < 3; $j++) {
+                $client = new Client();
+                $client->user = $user->id;
+                $client->ipv4 = new IPv4($faker->ipv4);
+                $client->token = new UUID();
+                $client->save();
+                error_log("Client created: " . $client->id);
+            }
+
+            error_log("User created: " . $user->id);
             for ($j = 0; $j < 10; $j++) {
                 $device = new IotDevice();
                 $device->user = $user->id; // Assign the user's id
                 $device->token = new UUID();
                 $device->icon = $faker->word;
                 $device->name = $faker->word;
+                $device->especie = $faker->word;
                 $device->save();
+                error_log("Device created: " . $device->id);
 
                 for ($k = 0; $k < 1024; $k++) {
                     $iotData = new IotData();
@@ -39,6 +53,7 @@ class DemoController extends Controller
                     $iotData->longitude = $faker->longitude;
                     $iotData->save();
                 }
+                error_log("Data created: " . $iotData->id);
             }
         }
 

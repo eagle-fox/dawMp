@@ -16,6 +16,7 @@ use Leaf\Model;
  * @property IotData $data
  * @property string $name
  * @property string $icon
+ * @property string especie
  */
 class IotDevice extends Model
 {
@@ -24,7 +25,11 @@ class IotDevice extends Model
      *
      * @var array
      */
-    protected $attributes = ["token" => "", "user" => "", "name" => "", "icon" => "",];
+    protected $attributes = ["token" => "",
+        "user" => "", "name" => "",
+        "icon" => "",
+        "especie" => ""
+    ];
 
     /**
      * Formato compatible con DateTime de MySQL.
@@ -59,7 +64,7 @@ class IotDevice extends Model
      *
      * @var array
      */
-    protected $fillable = ["token", "user", "name", "icon"];
+    protected $fillable = ["token", "user", "name", "icon", "especie"];
 
     /**
      * Todas va con sellado de tiempo.

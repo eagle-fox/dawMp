@@ -13,6 +13,7 @@ export default {
         return {
             calcAge: null,
             petSpecieFileUrl: null,
+            switchAge: true,
         }
     },
     props: {
@@ -30,11 +31,14 @@ export default {
 
             if (calculatedAgeYears === 0) {
                 var calculatedAgeMonths = ageDate.getUTCMonth();
-                this.calcAge = calculatedAgeMonths + ' ' + this.$t('miscelaneus.mounths');
+                this.calcAge = calculatedAgeMonths;
+                this.switchAge = false;
+
+                console.log(this.switchAge)
             } else {
-                this.calcAge = calculatedAgeYears + ' ' + this.$t('miscelaneus.years');
+                this.calcAge = calculatedAgeYears;
+                this.switchAge = true;
             }
-            console.log(styleAssets);
         },
         chargeSpecieImage(specie){
 
@@ -67,15 +71,22 @@ export default {
         <div class="card-body">
             <h5 class="card-title">{{ petName }}</h5>
             <div>
-                <div>{{ $t('miscelaneus.date') }}: {{ petDate }} <IconCake :size="20" class="mb-1"></IconCake>
+                <div>{{ $t('miscelaneus.date') }}: {{ petDate }}
+                    <IconCake :size="20" class="mb-1"></IconCake>
                 </div>
-                <div>{{ $t('miscelaneus.age') }}: {{ this.calcAge }} <IconCalendar :size="20" class="mb-1"></IconCalendar>
+                <div>
+                    <div class="d-flex aling-items-center gap-1">
+                        {{ $t('miscelaneus.age') }}: {{ this.calcAge }} 
+                        <p v-if="!switchAge">{{ this.$t('miscelaneus.mounths') }}</p>
+                        <p v-if="switchAge">{{ this.$t('miscelaneus.years') }}</p>
+                        <IconCalendar :size="20" class="mb-1"></IconCalendar>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="d-flex gap-1">
-            <button class="btn btn-primary">Ver Mapa</button>
+            <button class="btn btn-primary">Mapa</button>
             <button type="button" class="btn btn-light">
                 <IconSettings :size="32"></IconSettings>
             </button>

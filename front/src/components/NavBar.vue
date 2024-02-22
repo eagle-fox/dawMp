@@ -1,20 +1,20 @@
 <script>
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
+import { styleAssets } from '@/assets/config.json';
 
 export default {
     name: 'NavBar',
     methods: {
         changeLanguage(locale) {
-            const languageMappings = {
-                es: { icon: 'es.svg', altText: 'es_flag' },
-                en: { icon: 'sh.svg', altText: 'sh_flag' },
-                de: { icon: 'de.svg', altText: 'de_flag' },
-                gl: { icon: 'gl.svg', altText: 'gl_flag' }
-            }
 
-            if (languageMappings[locale]) {
-                const { icon, altText } = languageMappings[locale]
-                this.languageToggleIcon = `src/assets/flags/${icon}`
+            let flags = styleAssets.contryFlags;
+            
+
+            if (locale in flags) {
+                let flagsImage = flags[locale];
+                let altText = locale;
+
+                this.languageToggleIcon = `src/assets/${flagsImage}`
                 this.currentLanguageFlagAltText = altText
                 this.createLanguageCookie(locale)
                 this.$i18n.locale = locale
@@ -104,22 +104,22 @@ export default {
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li class="d-flex justify-content-center align-items-center">
                                 <img src="../assets/flags/es.svg" width="32" alt="es_flag">
-                                <a class="dropdown-item w-50" @click="changeLanguage('es')" href="#">{{ $t('lang.lang_es')
+                                <a class="dropdown-item w-50" @click="changeLanguage('spain')" href="#">{{ $t('lang.lang_es')
                                     }}</a>
                             </li>
                             <li class="d-flex justify-content-center align-items-center">
                                 <img src="../assets/flags/gl.svg" width="32" alt="gl_flag">
-                                <a class="dropdown-item w-50" @click="changeLanguage('gl')" href="#">{{ $t('lang.lang_gl')
+                                <a class="dropdown-item w-50" @click="changeLanguage('galician')" href="#">{{ $t('lang.lang_gl')
                                     }}</a>
                             </li>
                             <li class="d-flex justify-content-center align-items-center">
                                 <img src="../assets/flags/sh.svg" width="32" alt="sh_flag">
-                                <a class="dropdown-item w-50" @click="changeLanguage('en')" href="#">{{ $t('lang.lang_sh')
+                                <a class="dropdown-item w-50" @click="changeLanguage('uk')" href="#">{{ $t('lang.lang_sh')
                                     }}</a>
                             </li>
                             <li class="d-flex justify-content-center align-items-center">
                                 <img src="../assets/flags/de.svg" width="32" alt="de_flag">
-                                <a class="dropdown-item w-50" @click="changeLanguage('de')" href="#">{{ $t('lang.lang_de')
+                                <a class="dropdown-item w-50" @click="changeLanguage('germany')" href="#">{{ $t('lang.lang_de')
                                     }}</a>
                             </li>
                         </ul>

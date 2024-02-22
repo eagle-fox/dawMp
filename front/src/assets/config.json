@@ -10,6 +10,12 @@
             "cow": "pointers/cow.svg",
             "pig": "pointers/pig.svg",
             "sheep": "pointers/sheep.svg"
+        },
+        "contryFlags": {
+            "spain": "flags/es.svg",
+            "germany": "flags/de.svg",
+            "galician": "flags/gl.svg",
+            "uk": "flags/sh.svg"
         }
     }
 }

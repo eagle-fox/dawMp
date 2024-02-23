@@ -98,4 +98,9 @@ class IotDevice extends Model
         $this->attributes['token'] = $uuid;
     }
 
+    public function iotData()
+    {
+        return $this->hasMany(IotData::class, 'device');
+    }
+
 }

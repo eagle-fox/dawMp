@@ -15,7 +15,11 @@ class IotDevicesController extends Controller
     {
         try {
             $auth = new MiddlewareUser(Rol::ADMIN);
-            $devices = IotDevice::query()->get();
+            $devices = IotDevice::query()
+                ->with(['iotData' => function ($query) {
+                    $query->orderBy('created_at', 'desc')->first();
+                }])
+                ->get();
             response()->json(["message" => "All devices", "devices" => $devices]);
         } catch (Exception $e) {
             $msg = "Error al mostrar los dispositivos";

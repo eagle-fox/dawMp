@@ -29,7 +29,8 @@ export default {
   <div>
     <NavBar></NavBar>
 
-    <div class="d-flex justify-content-center">
+    <div class="pets-view p-4">
+      <PetCard :petName="petname" :petDate="petdate"></PetCard>
       <Mapa :puntos="puntosArray"></Mapa>
     </div>
   </div>

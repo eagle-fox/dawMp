@@ -13,8 +13,7 @@ export default {
   },
   setup() {
     const puntosArray = ref([
-      { name: 'charly', latitud: 51.505, longitud: -0.09, species: 'sheep' },
-      { name: 'hugo', latitud: 51.51, longitud: -0.1, species: 'dog' },
+      { name: 'charly', latitud: 51.505, longitud: -0.09, species: 'dog' }
     ])
 
     const petname = ref('Charly')

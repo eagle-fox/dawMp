@@ -3,6 +3,10 @@
         "apiServer":"http://localhost:2003",
         "authCode": "YWRtaW5AYWRtaW4uY29tOmFkbWlu"
     },
+    "cookieSettings": {
+        "secure": false,
+        "sameSite": "None"
+    },
     "styleAssets": {
         "animalPointers": {
             "dog": "pointers/dog.svg",

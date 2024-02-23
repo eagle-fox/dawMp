@@ -20,11 +20,15 @@
     --vt-c-text-dark-1: var(--vt-c-white);
     --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
+    /* Color palette in light mode */
+
     --text: #0e1415;
     --background: #d5e1e6;
     --primary: #4cb8a0;
     --secondary: #1f4233;
     --accent: #2c5848;
+
+    /* Color palette in dark mode */
 
 }
 
@@ -55,6 +59,20 @@
         --color-heading: var(--vt-c-text-dark-1);
         --color-text: var(--vt-c-text-dark-2);
     }
+}
+
+/* Styles for dark mode */
+
+.dark{
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
 }
 
 *,

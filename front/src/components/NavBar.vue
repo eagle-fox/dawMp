@@ -1,6 +1,6 @@
 <script>
 import Cookies from 'js-cookie';
-import { styleAssets } from '@/assets/config.json';
+import { styleAssets, cookieSettings } from '@/assets/config.json';
 
 export default {
     name: 'NavBar',
@@ -17,12 +17,14 @@ export default {
                 this.currentLanguageFlagAltText = altText
                 this.createLanguageCookie(locale)
                 this.$i18n.locale = locale
-                console.log('Cambio')
             }
         },
         // System for creating and loading cookies for the automatic language change chosen by the user.
         createLanguageCookie(data) {
-            Cookies.set('languageCookie', data, { expires: 365, sameSite: 'None', secure: true })
+            let secureStatus = cookieSettings.secure;
+            let sameSiteConfig = cookieSettings.sameSite;
+
+            Cookies.set('languageCookie', data, { expires: 365, sameSite: sameSiteConfig, secure: secureStatus })
         },
         getCookieValue() {
             return Cookies.get('languageCookie')
@@ -59,11 +61,25 @@ export default {
             // Default language
             languageToggleIcon: 'src/assets/flags/es.svg',
             currentLanguageFlagAltText: 'es_flag',
+            darkMode: false
         }
     },
     mounted() {
         this.changeLanguageCookie()
-    },
+        console.log(this.darkMode)
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            this.darkMode = true;
+            console.log(this.darkMode)
+        }
+        if (document.body.classList.contains('dark')){
+            document.getElementById('flexSwitchCheckDefault').classList.add('checked');
+            console.log('Checked')
+        }
+    },watch: {
+        darkMode(value) {
+            document.body.classList.toggle('dark', value);
+        }
+    }
 }
 
 </script>
@@ -92,10 +108,18 @@ export default {
 
                 </ul>
 
-                <div class="d-flex gap-4">
+                <div class="d-flex gap-4 align-items-center">
                     <!-- <button  class="btn btn-primary" @click="clearSession()">Log Out</button> -->
+               
+
+                    <div class="form-check form-switch d-flex gap-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" v-model="darkMode" checked>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">{{ darkMode ? 'Modo Oscuro' : 'Modo Claro' }}</label>
+                    </div>
+
 
                     <div class="dropstart">
+                        
                         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                             <img :src="languageToggleIcon" width="32" :alt="currentLanguageFlagAltText" class="flag-icon">

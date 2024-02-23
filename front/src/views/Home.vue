@@ -69,7 +69,7 @@ export default {
         <div class="d-flex justify-content-center align-items-center flex-column gap-5 p-10">
             <div>
                 <h1 class="text-center">{{ $t('home.home_t1') }}</h1>
-                <p class=" ">{{ $t('home.home_t2') }}</p>
+                <p class="text-center">{{ $t('home.home_t2') }}</p>
             </div>
 
             <div>

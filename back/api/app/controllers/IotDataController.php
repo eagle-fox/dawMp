@@ -3,15 +3,10 @@
 namespace app\controllers;
 
 use app\middlewares\MiddlewareUser;
-use app\models\Client;
 use app\models\IotData;
-use app\models\Log;
-use app\models\User;
 use app\types\Rol;
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Leaf\Http\Request;
-use Random\RandomException;
 
 class IotDataController extends Controller
 {
@@ -19,7 +14,7 @@ class IotDataController extends Controller
     public function index(): void
     {
         try {
-            $auth = new MiddlewareUser(Rol::ADMIN);
+            $auth = new MiddlewareUser(Rol::USER);
             $user = $auth->getUser();
 
             if ($user->rol == Rol::ADMIN) {
@@ -35,20 +30,16 @@ class IotDataController extends Controller
                     ) as subquery
                 )
             ");
-            } else {
+            } elseif (Rol::USER) {
                 $data = DB::select("
                 SELECT *
                 FROM iot_data
                 WHERE device IN (
-                    SELECT device
-                    FROM (
-                        SELECT device, MAX(id) as id
-                        FROM iot_data
-                        WHERE user_id = ?
-                        GROUP BY device
-                    ) as subquery
+                    SELECT id
+                    FROM iot_devices
+                    WHERE user = ?
                 )
-            ", [$user->id]);
+                ", [$user->id]);
             }
 
             response()->json(["message" => "All data", "data" => $data]);
@@ -65,7 +56,7 @@ class IotDataController extends Controller
     public function store(): void
     {
         try {
-            $auth = new MiddlewareUser(Rol::USER);
+            $auth = new MiddlewareUser(Rol::IOT);
             $user = $auth->getUser();
             $device = app()->request()->get("device");
             $latitude = app()->request()->get("latitude");

@@ -121,7 +121,7 @@ export default {
                     <h3>{{ $t('home.home_t7') }}</h3>
                     <p class="">{{ $t('home.home_t8') }}</p>
 
-                    <div class="mt-4 shadow p-3 rounded">
+                    <div class="mt-4 shadow p-3 rounded bg-light">
                         <label for="exampleInputEmail1" class="form-label">{{ $t('home.home_js1') }}</label>
                         <input type="text" class="form-control" id="autoFill" ref="autoFillInput" @input="handleInput">
 

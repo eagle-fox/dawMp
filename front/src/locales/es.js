@@ -7,6 +7,7 @@ let miscelaneusTextPackage = {
     years: 'Años',
     date: 'Fecha',
     age: 'Edad',
+    name_page:'Eagle Fox'
 }
 
 let langTextPackage = {

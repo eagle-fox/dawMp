@@ -84,6 +84,10 @@
     border-color: var(--secondary);
 }
 
+.form-control:focus {
+    box-shadow: 0 0 14px 1px var(--primary);
+    border: var(--primary);
+}
 
 body {
     min-height: 100vh;

@@ -1,6 +1,7 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
 import ConnectionApi from '../assets/js/connectionApi.js'
+import { styleAssets } from '@/assets/config.json';
 
 export default {
     name: 'Register',
@@ -17,7 +18,8 @@ export default {
                 email: null,
                 password: null,
                 repeatPassword: null
-            }
+            },
+            svgFile: null,
         };
     },
     methods: {
@@ -108,7 +110,13 @@ export default {
             }
 
             //this.$router.push('/');
+        },
+        loadSvgFile() {
+            this.svgFile = 'src/assets/'+styleAssets.svgData.typoBackground
         }
+    },
+    mounted() {
+        this.loadSvgFile();
     }
 }
 
@@ -116,9 +124,9 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <div class="main-container">
-        <div class="vh-100 d-flex justify-content-center align-items-center">
-            <div class="shadow p-4 rounded" id="formMakeUser">
+    <div class="main-container" :style="{ 'background-image': 'url(' + svgFile + ')' }">
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="shadow p-4 rounded bg-light" id="formMakeUser">
                 <h3 class="text-center mb-4">{{ $t('login.login_message1') }}</h3>
                 <form @submit.prevent="handleSubmit">
                     <div class="mb-3 d-flex gap-2 form-media">
@@ -164,10 +172,11 @@ export default {
 
 <style scoped>
 .main-container {
-    height: calc(100vh - 200px);
+    height: calc(94vh );
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #ece9ef;
 }
 
 .loadSphere {
@@ -183,7 +192,7 @@ export default {
     }
 
     .main-container {
-        margin-top: 40px;
+        padding-top: 40px;
     }
 }
 </style>

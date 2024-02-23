@@ -3,10 +3,11 @@
 namespace app\controllers;
 ini_set('max_execution_time', 0);
 ini_set('memory_limit', '4096M');
+
 use app\models\Client;
+use app\models\IotData;
 use app\models\IotDevice;
 use app\models\User;
-use app\models\IotData;
 use app\types\IPv4;
 use app\types\UUID;
 use Faker\Factory;

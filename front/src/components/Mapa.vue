@@ -1,3 +1,15 @@
+<template>
+  <div class="mt-4">
+    <div ref="mapElement" class="viewerMap"></div>
+
+    <div class="d-flex justify-content-center mt-4 buttonsSlayer">
+      <button class="btn btn-primary" @click="changePos">
+        Cambiar Posición
+      </button>
+    </div>
+  </div>
+</template>
+
 <script>
 import { ref, onMounted, reactive } from 'vue'
 import L from 'leaflet'
@@ -45,13 +57,34 @@ export default {
           }
 
           props.puntos.forEach((punto) => {
-            const cowIcon = L.divIcon({
-              html: '<img src="src/assets/pointers/animal.svg" width="50" height="50" style="top: 50%; left: 50%; transform: translate(-50%,-50%);">',
+            let iconUrl = ''
+            switch (punto.species) {
+              case 'dog':
+                iconUrl = 'src/assets/pointers/dog.svg'
+                break
+              case 'cat':
+                iconUrl = 'src/assets/pointers/cat.svg'
+                break
+              case 'pig':
+                iconUrl = 'src/assets/pointers/pig.svg'
+                break
+              case 'cow':
+                iconUrl = 'src/assets/pointers/cow.svg'
+                break
+              case 'sheep':
+                iconUrl = 'src/assets/pointers/sheep.svg'
+                break
+              default:
+                iconUrl = 'src/assets/pointers/animal.svg'
+            }
+
+            const animalIcon = L.divIcon({
+              html: `<img src="${iconUrl}" width="50" height="50" style="top: 50%; left: 50%; transform: translate(-50%,-50%);">`,
               iconSize: [0, 0],
               iconAnchor: [0, 0],
             })
             const marker = L.marker([punto.latitud, punto.longitud], {
-              icon: cowIcon,
+              icon: animalIcon,
             })
               .addTo(state.map)
               .bindPopup(punto.name)
@@ -81,18 +114,6 @@ export default {
   },
 }
 </script>
-
-<template>
-  <div class="mt-4">
-    <div ref="mapElement" class="viewerMap"></div>
-
-    <div class="d-flex justify-content-center mt-4 buttonsSlayer">
-      <button class="btn btn-primary" @click="changePos">
-        Cambiar Posición
-      </button>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 .viewerMap {

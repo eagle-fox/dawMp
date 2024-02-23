@@ -26,12 +26,18 @@ export default {
 
             Cookies.set('languageCookie', data, { expires: 365, sameSite: sameSiteConfig, secure: secureStatus })
         },
-        getCookieValue() {
-            return Cookies.get('languageCookie')
+        createDarkModeCookie(mode) {
+            let secureStatus = cookieSettings.secure;
+            let sameSiteConfig = cookieSettings.sameSite;
+
+            Cookies.set('darkMode', mode, { expires: 365, sameSite: sameSiteConfig, secure: secureStatus })
+        },
+        getCookieValue(cookieName) {
+            return Cookies.get(cookieName)
         },
         changeLanguageCookie() {
-            if (this.getCookieValue()){
-                this.changeLanguage(this.getCookieValue()) 
+            if (this.getCookieValue('languageCookie')){
+                this.changeLanguage(this.getCookieValue('languageCookie')) 
             }
         },
         generateUUID() {
@@ -66,18 +72,26 @@ export default {
     },
     mounted() {
         this.changeLanguageCookie()
-        console.log(this.darkMode)
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            this.darkMode = true;
-            console.log(this.darkMode)
+        
+        // Check the darkMode cookie and change both the page theme and the dark mode indicative switch.
+
+        if(this.getCookieValue('darkMode') == 'true') {
+            this.darkMode = true
+            document.body.classList.toggle('dark', true);
+            document.getElementById('flexSwitchCheckDefault').checked = true
+        }else{
+            this.darkMode = false
+            document.body.classList.toggle('dark', false);
+            document.getElementById('flexSwitchCheckDefault').checked = false
         }
-        if (document.body.classList.contains('dark')){
-            document.getElementById('flexSwitchCheckDefault').classList.add('checked');
-            console.log('Checked')
-        }
+
     },watch: {
+        // Switch between light and dark mode
+
         darkMode(value) {
             document.body.classList.toggle('dark', value);
+            this.createDarkModeCookie(value);
+            this.darkMode = value;   
         }
     }
 }
@@ -112,9 +126,10 @@ export default {
                     <!-- <button  class="btn btn-primary" @click="clearSession()">Log Out</button> -->
                
 
-                    <div class="form-check form-switch d-flex gap-2">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" v-model="darkMode" checked>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">{{ darkMode ? 'Modo Oscuro' : 'Modo Claro' }}</label>
+                    <div class="form-check form-switch d-flex ">
+                        <label class="form-check-label" style="margin-right: 45px;" for="flexSwitchCheckChecked">🌞</label>
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" v-model="darkMode">
+                        <label class="form-check-label" style="margin-left: 4px;" for="flexSwitchCheckChecked">🌙</label>
                     </div>
 
 

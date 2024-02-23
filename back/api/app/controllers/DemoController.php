@@ -17,9 +17,9 @@ class DemoController extends Controller
     {
         $faker = Factory::create();
 
-        $totalUsers = 8;
-        $totalClientsPerUser = 8;
-        $totalDevicesPerUser = 8;
+        $totalUsers = 128;
+        $totalClientsPerUser = 128;
+        $totalDevicesPerUser = 128;
         $totalDataPerDevice = 128;
 
         $totalOperations = $totalUsers * ($totalClientsPerUser + $totalDevicesPerUser * $totalDataPerDevice);
@@ -67,7 +67,8 @@ class DemoController extends Controller
                         $etaSeconds = ($totalOperations - $completedOperations) / $completedOperations * (microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]);
                         $etaSecondsRounded = round($etaSeconds);
                         $etaFormatted = gmdate("H:i:s", $etaSecondsRounded);
-                        error_log("ETA $etaFormatted  Progress: % " . round($completedOperations / $totalOperations * 100, 2));
+                        $insertionsPerSecond = $completedOperations / (microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]);
+                        error_log("ETA $etaFormatted  Progress: % " . round($completedOperations / $totalOperations * 100, 2) . " Insertions per second: " . round($insertionsPerSecond, 2));
                     }
                 }
             }

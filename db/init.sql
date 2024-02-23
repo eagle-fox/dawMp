@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `iot_data`
 (
     `id`         int            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `device`     int            NOT NULL,
-    # `location`   POINT    NOT NULL,
+    #`location`   POINT    NOT NULL,
     `latitude`   DECIMAL(10, 8) NOT NULL,
     `longitude`  DECIMAL(11, 8) NOT NULL,
     `created_at` datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP,

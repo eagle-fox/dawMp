@@ -16,6 +16,9 @@
             "germany": "flags/de.svg",
             "galician": "flags/gl.svg",
             "uk": "flags/sh.svg"
+        },
+        "svgData": {
+            "typoBackground": "svg/topography.svg"
         }
     }
 }

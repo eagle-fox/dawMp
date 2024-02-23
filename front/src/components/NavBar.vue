@@ -9,7 +9,6 @@ export default {
 
             let flags = styleAssets.contryFlags;
             
-
             if (locale in flags) {
                 let flagsImage = flags[locale];
                 let altText = locale;
@@ -18,6 +17,7 @@ export default {
                 this.currentLanguageFlagAltText = altText
                 this.createLanguageCookie(locale)
                 this.$i18n.locale = locale
+                console.log('Cambio')
             }
         },
         // System for creating and loading cookies for the automatic language change chosen by the user.
@@ -29,7 +29,7 @@ export default {
         },
         changeLanguageCookie() {
             if (this.getCookieValue()){
-                this.changeLanguage(this.getCookieValue())
+                this.changeLanguage(this.getCookieValue()) 
             }
         },
         generateUUID() {
@@ -69,11 +69,11 @@ export default {
 </script>
 
 <template>
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-expand-lg primary-style ">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex justify-content-center align-items-center gap-2" href="#">
-                <img src="../assets/logo_circle.svg" alt="Logo" width="48" class="d-inline-block align-text-top">
-                Eagle Fox
+            <a class="navbar-brand d-flex justify-content-center align-items-center gap-2 text-light" href="#">
+                <!-- <img src="../assets/logo_circle.svg" alt="Logo" width="48" class="d-inline-block align-text-top"> -->
+                Eagle Fox 
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -84,7 +84,7 @@ export default {
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <router-link to="/" class="nav-link active" aria-current="page" href="#">
+                        <router-link to="/" class="nav-link active text-light" aria-current="page" href="#">
                             {{ $t('miscelaneus.home') }}
                         </router-link>
                     </li>
@@ -93,7 +93,7 @@ export default {
                 </ul>
 
                 <div class="d-flex gap-4">
-                    <button  class="btn btn-primary" @click="clearSession()">Log Out</button>
+                    <!-- <button  class="btn btn-primary" @click="clearSession()">Log Out</button> -->
 
                     <div class="dropstart">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -131,6 +131,7 @@ export default {
 
 
         </div>
+        <hr>
     </nav>
 </template>
 

@@ -79,7 +79,7 @@ export default {
             </div>
         </div>
 
-        <div class="bg-primary w-100 d-flex justify-content-center align-items-center p-4 flex-md-row flex-column">
+        <div class=" w-100 d-flex justify-content-center align-items-center p-4 flex-md-row flex-column primary-style">
             <div class="max-width-xxl p-4 text-light textFormat">
                 <h4 class="text-center">{{ $t('home.home_t3') }}</h4>
             </div>
@@ -121,7 +121,7 @@ export default {
                     <h3>{{ $t('home.home_t7') }}</h3>
                     <p class="">{{ $t('home.home_t8') }}</p>
 
-                    <div class="mt-4 shadow p-3 rounded">
+                    <div class="mt-4 shadow p-3 rounded bg-light">
                         <label for="exampleInputEmail1" class="form-label">{{ $t('home.home_js1') }}</label>
                         <input type="text" class="form-control" id="autoFill" ref="autoFillInput" @input="handleInput">
 

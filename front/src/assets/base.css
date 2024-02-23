@@ -19,11 +19,18 @@
     --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
     --vt-c-text-dark-1: var(--vt-c-white);
     --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+
+    --text: #0e1415;
+    --background: #d5e1e6;
+    --primary: #4cb8a0;
+    --secondary: #1f4233;
+    --accent: #2c5848;
+
 }
 
 /* semantic color variables for this project */
 :root {
-    --color-background: var(--vt-c-white);
+    --color-background: var(--background);
     --color-background-soft: var(--vt-c-white-soft);
     --color-background-mute: var(--vt-c-white-mute);
 
@@ -31,7 +38,7 @@
     --color-border-hover: var(--vt-c-divider-light-1);
 
     --color-heading: var(--vt-c-text-light-1);
-    --color-text: var(--vt-c-text-light-1);
+    --color-text: var(--text);
 
     --section-gap: 160px;
 }
@@ -57,6 +64,26 @@
     margin: 0;
     font-weight: normal;
 }
+
+.primary-style{
+    background-color: var(--primary) ;
+}
+
+.btn-primary{
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-primary:focus {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
 
 body {
     min-height: 100vh;

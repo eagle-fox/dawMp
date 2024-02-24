@@ -19,6 +19,7 @@ use InvalidArgumentException;
  * @property Password $password
  * @property Rol $rol
  * @property Client[] $clients
+ * @property bool $locked
  * @package App\Models
  */
 class User extends Model {

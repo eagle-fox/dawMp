@@ -87,33 +87,13 @@ class IotDataController extends Controller
 
     public function update($id): void
     {
-        try {
-            $auth = new MiddlewareUser(Rol::USER);
-            $user = $auth->getUser();
-            $data = IotData::query()->find($id);
-            if ($data === null) {
-                response()->json(["message" => "Data not found"], 404);
-            } else {
-                $data->latitude = app()->request()->get("latitude");
-                $data->longitude = app()->request()->get("longitude");
-                $data->save();
-                response()->json(["message" => "Data updated", "data" => $data]);
-            }
-        } catch (Exception $e) {
-            $msg = "Error al actualizar el dato";
-            if (getenv("LEAF_DEV_TOOLS")) {
-                $msg .= ": " . $e->getMessage();
-            }
-            response()->json(["message" => $msg], 500);
-        }
-
+        response()->json(["message" => "Method not allowed"], 405);
     }
 
     public function destroy($id): void
     {
         try {
             $auth = new MiddlewareUser(Rol::USER);
-            $user = $auth->getUser();
             $data = IotData::query()->find($id);
             if ($data === null) {
                 response()->json(["message" => "Data not found"], 404);

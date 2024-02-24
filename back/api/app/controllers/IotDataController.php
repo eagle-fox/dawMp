@@ -6,7 +6,6 @@ use app\middlewares\MiddlewareUser;
 use app\models\IotData;
 use app\types\Rol;
 use Exception;
-use Illuminate\Support\Facades\DB;
 
 class IotDataController extends Controller
 {
@@ -16,30 +15,14 @@ class IotDataController extends Controller
         try {
             $auth = new MiddlewareUser(Rol::USER);
             $user = $auth->getUser();
-
+            ini_set('memory_limit', '1G');
+            set_time_limit(300);
             if ($user->rol == Rol::ADMIN) {
-                $data = DB::select("
-                SELECT *
-                FROM iot_data
-                WHERE device IN (
-                    SELECT device
-                    FROM (
-                        SELECT device, MAX(id) as id
-                        FROM iot_data
-                        GROUP BY device
-                    ) as subquery
-                )
-            ");
-            } elseif (Rol::USER) {
-                $data = DB::select("
-                SELECT *
-                FROM iot_data
-                WHERE device IN (
-                    SELECT id
-                    FROM iot_devices
-                    WHERE user = ?
-                )
-                ", [$user->id]);
+                $data = IotData::query()->orderBy("updated_at", "desc")->limit(1024)->get();
+            } else if ($user->rol == Rol::USER) {
+                $data = IotData::query()->where("user", $user->id)->limit(1024)->orderBy("updated_at", "desc")->get();
+            } else {
+                response()->json(["message" => "Unauthorized"], 401);
             }
 
             response()->json(["message" => "All data", "data" => $data]);
@@ -57,7 +40,6 @@ class IotDataController extends Controller
     {
         try {
             $auth = new MiddlewareUser(Rol::IOT);
-            $user = $auth->getUser();
             $device = app()->request()->get("device");
             $latitude = app()->request()->get("latitude");
             $longitude = app()->request()->get("longitude");

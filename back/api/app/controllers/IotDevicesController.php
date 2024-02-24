@@ -22,7 +22,8 @@ class IotDevicesController extends Controller
             if (getenv("LEAF_DEV_TOOLS")) {
                 $msg .= ": " . $e->getMessage();
             }
-            response()->json(["message" => $msg], 500);
+            $response = ["message" => $msg];
+            response()->json($response, 500);
         }
     }
 

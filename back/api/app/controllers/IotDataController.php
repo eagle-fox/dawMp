@@ -13,6 +13,7 @@ class IotDataController extends Controller
     public function index(): void
     {
         try {
+            $data = null;
             $auth = new MiddlewareUser(Rol::USER);
             $user = $auth->getUser();
             ini_set('memory_limit', '1G');
@@ -24,7 +25,9 @@ class IotDataController extends Controller
             } else {
                 response()->json(["message" => "Unauthorized"], 401);
             }
-
+            if ($data === null) {
+                response()->json(["message" => "No data found"], 404);
+            }
             response()->json(["message" => "All data", "data" => $data]);
 
         } catch (Exception $e) {

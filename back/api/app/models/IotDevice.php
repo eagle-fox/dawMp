@@ -17,6 +17,8 @@ use Leaf\Model;
  * @property string $name
  * @property string $icon
  * @property string especie
+ * @property float last_latitude
+ * @property float last_longitude
  */
 class IotDevice extends Model
 {
@@ -25,10 +27,14 @@ class IotDevice extends Model
      *
      * @var array
      */
-    protected $attributes = ["token" => "",
-        "user" => "", "name" => "",
-        "icon" => "",
-        "especie" => ""
+    protected $attributes = [
+        "token"          => "",
+        "user"           => "",
+        "name"           => "",
+        "icon"           => "",
+        "especie"        => "",
+        "last_latitude"  => null,
+        "last_longitude" => null,
     ];
 
     /**

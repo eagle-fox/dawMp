@@ -24,9 +24,9 @@
 
     --text: #0e1415;
     --background: #d5e1e6;
-    --primary: #4cb8a0;
-    --secondary: #1f4233;
-    --accent: #2c5848;
+    --primary: #006039;
+    --secondary: #003e26;
+    --accent: #a37e2c;
 
     /* Color palette in dark mode */
 
@@ -173,4 +173,3 @@ h4 {font-size: 1.777rem; }
 h5 {font-size: 1.333rem;}
 
 small {font-size: 0.750rem; }
-

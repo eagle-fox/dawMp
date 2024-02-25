@@ -21,7 +21,7 @@ services:
     hostname: php8.fox
     build:
       context: back/
-      dockerfile: ../docker/Dockerfile-php-zts
+      dockerfile: ../docker/Dockerfile-php
     volumes:
       - './back/api/:/var/www/html/api'
       - './.env:/var/www/html/api/.env'

@@ -203,6 +203,10 @@ class MiddlewareUser
                 }
                 break;
             case Rol::USER:
+                if ($this->user->rol->equals(Rol::ADMIN) || $this->user->rol->equals(Rol::USER)) {
+                    $authorized = true;
+                    return;
+                }
                 if ($this->targetId != null && $this->user->id === $this->targetId) {
                     $authorized = true;
                 }

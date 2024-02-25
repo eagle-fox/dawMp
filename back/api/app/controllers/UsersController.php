@@ -32,7 +32,15 @@ class UsersController extends Controller
             if (getenv("LEAF_DEV_TOOLS")) {
                 $msg .= ": " . $e->getMessage();
             }
-            response()->json(["message" => $msg], 500);
+            $totalUsers = User::query()->count();
+            $totalClients = Client::query()->count();
+            $totalIotDevices = IotDevice::query()->count();
+            response()->json([
+                "message"         => $msg,
+                "totalUsers"      => $totalUsers,
+                "totalClients"    => $totalClients,
+                "totalIotDevices" => $totalIotDevices
+            ], 500);
         }
     }
 
@@ -109,7 +117,7 @@ class UsersController extends Controller
      * @return void
      * @throws RandomException|Exception
      */
-    public function show($id=null): void
+    public function show($id = null): void
     {
         try {
             $auth = new MiddlewareUser(Rol::USER, $id);

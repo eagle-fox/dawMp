@@ -1,6 +1,6 @@
 <script>
-import Cookies from 'js-cookie';
-import { styleAssets, cookieSettings } from '@/assets/config.json';
+import Cookies from 'js-cookie'
+import { cookieSettings, styleAssets } from '@/assets/config.json'
 
 export default {
     name: 'NavBar',
@@ -102,7 +102,7 @@ export default {
     <nav class="navbar navbar-expand-lg primary-style ">
         <div class="container-fluid">
             <a class="navbar-brand d-flex justify-content-center align-items-center gap-2 text-light" href="#">
-                <!-- <img src="../assets/logo_circle.svg" alt="Logo" width="48" class="d-inline-block align-text-top"> -->
+                <img alt="Logo" class="d-inline-block align-text-top" src="../assets/logo_circle.svg" width="48">
                 Eagle Fox 
             </a>
 

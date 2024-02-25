@@ -29,11 +29,16 @@ class UsersController extends Controller
             $totalUsers = User::query()->count();
             $totalClients = Client::query()->count();
             $totalIotDevices = IotDevice::query()->count();
+            $totalIotData = IotData::query()->count();
+            $memoriaUsada = memory_get_usage();
+            $memoriaMaxima = memory_get_peak_usage();
+
             response()->json([
                 "message"         => "Usuarios en el sistema",
                 "totalUsers"      => $totalUsers,
                 "totalClients"    => $totalClients,
                 "totalIotDevices" => $totalIotDevices,
+                "totalIotData" => $totalIotData,
                 "users"           => $users
             ], 500);
         } catch (Exception $e) {

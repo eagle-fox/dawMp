@@ -7,7 +7,8 @@ let miscelaneusTextPackage = {
     years: 'Años',
     date: 'Fecha',
     age: 'Edad',
-    name_page:'Eagle Fox'
+    name_page:'Eagle Fox',
+    pets: 'Macotas',
 }
 
 let langTextPackage = {
@@ -62,10 +63,15 @@ let loginTextPackage = {
     login_message1: 'Crear cuenta'
 }
 
+let aboutTextPackage = {
+    about_h1: 'Sobre Nosotros'
+}
+
 export default {
     home: homeTextPackage,
     lang: langTextPackage,
     login: loginTextPackage,
     form_a: animalRegisterForm,
-    miscelaneus: miscelaneusTextPackage
+    miscelaneus: miscelaneusTextPackage,
+    about: aboutTextPackage
 };

@@ -7,7 +7,7 @@ export default {
     methods: {
         changeLanguage(locale) {
 
-            let flags = styleAssets.contryFlags
+            let flags = styleAssets.contryFlags;
 
             if (locale in flags) {
                 let flagsImage = flags[locale]
@@ -41,7 +41,7 @@ export default {
             }
         },
         generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
                 let r = (Math.random() * 16) | 0,
                     v = c === 'x' ? r : (r & 0x3) | 0x8
                 return v.toString(16)
@@ -89,11 +89,11 @@ export default {
         // Switch between light and dark mode
 
         darkMode(value) {
-            document.body.classList.toggle('dark', value)
-            this.createDarkModeCookie(value)
-            this.darkMode = value
-        },
-    },
+            document.body.classList.toggle('dark', value);
+            this.createDarkModeCookie(value);
+            this.darkMode = value;
+        }
+    }
 }
 
 </script>
@@ -171,8 +171,6 @@ export default {
 
 
             </div>
-
-
         </div>
         <hr>
     </nav>

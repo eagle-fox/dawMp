@@ -26,21 +26,22 @@ class UsersController extends Controller
         try {
             $auth = new MiddlewareUser(Rol::ADMIN);
             $users = User::query()->get();
-            response()->json($users);
+            $totalUsers = User::query()->count();
+            $totalClients = Client::query()->count();
+            $totalIotDevices = IotDevice::query()->count();
+            response()->json([
+                "message"         => "Usuarios en el sistema",
+                "totalUsers"      => $totalUsers,
+                "totalClients"    => $totalClients,
+                "totalIotDevices" => $totalIotDevices,
+                "users"           => $users
+            ], 500);
         } catch (Exception $e) {
             $msg = "Error al mostrar los usuarios";
             if (getenv("LEAF_DEV_TOOLS")) {
                 $msg .= ": " . $e->getMessage();
             }
-            $totalUsers = User::query()->count();
-            $totalClients = Client::query()->count();
-            $totalIotDevices = IotDevice::query()->count();
-            response()->json([
-                "message"         => $msg,
-                "totalUsers"      => $totalUsers,
-                "totalClients"    => $totalClients,
-                "totalIotDevices" => $totalIotDevices
-            ], 500);
+            response()->json(["message" => $msg], 500);
         }
     }
 

@@ -24,14 +24,25 @@ class UsersController extends Controller
     public function index(): void
     {
         try {
+
+            $start = microtime(true);
+            set_time_limit(300);
+            ini_set('memory_limit', '1024M');
+
             $auth = new MiddlewareUser(Rol::ADMIN);
             $users = User::query()->get();
+
             $totalUsers = User::query()->count();
             $totalClients = Client::query()->count();
             $totalIotDevices = IotDevice::query()->count();
             $totalIotData = IotData::query()->count();
-            $memoriaUsada = memory_get_usage();
-            $memoriaMaxima = memory_get_peak_usage();
+
+            $memoriaUsadaMb = memory_get_usage() / 1024 / 1024;
+            $memoriaMaximaMb = memory_get_peak_usage() / 1024 / 1024;
+            $memoriaUsada = round($memoriaUsadaMb, 2) . " MB";
+            $memoriaMaxima = round($memoriaMaximaMb, 2) . " MB";
+
+            $end = microtime(true);
 
             response()->json([
                 "message"         => "Usuarios en el sistema",
@@ -39,6 +50,9 @@ class UsersController extends Controller
                 "totalClients"    => $totalClients,
                 "totalIotDevices" => $totalIotDevices,
                 "totalIotData" => $totalIotData,
+                "memoriaUsada"  => $memoriaUsada,
+                "memoriaMaxima" => $memoriaMaxima,
+                "tiempo"        => round($end - $start, 2) . " segundos",
                 "users"           => $users
             ], 500);
         } catch (Exception $e) {

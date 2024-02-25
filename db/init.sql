@@ -97,12 +97,16 @@ FROM `log`
 
 CREATE TABLE IF NOT EXISTS `iot_devices`
 (
-    `id`         int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `token`      CHAR(36)     NOT NULL UNIQUE COMMENT '128 bits UUID (RFC 4122)',
-    `name`       varchar(255) NOT NULL,
-    `user`       int          NOT NULL,
-    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `id`             int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `token`          CHAR(36)     NOT NULL UNIQUE COMMENT '128 bits UUID (RFC 4122)',
+    `name`           varchar(255)          DEFAULT 'IoT',
+    `especie`        varchar(255)          DEFAULT 'Mascota',
+    `icon`           varchar(255) NOT NULL,
+    `user`           int          NOT NULL,
+    `last_latitude`  DECIMAL(10, 8)        DEFAULT NULL,
+    `last_longitude` DECIMAL(11, 8)        DEFAULT NULL,
+    `created_at`     datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`     datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX `idx_token` (`token`) USING HASH COMMENT 'Sólo soporta igualdad',
     FOREIGN KEY (`user`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB;
@@ -111,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `iot_data`
 (
     `id`         int            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `device`     int            NOT NULL,
-    # `location`   POINT    NOT NULL,
+    #`location`   POINT    NOT NULL,
     `latitude`   DECIMAL(10, 8) NOT NULL,
     `longitude`  DECIMAL(11, 8) NOT NULL,
     `created_at` datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -119,6 +123,21 @@ CREATE TABLE IF NOT EXISTS `iot_data`
     # SPATIAL INDEX `idx_location` (`location`),
     FOREIGN KEY (`device`) REFERENCES `iot_devices` (`id`)
 ) ENGINE = InnoDB;
+
+DELIMITER //
+CREATE TRIGGER update_last_location
+    AFTER INSERT
+    ON iot_data
+    FOR EACH ROW
+BEGIN
+    UPDATE iot_devices
+    SET last_latitude  = NEW.latitude,
+        last_longitude = NEW.longitude,
+        updated_at     = NOW()
+    WHERE id = NEW.device;
+END;
+//
+DELIMITER ;
 
 /** If data is older than 30 days, delete it */
 DELIMITER $$

@@ -1,12 +1,15 @@
 <?php
+
+use Leaf\DevTools;
+
 require __DIR__ . "/vendor/autoload.php";
 
-\Leaf\DevTools::install();
+DevTools::install();
 
 require __DIR__ . "/vendor/autoload.php";
 
 if (getenv('LEAF_DEV_TOOLS') === 'true') {
-    \Leaf\DevTools::install();
+    DevTools::install();
 }
 
 /*

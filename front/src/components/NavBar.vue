@@ -1,20 +1,19 @@
 <script>
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
+import { styleAssets, cookieSettings } from '@/assets/config.json';
 
 export default {
     name: 'NavBar',
     methods: {
         changeLanguage(locale) {
-            const languageMappings = {
-                es: { icon: 'es.svg', altText: 'es_flag' },
-                en: { icon: 'sh.svg', altText: 'sh_flag' },
-                de: { icon: 'de.svg', altText: 'de_flag' },
-                gl: { icon: 'gl.svg', altText: 'gl_flag' }
-            }
 
-            if (languageMappings[locale]) {
-                const { icon, altText } = languageMappings[locale]
-                this.languageToggleIcon = `src/assets/flags/${icon}`
+            let flags = styleAssets.contryFlags;
+            
+            if (locale in flags) {
+                let flagsImage = flags[locale];
+                let altText = locale;
+
+                this.languageToggleIcon = `src/assets/${flagsImage}`
                 this.currentLanguageFlagAltText = altText
                 this.createLanguageCookie(locale)
                 this.$i18n.locale = locale
@@ -22,14 +21,23 @@ export default {
         },
         // System for creating and loading cookies for the automatic language change chosen by the user.
         createLanguageCookie(data) {
-            Cookies.set('languageCookie', data, { expires: 365, sameSite: 'None', secure: true })
+            let secureStatus = cookieSettings.secure;
+            let sameSiteConfig = cookieSettings.sameSite;
+
+            Cookies.set('languageCookie', data, { expires: 365, sameSite: sameSiteConfig, secure: secureStatus })
         },
-        getCookieValue() {
-            return Cookies.get('languageCookie')
+        createDarkModeCookie(mode) {
+            let secureStatus = cookieSettings.secure;
+            let sameSiteConfig = cookieSettings.sameSite;
+
+            Cookies.set('darkMode', mode, { expires: 365, sameSite: sameSiteConfig, secure: secureStatus })
+        },
+        getCookieValue(cookieName) {
+            return Cookies.get(cookieName)
         },
         changeLanguageCookie() {
-            if (this.getCookieValue()){
-                this.changeLanguage(this.getCookieValue())
+            if (this.getCookieValue('languageCookie')){
+                this.changeLanguage(this.getCookieValue('languageCookie')) 
             }
         },
         generateUUID() {
@@ -59,21 +67,43 @@ export default {
             // Default language
             languageToggleIcon: 'src/assets/flags/es.svg',
             currentLanguageFlagAltText: 'es_flag',
+            darkMode: false
         }
     },
     mounted() {
         this.changeLanguageCookie()
-    },
+        
+        // Check the darkMode cookie and change both the page theme and the dark mode indicative switch.
+
+        if(this.getCookieValue('darkMode') == 'true') {
+            this.darkMode = true
+            document.body.classList.toggle('dark', true);
+            document.getElementById('flexSwitchCheckDefault').checked = true
+        }else{
+            this.darkMode = false
+            document.body.classList.toggle('dark', false);
+            document.getElementById('flexSwitchCheckDefault').checked = false
+        }
+
+    },watch: {
+        // Switch between light and dark mode
+
+        darkMode(value) {
+            document.body.classList.toggle('dark', value);
+            this.createDarkModeCookie(value);
+            this.darkMode = value;   
+        }
+    }
 }
 
 </script>
 
 <template>
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-expand-lg primary-style ">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex justify-content-center align-items-center gap-2" href="#">
-                <img src="../assets/logo_circle.svg" alt="Logo" width="48" class="d-inline-block align-text-top">
-                Eagle Fox
+            <a class="navbar-brand d-flex justify-content-center align-items-center gap-2 text-light" href="#">
+                <!-- <img src="../assets/logo_circle.svg" alt="Logo" width="48" class="d-inline-block align-text-top"> -->
+                Eagle Fox 
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -84,7 +114,7 @@ export default {
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <router-link to="/" class="nav-link active" aria-current="page" href="#">
+                        <router-link to="/" class="nav-link active text-light" aria-current="page" href="#">
                             {{ $t('miscelaneus.home') }}
                         </router-link>
                     </li>
@@ -92,10 +122,19 @@ export default {
 
                 </ul>
 
-                <div class="d-flex gap-4">
-                    <button  class="btn btn-primary" @click="clearSession()">Log Out</button>
+                <div class="d-flex gap-4 align-items-center">
+                    <!-- <button  class="btn btn-primary" @click="clearSession()">Log Out</button> -->
+               
+
+                    <div class="form-check form-switch d-flex ">
+                        <label class="form-check-label" style="margin-right: 45px;" for="flexSwitchCheckChecked">🌞</label>
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" v-model="darkMode">
+                        <label class="form-check-label" style="margin-left: 4px;" for="flexSwitchCheckChecked">🌙</label>
+                    </div>
+
 
                     <div class="dropstart">
+                        
                         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                             <img :src="languageToggleIcon" width="32" :alt="currentLanguageFlagAltText" class="flag-icon">
@@ -104,22 +143,22 @@ export default {
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li class="d-flex justify-content-center align-items-center">
                                 <img src="../assets/flags/es.svg" width="32" alt="es_flag">
-                                <a class="dropdown-item w-50" @click="changeLanguage('es')" href="#">{{ $t('lang.lang_es')
+                                <a class="dropdown-item w-50" @click="changeLanguage('spain')" href="#">{{ $t('lang.lang_es')
                                     }}</a>
                             </li>
                             <li class="d-flex justify-content-center align-items-center">
                                 <img src="../assets/flags/gl.svg" width="32" alt="gl_flag">
-                                <a class="dropdown-item w-50" @click="changeLanguage('gl')" href="#">{{ $t('lang.lang_gl')
+                                <a class="dropdown-item w-50" @click="changeLanguage('galician')" href="#">{{ $t('lang.lang_gl')
                                     }}</a>
                             </li>
                             <li class="d-flex justify-content-center align-items-center">
                                 <img src="../assets/flags/sh.svg" width="32" alt="sh_flag">
-                                <a class="dropdown-item w-50" @click="changeLanguage('en')" href="#">{{ $t('lang.lang_sh')
+                                <a class="dropdown-item w-50" @click="changeLanguage('uk')" href="#">{{ $t('lang.lang_sh')
                                     }}</a>
                             </li>
                             <li class="d-flex justify-content-center align-items-center">
                                 <img src="../assets/flags/de.svg" width="32" alt="de_flag">
-                                <a class="dropdown-item w-50" @click="changeLanguage('de')" href="#">{{ $t('lang.lang_de')
+                                <a class="dropdown-item w-50" @click="changeLanguage('germany')" href="#">{{ $t('lang.lang_de')
                                     }}</a>
                             </li>
                         </ul>
@@ -131,6 +170,7 @@ export default {
 
 
         </div>
+        <hr>
     </nav>
 </template>
 

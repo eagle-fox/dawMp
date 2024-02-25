@@ -1,14 +1,25 @@
 <script>
 import Cookies from 'js-cookie';
 import NavBar from  '@/components/NavBar.vue'
+import { styleAssets } from '@/assets/config.json';
 
 export default {
     name: 'Login',
     components: {
         NavBar
     },
+    data() {
+        return {
+            svgFile: null,
+        }
+    },
+    methods: {
+        loadSvgFile() {
+            this.svgFile = 'src/assets/'+styleAssets.svgData.typoBackground
+        }
+    },
     mounted() {
-      console.log(this.$userSession);
+      this.loadSvgFile();
     }
 }
 
@@ -16,10 +27,10 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <div class="main-container">
-        <div class="d-inline-block d-flex justify-content-center align-items-center all">
+    <div class="main-container" :style="{ 'background-image': 'url(' + svgFile + ')' }">
+        <div class="d-inline-block d-flex justify-content-center align-items-center all bg-light rounded">
             <div class="shadow p-4 rounded">
-                <h3 class="text-center mb-2">{{ $t('login.login_t1') }}</h3>
+                <h3 class="text-center mb-2">{{ $t('miscelaneus.name_page') }}</h3>
 
                 <div class="d-flex justify-content-center align-items-center flex-column gap-2">
                     <form>
@@ -47,9 +58,10 @@ export default {
 
 <style scoped>
 .main-container {
-    height: calc(100vh - 200px);
+    height: calc(100vh - 58px);
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #ece9ef;
 }
 </style>

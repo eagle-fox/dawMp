@@ -2,16 +2,25 @@
 
 namespace app\types;
 
+use InvalidArgumentException;
+
 class Email
 {
     private string $localPart;
     private string $domain;
     private string $extension;
 
-    public function __construct(string $email)
+    public function __construct(Email|string $email)
     {
+        if ($email instanceof Email) {
+            $this->localPart = $email->localPart;
+            $this->domain = $email->domain;
+            $this->extension = $email->extension;
+            return;
+        }
+
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException("Invalid email address");
+            throw new InvalidArgumentException("Invalid email address");
         }
 
         [$this->localPart, $domainAndExtension] = explode('@', $email);

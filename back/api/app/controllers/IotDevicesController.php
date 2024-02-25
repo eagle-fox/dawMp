@@ -22,7 +22,8 @@ class IotDevicesController extends Controller
             if (getenv("LEAF_DEV_TOOLS")) {
                 $msg .= ": " . $e->getMessage();
             }
-            response()->json(["message" => $msg], 500);
+            $response = ["message" => $msg];
+            response()->json($response, 500);
         }
     }
 
@@ -33,8 +34,9 @@ class IotDevicesController extends Controller
             $auth = new MiddlewareUser(Rol::USER, $ownership);
             $uuidIotDevice = new UUID(app()->request()->get("uuid"));
             $newDevice = new IotDevice();
-            $newDevice->uuid = $uuidIotDevice;
+            $newDevice->token = $uuidIotDevice;
             $newDevice->user = $ownership;
+            $newDevice->name = app()->request()->get("name");
             $newDevice->save();
             response()->json(["message" => "Device created", "device" => $newDevice]);
         } catch (Exception $e) {
@@ -83,7 +85,7 @@ class IotDevicesController extends Controller
                     }
                 } else {
                     // For PUT requests, update all attributes
-                    $device->uuid = new UUID(app()->request()->get("uuid"));
+                    $device->token = new UUID(app()->request()->get("uuid"));
                     $device->user = app()->request()->get("user");
                 }
                 $device->save();
@@ -99,4 +101,26 @@ class IotDevicesController extends Controller
             response()->json(["message" => $message], 500);
         }
     }
+
+    public function destroy($id): void
+    {
+        try {
+            $ownership = app()->request()->get("user");
+            $auth = new MiddlewareUser(Rol::USER, $ownership);
+            $device = IotDevice::query()->find($id);
+            if ($device instanceof IotDevice) {
+                $device->delete();
+                response()->json(["message" => "Device deleted"]);
+            } else {
+                response()->json(["message" => "Device not found"], 404);
+            }
+        } catch (Exception $e) {
+            $message = "Error al eliminar el dispositivo";
+            if (getenv("LEAF_DEV_TOOLS")) {
+                $message .= ": " . $e->getMessage();
+            }
+            response()->json(["message" => $message], 500);
+        }
+    }
+
 }

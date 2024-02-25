@@ -1,36 +1,42 @@
 <script>
-import NavBar from "@/components/NavBar.vue";
-import Mapa from "@/components/Mapa.vue";
-import PetCard from "@/components/PetCard.vue";
+import NavBar from '@/components/NavBar.vue'
+import Mapa from '@/components/Mapa.vue'
+import PetCard from '@/components/PetCard.vue'
+import { ref } from 'vue'
 
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
   components: {
     NavBar,
     Mapa,
-    PetCard
+    PetCard,
   },
-  data() {
-    return {
-      petname: "Charly",
-      petdate: "29/08/2023"
-    }
-  }
-}
+  setup() {
+    const puntosArray = ref([
+      { name: 'charly', latitud: 51.505, longitud: -0.09, species: 'dog' }
+    ])
 
+    const petname = ref('Charly')
+    const petdate = ref('29/08/2023')
+
+    return { puntosArray, petname, petdate }
+  },
+}
 </script>
 
 <template>
-  <NavBar></NavBar>
+  <div>
+    <NavBar></NavBar>
 
-  <div class="pets-view p-4 ">
-    <PetCard :petName=petname :petDate=petdate ></PetCard>
+    <div class="pets-view p-4">
+      <PetCard :petName="petname" :petDate="petdate"></PetCard>
+      <Mapa :puntos="puntosArray"></Mapa>
+    </div>
   </div>
-  
 </template>
 
 <style scoped>
-  .pets-view{
-    max-width: 500px;
-  }
+.pets-view {
+  max-width: 500px;
+}
 </style>

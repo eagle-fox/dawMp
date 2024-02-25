@@ -1,5 +1,6 @@
 <script>
 import { IconCalendar, IconCake, IconSettings } from '@tabler/icons-vue';
+import { styleAssets } from '@/assets/config.json';
 
 export default {
     name: 'PetCard',
@@ -10,13 +11,17 @@ export default {
     },
     data() {
         return {
-            calcAge: null
+            calcAge: null,
+            petSpecieFileUrl: null,
+            switchAge: true,
         }
     },
     props: {
         petName: String,
-        petDate: String
+        petDate: String,
+        petSpecies: String,
     }, methods: {
+        
         calculateAge(birthday) {
             let birthday_arr = birthday.split("/");
             let birthday_date = new Date(birthday_arr[2], birthday_arr[1] - 1, birthday_arr[0]);
@@ -26,16 +31,35 @@ export default {
 
             if (calculatedAgeYears === 0) {
                 var calculatedAgeMonths = ageDate.getUTCMonth();
-                this.calcAge = calculatedAgeMonths + ' ' + this.$t('miscelaneus.mounths');
+                this.calcAge = calculatedAgeMonths;
+                this.switchAge = false;
+
+                console.log(this.switchAge)
             } else {
-                this.calcAge = calculatedAgeYears + ' ' + this.$t('miscelaneus.years');
+                this.calcAge = calculatedAgeYears;
+                this.switchAge = true;
             }
+        },
+        chargeSpecieImage(specie){
+
+            let animalDictionary = styleAssets.animalPointers;
+
+            if (specie in animalDictionary){
+                this.petSpecieFileUrl = animalDictionary[specie];
+            }else{
+                let  animalKeysArray = Object.keys(animalDictionary);
+                let animalAleatorio = animalKeysArray[Math.floor(Math.random() * animalKeysArray.length)];
+
+                this.petSpecieFileUrl = animalDictionary[animalAleatorio];
+
+            }
+
         }
 
     }, mounted() {
         this.calculateAge(this.petDate);
+        this.chargeSpecieImage(this.petSpecies);
     }
-
 
 }
 
@@ -43,20 +67,26 @@ export default {
 
 <template>
     <div class="card">
-        <img src="../assets/pointers/animal.png" class="animal-image" alt="">
+        <img :src="'../src/assets/' + this.petSpecieFileUrl " class="animal-image" alt="">
         <div class="card-body">
             <h5 class="card-title">{{ petName }}</h5>
             <div>
-                <div>{{ $t('miscelaneus.date') }}: {{ petDate }} <IconCake :size="20" class="mb-1"></IconCake>
+                <div>{{ $t('miscelaneus.date') }}: {{ petDate }}
+                    <IconCake :size="20" class="mb-1"></IconCake>
                 </div>
-                <div>{{ $t('miscelaneus.age') }}: {{ this.calcAge }} <IconCalendar :size="20" class="mb-1"></IconCalendar>
+                <div>
+                    <div class="d-flex aling-items-center gap-1">
+                        {{ $t('miscelaneus.age') }}: {{ this.calcAge }} 
+                        <p v-if="!switchAge">{{ this.$t('miscelaneus.mounths') }}</p>
+                        <p v-if="switchAge">{{ this.$t('miscelaneus.years') }}</p>
+                        <IconCalendar :size="20" class="mb-1"></IconCalendar>
+                    </div>
                 </div>
-
             </div>
         </div>
 
         <div class="d-flex gap-1">
-            <button class="btn btn-primary">Ver Mapa</button>
+            <button class="btn btn-primary">Mapa</button>
             <button type="button" class="btn btn-light">
                 <IconSettings :size="32"></IconSettings>
             </button>
@@ -75,7 +105,7 @@ export default {
 }
 
 .animal-image {
-    width: 65px;
+    width: 55px;
     margin-bottom: 10px;
-    margin-left: 10px;
+    margin-left: 15px;
 }</style>

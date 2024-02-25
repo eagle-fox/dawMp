@@ -10,14 +10,17 @@ import { createI18n } from 'vue-i18n';
 import messages from './locales';
 const i18n = createI18n({
     legacy: false,
-    locale: 'es',
-    fallbackLocale: 'en',
+    locale: 'spain',
+    fallbackLocale: 'uk',
     messages,
 });
 
 // Estilos globales para Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap'
+
+// Aplicar estilos globales
+import './assets/base.css'
 
 import userSession from './assets/js/userSession.js'
 

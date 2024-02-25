@@ -67,22 +67,6 @@ services:
       - foxtrot-bridge
       - foxtrot-api-lan
 
-  chema:
-    image: schemaspy/schemaspy
-    volumes:
-      - ./chema/output:/output
-      - ./chema/config:/config
-    container_name: "fox-chema"
-    env_file:
-      - .env
-    command: [
-      "-imageformat",
-      "svg"
-    ]
-    depends_on:
-      - mysql
-    network_mode: "service:mysql"
-
 networks:
   foxtrot-api-lan:
     internal: true

@@ -79,7 +79,7 @@ export default {
             </div>
         </div>
 
-        <div class="bg-primary w-100 d-flex justify-content-center align-items-center p-4 flex-md-row flex-column">
+        <div class=" w-100 d-flex justify-content-center align-items-center p-4 flex-md-row flex-column primary-style">
             <div class="max-width-xxl p-4 text-light textFormat">
                 <h4 class="text-center">{{ $t('home.home_t3') }}</h4>
             </div>
@@ -108,6 +108,17 @@ export default {
         </div>
 
         <div class="d-flex justify-content-center align-items-center flex-column gap-2 mt-4 ">
+            <div class="d-flex gap-2 flex-column">
+                <img src="../assets/img/localeimg1.png" class="resice-img rounded" alt="">
+                <p class="text-center">{{ $t('home.home_t12') }}</p>
+            </div>
+
+            <div>
+
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center flex-column gap-2 mt-4 ">
             <h2 class="text-center">{{ $t('home.home_t11') }}</h2>
             <div class="p-4 d-flex w-100 justify-content-center flex-md-row flex-column resizeGap mt-4 alignMobile">
 
@@ -121,7 +132,7 @@ export default {
                     <h3>{{ $t('home.home_t7') }}</h3>
                     <p class="">{{ $t('home.home_t8') }}</p>
 
-                    <div class="mt-4 shadow p-3 rounded">
+                    <div class="mt-4 shadow p-3 rounded bg-light">
                         <label for="exampleInputEmail1" class="form-label">{{ $t('home.home_js1') }}</label>
                         <input type="text" class="form-control" id="autoFill" ref="autoFillInput" @input="handleInput">
 
@@ -182,8 +193,11 @@ export default {
     background-color: #4ce54c;
 
     box-shadow: 0px 0px 20px 12px rgba(79, 255, 48, 1);
+}
 
-
+.resice-img{
+    width: 650px;
+    height: 350px;
 }
 
 .testImage {
@@ -254,4 +268,5 @@ export default {
 .p-10 {
     padding: 60px;
 }
+
 </style>

@@ -113,9 +113,6 @@ export default {
                 <p class="text-center">{{ $t('home.home_t12') }}</p>
             </div>
 
-            <div>
-
-            </div>
         </div>
 
         <div class="d-flex justify-content-center align-items-center flex-column gap-2 mt-4 ">
@@ -224,6 +221,14 @@ export default {
 .textFormat {
     width: 30%;
 }
+
+
+@media only screen and (max-width: 1400px) {
+    .alignMobile{
+        flex-direction: column !important;
+    }
+}
+
 
 @media only screen and (max-width: 860px) {
     .textFormat {

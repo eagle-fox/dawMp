@@ -62,10 +62,15 @@ let loginTextPackage = {
     login_message1: 'Crear cuenta'
 }
 
+let aboutTextPackage = {
+    about_h1: 'Sobre Nosotros'
+}
+
 export default {
     home: homeTextPackage,
     lang: langTextPackage,
     login: loginTextPackage,
     form_a: animalRegisterForm,
-    miscelaneus: miscelaneusTextPackage
+    miscelaneus: miscelaneusTextPackage,
+    about: aboutTextPackage
 };

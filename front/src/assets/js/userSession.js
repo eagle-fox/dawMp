@@ -1,8 +1,6 @@
 class userSession {
     static #instance;
 
-    //
-
     constructor(name, email, role, token) {
         // Verificamos si ya hay una instancia, si no existe la crea.
         if (userSession.#instance) {

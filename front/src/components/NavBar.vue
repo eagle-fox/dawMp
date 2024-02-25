@@ -170,11 +170,7 @@ export default {
                         </div>
                     </div>
                 </ul>
-
-
             </div>
-
-
         </div>
         <hr>
     </nav>

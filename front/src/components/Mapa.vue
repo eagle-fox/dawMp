@@ -25,7 +25,11 @@ export default {
       markers: [],
     })
 
+    
+
     onMounted(() => {
+      console.log(props.puntos);
+
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
           const { latitude, longitude } = position.coords
@@ -82,7 +86,7 @@ export default {
               icon: animalIcon,
             })
               .addTo(state.map)
-              .bindPopup(punto.name)
+              .bindPopup(punto.petName)
             state.markers.push(marker)
           })
         })

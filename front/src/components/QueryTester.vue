@@ -9,14 +9,15 @@ import URL from '@/types/URL.js'
 import BasicAuth from '@/types/BasicAuth.js'
 import User from '@/types/User.js'
 import BearerToken from '@/types/BearerToken.js'
-import UUID from '@/types/UUID.js'
 
 /**
  * Ejemplo de uso de la clase Query para obtener usuarios desde la base de datos
  */
 let myURL = new URL('http', 'localhost', 2003)
 let myBasicAuth = new BasicAuth('admin@admin.com', 'admin')
-let bearerTokenAuth = new BearerToken(new UUID().generate())
+let bearerTokenAuth = new BearerToken()
+
+
 let myQuery = new Query(myURL).withAuth(myBasicAuth)
 let data = await myQuery.getUsers()
 console.log(data)
@@ -33,7 +34,7 @@ nuevoUsuario.withNombre('Juan')
     .withRol('user')
     .build()
 console.log(nuevoUsuario)
-
+console.log(bearerTokenAuth)
 </script>
 
 <style scoped>

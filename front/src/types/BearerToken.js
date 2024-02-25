@@ -13,7 +13,7 @@ class BearerToken {
      */
     constructor(token = null) {
         if (token === null) {
-            throw new Error('Bearer Token cannot be null')
+            this.token = new UUID().uuid
         }
         if (token instanceof BearerToken) {
             this.token = token.token
@@ -26,6 +26,8 @@ class BearerToken {
     getToken() {
         return this.token
     }
+
+
 }
 
 export default BearerToken

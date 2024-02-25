@@ -50,10 +50,9 @@ class MiddlewareUser
         if ($this->targetRol != Rol::GUEST) {
             $this->setCurrentUser();
             $this->updateTokenPerIp();
-
         }
 
-        if ($this->targetRol != Rol::IOT) {
+        if ($this->targetRol != Rol::IOT && $this->targetRol != Rol::GUEST) {
             $this->setClient();
         }
 

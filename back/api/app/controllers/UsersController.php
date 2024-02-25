@@ -4,9 +4,10 @@ namespace app\controllers;
 
 use app\middlewares\MiddlewareUser;
 use app\models\Client;
+use app\models\IotData;
+use app\models\IotDevice;
 use app\models\Log;
 use app\models\User;
-use app\types\IPv4;
 use app\types\Rol;
 use app\types\UUID;
 use Exception;
@@ -171,23 +172,36 @@ class UsersController extends Controller
      */
     public function destroy($id): void
     {
-
         try {
+            set_time_limit(300);
+            ini_set('memory_limit', '1024M');
+
             $auth = new MiddlewareUser(Rol::USER, $id);
-            $user = User::query()->find($id);
+            $user = User::query()->where("id", $id)->first();
             if (!$user) {
                 response()->json(["message" => "Usuario no encontrado"], 404);
                 return;
             }
 
-            $log = Log::query()->where("user", $id)->get();
+            $iotDevices = IotDevice::query()->where("user", $id)->get();
+            foreach ($iotDevices as $device) {
+                $iotData = IotData::query()->where("device", $device->id)->get();
+                foreach ($iotData as $data) {
+                    $data->delete();
+                }
+                $device->delete();
+            }
+
+            $logs = Log::query()->where("user", $id)->get();
+            foreach ($logs as $log) {
+                $log->delete();
+            }
+
             $clients = Client::query()->where("user", $id)->get();
-            foreach ($log as $l) {
-                $l->delete();
+            foreach ($clients as $client) {
+                $client->delete();
             }
-            foreach ($clients as $c) {
-                $c->delete();
-            }
+
             $user->delete();
             response()->json(["message" => "Usuario eliminado"]);
         } catch (Exception $e) {

@@ -10,8 +10,8 @@ export default {
             let flags = styleAssets.contryFlags;
 
             if (locale in flags) {
-                let flagsImage = flags[locale];
-                let altText = locale;
+                let flagsImage = flags[locale]
+                let altText = locale
 
                 this.languageToggleIcon = `src/assets/${flagsImage}`
                 this.currentLanguageFlagAltText = altText
@@ -21,14 +21,14 @@ export default {
         },
         // System for creating and loading cookies for the automatic language change chosen by the user.
         createLanguageCookie(data) {
-            let secureStatus = cookieSettings.secure;
-            let sameSiteConfig = cookieSettings.sameSite;
+            let secureStatus = cookieSettings.secure
+            let sameSiteConfig = cookieSettings.sameSite
 
             Cookies.set('languageCookie', data, { expires: 365, sameSite: sameSiteConfig, secure: secureStatus })
         },
         createDarkModeCookie(mode) {
-            let secureStatus = cookieSettings.secure;
-            let sameSiteConfig = cookieSettings.sameSite;
+            let secureStatus = cookieSettings.secure
+            let sameSiteConfig = cookieSettings.sameSite
 
             Cookies.set('darkMode', mode, { expires: 365, sameSite: sameSiteConfig, secure: secureStatus })
         },
@@ -60,14 +60,14 @@ export default {
                 .catch(error => {
                     console.error('Error al crear la nueva userSession:', error)
                 })
-        }
+        },
     },
     data() {
         return {
             // Default language
             languageToggleIcon: 'src/assets/flags/es.svg',
             currentLanguageFlagAltText: 'es_flag',
-            darkMode: false
+            darkMode: false,
         }
     },
     mounted() {
@@ -77,11 +77,11 @@ export default {
 
         if (this.getCookieValue('darkMode') == 'true') {
             this.darkMode = true
-            document.body.classList.toggle('dark', true);
+            document.body.classList.toggle('dark', true)
             document.getElementById('flexSwitchCheckDefault').checked = true
         } else {
             this.darkMode = false
-            document.body.classList.toggle('dark', false);
+            document.body.classList.toggle('dark', false)
             document.getElementById('flexSwitchCheckDefault').checked = false
         }
 
@@ -99,77 +99,77 @@ export default {
 </script>
 
 <template>
-    <nav class="navbar navbar-expand-lg primary-style ">
+    <nav id="navbar" class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand d-flex justify-content-center align-items-center gap-2 text-light" href="#">
                 <img alt="Logo" class="d-inline-block align-text-top" src="../assets/logo_circle.svg" width="48">
-                Eagle Fox 
+                Eagle Fox
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <button aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation"
+                    class="navbar-toggler"
+                    data-bs-target="#navbarNavAltMarkup" data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+            <div id="navbarNavAltMarkup" class="collapse navbar-collapse">
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <router-link to="/" class="nav-link active text-light" aria-current="page" href="#">
+                        <router-link aria-current="page" class="nav-link active text-light" href="#" to="/">
                             {{ $t('miscelaneus.home') }}
                         </router-link>
                     </li>
                 </ul>
 
-                <ul class="">
-                    <div class="d-flex justify-content-end">
-                        <div class="d-flex gap-4 align-items-center">
-                            <!-- <button  class="btn btn-primary" @click="clearSession()">Log Out</button> -->
-
-                            <div class="form-check form-switch d-flex ">
-                                <label class="form-check-label" style="margin-right: 45px;"
-                                    for="flexSwitchCheckChecked">🌞</label>
-                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
-                                    v-model="darkMode">
-                                <label class="form-check-label" style="margin-left: 4px;"
-                                    for="flexSwitchCheckChecked">🌙</label>
-                            </div>
-                            <div class="dropstart">
-                                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <img :src="languageToggleIcon" width="32" :alt="currentLanguageFlagAltText"
-                                        class="flag-icon">
-                                </button>
-
-                                <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-start">
-                                    <li class="d-flex justify-content-center align-items-center">
-                                        <img src="../assets/flags/es.svg" width="32" alt="es_flag">
-                                        <a class="dropdown-item w-50" @click="changeLanguage('spain')" href="#">{{
-                                            $t('lang.lang_es')
-                                        }}</a>
-                                    </li>
-                                    <li class="d-flex justify-content-center align-items-center">
-                                        <img src="../assets/flags/gl.svg" width="32" alt="gl_flag">
-                                        <a class="dropdown-item w-50" @click="changeLanguage('galician')" href="#">{{
-                                            $t('lang.lang_gl')
-                                        }}</a>
-                                    </li>
-                                    <li class="d-flex justify-content-center align-items-center">
-                                        <img src="../assets/flags/sh.svg" width="32" alt="sh_flag">
-                                        <a class="dropdown-item w-50" @click="changeLanguage('uk')" href="#">{{
-                                            $t('lang.lang_sh')
-                                        }}</a>
-                                    </li>
-                                    <li class="d-flex justify-content-center align-items-center">
-                                        <img src="../assets/flags/de.svg" width="32" alt="de_flag">
-                                        <a class="dropdown-item w-50" @click="changeLanguage('germany')" href="#">{{
-                                            $t('lang.lang_de')
-                                        }}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                <div class="d-flex gap-4 align-items-center">
+                    <!-- <button  class="btn btn-primary" @click="clearSession()">Log Out</button> -->
+                    <div class="form-check form-switch d-flex ">
+                        <label class="form-check-label" for="flexSwitchCheckChecked"
+                               style="margin-right: 45px;">🌞</label>
+                        <input id="flexSwitchCheckDefault" v-model="darkMode" class="form-check-input" role="switch"
+                               type="checkbox">
+                        <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-left: 4px;">🌙</label>
                     </div>
-                </ul>
+
+
+                    <div class="dropstart">
+                        <button aria-expanded="false" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                type="button">
+                            <img :alt="currentLanguageFlagAltText" :src="languageToggleIcon" class="flag-icon"
+                                 width="32">
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li class="d-flex justify-content-center align-items-center">
+                                <img alt="es_flag" src="../assets/flags/es.svg" width="32">
+                                <a class="dropdown-item w-50" href="#" @click="changeLanguage('spain')">{{ $t(
+                                    'lang.lang_es')
+                                    }}</a>
+                            </li>
+                            <li class="d-flex justify-content-center align-items-center">
+                                <img alt="gl_flag" src="../assets/flags/gl.svg" width="32">
+                                <a class="dropdown-item w-50" href="#" @click="changeLanguage('galician')">{{ $t(
+                                    'lang.lang_gl')
+                                    }}</a>
+                            </li>
+                            <li class="d-flex justify-content-center align-items-center">
+                                <img alt="sh_flag" src="../assets/flags/sh.svg" width="32">
+                                <a class="dropdown-item w-50" href="#" @click="changeLanguage('uk')">{{ $t(
+                                    'lang.lang_sh')
+                                    }}</a>
+                            </li>
+                            <li class="d-flex justify-content-center align-items-center">
+                                <img alt="de_flag" src="../assets/flags/de.svg" width="32">
+                                <a class="dropdown-item w-50" href="#" @click="changeLanguage('germany')">{{ $t(
+                                    'lang.lang_de')
+                                    }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
             </div>
         </div>
         <hr>
@@ -181,9 +181,10 @@ export default {
     margin-left: 3px;
 }
 
-@media (max-width: 600px) {
-  body {
-    background-color: #87ceeb;
-  }
+#navbar {
+    background-color: #1e1e1e;
+    border-bottom: var(--accent) 2px solid;
+    padding: 1em 4em;
 }
+
 </style>

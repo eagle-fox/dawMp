@@ -1,8 +1,7 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
-import { IconMapPinFilled, IconMap2, IconChartHistogram, IconCheck } from '@tabler/icons-vue'
-import { ref } from 'vue'
-
+import { IconChartHistogram, IconCheck, IconMap2, IconMapPinFilled } from '@tabler/icons-vue'
+import Footer from '@/components/Footer.vue'
 
 export default {
     name: 'Home',
@@ -12,6 +11,7 @@ export default {
         }
     },
     components: {
+        Footer,
         IconMapPinFilled,
         IconMap2,
         IconChartHistogram,
@@ -65,7 +65,7 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <main class="mt-5 d-flex justify-content-center align-items-center flex-column gap-4">
+    <main class=" mt-5 d-flex justify-content-center align-items-center flex-column gap-4">
         <div class="d-flex justify-content-center align-items-center flex-column gap-5 p-10">
             <div>
                 <h1 class="text-center">{{ $t('home.home_t1') }}</h1>
@@ -152,6 +152,7 @@ export default {
             </div>
         </div>
     </main>
+    <Footer></Footer>
 </template>
 
 <style scoped>

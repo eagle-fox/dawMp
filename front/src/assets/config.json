@@ -4,7 +4,7 @@
         "authCode": "YWRtaW5AYWRtaW4uY29tOmFkbWlu"
     },
     "cookieSettings": {
-        "secure": true,
+        "secure": false,
         "sameSite": "None"
     },
     "styleAssets": {

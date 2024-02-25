@@ -52,7 +52,7 @@ class MiddlewareUser
             $this->updateTokenPerIp();
         }
 
-        if ($this->targetRol != Rol::IOT) {
+        if ($this->targetRol != Rol::IOT && $this->targetRol != Rol::GUEST) {
             $this->setClient();
         }
 

@@ -46,7 +46,10 @@ class Query {
 
         // convert the axios response to an normal array
         for (const i in data) {
-            this.users.push(new User(data[i]))
+            const myUser = new User()
+            myUser.withObject(data[i])
+            myUser.build()
+            this.users.push(myUser)
         }
 
         return this.users

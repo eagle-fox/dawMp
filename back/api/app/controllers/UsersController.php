@@ -119,7 +119,12 @@ class UsersController extends Controller
         foreach ($fields as $field) {
             if (request()->get($field) !== null) {
                 if ($field === 'password') {
-                    $user->$field = hash("sha256", request()->get($field));
+                    // Check if the password is already hashed
+                    if (strlen(request()->get($field)) === 64) {
+                        $user->$field = request()->get($field);
+                    } else {
+                        $user->$field = hash("sha256", request()->get($field));
+                    }
                 } else {
                     $user->$field = request()->get($field);
                 }

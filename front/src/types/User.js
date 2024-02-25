@@ -139,7 +139,8 @@ class User {
      * @throws {Error} - Not supported, ID is immutable and is assigned by the server
      */
     withId(id) {
-        throw new Error('Not supported, ID is immutable and is assigned by the server')
+        this.id = id
+        return this
     }
 
     /**

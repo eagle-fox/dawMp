@@ -55,6 +55,61 @@ class Query {
         return this.users
     }
 
+    /**
+     * @param {user} user - The user to create.
+     * @returns {Promise<void>}
+     */
+    async postUser(user) {
+        await this.client.post(this.url + 'users', user, { responseType: 'json' })
+            .then(response => response.data)
+            .catch(error => {
+                console.error('Error posting user:', error.message)
+                console.error('Error details:', error.response.data)
+                throw error
+            })
+    }
+
+    /**
+     * @param {User} user - El ID del usuario a actualizar
+     * @returns {Promise<void>}
+     */
+    async putUser(user) {
+        await this.client.put(this.url + 'users/', user.id, { responseType: 'json' })
+            .then(response => response.data)
+            .catch(error => {
+                console.error('Error putting user:', error.message)
+                console.error('Error details:', error.response.data)
+                throw error
+            })
+    }
+
+    /**
+     * @param {User} user - El ID a actualizar
+     */
+    async patchUser(user) {
+        await this.client.patch(this.url + 'users/' + user.id, { responseType: 'json' })
+            .then(response => response.data)
+            .catch(error => {
+                console.error('Error patching user:', error.message)
+                console.error('Error details:', error.response.data)
+                throw error
+            })
+    }
+
+    /**
+     * @param {number} id - El ID del usuario a eliminar
+     * @returns {Promise<void>}
+     * @throws {Error} - Si hay un error al eliminar el usuario
+     */
+    async deleteUser(id) {
+        await this.client.delete(this.url + 'users/' + id, { responseType: 'json' })
+            .then(response => response.data)
+            .catch(error => {
+                console.error('Error deleting user:', error.message)
+                console.error('Error details:', error.response.data)
+                throw error
+            })
+    }
 }
 
 export default Query

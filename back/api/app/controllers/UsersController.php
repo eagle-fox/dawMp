@@ -24,7 +24,6 @@ class UsersController extends Controller
     public function index(): void
     {
         try {
-
             $start = microtime(true);
             set_time_limit(300);
             ini_set('memory_limit', '1024M');
@@ -45,21 +44,22 @@ class UsersController extends Controller
             $end = microtime(true);
 
             response()->json([
-                "message"         => "Usuarios en el sistema",
-                "totalUsers"      => $totalUsers,
-                "totalClients"    => $totalClients,
+                "totalUsers"    => $totalUsers,
+                "totalClients"  => $totalClients,
                 "totalIotDevices" => $totalIotDevices,
-                "totalIotData" => $totalIotData,
+                "totalIotData"  => $totalIotData,
                 "memoriaUsada"  => $memoriaUsada,
                 "memoriaMaxima" => $memoriaMaxima,
                 "tiempo"        => round($end - $start, 2) . " segundos",
-                "users"           => $users
-            ], 500);
+                "users"         => $users
+            ], 200);
+
         } catch (Exception $e) {
             $msg = "Error al mostrar los usuarios";
             if (getenv("LEAF_DEV_TOOLS")) {
                 $msg .= ": " . $e->getMessage();
             }
+            error_log($msg);
             response()->json(["message" => $msg], 500);
         }
     }

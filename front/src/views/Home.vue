@@ -65,7 +65,7 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <main class="mt-5 d-flex justify-content-center align-items-center flex-column gap-4">
+    <main class=" mt-5 d-flex justify-content-center align-items-center flex-column gap-4">
         <div class="d-flex justify-content-center align-items-center flex-column gap-5 p-10">
             <div>
                 <h1 class="text-center">{{ $t('home.home_t1') }}</h1>

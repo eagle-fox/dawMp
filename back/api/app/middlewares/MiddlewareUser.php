@@ -50,7 +50,6 @@ class MiddlewareUser
         if ($this->targetRol != Rol::GUEST) {
             $this->setCurrentUser();
             $this->updateTokenPerIp();
-
         }
 
         if ($this->targetRol != Rol::IOT) {
@@ -204,6 +203,10 @@ class MiddlewareUser
                 }
                 break;
             case Rol::USER:
+                if ($this->user->rol->equals(Rol::ADMIN) || $this->user->rol->equals(Rol::USER)) {
+                    $authorized = true;
+                    return;
+                }
                 if ($this->targetId != null && $this->user->id === $this->targetId) {
                     $authorized = true;
                 }

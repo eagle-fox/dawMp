@@ -65,10 +65,15 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <main class=" mt-5 d-flex justify-content-center align-items-center flex-column gap-4">
+    <main class=" mt-1 d-flex justify-content-center align-items-center flex-column gap-4">
         <div class="d-flex justify-content-center align-items-center flex-column gap-5 p-10">
+            <div class="d-flex flex-column gap-2">
+                <img alt="Logo" class="d-inline-block align-text-top" src="../assets/logo_circle.svg" width="200">
+                <h1 class="text-center">{{ $t('miscelaneus.name_page') }}</h1>
+            </div>
+
             <div>
-                <h1 class="text-center">{{ $t('home.home_t1') }}</h1>
+                <h2 class="text-center">{{ $t('home.home_t1') }}</h2>
                 <p class="text-center">{{ $t('home.home_t2') }}</p>
             </div>
 

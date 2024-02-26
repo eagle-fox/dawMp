@@ -1,6 +1,16 @@
 <template>
   <div class="mt-4">
-    <div ref="mapElement" class="viewerMap"></div>
+    <div id="viewerMap" style="position: relative;">
+      <div ref="mapElement" class="viewerMap"></div>
+      <div v-if="loading" class="loading-overlay">
+        <div class="spinner-border text-primary loadSphere" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="loading-text">
+          {{ $t('miscelaneus.loading') }}...
+        </div>
+      </div>
+    </div>
     <div class="d-flex justify-content-center mt-4 buttonsSlayer"></div>
   </div>
 </template>
@@ -18,6 +28,11 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      loading: true
+    }
+  },
   setup(props) {
     const mapElement = ref(null)
     let state = reactive({
@@ -25,11 +40,7 @@ export default {
       markers: [],
     })
 
-    
-
     onMounted(() => {
-      console.log(props.puntos);
-
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
           const { latitude, longitude } = position.coords
@@ -45,15 +56,6 @@ export default {
             .bindPopup('Tu posición actual')
           state.map = map
           state.markers.push(marker)
-
-          function getIconSize(zoom) {
-            const baseSize = 50
-            const scaleFactor = 1.5
-            return Math.max(
-              baseSize * Math.pow(scaleFactor, zoom - 15),
-              baseSize,
-            )
-          }
 
           props.puntos.forEach((punto) => {
             let iconUrl = ''
@@ -89,24 +91,15 @@ export default {
               .bindPopup(punto.petName)
             state.markers.push(marker)
           })
+
+          this.loading = false; // Indica que se ha cargado el mapa y los marcadores
         })
       } else {
         console.error('La geolocalización no es compatible con este navegador.')
       }
     })
 
-    const addMarker = () => {
-      if (state.map) {
-        const latitude = state.map.getCenter().lat
-        const longitude = state.map.getCenter().lng
-        const marker = L.marker([latitude, longitude])
-          .addTo(state.map)
-          .bindPopup('Nuevo marcador')
-        state.markers.push(marker)
-      }
-    }
-
-    return { mapElement, addMarker }
+    return { mapElement }
   },
   components: {
     IconDog,
@@ -119,6 +112,20 @@ export default {
   width: 1000px;
   height: 500px;
   border-radius: 10px;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading-text {
+  position: absolute;
+  top: calc(50% + 1rem); /* Ajusta este valor según tu preferencia */
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media screen and (max-width: 700px) {

@@ -27,7 +27,6 @@ export default {
     <main :style="{ 'background-image': 'url(' + svgFile + ')' }">
         <div class="d-flex flex-column align-items-center p-4 gap-4">
             <h1>{{ $t('about.about_h1') }}</h1>
-
             <div class="d-inline-flex shadow rounded bg-light p-4 ">
                 
             </div>

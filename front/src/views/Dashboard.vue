@@ -1,5 +1,6 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
+import FooterMain from '@/components/FooterMain.vue'
 import Mapa from '@/components/Mapa.vue'
 import PetCard from '@/components/PetCard.vue'
 import { ref } from 'vue'
@@ -10,6 +11,7 @@ export default {
     NavBar,
     Mapa,
     PetCard,
+    FooterMain
   },
   data() {
     return {
@@ -76,6 +78,7 @@ export default {
       </div>
 
     </div>
+      <FooterMain></FooterMain>
   </div>
 </template>
 

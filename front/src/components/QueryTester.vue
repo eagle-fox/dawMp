@@ -9,19 +9,9 @@ import URL from '@/types/URL.js'
 import BasicAuth from '@/types/BasicAuth.js'
 import User from '@/types/User.js'
 import BearerToken from '@/types/BearerToken.js'
-
-/**
- * Ejemplo de uso de la clase Query para obtener usuarios desde la base de datos
- */
 let myURL = new URL('http', 'localhost', 2003)
 let myBasicAuth = new BasicAuth('admin@admin.com', 'admin')
 let bearerTokenAuth = new BearerToken()
-
-
-let myQuery = new Query(myURL).withAuth(myBasicAuth)
-let data = await myQuery.getUsers()
-console.log(data)
-
 /**
  * Ejemplo de uso de la clase User para crear un nuevo usuario en local antes de POST
  */
@@ -35,6 +25,15 @@ nuevoUsuario.withNombre('Juan')
     .build()
 console.log(nuevoUsuario)
 console.log(bearerTokenAuth)
+
+/**
+ * Ejemplo de uso de la clase Query para obtener usuarios desde la base de datos
+ */
+let myQuery = new Query(myURL).withAuth(myBasicAuth)
+let data = await myQuery.getUsers()
+console.log(JSON.stringify(data))
+
+
 </script>
 
 <style scoped>

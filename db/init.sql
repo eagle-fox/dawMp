@@ -61,24 +61,7 @@ CREATE TABLE IF NOT EXISTS `log`
     FOREIGN KEY (`client`) REFERENCES `clients` (`id`)
 ) ENGINE = InnoDB;
 
-/** Autoclean */
-DELIMITER $$
-CREATE EVENT IF NOT EXISTS `delete_old_logs`
-    ON SCHEDULE EVERY 1 HOUR
-    DO
-    BEGIN
-        DECLARE `log_count` INT;
-        SELECT COUNT(*) INTO `log_count` FROM `log`;
-        IF `log_count` > 1024 THEN
-            CREATE TEMPORARY TABLE `temp_log` AS
-            SELECT `id` FROM `log` ORDER BY `created_at` LIMIT 512;
 
-            DELETE FROM `log` WHERE `id` IN (SELECT `id` FROM `temp_log`);
-
-            DROP TEMPORARY TABLE `temp_log`;
-        END IF;
-    END$$
-DELIMITER ;
 
 /**
   Vista para mostrar el nombre del usuario y el cliente en lugar de sus ids con formato "humano"
@@ -146,5 +129,24 @@ CREATE EVENT IF NOT EXISTS `delete_old_iot_data`
     DO
     BEGIN
         DELETE FROM `iot_data` WHERE `created_at` < DATE_SUB(NOW(), INTERVAL 30 DAY);
+    END$$
+DELIMITER ;
+
+/** Autoclean */
+DELIMITER $$
+CREATE EVENT IF NOT EXISTS `delete_old_logs`
+    ON SCHEDULE EVERY 1 HOUR
+    DO
+    BEGIN
+        DECLARE `log_count` INT;
+        SELECT COUNT(*) INTO `log_count` FROM `log`;
+        IF `log_count` > 1024 THEN
+            CREATE TEMPORARY TABLE `temp_log` AS
+            SELECT `id` FROM `log` ORDER BY `created_at` LIMIT 512;
+
+            DELETE FROM `log` WHERE `id` IN (SELECT `id` FROM `temp_log`);
+
+            DROP TEMPORARY TABLE `temp_log`;
+        END IF;
     END$$
 DELIMITER ;

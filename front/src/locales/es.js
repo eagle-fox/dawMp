@@ -7,6 +7,8 @@ let miscelaneusTextPackage = {
     years: 'Años',
     date: 'Fecha',
     age: 'Edad',
+    name_page:'Eagle Fox',
+    pets: 'Macotas',
 }
 
 let langTextPackage = {
@@ -28,6 +30,7 @@ let homeTextPackage = {
     home_t9: 'Listo, ya puedes ver a tu mascota !!',
     home_t10: 'Ahora ya podras usar todas las caracteristicas de monitorio de tu pequeño peludo',
     home_t11: '¿Como configurar tu collar Eagle Fox?',
+    home_t12: 'Monitoreo en tiempo real.',
     home_bd1: 'Posicionamiento de tus mascotas en un mapa en tiempo real',
     home_bd2: 'Poner puntos de interes y estabecler rutas personalizadas',
     home_bd3:  'Obtener informacion sobre la tu mascota, como tiempo de paseo, Kcal gastadas ...',
@@ -60,10 +63,15 @@ let loginTextPackage = {
     login_message1: 'Crear cuenta'
 }
 
+let aboutTextPackage = {
+    about_h1: 'Sobre Nosotros'
+}
+
 export default {
     home: homeTextPackage,
     lang: langTextPackage,
     login: loginTextPackage,
     form_a: animalRegisterForm,
-    miscelaneus: miscelaneusTextPackage
+    miscelaneus: miscelaneusTextPackage,
+    about: aboutTextPackage
 };

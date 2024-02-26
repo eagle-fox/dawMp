@@ -3,10 +3,11 @@
 namespace app\controllers;
 ini_set('max_execution_time', 0);
 ini_set('memory_limit', '4096M');
+
 use app\models\Client;
+use app\models\IotData;
 use app\models\IotDevice;
 use app\models\User;
-use app\models\IotData;
 use app\types\IPv4;
 use app\types\UUID;
 use Faker\Factory;
@@ -15,7 +16,12 @@ class DemoController extends Controller
 {
     public function create(): void
     {
-        $faker = Factory::create();
+        $fakers = [
+            Factory::create('es_ES'),
+            Factory::create('en_UK'),
+            Factory::create('pt_PT'),
+            Factory::create('de_DE'),
+        ];
 
         $totalUsers = 128;
         $totalClientsPerUser = 128;
@@ -27,13 +33,14 @@ class DemoController extends Controller
         $etaFormatted = "Calculating...";
 
         for ($i = 0; $i < $totalUsers; $i++) {
+            $faker = $fakers[$i % 4];
             $user = new User();
             $user->nombre = $faker->firstName;
             $user->nombre_segundo = $faker->firstName;
             $user->apellido_primero = $faker->lastName;
             $user->apellido_segundo = $faker->lastName;
             $user->email = $faker->unique()->safeEmail;
-            $user->password = password_hash('password', PASSWORD_BCRYPT);
+            $user->password = hash("sha256", 'userpassword');
             $user->save();
             $completedOperations++;
 

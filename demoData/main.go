@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/go-faker/faker/v4"
+	_ "github.com/go-faker/faker/v4/pkg/options"
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
 	"log"
@@ -68,6 +69,9 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
+	type esp struct {
+		StringESP string `faker:"lang=esp"`
+	}
 
 	totalUsers := 128
 	totalClientsPerUser := 128
@@ -78,11 +82,11 @@ func main() {
 	completedOperations := 0
 
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	sem := make(chan bool, runtime.NumCPU())
+	sem := make(chan bool, 22) //  runtime.NumCPU()
 
 	var wg sync.WaitGroup
 	startTime := time.Now()
-
+	// swtich locale to Spanish in faker
 	for i := 0; i < totalUsers; i++ {
 		wg.Add(1)
 		go func(i int) {

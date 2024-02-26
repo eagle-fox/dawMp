@@ -3,15 +3,9 @@
 namespace app\controllers;
 
 use app\middlewares\MiddlewareUser;
-use app\models\Client;
 use app\models\IotData;
-use app\models\Log;
-use app\models\User;
 use app\types\Rol;
 use Exception;
-use Illuminate\Support\Facades\DB;
-use Leaf\Http\Request;
-use Random\RandomException;
 
 class IotDataController extends Controller
 {
@@ -19,38 +13,21 @@ class IotDataController extends Controller
     public function index(): void
     {
         try {
-            $auth = new MiddlewareUser(Rol::ADMIN);
+            $data = null;
+            $auth = new MiddlewareUser(Rol::USER);
             $user = $auth->getUser();
-
+            ini_set('memory_limit', '1G');
+            set_time_limit(300);
             if ($user->rol == Rol::ADMIN) {
-                $data = DB::select("
-                SELECT *
-                FROM iot_data
-                WHERE device IN (
-                    SELECT device
-                    FROM (
-                        SELECT device, MAX(id) as id
-                        FROM iot_data
-                        GROUP BY device
-                    ) as subquery
-                )
-            ");
+                $data = IotData::query()->orderBy("updated_at", "desc")->limit(1024)->get();
+            } else if ($user->rol == Rol::USER) {
+                $data = IotData::query()->where("user", $user->id)->limit(1024)->orderBy("updated_at", "desc")->get();
             } else {
-                $data = DB::select("
-                SELECT *
-                FROM iot_data
-                WHERE device IN (
-                    SELECT device
-                    FROM (
-                        SELECT device, MAX(id) as id
-                        FROM iot_data
-                        WHERE user_id = ?
-                        GROUP BY device
-                    ) as subquery
-                )
-            ", [$user->id]);
+                response()->json(["message" => "Unauthorized"], 401);
             }
-
+            if ($data === null) {
+                response()->json(["message" => "No data found"], 404);
+            }
             response()->json(["message" => "All data", "data" => $data]);
 
         } catch (Exception $e) {
@@ -65,8 +42,7 @@ class IotDataController extends Controller
     public function store(): void
     {
         try {
-            $auth = new MiddlewareUser(Rol::USER);
-            $user = $auth->getUser();
+            $auth = new MiddlewareUser(Rol::IOT);
             $device = app()->request()->get("device");
             $latitude = app()->request()->get("latitude");
             $longitude = app()->request()->get("longitude");
@@ -111,33 +87,13 @@ class IotDataController extends Controller
 
     public function update($id): void
     {
-        try {
-            $auth = new MiddlewareUser(Rol::USER);
-            $user = $auth->getUser();
-            $data = IotData::query()->find($id);
-            if ($data === null) {
-                response()->json(["message" => "Data not found"], 404);
-            } else {
-                $data->latitude = app()->request()->get("latitude");
-                $data->longitude = app()->request()->get("longitude");
-                $data->save();
-                response()->json(["message" => "Data updated", "data" => $data]);
-            }
-        } catch (Exception $e) {
-            $msg = "Error al actualizar el dato";
-            if (getenv("LEAF_DEV_TOOLS")) {
-                $msg .= ": " . $e->getMessage();
-            }
-            response()->json(["message" => $msg], 500);
-        }
-
+        response()->json(["message" => "Method not allowed"], 405);
     }
 
     public function destroy($id): void
     {
         try {
             $auth = new MiddlewareUser(Rol::USER);
-            $user = $auth->getUser();
             $data = IotData::query()->find($id);
             if ($data === null) {
                 response()->json(["message" => "Data not found"], 404);

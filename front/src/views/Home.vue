@@ -1,8 +1,7 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
-import { IconMapPinFilled, IconMap2, IconChartHistogram, IconCheck } from '@tabler/icons-vue'
-import { ref } from 'vue'
-
+import { IconChartHistogram, IconCheck, IconMap2, IconMapPinFilled } from '@tabler/icons-vue'
+import Footer from '@/components/Footer.vue'
 
 export default {
     name: 'Home',
@@ -12,6 +11,7 @@ export default {
         }
     },
     components: {
+        Footer,
         IconMapPinFilled,
         IconMap2,
         IconChartHistogram,
@@ -65,7 +65,7 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <main class="mt-5 d-flex justify-content-center align-items-center flex-column gap-4">
+    <main class=" mt-5 d-flex justify-content-center align-items-center flex-column gap-4">
         <div class="d-flex justify-content-center align-items-center flex-column gap-5 p-10">
             <div>
                 <h1 class="text-center">{{ $t('home.home_t1') }}</h1>
@@ -108,6 +108,14 @@ export default {
         </div>
 
         <div class="d-flex justify-content-center align-items-center flex-column gap-2 mt-4 ">
+            <div class="d-flex gap-2 flex-column">
+                <img src="../assets/img/localeimg1.png" class="resice-img rounded" alt="">
+                <p class="text-center">{{ $t('home.home_t12') }}</p>
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center flex-column gap-2 mt-4 ">
             <h2 class="text-center">{{ $t('home.home_t11') }}</h2>
             <div class="p-4 d-flex w-100 justify-content-center flex-md-row flex-column resizeGap mt-4 alignMobile">
 
@@ -121,7 +129,7 @@ export default {
                     <h3>{{ $t('home.home_t7') }}</h3>
                     <p class="">{{ $t('home.home_t8') }}</p>
 
-                    <div class="mt-4 shadow p-3 rounded">
+                    <div class="mt-4 shadow p-3 rounded bg-light">
                         <label for="exampleInputEmail1" class="form-label">{{ $t('home.home_js1') }}</label>
                         <input type="text" class="form-control" id="autoFill" ref="autoFillInput" @input="handleInput">
 
@@ -144,6 +152,7 @@ export default {
             </div>
         </div>
     </main>
+    <Footer></Footer>
 </template>
 
 <style scoped>
@@ -182,8 +191,11 @@ export default {
     background-color: #4ce54c;
 
     box-shadow: 0px 0px 20px 12px rgba(79, 255, 48, 1);
+}
 
-
+.resice-img{
+    width: 650px;
+    height: 350px;
 }
 
 .testImage {
@@ -210,6 +222,14 @@ export default {
 .textFormat {
     width: 30%;
 }
+
+
+@media only screen and (max-width: 1400px) {
+    .alignMobile{
+        flex-direction: column !important;
+    }
+}
+
 
 @media only screen and (max-width: 860px) {
     .textFormat {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace app\middlewares;
 
 use app\models\Client;
+use app\models\IotDevice;
 use app\models\Log;
 use app\models\User;
 use app\types\AuthMethods;
@@ -49,6 +50,9 @@ class MiddlewareUser
         if ($this->targetRol != Rol::GUEST) {
             $this->setCurrentUser();
             $this->updateTokenPerIp();
+        }
+
+        if ($this->targetRol != Rol::IOT && $this->targetRol != Rol::GUEST) {
             $this->setClient();
         }
 
@@ -96,20 +100,30 @@ class MiddlewareUser
         switch ($this->authMethod) {
             case AuthMethods::BEARER:
                 $this->readBearerToken();
-                $client = Client::query()->where("token", $this->bearerToken)->first();
-                if (!$client instanceof Client) {
-                    throw new Exception('Client not found');
-                }
-                $user = User::query()->where("id", $client->user)->first();
-                if (!$user instanceof User) {
-                    throw new Exception('User not found');
-                }
-                if ($user->locked) {
-                    throw new Exception('User is locked');
+                if ($this->targetRol == Rol::IOT) {
+                    $device = IotDevice::query()->where("token", $this->bearerToken)->first();
+                    if (!$device instanceof IotDevice) {
+                        throw new Exception('Device not found');
+                    }
+                    $user = User::query()->where("id", $device->user)->first();
+                    if (!$user instanceof User) {
+                        throw new Exception('User not found');
+                    }
+                } else {
+                    $client = Client::query()->where("token", $this->bearerToken)->first();
+                    if (!$client instanceof Client) {
+                        throw new Exception('Client not found');
+                    }
+                    $user = User::query()->where("id", $client->user)->first();
+                    if (!$user instanceof User) {
+                        throw new Exception('User not found');
+                    }
+                    if ($user->locked) {
+                        throw new Exception('User is locked');
+                    }
                 }
                 $this->user = $user;
                 break;
-
             case AuthMethods::BASIC:
                 $user = User::query()->where("email", $this->email->getEmail())->first();
                 if (!$user instanceof User) {
@@ -176,21 +190,35 @@ class MiddlewareUser
      */
     private function checkRol(): void
     {
+        $authorized = false;
+
         switch ($this->targetRol) {
-            case Rol::ADMIN:
-            // case Rol::IOT:
             case Rol::GUEST:
-                return;
+            case Rol::IOT;
+                $authorized = true;
+                break;
+            case Rol::ADMIN:
+                if ($this->user->rol->equals(Rol::ADMIN)) {
+                    $authorized = true;
+                }
+                break;
             case Rol::USER:
-                if ($this->targetId != null && $this->user->id === $this->targetId) {
+                if ($this->user->rol->equals(Rol::ADMIN) || $this->user->rol->equals(Rol::USER)) {
+                    $authorized = true;
                     return;
                 }
-                if ($this->user->rol->equals(Rol::ADMIN)){
-                    return;
+                if ($this->targetId != null && $this->user->id === $this->targetId) {
+                    $authorized = true;
+                }
+                if ($this->user->rol->equals(Rol::ADMIN)) {
+                    $authorized = true;
                 }
                 break;
         }
-        throw new Exception("Insufficient permissions: was required " . $this->targetRol->getName() . " but got " . $this->user->rol->getName());
+
+        if (!$authorized) {
+            throw new Exception("Unauthorized");
+        }
     }
 
     public function getUser(): User

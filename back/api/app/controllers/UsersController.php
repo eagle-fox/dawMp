@@ -4,9 +4,10 @@ namespace app\controllers;
 
 use app\middlewares\MiddlewareUser;
 use app\models\Client;
+use app\models\IotData;
+use app\models\IotDevice;
 use app\models\Log;
 use app\models\User;
-use app\types\IPv4;
 use app\types\Rol;
 use app\types\UUID;
 use Exception;
@@ -23,9 +24,37 @@ class UsersController extends Controller
     public function index(): void
     {
         try {
+
+            $start = microtime(true);
+            set_time_limit(300);
+            ini_set('memory_limit', '1024M');
+
             $auth = new MiddlewareUser(Rol::ADMIN);
             $users = User::query()->get();
-            response()->json($users);
+
+            $totalUsers = User::query()->count();
+            $totalClients = Client::query()->count();
+            $totalIotDevices = IotDevice::query()->count();
+            $totalIotData = IotData::query()->count();
+
+            $memoriaUsadaMb = memory_get_usage() / 1024 / 1024;
+            $memoriaMaximaMb = memory_get_peak_usage() / 1024 / 1024;
+            $memoriaUsada = round($memoriaUsadaMb, 2) . " MB";
+            $memoriaMaxima = round($memoriaMaximaMb, 2) . " MB";
+
+            $end = microtime(true);
+
+            response()->json([
+                "message"         => "Usuarios en el sistema",
+                "totalUsers"      => $totalUsers,
+                "totalClients"    => $totalClients,
+                "totalIotDevices" => $totalIotDevices,
+                "totalIotData" => $totalIotData,
+                "memoriaUsada"  => $memoriaUsada,
+                "memoriaMaxima" => $memoriaMaxima,
+                "tiempo"        => round($end - $start, 2) . " segundos",
+                "users"           => $users
+            ], 500);
         } catch (Exception $e) {
             $msg = "Error al mostrar los usuarios";
             if (getenv("LEAF_DEV_TOOLS")) {
@@ -108,7 +137,7 @@ class UsersController extends Controller
      * @return void
      * @throws RandomException|Exception
      */
-    public function show($id=null): void
+    public function show($id = null): void
     {
         try {
             $auth = new MiddlewareUser(Rol::USER, $id);
@@ -171,23 +200,36 @@ class UsersController extends Controller
      */
     public function destroy($id): void
     {
-
         try {
+            set_time_limit(300);
+            ini_set('memory_limit', '1024M');
+
             $auth = new MiddlewareUser(Rol::USER, $id);
-            $user = User::query()->find($id);
+            $user = User::query()->where("id", $id)->first();
             if (!$user) {
                 response()->json(["message" => "Usuario no encontrado"], 404);
                 return;
             }
 
-            $log = Log::query()->where("user", $id)->get();
+            $iotDevices = IotDevice::query()->where("user", $id)->get();
+            foreach ($iotDevices as $device) {
+                $iotData = IotData::query()->where("device", $device->id)->get();
+                foreach ($iotData as $data) {
+                    $data->delete();
+                }
+                $device->delete();
+            }
+
+            $logs = Log::query()->where("user", $id)->get();
+            foreach ($logs as $log) {
+                $log->delete();
+            }
+
             $clients = Client::query()->where("user", $id)->get();
-            foreach ($log as $l) {
-                $l->delete();
+            foreach ($clients as $client) {
+                $client->delete();
             }
-            foreach ($clients as $c) {
-                $c->delete();
-            }
+
             $user->delete();
             response()->json(["message" => "Usuario eliminado"]);
         } catch (Exception $e) {

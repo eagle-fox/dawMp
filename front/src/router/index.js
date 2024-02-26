@@ -26,6 +26,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/Profile.vue'), // Lazy load component
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('../views/About.vue'), // Lazy load component
   }
 ]
 

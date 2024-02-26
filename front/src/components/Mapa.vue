@@ -1,12 +1,7 @@
 <template>
   <div class="mt-4">
     <div ref="mapElement" class="viewerMap"></div>
-
-    <div class="d-flex justify-content-center mt-4 buttonsSlayer">
-      <button class="btn btn-primary" @click="changePos">
-        Cambiar Posición
-      </button>
-    </div>
+    <div class="d-flex justify-content-center mt-4 buttonsSlayer"></div>
   </div>
 </template>
 
@@ -30,7 +25,11 @@ export default {
       markers: [],
     })
 
+    
+
     onMounted(() => {
+      console.log(props.puntos);
+
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
           const { latitude, longitude } = position.coords
@@ -38,7 +37,7 @@ export default {
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution:
-              '&copy; <a href="http://www.openstreetmap.org/copyright">FBI</a>',
+              '&copy; <a href="https://www.fbi.gov/investigate">FBI</a>',
           }).addTo(map)
 
           const marker = L.marker([latitude, longitude])
@@ -87,7 +86,7 @@ export default {
               icon: animalIcon,
             })
               .addTo(state.map)
-              .bindPopup(punto.name)
+              .bindPopup(punto.petName)
             state.markers.push(marker)
           })
         })
@@ -117,7 +116,7 @@ export default {
 
 <style scoped>
 .viewerMap {
-  width: 600px;
+  width: 1000px;
   height: 500px;
   border-radius: 10px;
 }

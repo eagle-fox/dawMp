@@ -15,18 +15,15 @@ class IotDevicesController extends Controller
     {
         try {
             $auth = new MiddlewareUser(Rol::ADMIN);
-            $devices = IotDevice::query()
-                ->with(['iotData' => function ($query) {
-                    $query->orderBy('created_at', 'desc')->first();
-                }])
-                ->get();
+            $devices = IotDevice::query()->get();
             response()->json(["message" => "All devices", "devices" => $devices]);
         } catch (Exception $e) {
             $msg = "Error al mostrar los dispositivos";
             if (getenv("LEAF_DEV_TOOLS")) {
                 $msg .= ": " . $e->getMessage();
             }
-            response()->json(["message" => $msg], 500);
+            $response = ["message" => $msg];
+            response()->json($response, 500);
         }
     }
 
@@ -37,7 +34,7 @@ class IotDevicesController extends Controller
             $auth = new MiddlewareUser(Rol::USER, $ownership);
             $uuidIotDevice = new UUID(app()->request()->get("uuid"));
             $newDevice = new IotDevice();
-            $newDevice->uuid = $uuidIotDevice;
+            $newDevice->token = $uuidIotDevice;
             $newDevice->user = $ownership;
             $newDevice->name = app()->request()->get("name");
             $newDevice->save();
@@ -88,7 +85,7 @@ class IotDevicesController extends Controller
                     }
                 } else {
                     // For PUT requests, update all attributes
-                    $device->uuid = new UUID(app()->request()->get("uuid"));
+                    $device->token = new UUID(app()->request()->get("uuid"));
                     $device->user = app()->request()->get("user");
                 }
                 $device->save();

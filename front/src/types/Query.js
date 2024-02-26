@@ -56,6 +56,26 @@ class Query {
     }
 
     /**
+     * @param {number} id - The ID of the user to get.
+     * @returns {Promise<User>}
+     */
+    async getUser(id) {
+        const data = await this.client.get(this.url + 'users/' + id, { responseType: 'json' })
+            .then(response => response.data)
+            .catch(error => {
+                console.error('Error fetching user:', error.message)
+                console.error('Error details:', error.response.data)
+                throw error
+            })
+
+        const myUser = new User()
+        myUser.withObject(data)
+        myUser.build()
+
+        return myUser
+    }
+
+    /**
      * @param {user} user - The user to create.
      * @returns {Promise<void>}
      */

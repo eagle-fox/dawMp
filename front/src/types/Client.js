@@ -22,6 +22,17 @@ class Client {
         this.created_at = new Date(data.created_at)
         this.updated_at = new Date(data.updated_at)
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            ipv4: this.ipv4.toJSON(),
+            token: this.token.toJSON(),
+            locked: this.locked,
+            created_at: this.created_at,
+            updated_at: this.updated_at
+        }
+    }
 }
 
 export default Client

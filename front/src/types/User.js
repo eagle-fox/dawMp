@@ -155,6 +155,22 @@ class User {
         return `${this.nombre} ${this.apellido_primero} ${this.apellido_segundo}`
     }
 
+    toJSON() {
+        return {
+            id: this.id,
+            nombre: this.nombre,
+            nombre_segundo: this.nombre_segundo,
+            apellido_primero: this.apellido_primero,
+            apellido_segundo: this.apellido_segundo,
+            email: this.email,
+            password: this.password,
+            rol: this.rol,
+            created_at: this.created_at,
+            updated_at: this.updated_at,
+            clients: this.clients.map(client => client.toJSON())
+        }
+    }
+
 }
 
 export default User

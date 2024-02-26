@@ -26,26 +26,18 @@
 body {
     background: var(--color-background);
     color: var(--color-text);
-    font-family: Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
+    font-family: Inter,    -apple-system,    BlinkMacSystemFont,    'Segoe UI',    Roboto,    Oxygen,    Ubuntu,    Cantarell,    'Fira Sans',    'Droid Sans',    'Helvetica Neue',    sans-serif;
     font-size: 15px;
     line-height: 1.6;
     min-height: 100vh;
     text-rendering: optimizeLegibility;
-    transition: color 0.5s,
-    background-color 0.5s;
+    transition: color 0.5s,    background-color 0.5s;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-transition: color 0.5s,    background-color 0.5s;
+    -moz-transition: color 0.5s,    background-color 0.5s;
+    -ms-transition: color 0.5s,    background-color 0.5s;
+    -o-transition: color 0.5s,    background-color 0.5s;
 }
 
 * {
@@ -55,41 +47,47 @@ body {
 /* Headings */
 h1 {
     font-size: 3.210rem;
+    color: var(--forms-text-color);
 }
 
 h2 {
     font-size: 2.358rem;
+    color: var(--forms-text-color);
 }
 
 h3 {
     font-size: 2.0069rem;
+    color: var(--forms-text-color);
 }
 
-h4 {font-size: 1.577rem; }
+h4 {font-size: 1.577rem;
+    color: var(--forms-text-color); }
 
 h5 {
     font-size: 1.333rem;
+    color: var(--forms-text-color);
 }
 
 /* Small text */
 small {
     font-size: 0.750rem;
+    color: var(--forms-text-color);
 }
 
 /* Primary styles */
 .primary-style {
-    background-color: var(--primary);
+    background-color: var(--primary-light);
 }
 
 /* Button styles */
 .btn-primary {
-    background-color: var(--primary);
-    border-color: var(--primary);
+    background-color: var(--primary-light);
+    border-color: var(--primary-light);
 }
 
 .btn-primary:hover {
-    background-color: var(--secondary);
-    border-color: var(--secondary);
+    background-color: var(--secondary-light);
+    border-color: var(--secondary-light);
 }
 
 .btn-primary:focus {
@@ -99,8 +97,39 @@ small {
 
 /* Form styles */
 .form-control:focus {
-    border: var(--primary);
-    box-shadow: 0 0 14px 1px var(--primary);
+    border: var(--primary-light);
+    box-shadow: 0 0 14px 1px var(--primary-light);
+}
+
+/* NavBar styles */
+
+.navbar{
+    background-color: var(--primary-light) !important;
+    border-bottom: var(--secondary-light) 2px solid !important;
+}
+
+.footer{
+    background-color: var(--primary-light) !important;
+    border-top: var(--secondary-light) 2px solid !important;
+}
+
+/* SVG */
+
+.svg-path{
+    background-color: var(--background-light-svg);
+}
+
+.form-label{
+    color: var(--forms-text-color) !important;
+}
+
+.text{
+    color: var(--forms-text-color) !important;
+}
+
+
+label {
+    color: var(--text-light);
 }
 
 /* Color palette */
@@ -136,28 +165,66 @@ small {
     --color-text: var(--text);
 
     --section-gap: 160px;
+
+    /* https://www.realtimecolors.com/?colors=eaf0f1-2b363b-47b39b-bde0d1-a7d3c3&fonts=Gafata-Outfit Color Palette */
+
+    /* Light View */
+
+    --text-light: #0e1415;
+    --background-light: #c4cfd4;
+    --primary-light: #4cb8a0;
+    --secondary-light: #1f4233;
+    --accent-light:#2c5848;
+
+
+    /* Dark View */
+
+    --text-dark: #eaf0f1;
+    --background-dark: #2b363b;
+    --primary-dark: #357769;  /* Variation -> Original #47b39b */
+    --secondary-dark: #bde0d1;
+    --accent-dark:#bde0d1;
+
+    /* SVG Colors  .svg-path */
+
+    --background-light-svg: #ece9ef;
+    --background-dark-svg: var(--background-dark);
+
+    /* Inmutable Color */
+    --forms-text-color: #0e1415;
+
+
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --color-background: var(--vt-c-black);
+        --color-background: var(--background-dark);
         --color-background-mute: var(--vt-c-black-mute);
         --color-background-soft: var(--vt-c-black-soft);
         --color-border: var(--vt-c-divider-dark-2);
         --color-border-hover: var(--vt-c-divider-dark-1);
         --color-heading: var(--vt-c-text-dark-1);
-        --color-text: var(--vt-c-text-dark-2);
+        --color-text: var(--text-dark);
     }
 }
 
 .dark{
-    --color-background: var(--vt-c-black);
+    --color-background: var(--background-dark);
     --color-background-mute: var(--vt-c-black-mute);
     --color-background-soft: var(--vt-c-black-soft);
     --color-border: var(--vt-c-divider-dark-2);
     --color-border-hover: var(--vt-c-divider-dark-1);
     --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
+    --color-text: var(--text-dark);
+
+    --text-light: var(--text-dark);
+    --background-light: var(--background-dark);
+    --primary-light: var(--primary-dark);
+    --secondary-light: var(--secondary-dark);
+    --accent-light:var(--accent-dark);
+
+
+    --background-light-svg: var(--background-dark-svg);
 }
 
 .border-accent {

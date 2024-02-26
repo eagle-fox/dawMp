@@ -1,5 +1,6 @@
 <?php
 
+use app\controllers\Utils;
 use app\middlewares\MiddlewareUser;
 use app\models\IotDevice;
 use app\types\Rol;
@@ -7,6 +8,30 @@ use app\types\Rol;
 /*
  * Todas las rutas REQUIEREN autenticación basada en Bearer token.
  */
+
+app()->post("/iotData/nearby", function () {
+    try {
+        $auth = new MiddlewareUser(Rol::USER);
+        $user = $auth->getUser();
+
+        $id = app()->request()->get("id");
+        $longitude = app()->request()->get("longitude");
+        $latitude = app()->request()->get("latitude");
+        $distance = app()->request()->get("distance");
+
+        $newCoordinates = Utils::calculateNewCoordinates($latitude, $longitude, $distance);
+
+        $nearbyData = IotDevice::query()->where("id", "!=", $id)->where("last_latitude", "<", $newCoordinates["max_latitude"])->where("last_latitude", ">", $newCoordinates["min_latitude"])->where("last_longitude", "<", $newCoordinates["max_longitude"])->where("last_longitude", ">", $newCoordinates["min_longitude"])->get();
+
+        response()->json([
+            "message"               => "Data found",
+            "Dispositivos cercanos" => count($nearbyData),
+            "data"                  => $nearbyData
+        ]);
+    } catch (Exception $e) {
+        response()->json(["message" => "Error fetching data: " . $e->getMessage()], 500);
+    }
+});
 
 // Mostrar placas de un usuario
 app()->get("/iotDevices/ByMyself", function () {

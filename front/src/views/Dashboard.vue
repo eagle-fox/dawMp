@@ -1,5 +1,6 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
+import FooterMain from '@/components/FooterMain.vue'
 import Mapa from '@/components/Mapa.vue'
 import PetCard from '@/components/PetCard.vue'
 import { ref } from 'vue'
@@ -10,6 +11,7 @@ export default {
     NavBar,
     Mapa,
     PetCard,
+    FooterMain
   },
   data() {
     return {
@@ -34,8 +36,8 @@ export default {
         name: 'Manolo',
         gmail: 'manolo@gmail.com',
         iotDevices: [
-          {petName: 'Charly', petDate: '12/09/2020', petSpecie: 'dog', latitud:42.2266403, longitud: -8.712718},
-          {petName: 'Juan', petDate: '12/09/2020', petSpecie: 'cat', latitud:42.3266403, longitud: -8.712718}
+          {petName: 'Charly', petDate: '12/09/2020', species: 'dog', latitud:42.2266403, longitud: -8.712718},
+          {petName: 'Juan', petDate: '12/09/2020', species: 'cat', latitud:42.3266403, longitud: -8.712718}
         ]
       }
 
@@ -76,6 +78,7 @@ export default {
       </div>
 
     </div>
+      <FooterMain></FooterMain>
   </div>
 </template>
 

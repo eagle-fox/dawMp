@@ -47,31 +47,26 @@ body {
 /* Headings */
 h1 {
     font-size: 3.210rem;
-    color: var(--forms-text-color);
 }
 
 h2 {
     font-size: 2.358rem;
-    color: var(--forms-text-color);
 }
 
 h3 {
     font-size: 2.0069rem;
-    color: var(--forms-text-color);
 }
 
 h4 {font-size: 1.577rem;
-    color: var(--forms-text-color); }
+ }
 
 h5 {
     font-size: 1.333rem;
-    color: var(--forms-text-color);
 }
 
 /* Small text */
 small {
     font-size: 0.750rem;
-    color: var(--forms-text-color);
 }
 
 /* Primary styles */

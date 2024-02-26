@@ -31,7 +31,7 @@ export default {
         <div class="d-inline-block d-flex justify-content-center align-items-center all bg-light rounded">
             <div class="shadow p-4 rounded">
                 <div class="d-flex justify-content-center">
-                    <img alt="Logo" src="../assets/contratipo_dorado.svg" width="64">
+                    <img alt="Logo" src="../assets/logo_circle.svg" width="64">
                 </div>
                 <div class="d-flex justify-content-center align-items-center flex-column gap-2">
                     <form>

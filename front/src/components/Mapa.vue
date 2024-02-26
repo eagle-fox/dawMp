@@ -1,6 +1,8 @@
 <template>
   <div class="mt-4">
-    <div ref="mapElement" class="viewerMap"></div>
+    <div id="viewerMap">
+      <div ref="mapElement" class="viewerMap" ></div>
+    </div>
     <div class="d-flex justify-content-center mt-4 buttonsSlayer"></div>
   </div>
 </template>
@@ -18,17 +20,50 @@ export default {
       required: true,
     },
   },
+  mounted() {
+    this.setLoadStatus(true, 'viewerMap');
+  },
   setup(props) {
+    
+
     const mapElement = ref(null)
     let state = reactive({
       map: null,
       markers: [],
     })
 
-    
+    const setLoadStatus = (type, id) => {
+      let itemByID = document.getElementById(id);
+
+      if (type) {
+        let loadingMaker = document.createElement('div');
+        loadingMaker.innerHTML = `
+          <div class="spinner-border text-primary loadSphere" id='loadMarker' style='width: 50px; height: 50px;' role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="text-primary">
+            ${this.$t('miscelaneus.loading')}...
+          </div>
+        `;
+
+        loadingMaker.style.position = 'absolute';
+        loadingMaker.style.top = '50%';
+        loadingMaker.style.left = '50%';
+        loadingMaker.style.transform = 'translate(-50%, -50%)';
+        loadingMaker.style.textAlign = 'center';
+
+        loadingMaker.id = 'loadMarker';
+
+        itemByID.children[0].style.filter = 'blur(5px)';
+        itemByID.append(loadingMaker);
+      } else {
+        let loadMarker = document.getElementById('loadMarker');
+        loadMarker.remove();
+        itemByID.children[0].style.filter = 'blur(0px)';
+      }
+    };
 
     onMounted(() => {
-      console.log(props.puntos);
 
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -88,6 +123,10 @@ export default {
               .addTo(state.map)
               .bindPopup(punto.petName)
             state.markers.push(marker)
+            setLoadStatus(false, 'viewerMap');
+            
+
+
           })
         })
       } else {
@@ -97,12 +136,14 @@ export default {
 
     const addMarker = () => {
       if (state.map) {
+        
         const latitude = state.map.getCenter().lat
         const longitude = state.map.getCenter().lng
         const marker = L.marker([latitude, longitude])
           .addTo(state.map)
           .bindPopup('Nuevo marcador')
         state.markers.push(marker)
+        
       }
     }
 
@@ -110,7 +151,41 @@ export default {
   },
   components: {
     IconDog,
-  },
+  }, methods: {
+    setLoadStatus(type, id) {
+      let itemByID = document.getElementById(id);
+
+      if (type) {
+        let loadingMaker = document.createElement('div');
+        loadingMaker.innerHTML = `
+                <div class="spinner-border text-primary loadSphere" id='loadMarker' style='width: 50px; height: 50px;' role="status">
+                <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="text-primary">
+                    ${this.$t('miscelaneus.loading')}...
+                </div>
+                `
+
+        loadingMaker.style.position = 'absolute';
+        loadingMaker.style.top = '50%';
+        loadingMaker.style.left = '50%';
+        loadingMaker.style.transform = 'translate(-50%, -50%)';
+        loadingMaker.style.textAlign = 'center';
+
+        loadingMaker.id = 'loadMarker';
+
+        
+        itemByID.children[0].style.filter = 'blur(5px)';
+        itemByID.append(loadingMaker);
+      } else {
+        let loadMarker = document.getElementById('loadMarker');
+        loadMarker.remove();
+        itemByID.children[0].style.filter = 'blur(0px)';
+      }
+
+
+    }
+  }
 }
 </script>
 

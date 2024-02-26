@@ -1,5 +1,6 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
+import FooterMain from '@/components/FooterMain.vue'
 import Mapa from '@/components/Mapa.vue'
 import PetCard from '@/components/PetCard.vue'
 import { ref } from 'vue'
@@ -10,6 +11,7 @@ export default {
     NavBar,
     Mapa,
     PetCard,
+    FooterMain
   },
   setup() {
     const puntosArray = ref([
@@ -33,6 +35,7 @@ export default {
       <PetCard :petName="petname" :petDate="petdate"></PetCard>
       <Mapa :puntos="puntosArray"></Mapa>
     </div>
+      <FooterMain></FooterMain>
   </div>
 </template>
 

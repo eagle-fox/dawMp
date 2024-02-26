@@ -20,10 +20,8 @@ export default defineConfig({
                 quality: 70,
             },
             svgo: {
-                plugins: [
-                    { removeViewBox: false },
-                    { cleanupIDs: false },
-                ],
+                plugins: [{ removeViewBox: false },
+                    { cleanupIDs: false }],
             },
         }),
     ],

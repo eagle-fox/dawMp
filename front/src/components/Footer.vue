@@ -2,7 +2,7 @@
     <div id="footer" class="footer text-center p-4">
         <div class="container">
             <h5>About Us</h5>
-            <img alt="Logo" src="../assets/contratipo_dorado.svg" width="48">
+            <img alt="Logo" src="../assets/contratipo_dorado.svg" width="48" />
         </div>
     </div>
 </template>

@@ -5,33 +5,34 @@ import ConnectionApi from '../assets/js/connectionApi.js'
 export default {
     name: 'Profile',
     components: {
-        NavBar
+        NavBar,
     },
     data() {
         return {
             name: 'Testing',
         }
-    }
+    },
 
-
-    , methods: {
+    methods: {
         checkValidationToken(token) {
             // Verification to avoid accessing the profile without a valid user token
 
             if (token == null || !token) {
-                console.error(`Redirecting to home, /profile is not allowed | token: ${token}`)
-                this.$router.push('/');
+                console.error(
+                    `Redirecting to home, /profile is not allowed | token: ${token}`,
+                )
+                this.$router.push('/')
             }
         },
         loadLocalData(token) {
             // Request to the API of the user's information through his authentication token.
-
-
-        }, testConnectionApi() {
-            const connectionApiInstance = new ConnectionApi();
-            connectionApiInstance.testAxios();
-        }, testAppendApi() {
-            const connectionApiInstance = new ConnectionApi();
+        },
+        testConnectionApi() {
+            const connectionApiInstance = new ConnectionApi()
+            connectionApiInstance.testAxios()
+        },
+        testAppendApi() {
+            const connectionApiInstance = new ConnectionApi()
 
             let userData = {
                 nombre: 'Yeison',
@@ -42,22 +43,23 @@ export default {
                 password: 'yeison',
             }
 
-            connectionApiInstance.makeUser(userData);
-        }
-    }
-    , mounted() {
+            connectionApiInstance.makeUser(userData)
+        },
+    },
+    mounted() {
         // this.checkValidationToken(this.$userSession.token);
-        this.testConnectionApi();
-    }
+        this.testConnectionApi()
+    },
 }
-
 </script>
 
 <template>
     <NavBar></NavBar>
 
     <div>
-        <button class="btn btn-primary" @click="testAppendApi">Test Add User</button>
+        <button class="btn btn-primary" @click="testAppendApi">
+            Test Add User
+        </button>
     </div>
 </template>
 

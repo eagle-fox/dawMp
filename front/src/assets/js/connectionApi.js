@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 // Import configuration
-
 import config from '../config.json'
+
 let devConfig = config.devConfig
 
 class ConnectionApi {
@@ -31,9 +31,7 @@ class ConnectionApi {
 
   async getUserData(userToken) {
     try {
-      
-    }catch (error) {
-
+    } catch (error) {
     }
   }
 

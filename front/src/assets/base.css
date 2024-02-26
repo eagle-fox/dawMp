@@ -1,17 +1,17 @@
 /* Fonts */
 @font-face {
     font-family: 'BaseFont';
-    src: url("../assets/fonts/PTSans-Regular.ttf");
+    src: url('../assets/fonts/PTSans-Regular.ttf');
 }
 
 @font-face {
     font-family: 'BaseFontTest';
-    src: url("../assets/fonts/Outfit-Regular.ttf");
+    src: url('../assets/fonts/Outfit-Regular.ttf');
 }
 
 @font-face {
     font-family: 'BaseFontTest2';
-    src: url("../assets/fonts/Outfit-Light.ttf");
+    src: url('../assets/fonts/Outfit-Light.ttf');
 }
 
 /* Base styles */
@@ -26,18 +26,34 @@
 body {
     background: var(--color-background);
     color: var(--color-text);
-    font-family: Inter,    -apple-system,    BlinkMacSystemFont,    'Segoe UI',    Roboto,    Oxygen,    Ubuntu,    Cantarell,    'Fira Sans',    'Droid Sans',    'Helvetica Neue',    sans-serif;
+    font-family: Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
     font-size: 15px;
     line-height: 1.6;
     min-height: 100vh;
     text-rendering: optimizeLegibility;
-    transition: color 0.5s,    background-color 0.5s;
+    transition: color 0.5s,
+    background-color 0.5s;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    -webkit-transition: color 0.5s,    background-color 0.5s;
-    -moz-transition: color 0.5s,    background-color 0.5s;
-    -ms-transition: color 0.5s,    background-color 0.5s;
-    -o-transition: color 0.5s,    background-color 0.5s;
+    -webkit-transition: color 0.5s,
+    background-color 0.5s;
+    -moz-transition: color 0.5s,
+    background-color 0.5s;
+    -ms-transition: color 0.5s,
+    background-color 0.5s;
+    -o-transition: color 0.5s,
+    background-color 0.5s;
 }
 
 * {
@@ -46,7 +62,7 @@ body {
 
 /* Headings */
 h1 {
-    font-size: 3.210rem;
+    font-size: 3.21rem;
 }
 
 h2 {
@@ -57,8 +73,9 @@ h3 {
     font-size: 2.0069rem;
 }
 
-h4 {font-size: 1.577rem;
- }
+h4 {
+    font-size: 1.577rem;
+}
 
 h5 {
     font-size: 1.333rem;
@@ -66,7 +83,7 @@ h5 {
 
 /* Small text */
 small {
-    font-size: 0.750rem;
+    font-size: 0.75rem;
 }
 
 /* Primary styles */
@@ -98,30 +115,29 @@ small {
 
 /* NavBar styles */
 
-.navbar{
+.navbar {
     background-color: var(--primary-light) !important;
     border-bottom: var(--secondary-light) 2px solid !important;
 }
 
-.footer{
+.footer {
     background-color: var(--primary-light) !important;
     border-top: var(--secondary-light) 2px solid !important;
 }
 
 /* SVG */
 
-.svg-path{
+.svg-path {
     background-color: var(--background-light-svg);
 }
 
-.form-label{
+.form-label {
     color: var(--forms-text-color) !important;
 }
 
-.text{
+.text {
     color: var(--forms-text-color) !important;
 }
-
 
 label {
     color: var(--text-light);
@@ -169,16 +185,15 @@ label {
     --background-light: #c4cfd4;
     --primary-light: #4cb8a0;
     --secondary-light: #1f4233;
-    --accent-light:#2c5848;
-
+    --accent-light: #2c5848;
 
     /* Dark View */
 
     --text-dark: #eaf0f1;
     --background-dark: #2b363b;
-    --primary-dark: #357769;  /* Variation -> Original #47b39b */
+    --primary-dark: #357769; /* Variation -> Original #47b39b */
     --secondary-dark: #bde0d1;
-    --accent-dark:#bde0d1;
+    --accent-dark: #bde0d1;
 
     /* SVG Colors  .svg-path */
 
@@ -187,8 +202,6 @@ label {
 
     /* Inmutable Color */
     --forms-text-color: #0e1415;
-
-
 }
 
 @media (prefers-color-scheme: dark) {
@@ -203,7 +216,7 @@ label {
     }
 }
 
-.dark{
+.dark {
     --color-background: var(--background-dark);
     --color-background-mute: var(--vt-c-black-mute);
     --color-background-soft: var(--vt-c-black-soft);
@@ -216,8 +229,7 @@ label {
     --background-light: var(--background-dark);
     --primary-light: var(--primary-dark);
     --secondary-light: var(--secondary-dark);
-    --accent-light:var(--accent-dark);
-
+    --accent-light: var(--accent-dark);
 
     --background-light-svg: var(--background-dark-svg);
 }

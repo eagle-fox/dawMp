@@ -8,21 +8,21 @@ class IPv4 {
      */
     constructor(ipv4) {
         if (ipv4 instanceof IPv4) {
-            this.ipv4 = ipv4.ipv4;
-            return;
+            this.ipv4 = ipv4.ipv4
+            return
         }
 
         if (typeof ipv4 === 'string' && this.isValidIPv4(ipv4)) {
-            this.ipv4 = this.inet_aton(ipv4);
-            return;
+            this.ipv4 = this.inet_aton(ipv4)
+            return
         }
 
         if (typeof ipv4 === 'number') {
-            this.ipv4 = this.inet_ntoa(ipv4);
-            return;
+            this.ipv4 = this.inet_ntoa(ipv4)
+            return
         }
 
-        throw new Error("Invalid argument type for IPv4 address");
+        throw new Error('Invalid argument type for IPv4 address')
     }
 
     /**
@@ -31,8 +31,9 @@ class IPv4 {
      * @return {boolean} True if the input is a valid IPv4 address, false otherwise.
      */
     isValidIPv4(ipv4) {
-        const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-        return ipv4Regex.test(ipv4);
+        const ipv4Regex =
+            /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+        return ipv4Regex.test(ipv4)
     }
 
     /**
@@ -41,7 +42,11 @@ class IPv4 {
      * @return {number} The integer representation of the IPv4 address.
      */
     inet_aton(ipv4) {
-        return ipv4.split('.').reduce((ipInt, octet) => (ipInt<<8) + parseInt(octet, 10), 0) >>> 0;
+        return (
+            ipv4
+                .split('.')
+                .reduce((ipInt, octet) => (ipInt << 8) + parseInt(octet, 10), 0) >>> 0
+        )
     }
 
     /**
@@ -50,7 +55,12 @@ class IPv4 {
      * @return {string} The string representation of the IPv4 address.
      */
     inet_ntoa(ipInt) {
-        return [(ipInt>>>24) & 0xFF, (ipInt>>>16) & 0xFF, (ipInt>>>8) & 0xFF, ipInt & 0xFF].join('.');
+        return [
+            (ipInt >>> 24) & 0xff,
+            (ipInt >>> 16) & 0xff,
+            (ipInt >>> 8) & 0xff,
+            ipInt & 0xff,
+        ].join('.')
     }
 
     /**
@@ -58,7 +68,7 @@ class IPv4 {
      * @return {string} The string representation of the IPv4 address.
      */
     toString() {
-        return this.inet_ntoa(this.ipv4);
+        return this.inet_ntoa(this.ipv4)
     }
 
     /**
@@ -66,7 +76,7 @@ class IPv4 {
      * @return {string} The JSON representation of the IPv4 address.
      */
     toJSON() {
-        return this.toString();
+        return this.toString()
     }
 
     /**
@@ -76,10 +86,10 @@ class IPv4 {
      */
     equals(other) {
         if (!(other instanceof IPv4)) {
-            throw new Error("Argument must be an instance of IPv4");
+            throw new Error('Argument must be an instance of IPv4')
         }
-        return this.inet_aton(this.ipv4) === this.inet_aton(other.ipv4);
+        return this.inet_aton(this.ipv4) === this.inet_aton(other.ipv4)
     }
 }
 
-export default IPv4;
+export default IPv4

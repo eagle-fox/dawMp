@@ -3,6 +3,44 @@
         <div class="row">
             <div class="col-6">
                 <div class="row">
+                    <h1>CRUD Operations</h1>
+                    <h3>Auth</h3>
+                    <!-- create form for basic auth OR radio button to bearer token -->
+                    <form @submit.prevent="submitLogin">
+                        <div>
+                            <input id="basic" v-model="authType" type="radio" value="Basic" />
+                            <label for="basic">Basic Auth</label>
+                            <input
+                                id="bearer"
+                                v-model="authType"
+                                type="radio"
+                                value="Bearer"
+                            />
+                            <label for="bearer">Bearer Token</label>
+                        </div>
+                        <div v-if="authType === 'Basic'">
+                            <input
+                                v-model="myBasicAuth.email"
+                                placeholder="Email"
+                                type="text"
+                            />
+                            <input
+                                v-model="myBasicAuth.password"
+                                placeholder="Password"
+                                type="password"
+                            />
+                        </div>
+                        <div v-if="authType === 'Bearer'">
+                            <input
+                                v-model="myBearerToken"
+                                placeholder="Bearer Token"
+                                type="text"
+                            />
+                        </div>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="row">
                     <h3>GET ALL</h3>
                     <!-- GET request form -->
                     <form @submit.prevent="getUsers">
@@ -13,7 +51,7 @@
                     <h3>GET USER ID</h3>
                     <!-- GET by ID request form -->
                     <form @submit.prevent="getUser">
-                        <input v-model="userId" type="text" placeholder="User ID">
+                        <input v-model="userId" placeholder="User ID" type="text" />
                         <button type="submit">Get User by ID</button>
                     </form>
                 </div>
@@ -22,38 +60,74 @@
                     <!-- POST/PUT/PATCH request form -->
                     <form @submit.prevent="submitForm">
                         <div>
-                            <input type="radio" id="post" value="POST" v-model="method">
+                            <input id="post" v-model="method" type="radio" value="POST" />
                             <label for="post">POST</label>
-                            <input type="radio" id="put" value="PUT" v-model="method">
+                            <input id="put" v-model="method" type="radio" value="PUT" />
                             <label for="put">PUT</label>
-                            <input type="radio" id="patch" value="PATCH" v-model="method">
+                            <input id="patch" v-model="method" type="radio" value="PATCH" />
                             <label for="patch">PATCH</label>
                         </div>
 
-                        <input v-model="userId" type="text" placeholder="User ID (for PUT, PATCH)">
+                        <input
+                            v-model="userId"
+                            placeholder="User ID (for PUT, PATCH)"
+                            type="text"
+                        />
 
                         <!-- User Data Form -->
                         <div>
-                            <input v-model="userData.nombre" type="text" placeholder="First Name">
-                            <input v-model="userData.nombre_segundo" type="text" placeholder="Second Name">
-                            <input v-model="userData.apellido_primero" type="text" placeholder="First Surname">
-                            <input v-model="userData.apellido_segundo" type="text" placeholder="Second Surname">
-                            <input v-model="userData.email" type="text" placeholder="Email">
-                            <input v-model="userData.password" type="password" placeholder="Password">
-                            <input v-model="userData.rol" type="text" placeholder="Role">
+                            <input
+                                v-model="userData.nombre"
+                                placeholder="First Name"
+                                type="text"
+                            />
+                            <input
+                                v-model="userData.nombre_segundo"
+                                placeholder="Second Name"
+                                type="text"
+                            />
+                            <input
+                                v-model="userData.apellido_primero"
+                                placeholder="First Surname"
+                                type="text"
+                            />
+                            <input
+                                v-model="userData.apellido_segundo"
+                                placeholder="Second Surname"
+                                type="text"
+                            />
+                            <input v-model="userData.email" placeholder="Email" type="text" />
+                            <input
+                                v-model="userData.password"
+                                placeholder="Password"
+                                type="password"
+                            />
+                            <input v-model="userData.rol" placeholder="Role" type="text" />
                         </div>
                         <button type="submit">Submit</button>
-                        <button type="button" @click="generateFakeUser('en')">Random EN</button>
-                        <button type="button" @click="generateFakeUser('es')">Random ES</button>
-                        <button type="button" @click="generateFakeUser('de')">Random DE</button>
-                        <button type="button" @click="generateFakeUser('pt')">Random PT</button>
+                        <button type="button" @click="generateFakeUser('en')">
+                            Random EN
+                        </button>
+                        <button type="button" @click="generateFakeUser('es')">
+                            Random ES
+                        </button>
+                        <button type="button" @click="generateFakeUser('de')">
+                            Random DE
+                        </button>
+                        <button type="button" @click="generateFakeUser('pt')">
+                            Random PT
+                        </button>
                     </form>
                 </div>
                 <div class="row">
                     <h3>DELETE</h3>
                     <!-- DELETE request form -->
                     <form @submit.prevent="deleteUser">
-                        <input v-model="deleteId" type="text" placeholder="User ID (for DELETE)">
+                        <input
+                            v-model="deleteId"
+                            placeholder="User ID (for DELETE)"
+                            type="text"
+                        />
                         <button type="submit">Delete User</button>
                     </form>
                 </div>
@@ -71,7 +145,11 @@
                     <h3>GET IoT Device by ID</h3>
                     <!-- GET IoT Device by ID request form -->
                     <form @submit.prevent="getIotDevice">
-                        <input v-model="iotDeviceId" type="text" placeholder="IoT Device ID">
+                        <input
+                            v-model="iotDeviceId"
+                            placeholder="IoT Device ID"
+                            type="text"
+                        />
                         <button type="submit">Get IoT Device by ID</button>
                     </form>
                 </div>
@@ -79,7 +157,11 @@
                     <h3>DELETE IoT Device by ID</h3>
                     <!-- DELETE IoT Device by ID request form -->
                     <form @submit.prevent="deleteIotDevice">
-                        <input v-model="iotDeviceId" type="text" placeholder="IoT Device ID">
+                        <input
+                            v-model="iotDeviceId"
+                            placeholder="IoT Device ID"
+                            type="text"
+                        />
                         <button type="submit">Delete IoT Device by ID</button>
                     </form>
                 </div>
@@ -87,8 +169,12 @@
                     <h3>TRANSFER IoT Device</h3>
                     <!-- TRANSFER IoT Device request form -->
                     <form @submit.prevent="transferIotDevice">
-                        <input v-model="userId" type="text" placeholder="User ID">
-                        <input v-model="iotDeviceId" type="text" placeholder="IoT Device ID">
+                        <input v-model="userId" placeholder="User ID" type="text" />
+                        <input
+                            v-model="iotDeviceId"
+                            placeholder="IoT Device ID"
+                            type="text"
+                        />
                         <button type="submit">Transfer IoT Device</button>
                     </form>
                 </div>
@@ -96,6 +182,14 @@
                     <h3>Generate UUID</h3>
                     <!-- Generate UUID button -->
                     <button @click="generateUUID">Generate UUID</button>
+                </div>
+
+                <div class="row">
+                    <h3>NOT CRUD Operations</h3>
+                    <h4>Get my devices and positions</h4>
+                    <form @submit.prevent="getDevicesByMyself">
+                        <button type="submit">Get my devices</button>
+                    </form>
                 </div>
             </div>
             <div class="col-6">
@@ -105,9 +199,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </template>
 
 <script>
@@ -116,6 +208,8 @@ import URL from '@/types/URL.js'
 import BasicAuth from '@/types/BasicAuth.js'
 import User from '@/types/User.js'
 import { faker, fakerDE, fakerES, fakerPT_PT } from '@faker-js/faker'
+import { nextTick } from 'vue'
+import BearerToken from '@/types/BearerToken.js'
 
 export default {
     components: {},
@@ -126,18 +220,53 @@ export default {
             userData: '',
             deleteId: '',
             getId: '',
-            response: null,
+            response: 'Esperando acción del usuario...',
             query: null,
             iotDeviceId: '',
+            authType: 'Basic',
+            myBasicAuth: {
+                email: 'admin@admin.com',
+                password: 'admin',
+            },
+            myBearerToken: '',
         }
     },
+
     created() {
         this.myUrl = new URL('http', 'localhost', 2003)
-        this.myBasicAuth = new BasicAuth('admin@admin.com', 'admin')
         this.query = new Query(this.myUrl).withAuth(this.myBasicAuth)
         this.faker = faker
+
+        nextTick(() => {
+            this.authType = 'Basic'
+            this.myBasicAuth = {
+                email: 'admin@admin.com',
+                password: 'admin',
+            }
+        })
     },
     methods: {
+        async submitLogin() {
+            try {
+                if (this.authType === 'Basic') {
+                    this.query.withAuth(new BasicAuth('admin@admin.com', 'admin'))
+                } else if (this.authType === 'Bearer') {
+                    this.query.withAuth(new BearerToken(this.myBearerToken))
+                }
+                await this.query.login()
+                this.response = 'Logged in successfully'
+            } catch (err) {
+                this.response = err.message
+            }
+        },
+
+        async login() {
+            try {
+                this.response = await this.query.login()
+            } catch (err) {
+                this.response = err.message
+            }
+        },
 
         async getIotDevices() {
             try {
@@ -167,7 +296,10 @@ export default {
 
         async transferIotDevice() {
             try {
-                this.response = await this.query.transferIotDevice(this.userId, this.iotDeviceId)
+                this.response = await this.query.transferIotDevice(
+                    this.userId,
+                    this.iotDeviceId,
+                )
             } catch (err) {
                 this.response = err.message
             }
@@ -190,7 +322,6 @@ export default {
                 this.response = user
             } catch (err) {
                 this.response = err.message
-
             }
         },
         async submitForm() {
@@ -213,6 +344,13 @@ export default {
         async deleteUser() {
             try {
                 this.response = await this.query.deleteUser(this.deleteId)
+            } catch (err) {
+                this.response = err.message
+            }
+        },
+        async getDevicesByMyself() {
+            try {
+                this.response = await this.query.getDevicesByMyself()
             } catch (err) {
                 this.response = err.message
             }

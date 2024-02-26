@@ -5,29 +5,27 @@ import UUID from '@/types/UUID.js'
  * @property {string} token - The bearer token.
  */
 class BearerToken {
-    token = null
+  token = null
 
-    /**
-     * @constructor
-     * @param {string} token - The bearer token.
-     */
-    constructor(token = null) {
-        if (token === null) {
-            this.token = new UUID().uuid
-        }
-        if (token instanceof BearerToken) {
-            this.token = token.token
-            return
-        }
-        // Validation is inside UUID class
-        token = new UUID(token).uuid
+  /**
+   * @constructor
+   * @param {string} token - The bearer token.
+   */
+  constructor(token = null) {
+    if (token === null) {
+      this.token = new UUID().uuid
     }
-
-    getToken() {
-        return this.token
+    if (token instanceof BearerToken) {
+      this.token = token.token
+      return
     }
+    // Validation is inside UUID class
+    token = new UUID(token).uuid
+  }
 
-
+  getToken() {
+    return this.token
+  }
 }
 
 export default BearerToken

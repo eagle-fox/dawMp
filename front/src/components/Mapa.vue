@@ -1,14 +1,12 @@
 <template>
   <div class="mt-4">
-    <div id="viewerMap" style="position: relative;">
+      <div id="viewerMap" style="position: relative">
       <div ref="mapElement" class="viewerMap"></div>
       <div v-if="loading" class="loading-overlay">
         <div class="spinner-border text-primary loadSphere" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        <div class="loading-text">
-          {{ $t('miscelaneus.loading') }}...
-        </div>
+          <div class="loading-text">{{ $t('miscelaneus.loading') }}...</div>
       </div>
     </div>
     <div class="d-flex justify-content-center mt-4 buttonsSlayer"></div>
@@ -16,7 +14,7 @@
 </template>
 
 <script>
-import { ref, onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { IconDog } from '@tabler/icons-vue'
@@ -30,7 +28,7 @@ export default {
   },
   data() {
     return {
-      loading: true
+        loading: true,
     }
   },
   setup(props) {
@@ -92,7 +90,7 @@ export default {
             state.markers.push(marker)
           })
 
-          this.loading = false; // Indica que se ha cargado el mapa y los marcadores
+            this.loading = false // Indica que se ha cargado el mapa y los marcadores
         })
       } else {
         console.error('La geolocalización no es compatible con este navegador.')

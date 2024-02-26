@@ -1,11 +1,11 @@
-import es from './es.js';
-import en from './en.js';
-import de from './de.js';
-import gl from './gl.js'
+import spain from './es.js'
+import uk from './en.js'
+import germany from './de.js'
+import galician from './gl.js'
 
 export default {
-    es,
-    en,
-    de,
-    gl
-};
+    spain,
+    uk,
+    germany,
+    galician,
+}

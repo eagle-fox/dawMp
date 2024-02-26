@@ -2,19 +2,39 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace app\models;
 
+use app\types\UUID;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Leaf\Model;
 
-class IotDevice extends Model {
+/**
+ * @property int $id
+ * @property UUID $token
+ * @property User $user
+ * @property IotData $data
+ * @property string $name
+ * @property string $icon
+ * @property string especie
+ * @property float last_latitude
+ * @property float last_longitude
+ */
+class IotDevice extends Model
+{
     /**
      * The model's default values for attributes.
      *
      * @var array
      */
     protected $attributes = [
-        "uuid" => "",
-        "token" => "",
+        "token"          => "",
+        "user"           => "",
+        "name"           => "",
+        "icon"           => "",
+        "especie"        => "",
+        "last_latitude"  => null,
+        "last_longitude" => null,
     ];
 
     /**
@@ -50,7 +70,7 @@ class IotDevice extends Model {
      *
      * @var array
      */
-    protected $fillable = ["id", "uuid", "token"];
+    protected $fillable = ["token", "user", "name", "icon", "especie"];
 
     /**
      * Todas va con sellado de tiempo.
@@ -58,4 +78,35 @@ class IotDevice extends Model {
      * @var bool
      */
     public $timestamps = true;
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function data(): HasMany
+    {
+        return $this->hasMany(IotData::class, 'device');
+    }
+
+    public function getFillable(): array
+    {
+        return $this->fillable;
+    }
+
+    public function getTokenAttribute($value): UUID
+    {
+        return new UUID($value);
+    }
+
+    public function setTokenAttribute(UUID $uuid): void
+    {
+        $this->attributes['token'] = $uuid;
+    }
+
+    public function iotData()
+    {
+        return $this->hasMany(IotData::class, 'device');
+    }
+
 }

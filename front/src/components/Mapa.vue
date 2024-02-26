@@ -1,78 +1,146 @@
 <template>
-  <div>
-    <div ref="mapElement" style="height: 600px; width: 800px;"></div>
-    <button @click="changePos">Cambiar Posición</button>
+  <div class="mt-4">
+      <div id="viewerMap" style="position: relative">
+      <div ref="mapElement" class="viewerMap"></div>
+      <div v-if="loading" class="loading-overlay">
+        <div class="spinner-border text-primary loadSphere" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+          <div class="loading-text">{{ $t('miscelaneus.loading') }}...</div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4 buttonsSlayer"></div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, reactive } from 'vue';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { onMounted, reactive, ref } from 'vue'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+import { IconDog } from '@tabler/icons-vue'
 
 export default {
-  setup() {
-    const mapElement = ref(null);
-
+  props: {
+    puntos: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+        loading: true,
+    }
+  },
+  setup(props) {
+    const mapElement = ref(null)
     let state = reactive({
-      lat: 40.416775,
-      lon: -3.703790,
       map: null,
-      marker: null
-    });
+      markers: [],
+    })
 
     onMounted(() => {
-      const map = L.map(mapElement.value).setView([state.lat, state.lon], 30);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(map);
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { latitude, longitude } = position.coords
+          const map = L.map(mapElement.value).setView([latitude, longitude], 15)
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution:
+              '&copy; <a href="https://www.fbi.gov/investigate">FBI</a>',
+          }).addTo(map)
 
-      const marker = L.marker([state.lat, state.lon]).addTo(map).bindPopup('La prima del ricardo');
+          const marker = L.marker([latitude, longitude])
+            .addTo(map)
+            .bindPopup('Tu posición actual')
+          state.map = map
+          state.markers.push(marker)
 
-      state.map = map;
-      state.marker = marker;
-    });
+          props.puntos.forEach((punto) => {
+            let iconUrl = ''
+            switch (punto.species) {
+              case 'dog':
+                iconUrl = 'src/assets/pointers/dog.svg'
+                break
+              case 'cat':
+                iconUrl = 'src/assets/pointers/cat.svg'
+                break
+              case 'pig':
+                iconUrl = 'src/assets/pointers/pig.svg'
+                break
+              case 'cow':
+                iconUrl = 'src/assets/pointers/cow.svg'
+                break
+              case 'sheep':
+                iconUrl = 'src/assets/pointers/sheep.svg'
+                break
+              default:
+                iconUrl = 'src/assets/pointers/animal.svg'
+            }
 
-    const changePos = () => {
-      function obtenerPosicion(position){
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        return [latitude, longitude];
-      }
+            const animalIcon = L.divIcon({
+              html: `<img src="${iconUrl}" width="50" height="50" style="top: 50%; left: 50%; transform: translate(-50%,-50%);">`,
+              iconSize: [0, 0],
+              iconAnchor: [0, 0],
+            })
+            const marker = L.marker([punto.latitud, punto.longitud], {
+              icon: animalIcon,
+            })
+              .addTo(state.map)
+              .bindPopup(punto.petName)
+            state.markers.push(marker)
+          })
 
-      function errorC(error){
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            console.error("El usuario denegó la solicitud de geolocalización.");
-            break;
-          case error.POSITION_UNAVAILABLE:
-            console.error("La información de ubicación no está disponible.");
-            break;
-          case error.TIMEOUT:
-            console.error("Se ha excedido el tiempo de espera para obtener la ubicación.");
-            break;
-          case error.UNKNOWN_ERROR:
-            console.error("Se produjo un error desconocido al obtener la ubicación.");
-            break;
-        }
-      }
-
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const newPosition = obtenerPosicion(position);
-            state.marker.setLatLng(newPosition).bindPopup('Nueva posición').openPopup();
-            state.map.setView(newPosition, 30);
-          },
-          errorC
-        );
+            this.loading = false // Indica que se ha cargado el mapa y los marcadores
+        })
       } else {
-        console.error("La geolocalización no es compatible con este navegador.");
+        console.error('La geolocalización no es compatible con este navegador.')
       }
-    };
+    })
 
-    return { mapElement, changePos };
+    return { mapElement }
   },
-};
+  components: {
+    IconDog,
+  },
+}
 </script>
+
+<style scoped>
+.viewerMap {
+  width: 1000px;
+  height: 500px;
+  border-radius: 10px;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading-text {
+  position: absolute;
+  top: calc(50% + 1rem); /* Ajusta este valor según tu preferencia */
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media screen and (max-width: 700px) {
+  .viewerMap {
+    width: 500px;
+    height: 350px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .viewerMap {
+    width: 350px;
+    height: 300px;
+  }
+
+  .buttonsSlayer {
+    flex-direction: column;
+  }
+}
+</style>

@@ -67,11 +67,18 @@ let aboutTextPackage = {
     about_h1: 'Sobre Nosotros'
 }
 
+let footer = {
+  footer_direction: 'Dirección',
+  footer_number: 'Telefono',
+  footer_mail: 'e-mail'
+}
+
 export default {
     home: homeTextPackage,
     lang: langTextPackage,
     login: loginTextPackage,
     form_a: animalRegisterForm,
     miscelaneus: miscelaneusTextPackage,
-    about: aboutTextPackage
+    about: aboutTextPackage,
+    footer: footer
 };

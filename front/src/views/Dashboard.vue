@@ -36,8 +36,8 @@ export default {
         name: 'Manolo',
         gmail: 'manolo@gmail.com',
         iotDevices: [
-          {petName: 'Charly', petDate: '12/09/2020', petSpecie: 'dog', latitud:42.2266403, longitud: -8.712718},
-          {petName: 'Juan', petDate: '12/09/2020', petSpecie: 'cat', latitud:42.3266403, longitud: -8.712718}
+          {petName: 'Charly', petDate: '12/09/2020', species: 'dog', latitud:42.2266403, longitud: -8.712718},
+          {petName: 'Juan', petDate: '12/09/2020', species: 'cat', latitud:42.3266403, longitud: -8.712718}
         ]
       }
 

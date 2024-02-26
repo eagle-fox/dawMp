@@ -1,7 +1,15 @@
 <template>
   <div class="mt-4">
-    <div id="viewerMap">
-      <div ref="mapElement" class="viewerMap" ></div>
+    <div id="viewerMap" style="position: relative;">
+      <div ref="mapElement" class="viewerMap"></div>
+      <div v-if="loading" class="loading-overlay">
+        <div class="spinner-border text-primary loadSphere" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="loading-text">
+          {{ $t('miscelaneus.loading') }}...
+        </div>
+      </div>
     </div>
     <div class="d-flex justify-content-center mt-4 buttonsSlayer"></div>
   </div>
@@ -20,51 +28,19 @@ export default {
       required: true,
     },
   },
-  mounted() {
-    this.setLoadStatus(true, 'viewerMap');
+  data() {
+    return {
+      loading: true
+    }
   },
   setup(props) {
-    
-
     const mapElement = ref(null)
     let state = reactive({
       map: null,
       markers: [],
     })
 
-    const setLoadStatus = (type, id) => {
-      let itemByID = document.getElementById(id);
-
-      if (type) {
-        let loadingMaker = document.createElement('div');
-        loadingMaker.innerHTML = `
-          <div class="spinner-border text-primary loadSphere" id='loadMarker' style='width: 50px; height: 50px;' role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="text-primary">
-            ${this.$t('miscelaneus.loading')}...
-          </div>
-        `;
-
-        loadingMaker.style.position = 'absolute';
-        loadingMaker.style.top = '50%';
-        loadingMaker.style.left = '50%';
-        loadingMaker.style.transform = 'translate(-50%, -50%)';
-        loadingMaker.style.textAlign = 'center';
-
-        loadingMaker.id = 'loadMarker';
-
-        itemByID.children[0].style.filter = 'blur(5px)';
-        itemByID.append(loadingMaker);
-      } else {
-        let loadMarker = document.getElementById('loadMarker');
-        loadMarker.remove();
-        itemByID.children[0].style.filter = 'blur(0px)';
-      }
-    };
-
     onMounted(() => {
-
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
           const { latitude, longitude } = position.coords
@@ -80,15 +56,6 @@ export default {
             .bindPopup('Tu posición actual')
           state.map = map
           state.markers.push(marker)
-
-          function getIconSize(zoom) {
-            const baseSize = 50
-            const scaleFactor = 1.5
-            return Math.max(
-              baseSize * Math.pow(scaleFactor, zoom - 15),
-              baseSize,
-            )
-          }
 
           props.puntos.forEach((punto) => {
             let iconUrl = ''
@@ -123,69 +90,20 @@ export default {
               .addTo(state.map)
               .bindPopup(punto.petName)
             state.markers.push(marker)
-            setLoadStatus(false, 'viewerMap');
-            
-
-
           })
+
+          this.loading = false; // Indica que se ha cargado el mapa y los marcadores
         })
       } else {
         console.error('La geolocalización no es compatible con este navegador.')
       }
     })
 
-    const addMarker = () => {
-      if (state.map) {
-        
-        const latitude = state.map.getCenter().lat
-        const longitude = state.map.getCenter().lng
-        const marker = L.marker([latitude, longitude])
-          .addTo(state.map)
-          .bindPopup('Nuevo marcador')
-        state.markers.push(marker)
-        
-      }
-    }
-
-    return { mapElement, addMarker }
+    return { mapElement }
   },
   components: {
     IconDog,
-  }, methods: {
-    setLoadStatus(type, id) {
-      let itemByID = document.getElementById(id);
-
-      if (type) {
-        let loadingMaker = document.createElement('div');
-        loadingMaker.innerHTML = `
-                <div class="spinner-border text-primary loadSphere" id='loadMarker' style='width: 50px; height: 50px;' role="status">
-                <span class="visually-hidden">Loading...</span>
-                </div>
-                <div class="text-primary">
-                    ${this.$t('miscelaneus.loading')}...
-                </div>
-                `
-
-        loadingMaker.style.position = 'absolute';
-        loadingMaker.style.top = '50%';
-        loadingMaker.style.left = '50%';
-        loadingMaker.style.transform = 'translate(-50%, -50%)';
-        loadingMaker.style.textAlign = 'center';
-
-        loadingMaker.id = 'loadMarker';
-
-        
-        itemByID.children[0].style.filter = 'blur(5px)';
-        itemByID.append(loadingMaker);
-      } else {
-        let loadMarker = document.getElementById('loadMarker');
-        loadMarker.remove();
-        itemByID.children[0].style.filter = 'blur(0px)';
-      }
-
-
-    }
-  }
+  },
 }
 </script>
 
@@ -194,6 +112,20 @@ export default {
   width: 1000px;
   height: 500px;
   border-radius: 10px;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading-text {
+  position: absolute;
+  top: calc(50% + 1rem); /* Ajusta este valor según tu preferencia */
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media screen and (max-width: 700px) {

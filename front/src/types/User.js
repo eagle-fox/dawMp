@@ -151,9 +151,6 @@ class User {
         return new User(this)
     }
 
-    toString() {
-        return `${this.nombre} ${this.apellido_primero} ${this.apellido_segundo}`
-    }
 
     toJSON() {
         return {

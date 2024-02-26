@@ -121,17 +121,92 @@ class Query {
      * @throws {Error} - Si hay un error al eliminar el usuario
      */
     async deleteUser(id) {
-        console.log('Deleting user with id:', id);
+        console.log('Deleting user with id:', id)
         try {
-            const response = await this.client.delete(this.url + 'users/' + id, { responseType: 'json' });
-            console.log('Delete response:', response);
-            return response.data;
+            const response = await this.client.delete(this.url + 'users/' + id, { responseType: 'json' })
+            console.log('Delete response:', response)
+            return response.data
         } catch (error) {
-            console.error('Error deleting user:', error.message);
-            console.error('Error details:', error.response.data);
-            throw error;
+            console.error('Error deleting user:', error.message)
+            console.error('Error details:', error.response.data)
+            throw error
         }
     }
+
+    /**
+     * @method getIotDevices - Fetch all IoT devices
+     * @returns {Promise<Array>} - The list of IoT devices
+     */
+    async getIotDevices() {
+        let response = null
+        try {
+            response = await this.client.get(this.url + 'iotDevices', { responseType: 'json' })
+        } catch (error) {
+            console.error('Error fetching IoT devices:', error.message)
+            console.error('Error details:', error.response.data)
+            throw error
+        }
+        return response.data
+    }
+
+    /**
+     * @method getIotDevice - Fetch a specific IoT device by its ID
+     * @param {number} id - The ID of the IoT device
+     * @returns {Promise<Object>} - The IoT device data
+     */
+    async getIotDevice(id) {
+        const data = await this.client.get(this.url + 'iotDevices/' + id, { responseType: 'json' })
+            .then(response => response.data)
+            .catch(error => {
+                throw error
+            })
+        return data
+    }
+
+    /**
+     * @method postIotDevice - Create a new IoT device
+     * @param {Object} iotDevice - The IoT device data
+     */
+    async postIotDevice(iotDevice) {
+        await this.client.post(this.url + 'iotDevices', iotDevice, { responseType: 'json' })
+            .catch(error => {
+                throw error
+            })
+    }
+
+    /**
+     * @method putIotDevice - Update an existing IoT device
+     * @param {Object} iotDevice - The IoT device data
+     */
+    async putIotDevice(iotDevice) {
+        await this.client.put(this.url + 'iotDevices/' + iotDevice.id, iotDevice, { responseType: 'json' })
+            .catch(error => {
+                throw error
+            })
+    }
+
+    /**
+     * @method patchIotDevice - Partially update an existing IoT device
+     * @param {Object} iotDevice - The IoT device data
+     */
+    async patchIotDevice(iotDevice) {
+        await this.client.patch(this.url + 'iotDevices/' + iotDevice.id, iotDevice, { responseType: 'json' })
+            .catch(error => {
+                throw error
+            })
+    }
+
+    /**
+     * @method deleteIotDevice - Delete an existing IoT device
+     * @param {number} id - The ID of the IoT device
+     */
+    async deleteIotDevice(id) {
+        await this.client.delete(this.url + 'iotDevices/' + id, { responseType: 'json' })
+            .catch(error => {
+                throw error
+            })
+    }
+
 }
 
 export default Query

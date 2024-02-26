@@ -194,13 +194,14 @@
             </div>
             <div class="col-6">
                 <h1>Response:</h1>
-                <div v-if="response">
-                    <pre>{{ response }}</pre>
-                </div>
+                <highlightjs v-if="response" :code="response" autodetect class="font-monospace" />
             </div>
         </div>
     </div>
 </template>
+
+<style>
+</style>
 
 <script>
 import Query from '@/types/Query.js'
@@ -210,9 +211,14 @@ import User from '@/types/User.js'
 import { faker, fakerDE, fakerES, fakerPT_PT } from '@faker-js/faker'
 import { nextTick } from 'vue'
 import BearerToken from '@/types/BearerToken.js'
+import 'highlight.js/styles/xt256.css'
+import 'highlight.js/lib/common'
+import hljsVuePlugin from '@highlightjs/vue-plugin'
 
 export default {
-    components: {},
+    components: {
+        highlightjs: hljsVuePlugin.component,
+    },
     data() {
         return {
             method: 'POST',
@@ -234,7 +240,7 @@ export default {
 
     created() {
         this.myUrl = new URL('http', 'localhost', 2003)
-        this.query = new Query(this.myUrl).withAuth(this.myBasicAuth)
+        this.query = new Query(this.myUrl).withAuth(new BasicAuth('admin@admin.com', 'admin'))
         this.faker = faker
 
         nextTick(() => {
@@ -249,12 +255,12 @@ export default {
         async submitLogin() {
             try {
                 if (this.authType === 'Basic') {
-                    this.query.withAuth(new BasicAuth('admin@admin.com', 'admin'))
+                    this.query.withAuth(new BasicAuth(this.myBasicAuth.email, this.myBasicAuth.password))
                 } else if (this.authType === 'Bearer') {
                     this.query.withAuth(new BearerToken(this.myBearerToken))
                 }
-                await this.query.login()
-                this.response = 'Logged in successfully'
+                const response = await this.query.login()
+                this.response = 'Logged in successfully \n' + JSON.stringify(response, null, 2)
             } catch (err) {
                 this.response = err.message
             }
@@ -279,8 +285,7 @@ export default {
         async getIotDevice() {
             try {
                 this.response = null // Clear the previous response
-                const iotDevice = await this.query.getIotDevice(this.iotDeviceId)
-                this.response = iotDevice
+                this.response = await this.query.getIotDevice(this.iotDeviceId)
             } catch (err) {
                 this.response = err.message
             }

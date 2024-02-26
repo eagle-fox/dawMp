@@ -34,6 +34,17 @@ class Query {
     return this
   }
 
+    async login() {
+        return await this.client
+            .post(this.url + 'users/login', { responseType: 'json' })
+            .then((response) => response.data)
+            .catch((error) => {
+                console.error('Error fetching users:', error.message)
+                console.error('Error details:', error.response.data)
+                throw error
+            })
+    }
+
   /**
    * @returns {Array[User]} - The list of users.
    */

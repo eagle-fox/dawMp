@@ -1,13 +1,16 @@
 <script>
 import { defineComponent } from 'vue'
-import QueryTester from '@/components/QueryTester.vue'
+import QueryUi from '@/components/QueryUi.vue'
+import NavBar from '@/components/NavBar.vue'
+import Footer from '@/components/FooterMain.vue'
 
 export default defineComponent({
-    components: { QueryTester },
+    components: { QueryUi, Footer, NavBar },
 })
 
 </script>
 <template>
-    <h1>Query Tester</h1>
-    <QueryTester />
+    <NavBar />
+    <QueryUi />
+    <Footer />
 </template>

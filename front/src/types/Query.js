@@ -76,7 +76,7 @@ class Query {
     }
 
     /**
-     * @param {user} user - The user to create.
+     * @param {User} user - The user to create.
      * @returns {Promise<void>}
      */
     async postUser(user) {

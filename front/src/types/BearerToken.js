@@ -13,19 +13,24 @@ class BearerToken {
    */
   constructor(token = null) {
     if (token === null) {
-      this.token = new UUID().uuid
+      this.token = new UUID()
+      return
     }
     if (token instanceof BearerToken) {
       this.token = token.token
       return
     }
-    // Validation is inside UUID class
-    token = new UUID(token).uuid
+    this.token = new UUID(token)
   }
 
   getToken() {
     return this.token
   }
+
+  toJSON() {
+    return this.token.toString()
+  }
+
 }
 
 export default BearerToken

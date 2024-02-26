@@ -31,6 +31,10 @@ class UUID {
     )
   }
 
+  toString() {
+    return this.uuid
+  }
+
   toJSON() {
     return this.uuid
   }

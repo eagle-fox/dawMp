@@ -18,7 +18,7 @@ class UUID implements JsonSerializable
 
         if ($uuid !== null) {
             if (!$this->isValidUUID($uuid)) {
-                throw new \InvalidArgumentException("Invalid UUID");
+                throw new \InvalidArgumentException("Invalid UUID, supplied: $uuid");
             }
             $this->uuid = $uuid;
         } else {

@@ -257,56 +257,57 @@ export default {
                 if (this.authType === 'Basic') {
                     this.query.withAuth(new BasicAuth(this.myBasicAuth.email, this.myBasicAuth.password))
                 } else if (this.authType === 'Bearer') {
+                    console.log('Bearer token:', new BearerToken(this.myBearerToken))
                     this.query.withAuth(new BearerToken(this.myBearerToken))
                 }
                 const response = await this.query.login()
                 this.response = 'Logged in successfully \n' + JSON.stringify(response, null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err, null, 2)
             }
         },
 
         async login() {
             try {
-                this.response = await this.query.login()
+                this.response = JSON.stringify(await this.query.login(), null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err, null, 2)
             }
         },
 
         async getIotDevices() {
             try {
-                this.response = await this.query.getIotDevices()
+                this.response = JSON.stringify(await this.query.getIotDevices(), null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err, null, 2)
             }
         },
 
         async getIotDevice() {
             try {
                 this.response = null // Clear the previous response
-                this.response = await this.query.getIotDevice(this.iotDeviceId)
+                this.response = JSON.stringify(await this.query.getIotDevice(this.iotDeviceId), null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err, null, 2)
             }
         },
 
         async deleteIotDevice() {
             try {
-                this.response = await this.query.deleteIotDevice(this.iotDeviceId)
+                this.response = JSON.stringify(await this.query.deleteIotDevice(this.iotDeviceId), null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err, null, 2)
             }
         },
 
         async transferIotDevice() {
             try {
-                this.response = await this.query.transferIotDevice(
+                this.response = JSON.stringify(await this.query.transferIotDevice(
                     this.userId,
                     this.iotDeviceId,
-                )
+                ), null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err, null, 2)
             }
         },
 
@@ -315,49 +316,48 @@ export default {
         },
         async getUsers() {
             try {
-                this.response = await this.query.getUsers()
+                this.response = JSON.stringify(await this.query.getUsers(), null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err, null, 2)
             }
         },
         async getUser() {
             try {
-                this.response = null // Clear the previous response
-                const user = await this.query.getUser(this.userId) // Use the userId data property here
-                this.response = user
+                this.response = JSON.stringify(await this.query.getUser(this.userId), null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err, null, 2)
             }
         },
         async submitForm() {
             try {
                 const user = new User()
                 user.withObject(this.userData)
+                let response
                 if (this.method === 'POST') {
                     this.userId = null // Set userId to null for POST requests
-                    await this.query.postUser(user)
+                    response = await this.query.postUser(user)
                 } else if (this.method === 'PUT') {
-                    await this.query.putUser(user)
+                    response = await this.query.putUser(user)
                 } else if (this.method === 'PATCH') {
-                    await this.query.patchUser(user)
+                    response = await this.query.patchUser(user)
                 }
-                this.response = 'User created/updated successfully'
+                this.response = 'User created/updated successfully \n' + JSON.stringify(response, null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err, null, 2)
             }
         },
         async deleteUser() {
             try {
-                this.response = await this.query.deleteUser(this.deleteId)
+                this.response = JSON.stringify(await this.query.deleteUser(this.deleteId), null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err.message, null, 2)
             }
         },
         async getDevicesByMyself() {
             try {
-                this.response = await this.query.getDevicesByMyself()
+                this.response = JSON.stringify(await this.query.getDevicesByMyself(), null, 2)
             } catch (err) {
-                this.response = err.message
+                this.response = JSON.stringify(err, null, 2)
             }
         },
         generateFakeUser(locale) {

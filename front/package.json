@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@popperjs/core": "^2.11.8",
     "@tabler/icons-vue": "^2.46.0",
     "@vue-leaflet/vue-leaflet": "^0.10.1",

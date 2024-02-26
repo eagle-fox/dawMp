@@ -124,7 +124,7 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <div class="main-container" :style="{ 'background-image': 'url(' + svgFile + ')' }">
+    <div class="main-container svg-path" :style="{ 'background-image': 'url(' + svgFile + ')' }">
         <div class="d-flex justify-content-center align-items-center">
             <div class="shadow p-4 rounded bg-light" id="formMakeUser">
                 <h3 class="text-center mb-4">{{ $t('login.login_message1') }}</h3>
@@ -176,7 +176,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ece9ef;
 }
 
 .loadSphere {

@@ -27,11 +27,12 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <div class="main-container" :style="{ 'background-image': 'url(' + svgFile + ')' }">
+    <div class="main-container svg-path" :style="{ 'background-image': 'url(' + svgFile + ')' }">
         <div class="d-inline-block d-flex justify-content-center align-items-center all bg-light rounded">
             <div class="shadow p-4 rounded">
-                <h3 class="text-center mb-2">{{ $t('miscelaneus.name_page') }}</h3>
-
+                <div class="d-flex justify-content-center">
+                    <img alt="Logo" src="../assets/contratipo_dorado.svg" width="64">
+                </div>
                 <div class="d-flex justify-content-center align-items-center flex-column gap-2">
                     <form>
                         <div class="mb-3">
@@ -62,6 +63,5 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ece9ef;
 }
 </style>

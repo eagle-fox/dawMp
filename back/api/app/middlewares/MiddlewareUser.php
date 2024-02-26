@@ -36,6 +36,8 @@ class MiddlewareUser
      */
     public function __construct(Rol $targetRol = Rol::ADMIN, int $targetId = null)
     {
+
+
         $this->targetRol = $targetRol;
         $this->targetId = $targetId;
         $this->debug = getenv("LEAF_DEV_TOOLS") === "true";

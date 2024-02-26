@@ -14,3 +14,8 @@ export default defineComponent({
     <QueryUi />
     <Footer />
 </template>
+<style>
+body {
+    background: white;
+}
+</style>

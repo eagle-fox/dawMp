@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container text-black">
         <div class="row">
             <div class="col-6">
                 <div class="row">
@@ -132,8 +132,7 @@ export default {
         },
         async deleteUser() {
             try {
-                await this.query.deleteUser(this.deleteId)
-                this.response = 'User deleted successfully'
+                this.response = await this.query.deleteUser(this.deleteId)
             } catch (err) {
                 this.response = err.message
             }

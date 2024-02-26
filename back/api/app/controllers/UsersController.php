@@ -146,7 +146,12 @@ class UsersController extends Controller
     {
         try {
             $auth = new MiddlewareUser(Rol::USER, $id);
-            response()->json(User::query()->find($id));
+            $user = User::query()->find($id);
+            if ($user instanceof User) {
+                response()->json($user);
+            } else {
+                response()->json(["message" => "Usuario no encontrado"], 404);
+            }
         } catch (Exception $e) {
             $message = "Error al mostrar el usuario";
             if (getenv("LEAF_DEV_TOOLS")) {

@@ -118,17 +118,19 @@ class Query {
 
     /**
      * @param {number} id - El ID del usuario a eliminar
-     * @returns {Promise<void>}
      * @throws {Error} - Si hay un error al eliminar el usuario
      */
     async deleteUser(id) {
-        await this.client.delete(this.url + 'users/' + id, { responseType: 'json' })
-            .then(response => response.data)
-            .catch(error => {
-                console.error('Error deleting user:', error.message)
-                console.error('Error details:', error.response.data)
-                throw error
-            })
+        console.log('Deleting user with id:', id);
+        try {
+            const response = await this.client.delete(this.url + 'users/' + id, { responseType: 'json' });
+            console.log('Delete response:', response);
+            return response.data;
+        } catch (error) {
+            console.error('Error deleting user:', error.message);
+            console.error('Error details:', error.response.data);
+            throw error;
+        }
     }
 }
 

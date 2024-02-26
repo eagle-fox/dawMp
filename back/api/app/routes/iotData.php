@@ -45,7 +45,22 @@ app()->post("/iotData/historical",function (){
          return;
      }
 
-    app()->response()->json(["message" => "All data", "data" => $data]);
+
+    $data_historical = [];
+
+    foreach ($data as $d) {
+        $data_historical[] = [
+            "latitude" => $d->latitude,
+            "longitude" => $d->longitude,
+            "created_at" => $d->created_at
+        ];
+    }
+
+    app()->response()->json(["message" => "All data",
+        "Start date" => $dateStart,
+        "End date" => $dateEnd,
+        "Device" => $id,
+        "Positions" => $data_historical]);
 
 });
 

@@ -69,7 +69,7 @@ export default {
         <div
             class="d-flex justify-content-center align-items-center flex-column gap-5 p-10"
         >
-            <div class="d-flex flex-column gap-2">
+            <div class="d-flex flex-column gap-2 heroLogoEagle">
                 <img
                     alt="Logo"
                     class="d-inline-block align-text-top"

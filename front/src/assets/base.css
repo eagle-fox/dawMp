@@ -188,7 +188,7 @@ label {
 
     --text-light: #0e1415;
     --background-light: #c4cfd4;
-    --primary-light: #4cb8a0;
+    --primary-light: #3f9784;
     --secondary-light: #1f4233;
     --accent-light: #2c5848;
 
@@ -196,7 +196,7 @@ label {
 
     --text-dark: #eaf0f1;
     --background-dark: #2b363b;
-    --primary-dark: #357769; /* Variation -> Original #47b39b */
+    --primary-dark: #26574d; /* Variation -> Original #47b39b */
     --secondary-dark: #bde0d1;
     --accent-dark: #bde0d1;
 
@@ -241,4 +241,14 @@ label {
 
 .border-accent {
     border-color: var(--accent);
+}
+
+.heroLogoEagle:hover {
+    transform: scale(1.25);
+    transition: 0.5s;
+}
+
+.logoEagle:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
 }

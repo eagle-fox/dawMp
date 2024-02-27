@@ -116,7 +116,7 @@ export default {
             >
                 <img
                     alt="Logo"
-                    class="d-inline-block align-text-top"
+                    class="d-inline-block align-text-top logoEagle"
                     src="../assets/logo_circle.svg"
                     width="48"
                 />

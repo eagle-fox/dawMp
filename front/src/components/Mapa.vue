@@ -90,7 +90,7 @@ export default {
             state.markers.push(marker)
           })
 
-            this.loading = false // Indica que se ha cargado el mapa y los marcadores
+            // this.loading = false // Indica que se ha cargado el mapa y los marcadores
         })
       } else {
         console.error('La geolocalización no es compatible con este navegador.')

@@ -2,12 +2,6 @@ DROP DATABASE IF EXISTS `eagle-fox`;
 CREATE DATABASE IF NOT EXISTS `eagle-fox` DEFAULT CHARACTER SET utf8 COLLATE utf8mb3_unicode_ci;
 USE `eagle-fox`;
 
-/**
-    Todas las tablas tienen campos para creado y actualizado porque así lo requiere Leaf en el modelo
-    para hacer un timestamp automático.
-    https://leafphp.dev/docs/mvc/models.html#leaf-model-conventions
- */
-
 CREATE TABLE IF NOT EXISTS `user`
 (
     `id`               int                    NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -36,9 +30,6 @@ CREATE TABLE IF NOT EXISTS `clients`
     `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
-/**
-    Vista para mostrar la IP en formato legible porque la estamos guardando como un int unsigned.
- */
 CREATE VIEW `v_clients` AS
 SELECT `id`,
        INET_NTOA(`ipv4`) AS `ipv4`,
@@ -60,12 +51,6 @@ CREATE TABLE IF NOT EXISTS `log`
     FOREIGN KEY (`user`) REFERENCES `user` (`id`),
     FOREIGN KEY (`client`) REFERENCES `clients` (`id`)
 ) ENGINE = InnoDB;
-
-
-
-/**
-  Vista para mostrar el nombre del usuario y el cliente en lugar de sus ids con formato "humano"
- */
 
 CREATE VIEW `v_log` AS
 SELECT `log`.`id`,
@@ -122,7 +107,7 @@ END;
 //
 DELIMITER ;
 
-/** If data is older than 30 days, delete it */
+
 DELIMITER $$
 CREATE EVENT IF NOT EXISTS `delete_old_iot_data`
     ON SCHEDULE EVERY 1 DAY
@@ -132,7 +117,6 @@ CREATE EVENT IF NOT EXISTS `delete_old_iot_data`
     END$$
 DELIMITER ;
 
-/** Autoclean */
 DELIMITER $$
 CREATE EVENT IF NOT EXISTS `delete_old_logs`
     ON SCHEDULE EVERY 1 HOUR

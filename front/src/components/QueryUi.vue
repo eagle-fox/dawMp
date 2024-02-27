@@ -355,7 +355,7 @@ export default {
         },
         async getDevicesByMyself() {
             try {
-                this.response = JSON.stringify(await this.query.getDevicesByMyself(), null, 2)
+                this.response = JSON.stringify(await this.query.getIotDevicesBySelf(), null, 2)
             } catch (err) {
                 this.response = JSON.stringify(err, null, 2)
             }

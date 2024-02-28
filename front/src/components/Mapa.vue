@@ -31,6 +31,7 @@ export default {
         loading: true,
     }
   },
+
   setup(props) {
     const mapElement = ref(null)
     let state = reactive({
@@ -55,27 +56,16 @@ export default {
           state.map = map
           state.markers.push(marker)
 
-          props.puntos.forEach((punto) => {
-            let iconUrl = ''
-            switch (punto.species) {
-              case 'dog':
-                iconUrl = 'src/assets/pointers/dog.svg'
-                break
-              case 'cat':
-                iconUrl = 'src/assets/pointers/cat.svg'
-                break
-              case 'pig':
-                iconUrl = 'src/assets/pointers/pig.svg'
-                break
-              case 'cow':
-                iconUrl = 'src/assets/pointers/cow.svg'
-                break
-              case 'sheep':
-                iconUrl = 'src/assets/pointers/sheep.svg'
-                break
-              default:
-                iconUrl = 'src/assets/pointers/animal.svg'
-            }
+            const speciesIconMap = {
+                'dog': 'src/assets/pointers/dog.svg',
+                'cat': 'src/assets/pointers/cat.svg',
+                'pig': 'src/assets/pointers/pig.svg',
+                'cow': 'src/assets/pointers/cow.svg',
+                'sheep': 'src/assets/pointers/sheep.svg',
+            };
+
+            props.puntos.forEach((punto) => {
+                let iconUrl = speciesIconMap[punto.species] || 'src/assets/pointers/animal.svg';
 
             const animalIcon = L.divIcon({
               html: `<img src="${iconUrl}" width="50" height="50" style="top: 50%; left: 50%; transform: translate(-50%,-50%);">`,

@@ -48,7 +48,6 @@ export default {
         },
         async getDevicesByMyself() {
             try {
-                console.log("ho")
                 let myUrl = new URL('http', 'localhost', 2003)
                 let query = new Query(myUrl).withAuth(new BearerToken('9c4ca426-54e4-4326-a882-fc2f71d5f1cd'))
                 let response = await query.getIotDevicesBySelf()
@@ -62,15 +61,14 @@ export default {
     mounted() {
 
         this.getDevicesByMyself().then((response) => {
-            // console.log(response)
-            // this.devices = response
+
 
             for (let cord in response) {
                 // Use response[cord] to get the value of the current property
                 let coordAnimal = {
                     petName: response[cord].name,
                     latitud: response[cord].last_latitude,
-                    longitud: response[cord].last_longitude
+                    longitud: response[cord].last_longitude,
                 }
                 this.devicesData.push(coordAnimal);
             }

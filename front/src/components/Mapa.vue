@@ -111,7 +111,7 @@ export default {
 
 .loading-text {
   position: absolute;
-  top: calc(50% + 1rem); /* Ajusta este valor según tu preferencia */
+  top: calc(50% + 2rem);
   left: 50%;
   transform: translate(-50%, -50%);
 }

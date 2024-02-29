@@ -81,7 +81,7 @@ export default {
     <NavBar></NavBar>
 
     <div class="p-2">
-        <div class="p-4 bg-light rounded">
+        <div class="p-4 bg-light rounded container-fluid">
             <h2>{{ $t('miscelaneus.welcome') }}, {{ userData.name }}</h2>
 
             <div class="d-flex gap-2 justify-content-between">

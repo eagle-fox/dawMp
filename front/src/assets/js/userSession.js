@@ -4,7 +4,7 @@ import BearerToken from '@/types/BearerToken.js'
 
 class userSession {
     static #instance
-    constructor(name, email, role, token, iotDevices) {
+    constructor(name, email, role, token) {
         // Verificamos si ya hay una instancia, si no existe la crea.
         if (userSession.#instance) {
             return userSession.#instance
@@ -14,7 +14,6 @@ class userSession {
         this.name = name
         this.email = email
         this.role = role
-        this.iotDevices = null;
 
         if (!this.#checkTokenFormat()) {
             token = null

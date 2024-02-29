@@ -36,22 +36,6 @@ export default {
           console.error('Error al crear la nueva userSession:', error)
         })
     },
-    async loadIotDevices(){
-      let myUrl = new URL('http', 'localhost', 2003)
-      let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token))
-      let response = await query.getIotDevicesBySelf()
-      response = response.data;
-
-
-      this.$store
-        .dispatch('setIotDevices', response)
-        .then(() => {
-          console.log(this.$store.getters.getUserSession)
-          // console.log(this.$store.getters.getIotDevices + 'A')
-        });
-
-      return response
-    },
     checkToken(token) {
       const regex =
         /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/
@@ -74,7 +58,6 @@ export default {
   },
   mounted() {
     this.loadUserSessionCookie();
-    this.loadIotDevices();
   },
 }
 </script>

@@ -5,6 +5,9 @@ import Query from '@/types/Query.js'
 import URL from '@/types/URL.js'
 import BasicAuth from '@/types/BasicAuth.js'
 import User from '@/types/User.js'
+import BearerToken from '@/types/BearerToken.js'
+
+
 export default {
     name: 'Login',
     components: {
@@ -27,13 +30,11 @@ export default {
         async submitLogin() {
             try {
                 if (this.authType === 'Basic') {
-
                     // Log in using Gmail and Password 
 
                     this.myUrl = new URL('http', 'localhost', 2003)
                     this.query = new Query(this.myUrl).withAuth(new BasicAuth(this.name, this.password))
                 }
-
                 // When I get the data, I dump it into the user's session. 
 
                 const response = await this.query.login()
@@ -43,7 +44,7 @@ export default {
                     name: response.user.nombre,
                     email: response.user.email,
                     role: response.user.rol,
-                    token: response.user.clients[0].token,
+                    token: response.user.clients[0].token
 
                 }
 
@@ -85,13 +86,13 @@ export default {
             let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token))
             let response = await query.getIotDevicesBySelf()
             response = response.data;
-
+            console.log(response);
 
             this.$store
                 .dispatch('setIotDevices', response)
                 .then(() => {
-                console.log(this.$store.getters.getUserSession)
-                // console.log(this.$store.getters.getIotDevices + 'A')
+                    console.log(this.$store.getters.getUserSession, 'a')
+                    console.log(response)
                 });
 
             return response

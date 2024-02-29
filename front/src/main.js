@@ -21,13 +21,11 @@ const i18n = createI18n({
     locale: 'spain',
     fallbackLocale: 'uk',
     messages,
-});
-
+})
 
 const app = createApp(App)
 
+app.use(router).use(store).use(i18n).mount('#app')
 
-app.use(router).use(store).use(i18n).mount('#app');
-
-const userSessionInstance = new userSession('', '', '');
-app.config.globalProperties.$userSession = userSessionInstance;
+const userSessionInstance = new userSession('', '', '')
+app.config.globalProperties.$userSession = userSessionInstance

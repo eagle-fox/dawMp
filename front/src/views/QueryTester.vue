@@ -7,7 +7,6 @@ import Footer from '@/components/FooterMain.vue'
 export default defineComponent({
     components: { QueryUi, Footer, NavBar },
 })
-
 </script>
 <template>
     <NavBar />

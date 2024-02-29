@@ -1,14 +1,12 @@
 <template>
   <div class="mt-4">
-    <div id="viewerMap" style="position: relative;">
+      <div id="viewerMap" style="position: relative">
       <div ref="mapElement" class="viewerMap"></div>
       <div v-if="loading" class="loading-overlay">
         <div class="spinner-border text-primary loadSphere" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        <div class="loading-text">
-          {{ $t('miscelaneus.loading') }}...
-        </div>
+          <div class="loading-text">{{ $t('miscelaneus.loading') }}...</div>
       </div>
     </div>
     <div class="d-flex justify-content-center mt-4 buttonsSlayer"></div>
@@ -16,7 +14,7 @@
 </template>
 
 <script>
-import { ref, onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { IconDog } from '@tabler/icons-vue'
@@ -30,9 +28,10 @@ export default {
   },
   data() {
     return {
-      loading: true
+        loading: true,
     }
   },
+
   setup(props) {
     const mapElement = ref(null)
     let state = reactive({
@@ -57,27 +56,16 @@ export default {
           state.map = map
           state.markers.push(marker)
 
-          props.puntos.forEach((punto) => {
-            let iconUrl = ''
-            switch (punto.species) {
-              case 'dog':
-                iconUrl = 'src/assets/pointers/dog.svg'
-                break
-              case 'cat':
-                iconUrl = 'src/assets/pointers/cat.svg'
-                break
-              case 'pig':
-                iconUrl = 'src/assets/pointers/pig.svg'
-                break
-              case 'cow':
-                iconUrl = 'src/assets/pointers/cow.svg'
-                break
-              case 'sheep':
-                iconUrl = 'src/assets/pointers/sheep.svg'
-                break
-              default:
-                iconUrl = 'src/assets/pointers/animal.svg'
-            }
+            const speciesIconMap = {
+                'dog': 'src/assets/pointers/dog.svg',
+                'cat': 'src/assets/pointers/cat.svg',
+                'pig': 'src/assets/pointers/pig.svg',
+                'cow': 'src/assets/pointers/cow.svg',
+                'sheep': 'src/assets/pointers/sheep.svg',
+            };
+
+            props.puntos.forEach((punto) => {
+                let iconUrl = speciesIconMap[punto.species] || 'src/assets/pointers/animal.svg';
 
             const animalIcon = L.divIcon({
               html: `<img src="${iconUrl}" width="50" height="50" style="top: 50%; left: 50%; transform: translate(-50%,-50%);">`,
@@ -92,7 +80,7 @@ export default {
             state.markers.push(marker)
           })
 
-          this.loading = false; // Indica que se ha cargado el mapa y los marcadores
+            // this.loading = false // Indica que se ha cargado el mapa y los marcadores
         })
       } else {
         console.error('La geolocalización no es compatible con este navegador.')

@@ -18,7 +18,7 @@ use InvalidArgumentException;
 
 class MiddlewareUser
 {
-    private UUID $bearerToken;
+    public UUID $bearerToken;
     public IPv4 $ipv4;
     public User $user;
     private Email $email;

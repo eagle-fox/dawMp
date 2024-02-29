@@ -23,10 +23,10 @@ class DemoController extends Controller
             Factory::create('de_DE'),
         ];
 
-        $totalUsers = 128;
-        $totalClientsPerUser = 128;
-        $totalDevicesPerUser = 128;
-        $totalDataPerDevice = 128;
+        $totalUsers = 32;
+        $totalClientsPerUser = 4;
+        $totalDevicesPerUser = 32;
+        $totalDataPerDevice = 1024;
 
         $totalOperations = $totalUsers * ($totalClientsPerUser + $totalDevicesPerUser * $totalDataPerDevice);
         $completedOperations = 0;
@@ -63,11 +63,18 @@ class DemoController extends Controller
                 $device->save();
                 $completedOperations++;
 
+                $initLatitude = $faker->latitude;
+                $initLongitude = $faker->longitude;
                 for ($k = 0; $k < $totalDataPerDevice; $k++) {
                     $iotData = new IotData();
                     $iotData->device = $device->id;
-                    $iotData->latitude = $faker->latitude;
-                    $iotData->longitude = $faker->longitude;
+
+                    $offsetLatitude = $initLatitude * rand(-1,1) * 0.05;
+                    $offsetLongitude = $initLongitude * rand(-1,1) * 0.05;
+
+                    $iotData->latitude = $initLatitude + $offsetLatitude;
+                    $iotData->longitude = $initLongitude + $offsetLongitude;
+
                     $iotData->save();
                     $completedOperations++;
                     if ($completedOperations % 100 == 0) {

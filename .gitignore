@@ -1,5 +1,6 @@
 **/bun.lockb
 bun.lockb
+*.lockb
 .env
 front/bun.lockb
 vendor

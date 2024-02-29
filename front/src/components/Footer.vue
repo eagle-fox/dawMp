@@ -2,7 +2,7 @@
     <div id="footer" class="footer text-center p-4">
         <div class="container">
             <h5>About Us</h5>
-            <img alt="Logo" src="../assets/contratipo_dorado.svg" width="48">
+            <img class="logoEagle" alt="Logo" src="../assets/contratipo_blanco.svg" width="48" />
         </div>
     </div>
 </template>
@@ -16,4 +16,6 @@
     border-top: var(--accent) 2px solid;
     background-color: #1e1e1e;
 }
+
+
 </style>

@@ -110,6 +110,8 @@ export default {
         },
         loadSvgFile() {
             this.svgFile = 'src/assets/' + styleAssets.svgData.typoBackground
+
+            setTimeout(() => console.log(this.$store.getters.getUserSession), 3000);
         },
     },
     mounted() {

@@ -20,7 +20,9 @@ const store = createStore({
                 clearData.email,
                 clearData.role,
             )
-        },
+        },setIotDevices(state,data){
+            state.userSession.setIotDevicesData(data);
+        }
     },
     actions: {
         createNewUserSession({ commit }, userData) {
@@ -47,6 +49,7 @@ const store = createStore({
                         email: 'unknow@gmail.com',
                         role: 'unknow',
                         token: '',
+                        iotDevices: []
                     }
                     commit('clearSession', clearData)
                     resolve()
@@ -70,10 +73,21 @@ const store = createStore({
                     reject(error)
                 }
             })
-        },
+        },setIotDevices({ commit }, iotData) {
+            return new Promise((resolve, reject) => {
+                try {
+                    commit('setIotDevices', iotData)
+                    resolve()
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        }
+
     },
     getters: {
         getUserSession: (state) => state.userSession,
+        getIotDevices: (state) => state.userSession.getIotDevices()
     },
 })
 

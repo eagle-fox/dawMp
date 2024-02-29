@@ -3,10 +3,6 @@ import NavBar from '@/components/NavBar.vue'
 import FooterMain from '@/components/FooterMain.vue'
 import Mapa from '@/components/Mapa.vue'
 import PetCard from '@/components/PetCard.vue'
-import { ref } from 'vue'
-import URL from '@/types/URL.js'
-import Query from '@/types/Query.js'
-import BearerToken from '@/types/BearerToken.js'
 
 export default {
     name: 'Dashboard',
@@ -24,7 +20,6 @@ export default {
     },
     methods: {
         loadUserData() {
-            // Test data
             this.userData = {
                 name: this.$store.getters.getUserSession.name,
                 gmail: this.$store.getters.getUserSession.gmail,

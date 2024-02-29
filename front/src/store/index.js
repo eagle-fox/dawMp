@@ -14,6 +14,14 @@ const store = createStore({
                 clearData.token,
             )
         },
+        updateUserSession(state, userData){
+            state.userSession.setData(
+                userData.name,
+                userData.email,
+                userData.role,
+                userData.token,
+            )
+        },
         makeVisitorSession(state, clearData) {
             state.userSession = new userSession(
                 clearData.name,
@@ -35,6 +43,16 @@ const store = createStore({
                         userData.token,
                     )
                     commit('setUserSession', newUserSession)
+                    resolve()
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        },
+        updateUserSession({ commit }, userData) {
+            return new Promise((resolve, reject) => {
+                try {
+                    commit('updateUserSession', userData)
                     resolve()
                 } catch (error) {
                     reject(error)

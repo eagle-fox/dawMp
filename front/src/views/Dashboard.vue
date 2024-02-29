@@ -48,7 +48,7 @@ export default {
         },
         async getDevicesByMyself() {
             try {
-                return  this.$store.getters.getIotDevices
+                return this.$store.getters.getIotDevices
             } catch (err) {
                 let response = err
             }

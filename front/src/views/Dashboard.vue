@@ -26,8 +26,8 @@ export default {
         loadUserData() {
             // Test data
             this.userData = {
-                name: 'Manolo',
-                gmail: 'manolo@gmail.com',
+                name: this.$store.getters.getUserSession.name,
+                gmail: this.$store.getters.getUserSession.gmail,
                 iotDevices: [
                     {
                         petName: 'Charly',
@@ -55,7 +55,7 @@ export default {
         },
     },
     mounted() {
-
+        console.log(this.$store.getters.getUserSession.name);
         this.getDevicesByMyself().then((response) => {
             // console.log(response)
             // this.devices = response

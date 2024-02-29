@@ -51,7 +51,7 @@ class userSession {
 
     async #getIotDevicesData(token){
         let myUrl = new URL('http', 'localhost', 2003)
-        let query = new Query(myUrl).withAuth(new BearerToken('9c4ca426-54e4-4326-a882-fc2f71d5f1cd'))
+        let query = new Query(myUrl).withAuth(new BearerToken(this.token))
         let response = await query.getIotDevicesBySelf()
         response = response.data;
 

@@ -38,7 +38,7 @@ export default {
     },
     async loadIotDevices(){
       let myUrl = new URL('http', 'localhost', 2003)
-      let query = new Query(myUrl).withAuth(new BearerToken('9d85983c-54b5-448c-ad74-bedf128a85f1'))
+      let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token))
       let response = await query.getIotDevicesBySelf()
       response = response.data;
 

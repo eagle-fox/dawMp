@@ -15,7 +15,8 @@ export default {
     data() {
         return {
             userData: [],
-            devicesData: []
+            devicesData: [],
+            dateTest: "10/10/2015"
         }
     },
     methods: {
@@ -28,7 +29,6 @@ export default {
         },
         async getDevicesByMyself() {
             try {
-                console.log('Esperando mapa');
                 return this.$store.getters.getIotDevices
             } catch (err) {
                 let response = err
@@ -37,9 +37,6 @@ export default {
     },
     mounted() {
         this.getDevicesByMyself().then((response) => {
-            console.log('Datos cargados');
-            console.log(response);
-
             for (let cord in response) {
                 // Use response[cord] to get the value of the current property
                 let coordAnimal = {
@@ -50,6 +47,7 @@ export default {
 
                 this.devicesData.push(coordAnimal);
             }
+            console.log(this.devicesData);
         })
         this.loadUserData()
     },
@@ -68,15 +66,12 @@ export default {
                 <div class="d-inline-flex flex-column gap-2">
                     <h4>{{ $t('miscelaneus.pets') }}:</h4>
 
-                    <div class="d-inline-flex flex-column gap-4">
-                        <div v-for="pet in userData.iotDevices">
-                            <PetCard
-                                :petDate="pet.petDate"
-                                :petName="pet.petName"
-                                :petSpecies="pet.petSpecie"
-                            ></PetCard>
+                    <div class="d-inline-flex flex-column gap-4 p-2 scroll-container" >
+                        <div v-for="pet in devicesData" :key="pet.id">
+                            <PetCard :petDate="dateTest" :petName="pet.petName" :petSpecies="pet.petSpecie"></PetCard>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Right Site-->
@@ -85,12 +80,30 @@ export default {
                 </div>
             </div>
         </div>
-        <FooterMain></FooterMain>
     </div>
+    <FooterMain></FooterMain>
 </template>
 
 <style scoped>
 .pets-view {
     max-width: 500px;
 }
+
+.scroll-container {
+    max-height: 550px;
+    overflow: hidden;
+    overflow-y: scroll; /* Muestra la barra de desplazamiento solo cuando hay un desplazamiento real */
+  }
+
+  .scroll-container::-webkit-scrollbar {
+    width: 12px; /* Ancho de la barra de desplazamiento */
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color de la barra de desplazamiento */
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Cambia el color cuando el mouse está sobre la barra de desplazamiento */
+  }
 </style>

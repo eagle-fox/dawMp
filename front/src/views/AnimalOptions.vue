@@ -16,9 +16,18 @@
             <h4>X: {{ positionX }}</h4>
             <h4>Y: {{ positionY }}</h4>
           </div>
+      </div>
+      <div class="position-box">
+      <div class="extra-details">
+            <h3 class="age">Edad: {{ age }}</h3>
+            <h3 class="distance">Distancia: {{ distance }}</h3>
+          </div>
         </div>
       </div>
+      <div class="d-flex flex-row bd-highlight mb-3">
       <button @click="eliminar" class="delete-button">Eliminar</button>
+      <button @click="editar" class="edit-button">Editar</button>
+      </div>
     </div>
     <FooterMain></FooterMain>
   </div>
@@ -54,6 +63,14 @@ export default {
     positionY: {
       type: Number,
       default: 0 // Valor predeterminado para la posición en el eje Y
+    },
+    age: {
+      type: Number,
+      default: 0 // Valor predeterminado para la edad del animal
+    },
+    distance: {
+      type: Number,
+      default: 0 // Valor predeterminado para la distancia entre dos puntos definidos
     }
   },
   computed: {
@@ -78,6 +95,10 @@ export default {
     eliminar() {
       // Aquí puedes implementar la lógica para eliminar el animal
       console.log('Animal eliminado');
+    },
+    editar() {
+      // Aquí puedes implementar la lógica para eliminar el animal
+      console.log('Animal editado');
     }
   }
 };
@@ -136,7 +157,13 @@ export default {
   padding-left: 5%;
 }
 
-.position {
+.extra-details {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.age,
+.distance {
   margin-bottom: 5px;
 }
 
@@ -154,5 +181,21 @@ export default {
 
 .delete-button:hover {
   background-color: #d32f2f;
+}
+
+.edit-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #254629;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: #172d1a;
 }
 </style>

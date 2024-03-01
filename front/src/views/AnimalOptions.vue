@@ -16,17 +16,17 @@
             <h4>X: {{ positionX }}</h4>
             <h4>Y: {{ positionY }}</h4>
           </div>
-      </div>
-      <div class="position-box">
-      <div class="extra-details">
-            <h3 class="age">Edad: {{ age }}</h3>
+        </div>
+        <div class="position-box">
+          <div class="extra-details">
+            <h3 class="age">Edad: {{ age }} {{ age === 1 ? 'año' : 'años' }}</h3>
             <h3 class="distance">Distancia: {{ distance }}</h3>
           </div>
         </div>
       </div>
       <div class="d-flex flex-row bd-highlight mb-3">
-      <button @click="eliminar" class="delete-button">Eliminar</button>
-      <button @click="editar" class="edit-button">Editar</button>
+        <button @click="eliminar" class="delete-button">Eliminar</button>
+        <button @click="editar" class="edit-button">Editar</button>
       </div>
     </div>
     <FooterMain></FooterMain>
@@ -43,35 +43,32 @@ export default {
     NavBar,
     FooterMain
   },
+  data() {
+    return {
+      age: 0,
+    }
+  },
   props: {
     petName: {
       type: String,
-      default: 'Sancho' // Valor predeterminado para el nombre del animal
+      default: 'Sancho'
     },
     birthDate: {
       type: String,
-      default: '01/01/2022' // Valor predeterminado para la fecha de nacimiento
+      default: '01/01/2022'
     },
     species: {
       type: String,
-      default: 'dog' // Valor predeterminado para la especie del animal
+      default: 'dog'
     },
     positionX: {
       type: Number,
-      default: 0 // Valor predeterminado para la posición en el eje X
+      default: 0
     },
     positionY: {
       type: Number,
-      default: 0 // Valor predeterminado para la posición en el eje Y
+      default: 0
     },
-    age: {
-      type: Number,
-      default: 0 // Valor predeterminado para la edad del animal
-    },
-    distance: {
-      type: Number,
-      default: 0 // Valor predeterminado para la distancia entre dos puntos definidos
-    }
   },
   computed: {
     imageUrl() {
@@ -91,18 +88,31 @@ export default {
       }
     }
   },
+  created() {
+    this.calculateAge();
+  },
   methods: {
     eliminar() {
-      // Aquí puedes implementar la lógica para eliminar el animal
       console.log('Animal eliminado');
     },
     editar() {
-      // Aquí puedes implementar la lógica para eliminar el animal
       console.log('Animal editado');
+    },
+    calculateAge() {
+      const today = new Date();
+      const birthDate = new Date(this.birthDate);
+      const age = today.getFullYear() - birthDate.getFullYear();
+      const month = today.getMonth() - birthDate.getMonth();
+      if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+        this.age = age - 1;
+      } else {
+        this.age = age;
+      }
     }
   }
 };
 </script>
+
 
 <style scoped>
 .whole-page {

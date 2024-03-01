@@ -38,6 +38,17 @@ export default {
                 secure: secureStatus,
             })
         },
+        showFailLongin() {
+            let form = document.getElementById('loginForm');
+            let failDiv = document.createElement('div');
+
+            failDiv.innerHTML = this.$t('login.login_error');
+            failDiv.style.textAlign = 'center';
+            failDiv.style.padding = '5px';
+
+            form.appendChild(failDiv);
+            
+        },
         async submitLogin() {
             try {
                 if (this.authType === 'Basic') {
@@ -75,6 +86,8 @@ export default {
             } catch (err) {
                 this.response = JSON.stringify(err, null, 2)
                 console.log(err);
+                this.showFailLongin();
+                //
             }
         },
         async login() {
@@ -138,7 +151,7 @@ export default {
                     <img alt="Logo" src="../assets/logo_circle.svg" width="64" />
                 </div>
                 <div class="d-flex justify-content-center align-items-center flex-column gap-2">
-                    <form>
+                    <form id="loginForm">
                         <div class="mb-3">
                             <label class="form-label" for="name">{{
                                 $t('login.login_username')

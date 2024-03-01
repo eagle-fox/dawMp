@@ -21,43 +21,47 @@ export default {
         petName: String,
         petDate: Date,
         petSpecies: String,
+        petCords: Array
     },
-    // methods: {
-    //     calculateAge(birthday) {
-    //         let ageDifMs = Date.now() - birthday.getTime()
-    //         let ageDate = new Date(ageDifMs)
-    //         this.calcAge = Math.abs(ageDate.getUTCFullYear() - 1970)
+    methods: {
+        // calculateAge(birthday) {
+        //     let ageDifMs = Date.now() - birthday.getTime()
+        //     let ageDate = new Date(ageDifMs)
+        //     this.calcAge = Math.abs(ageDate.getUTCFullYear() - 1970)
 
-    //         if (this.calcAge < 12) {
-    //             this.switchAge = false
-    //         }
-    //     },
-    //     chargeSpecieImage(specie) {
-    //         let animalDictionary = styleAssets.animalPointers
+        //     if (this.calcAge < 12) {
+        //         this.switchAge = false
+        //     }
+        // },
+        // chargeSpecieImage(specie) {
+        //     let animalDictionary = styleAssets.animalPointers
 
-    //         if (specie in animalDictionary) {
-    //             this.petSpecieFileUrl = animalDictionary[specie]
-    //         } else {
-    //             let animalKeysArray = Object.keys(animalDictionary)
-    //             let animalAleatorio =
-    //                 animalKeysArray[Math.floor(Math.random() * animalKeysArray.length)]
+        //     if (specie in animalDictionary) {
+        //         this.petSpecieFileUrl = animalDictionary[specie]
+        //     } else {
+        //         let animalKeysArray = Object.keys(animalDictionary)
+        //         let animalAleatorio =
+        //             animalKeysArray[Math.floor(Math.random() * animalKeysArray.length)]
 
-    //             this.petSpecieFileUrl = animalDictionary[animalAleatorio]
-    //         }
-    //     },
-    // },
-    // mounted() {
-    //     this.calculateAge(this.petDate)
-    //     this.chargeSpecieImage(this.petSpecies)
-    // },
-    // computed: {
-    //     formattedDate() {
-    //         //const day = this.petDate.getDate()
-    //         //const month = this.petDate.getMonth() + 1 // getMonth() returns a zero-based value (where zero indicates the first month)
-    //         //const year = this.petDate.getFullYear().toString().substr(-2) // get last two digits of year
-    //         //return `${day}/${month}/${year}`
-    //     },
-    // },
+        //         this.petSpecieFileUrl = animalDictionary[animalAleatorio]
+        //     }
+        // },
+        loadCurrentAnimalMap() {
+            
+        }
+    },
+    mounted() {
+        // this.calculateAge(this.petDate)
+        // this.chargeSpecieImage(this.petSpecies)
+    },
+    computed: {
+        // formattedDate() {
+        //     const day = this.petDate.getDate()
+        //     const month = this.petDate.getMonth() + 1 // getMonth() returns a zero-based value (where zero indicates the first month)
+        //     const year = this.petDate.getFullYear().toString().substr(-2) // get last two digits of year
+        //     return `${day}/${month}/${year}`
+        // },
+    },
 }
 </script>
 

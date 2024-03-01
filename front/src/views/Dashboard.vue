@@ -63,14 +63,15 @@ export default {
                     this.loadIotDevices().then((data) => {
 
                         for (let cord of data) {
-                            let coordAnimal = {
+                            let animalData = {
                                 petName: cord.name,
                                 latitud: cord.last_latitude,
                                 longitud: cord.last_longitude,
                                 petSpecie: cord.especie,
-                                petDate: cord.updated_at
+                                petDate: cord.updated_at,
+                                petCords: [cord.last_latitude,cord.last_longitude]
                             }
-                            this.devicesData.push(coordAnimal);
+                            this.devicesData.push(animalData);
                         }
                     });
                 }
@@ -152,7 +153,7 @@ export default {
 
                             <div class="d-inline-flex flex-column gap-4 p-2 scroll-container">
                                 <div v-for="pet in devicesData" :key="pet.id">
-                                    <PetCard :petDate="pet.petDate" :petName="pet.petName" :petSpecies="pet.petSpecie">
+                                    <PetCard :petCords="pet.petCords" :petDate="pet.petDate" :petName="pet.petName" :petSpecies="pet.petSpecie">
                                     </PetCard>
                                 </div>
                             </div>

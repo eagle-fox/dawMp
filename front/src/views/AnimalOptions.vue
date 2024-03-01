@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar></navbar>
+    <NavBar></NavBar>
     <div class="whole-page">
       <div class="d-flex flex-row bd-highlight mb-3">
         <div class="pet-card">
@@ -29,7 +29,7 @@
         <button @click="editar" class="edit-button">{{ $t('animaloptions.editar') }}</button>
       </div>
     </div>
-    <footermain></footermain>
+    <FooterMain></FooterMain>
   </div>
 </template>
 

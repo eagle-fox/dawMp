@@ -1,91 +1,88 @@
-// Spanish language package
 let miscelaneusTextPackage = {
-  welcome: 'Bienvenido',
-  home: 'Inicio',
-  loading: 'Cargando',
-  mounths: 'Meses',
-  years: 'Años',
-  date: 'Fecha',
-  age: 'Edad',
+  welcome: 'Welcome',
+  home: 'Home',
+  loading: 'Loading',
+  months: 'Months',
+  years: 'Years',
+  date: 'Date',
+  age: 'Age',
   name_page: 'Eagle Fox',
-  pets: 'Macotas',
+  pets: 'Pets',
 }
 
 let langTextPackage = {
-  lang_es: 'Español',
-  lang_sh: 'Ingles',
-  lang_de: 'Aleman',
-  lang_gl: 'Gallego',
+  lang_es: 'Spanish',
+  lang_sh: 'English',
+  lang_de: 'German',
+  lang_gl: 'Galician',
 }
 
 let homeTextPackage = {
-  home_t1: 'Empieza a localizar a tu mascota ahora mismo!',
-  home_t2: 'En cualquier lugar, a cualquier hora. Manten segura a tu mascota.',
+  home_t1: 'Start locating your pet now!',
+  home_t2: 'Anywhere, anytime. Keep your pet safe.',
   home_t3:
-      'Proporcionamos a nuestros usuarios un mapa interactivo para ver en todo momento a su mascota. Cuenta con una gran precision y alto detalle.',
-  home_t4: 'Que ofrecemos a nuestros usuarios: ',
-  home_t5: 'Registra tu collar!!',
+      'We provide our users with an interactive map to see their pet at all times. It has great precision and high detail.',
+  home_t4: 'What we offer our users: ',
+  home_t5: 'Register your collar!!',
   home_t6:
-      'Dentro de la caja de tu collar Eagle Fox habra una tarjeta con el codigo del collar, deberas introducir ese codigo en la seccion de Resgitro Mascota',
-  home_t7: 'Introduce el codigo !!',
-  home_t8: 'Con el codigo proporcionado podras regsitrar a tu mascota ',
-  home_t9: 'Listo, ya puedes ver a tu mascota !!',
-  home_t10:
-      'Ahora ya podras usar todas las caracteristicas de monitorio de tu pequeño peludo',
-  home_t11: '¿Como configurar tu collar Eagle Fox?',
-  home_t12: 'Monitoreo en tiempo real.',
-  home_bd1: 'Posicionamiento de tus mascotas en un mapa en tiempo real',
-  home_bd2: 'Poner puntos de interes y estabecler rutas personalizadas',
-  home_bd3:
-      'Obtener informacion sobre la tu mascota, como tiempo de paseo, Kcal gastadas ...',
-  home_js1: 'Introduce el codigo del collar',
-  home_js2: 'Registrar Mascota 🐱',
-  home_bt1: 'Comenzar',
+      'Inside the box of your Eagle Fox collar there will be a card with the collar code, you must enter that code in the Pet Registration section',
+  home_t7: 'Enter the code !!',
+  home_t8: 'With the provided code you can register your pet',
+  home_t9: 'Ready, you can now see your pet !!',
+  home_t10: 'Now you can use all the monitoring features of your little furry friend',
+  home_t11: 'How to set up your Eagle Fox collar?',
+  home_t12: 'Real-time monitoring.',
+  home_bd1: 'Positioning of your pets on a real-time map',
+  home_bd2: 'Set points of interest and establish custom routes',
+  home_bd3: 'Get information about your pet, such as walk time, calories burned ...',
+  home_js1: 'Enter the collar code',
+  home_js2: 'Register Pet 🐱',
+  home_bt1: 'Start',
 }
 
 let animalRegisterForm = {
-  arf_t1: 'Resgistra a tu mascota',
-  arf_t2: 'Nombre de tu mascota',
-  arf_t3: 'Raza',
-  arf_js1: 'Codigo no valido',
-  arf_b1: 'Perro',
-  arf_b2: 'Gato',
-  arf_b3: 'Conejo',
+  arf_t1: 'Register your pet',
+  arf_t2: 'Name of your pet',
+  arf_t3: 'Breed',
+  arf_js1: 'Invalid code',
+  arf_b1: 'Dog',
+  arf_b2: 'Cat',
+  arf_b3: 'Rabbit',
   arf_b4: 'Hamster',
 }
 
 let loginTextPackage = {
-  login_t1: 'Iniciar Sesion',
-  login_username: 'Nombre',
-  login_secondName: 'Segundo Nombre',
-  login_firtsSubname: 'Primer Apellido',
-  login_secondSubname: 'Segundo Apellido',
-  login_email: 'Correo electronico',
-  login_password: 'Contraseña',
-  login_rpassword: 'Repite las contraseña',
-  login_message: 'Nunca compartiremos tu correo electrónico con nadie.',
-  login_message1: 'Crear cuenta',
+  login_t1: 'Login',
+  login_username: 'Username',
+  login_secondName: 'Second Name',
+  login_firtsSubname: 'First Surname',
+  login_secondSubname: 'Second Surname',
+  login_email: 'Email',
+  login_password: 'Password',
+  login_rpassword: 'Repeat password',
+  login_message: 'We will never share your email with anyone.',
+  login_message1: 'Create account',
 }
 
 let aboutTextPackage = {
-  about_h1: 'Sobre Nosotros',
+  about_h1: 'About Us',
 }
 
 let footer = {
-footer_direction: 'Dirección',
-footer_number: 'Telefono',
+footer_direction: 'Address',
+footer_number: 'Phone',
   footer_mail: 'e-mail',
 }
 
 let animaloptions = {
-  fecha_nacimiento: "Fecha de nacimiento",
-  posicion: "Posición",
-  edad: "Edad",
-  anio: "año",
-  anios: "años",
-  distancia: "Distancia",
-  eliminar: "Eliminar",
-  editar: "Editar"
+  fecha_nacimiento: "Date of birth",
+  posicion: "Position",
+  edad: "Age",
+  anio: "year",
+  anios: "years",
+  distancia: "Distance",
+  eliminar: "Delete",
+  editar: "Edit"
 };  
 
 export default {

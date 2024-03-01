@@ -134,23 +134,4 @@ setup(props) {
   transform: translate(-50%, -50%);
 }
 
-@media screen and (max-width: 700px) {
-  .viewerMap {
-    width: 500px;
-    height: 350px;
-  }
-}
-
-@media screen and (max-width: 550px) {
-  .viewerMap {
-    width: 350px;
-    height: 300px;
-  }
-
-  .buttonsSlayer {
-    flex-direction: column;
-  }
-}
-
-
 </style>

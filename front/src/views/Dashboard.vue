@@ -173,7 +173,7 @@ export default {
 <style scoped>
 
 #pagePrincipal {
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -181,21 +181,9 @@ export default {
 
 
 .scroll-container {
-    max-height: 550px;
+    max-height: calc(60vh);
     overflow: hidden;
     overflow-y: scroll;
-}
-
-.scroll-container::-webkit-scrollbar {
-    width: 12px;
-}
-
-.scroll-container::-webkit-scrollbar-thumb {
-    background-color: #888;
-}
-
-.scroll-container::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
 }
 
 .full {
@@ -222,6 +210,5 @@ export default {
     position: relative;
     z-index: 0;
 }
-
 
 </style>

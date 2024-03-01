@@ -48,7 +48,6 @@ export default {
     return {
       age: 0,
       distance: 0,
-      // Aquí puedes definir las coordenadas de los dos puntos
       punto1: { latitud: 1.5, longitud: 2 },
       punto2: { latitud: 3, longitud: 3 }
     }
@@ -116,7 +115,7 @@ export default {
       }
     },
     calculateDistance() {
-      const R = 6371; // Radio de la Tierra en kilómetros
+      const R = 6371;
       const lat1 = this.punto1.latitud;
       const lon1 = this.punto1.longitud;
       const lat2 = this.punto2.latitud;

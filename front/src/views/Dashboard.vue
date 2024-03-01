@@ -39,12 +39,12 @@ export default {
         this.getDevicesByMyself().then((response) => {
             for (let cord in response) {
                 // Use response[cord] to get the value of the current property
-                console.log(response[cord])
                 let coordAnimal = {
                     petName: response[cord].name,
-                    latitud: response[cord].last_latitude,
-                    longitud: response[cord].last_longitude,
+                    latitud: parseFloat(response[cord].last_latitude),
+                    longitud: parseFloat(response[cord].last_longitude),
                     petSpecie: response[cord].especie,
+                    birthDate: new Date(response[cord].created_at)
                 }
                 console.log(coordAnimal)
                 this.devicesData.push(coordAnimal);
@@ -70,7 +70,7 @@ export default {
 
                     <div class="d-inline-flex flex-column gap-4 p-2 scroll-container" >
                         <div v-for="pet in devicesData" :key="pet.id">
-                            <PetCard :petDate="dateTest" :petName="pet.petName" :petSpecies="pet.petSpecie"></PetCard>
+                            <PetCard :petDate="pet.birthDate" :petName="pet.petName" :petSpecies="pet.petSpecie"></PetCard>
                         </div>
                     </div>
 

@@ -18,30 +18,17 @@ export default {
     },
     props: {
         petName: String,
-        petDate: String,
+        petDate: Date,
         petSpecies: String,
     },
     methods: {
         calculateAge(birthday) {
-            let birthday_arr = birthday.split('/')
-            let birthday_date = new Date(
-                birthday_arr[2],
-                birthday_arr[1] - 1,
-                birthday_arr[0],
-            )
-            let ageDifMs = Date.now() - birthday_date.getTime()
+            let ageDifMs = Date.now() - birthday.getTime()
             let ageDate = new Date(ageDifMs)
-            let calculatedAgeYears = Math.abs(ageDate.getUTCFullYear() - 1970)
+            this.calcAge = Math.abs(ageDate.getUTCFullYear() - 1970)
 
-            if (calculatedAgeYears === 0) {
-                var calculatedAgeMonths = ageDate.getUTCMonth()
-                this.calcAge = calculatedAgeMonths
+            if (this.calcAge < 12) {
                 this.switchAge = false
-
-                console.log(this.switchAge)
-            } else {
-                this.calcAge = calculatedAgeYears
-                this.switchAge = true
             }
         },
         chargeSpecieImage(specie) {
@@ -62,6 +49,14 @@ export default {
         this.calculateAge(this.petDate)
         this.chargeSpecieImage(this.petSpecies)
     },
+    computed: {
+        formattedDate() {
+            const day = this.petDate.getDate()
+            const month = this.petDate.getMonth() + 1 // getMonth() returns a zero-based value (where zero indicates the first month)
+            const year = this.petDate.getFullYear().toString().substr(-2) // get last two digits of year
+            return `${day}/${month}/${year}`
+        },
+    },
 }
 </script>
 
@@ -76,8 +71,9 @@ export default {
             <h5 class="card-title">{{ petName }}</h5>
             <div>
                 <div>
-                    {{ $t('miscelaneus.date') }}: {{ petDate }}
-                    <IconCake :size="20" class="mb-1"></IconCake>
+                    <div>Date of Birth: {{ formattedDate }}
+                        <IconCake :size="20" class="mb-1"></IconCake>
+                    </div>
                 </div>
                 <div>
                     <div class="d-flex aling-items-center gap-1">

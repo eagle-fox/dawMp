@@ -7,17 +7,20 @@ import BearerToken from '@/types/BearerToken.js'
 
 export default {
   name: 'App',
+  data() {
+    return {
+      name: '',
+      password: '',
+      query: null,
+      response: 'Esperando acción del usuario...',
+      authType: 'Basic'
+    }
+  },
   methods: {
     createNewUserSession(userToken) {
       // With the token of the user we must make the request to the
       // API to obtain the information of the user, if the token is not
       // registered we create a visitor session.
-
-      // API Request in developtment
-
-      if (!this.checkToken(userToken)) {
-        return false
-      }
 
       let userData = {
         name: 'Unknow',
@@ -36,21 +39,33 @@ export default {
           console.error('Error al crear la nueva userSession:', error)
         })
     },
-    async loadIotDevices(){
-      let myUrl = new URL('http', 'localhost', 2003)
-      let query = new Query(myUrl).withAuth(new BearerToken('9d85983c-54b5-448c-ad74-bedf128a85f1'))
-      let response = await query.getIotDevicesBySelf()
-      response = response.data;
+    async loadUserSessionByCookie() {
+      if (Cookies.get('tokenCookie')) {
+        console.log(Cookies.get('tokenCookie'));
+        let myUrl = new URL('http', 'localhost', 2003);
+        let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
+        let response = await query.login();
 
+        console.log(response.user.nombre);
 
-      this.$store
-        .dispatch('setIotDevices', response)
-        .then(() => {
-          console.log(this.$store.getters.getUserSession)
-          // console.log(this.$store.getters.getIotDevices + 'A')
-        });
+        let userData = {
+          name: response.user.nombre,
+          email: response.user.email,
+          role: response.user.rol,
+          token: response.user.clients[0].token,
+        }
 
-      return response
+        this.$store
+          .dispatch('updateUserSession', userData)
+          .then(() => {
+            console.log(this.$store.getters.getUserSession)
+          })
+          .catch((error) => {
+            console.error('Error al crear la nueva userSession:', error)
+          })
+
+        //console.log(response);
+      }
     },
     checkToken(token) {
       const regex =
@@ -73,8 +88,8 @@ export default {
     },
   },
   mounted() {
-    this.loadUserSessionCookie();
-    this.loadIotDevices();
+    this.createNewUserSession(null);
+    this.loadUserSessionByCookie();
   },
 }
 </script>

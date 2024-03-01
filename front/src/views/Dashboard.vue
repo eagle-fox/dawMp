@@ -3,10 +3,6 @@ import NavBar from '@/components/NavBar.vue'
 import FooterMain from '@/components/FooterMain.vue'
 import Mapa from '@/components/Mapa.vue'
 import PetCard from '@/components/PetCard.vue'
-import { ref } from 'vue'
-import URL from '@/types/URL.js'
-import Query from '@/types/Query.js'
-import BearerToken from '@/types/BearerToken.js'
 
 export default {
     name: 'Dashboard',
@@ -19,31 +15,16 @@ export default {
     data() {
         return {
             userData: [],
-            devicesData: []
+            devicesData: [],
+            dateTest: "10/10/2015"
         }
     },
     methods: {
         loadUserData() {
-            // Test data
             this.userData = {
-                name: 'Manolo',
-                gmail: 'manolo@gmail.com',
-                iotDevices: [
-                    {
-                        petName: 'Charly',
-                        petDate: '12/09/2020',
-                        species: 'dog',
-                        latitud: 42.2266403,
-                        longitud: -8.712718,
-                    },
-                    {
-                        petName: 'Juan',
-                        petDate: '12/09/2020',
-                        species: 'cat',
-                        latitud: 42.3266403,
-                        longitud: -8.712718,
-                    },
-                ],
+                name: this.$store.getters.getUserSession.name,
+                gmail: this.$store.getters.getUserSession.gmail,
+                iotDevices: [],
             }
         },
         async getDevicesByMyself() {
@@ -55,21 +36,19 @@ export default {
         },
     },
     mounted() {
-
         this.getDevicesByMyself().then((response) => {
-            // console.log(response)
-            // this.devices = response
-
             for (let cord in response) {
                 // Use response[cord] to get the value of the current property
                 let coordAnimal = {
                     petName: response[cord].name,
-                    latitud: response[cord].last_latitude,
-                    longitud: response[cord].last_longitude
+                    latitud: parseFloat(response[cord].last_latitude),
+                    longitud: parseFloat(response[cord].last_longitude),
+                    petSpecie: response[cord].especie,
+                    birthDate: new Date(response[cord].created_at)
                 }
+                console.log(coordAnimal)
                 this.devicesData.push(coordAnimal);
             }
-
             console.log(this.devicesData);
         })
         this.loadUserData()
@@ -89,15 +68,12 @@ export default {
                 <div class="d-inline-flex flex-column gap-2">
                     <h4>{{ $t('miscelaneus.pets') }}:</h4>
 
-                    <div class="d-inline-flex flex-column gap-4">
-                        <div v-for="pet in userData.iotDevices">
-                            <PetCard
-                                :petDate="pet.petDate"
-                                :petName="pet.petName"
-                                :petSpecies="pet.petSpecie"
-                            ></PetCard>
+                    <div class="d-inline-flex flex-column gap-4 p-2 scroll-container" >
+                        <div v-for="pet in devicesData" :key="pet.id">
+                            <PetCard :petDate="pet.birthDate" :petName="pet.petName" :petSpecies="pet.petSpecie"></PetCard>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Right Site-->
@@ -106,12 +82,30 @@ export default {
                 </div>
             </div>
         </div>
-        <FooterMain></FooterMain>
     </div>
+    <FooterMain></FooterMain>
 </template>
 
 <style scoped>
 .pets-view {
     max-width: 500px;
 }
+
+.scroll-container {
+    max-height: 550px;
+    overflow: hidden;
+    overflow-y: scroll; /* Muestra la barra de desplazamiento solo cuando hay un desplazamiento real */
+  }
+
+  .scroll-container::-webkit-scrollbar {
+    width: 12px; /* Ancho de la barra de desplazamiento */
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color de la barra de desplazamiento */
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Cambia el color cuando el mouse está sobre la barra de desplazamiento */
+  }
 </style>

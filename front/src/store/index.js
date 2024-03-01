@@ -19,7 +19,7 @@ const store = createStore({
                 userData.name,
                 userData.email,
                 userData.role,
-                userData.token,
+                userData.token
             )
         },
         makeVisitorSession(state, clearData) {

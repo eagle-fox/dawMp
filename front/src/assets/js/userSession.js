@@ -4,7 +4,7 @@ import BearerToken from '@/types/BearerToken.js'
 
 class userSession {
     static #instance
-    constructor(name, email, role, token, iotDevices) {
+    constructor(name, email, role, token) {
         // Verificamos si ya hay una instancia, si no existe la crea.
         if (userSession.#instance) {
             return userSession.#instance
@@ -14,7 +14,6 @@ class userSession {
         this.name = name
         this.email = email
         this.role = role
-        this.iotDevices = null;
 
         if (!this.#checkTokenFormat()) {
             token = null
@@ -51,7 +50,7 @@ class userSession {
 
     async #getIotDevicesData(token){
         let myUrl = new URL('http', 'localhost', 2003)
-        let query = new Query(myUrl).withAuth(new BearerToken('9c4ca426-54e4-4326-a882-fc2f71d5f1cd'))
+        let query = new Query(myUrl).withAuth(new BearerToken(this.token))
         let response = await query.getIotDevicesBySelf()
         response = response.data;
 

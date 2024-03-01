@@ -3,12 +3,14 @@ let miscelaneusTextPackage = {
     welcome: 'Bienvenido',
     home: 'Inicio',
     loading: 'Cargando',
-    mounths: 'Meses',
-    years: 'Años',
+    mounths: 'Mes',
+    days: 'Dia',
+    years: 'Año',
     date: 'Fecha',
     age: 'Edad',
     name_page: 'Eagle Fox',
     pets: 'Macotas',
+    birthday: 'Cumpleaños'
 }
 
 let langTextPackage = {

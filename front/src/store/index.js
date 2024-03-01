@@ -4,7 +4,7 @@ import userSession from '../assets/js/userSession'
 const store = createStore({
     state: {
         userSession: null, // Puedes mantener tu userSession original
-        coordinates: [],   // Nuevo estado para las coordenadas
+        coordinates: null,   // Nuevo estado para las coordenadas
     },mutations: {
         setUserSession(state, userSession) {
             state.userSession = userSession;

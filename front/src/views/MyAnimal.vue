@@ -21,10 +21,21 @@ export default {
             password: '',
             query: null,
             response: 'Esperando acción del usuario...',
-            authType: 'Basic'
+            authType: 'Basic',
+            mapPoints: []
         }
     },
-    methods: {}
+    methods: {
+        presetMapPoints(){
+            console.log(this.$store.getters.getCoordinates)
+            if(this.$store.getters.getCoordinates){
+                this.mapPoints = {...this.$store.getters.getCoordinates};
+            }
+        }
+    },
+    mounted() {
+        this.presetMapPoints();
+    }
 
 }
 </script>
@@ -32,7 +43,7 @@ export default {
 <template>
     <NavBar></NavBar>
     <div class="d-flex justify-content-center ">
-        <Mapa></Mapa>
+        <Mapa :puntos="mapPoints"></Mapa>
     </div>
 </template>
 

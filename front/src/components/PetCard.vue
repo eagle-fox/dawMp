@@ -44,6 +44,7 @@ export default {
                 .dispatch('updateCoordinates', this.petCords)
                 .then(() => {
                     console.log(this.$store.getters.getCoordinates)
+                    this.$router.push('/myanimal')
                 })
                 .catch((error) => {
                     console.error('Error al crear la nueva userSession:', error)

@@ -150,7 +150,7 @@ export default {
 
                             <div class="d-inline-flex flex-column gap-4 p-2 scroll-container">
                                 <div v-for="pet in devicesData" :key="pet.id">
-                                    <PetCard :petCords="pet.petCords" :petDate="pet.petDate" :petName="pet.petName" :petSpecies="pet.petSpecie">
+                                    <PetCard :petCords="pet" :petDate="pet.petDate" :petName="pet.petName" :petSpecies="pet.petSpecie">
                                     </PetCard>
                                 </div>
                             </div>

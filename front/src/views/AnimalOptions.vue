@@ -17,12 +17,22 @@
             <h4>Y: {{ positionY }}</h4>
           </div>
         </div>
+        <div class="position-box">
+          <div class="extra-details">
+            <h3 class="age">Edad: {{ age }} años</h3>
+            <h3 class="distance">Distancia: {{ distance.toFixed(2) }} km</h3> <!-- Aquí se muestra la distancia -->
+          </div>
+        </div>
       </div>
-      <button @click="eliminar" class="delete-button">Eliminar</button>
+      <div class="d-flex flex-row bd-highlight mb-3">
+        <button @click="eliminar" class="delete-button">Eliminar</button>
+        <button @click="editar" class="edit-button">Editar</button>
+      </div>
     </div>
     <FooterMain></FooterMain>
   </div>
 </template>
+
 
 <script>
 import FooterMain from '@/components/FooterMain.vue'
@@ -34,26 +44,34 @@ export default {
     NavBar,
     FooterMain
   },
+  data() {
+    return {
+      age: 0,
+      distance: 0,
+      punto1: { latitud: 1.5, longitud: 2 },
+      punto2: { latitud: 3, longitud: 3 }
+    }
+  },
   props: {
     petName: {
       type: String,
-      default: 'Sancho' // Valor predeterminado para el nombre del animal
+      default: 'Sancho'
     },
     birthDate: {
       type: String,
-      default: '01/01/2022' // Valor predeterminado para la fecha de nacimiento
+      default: '01/01/2023'
     },
     species: {
       type: String,
-      default: 'dog' // Valor predeterminado para la especie del animal
+      default: 'dog'
     },
     positionX: {
       type: Number,
-      default: 0 // Valor predeterminado para la posición en el eje X
+      default: 0
     },
     positionY: {
       type: Number,
-      default: 0 // Valor predeterminado para la posición en el eje Y
+      default: 0
     }
   },
   computed: {
@@ -74,14 +92,51 @@ export default {
       }
     }
   },
+  created() {
+    this.calculateAge();
+    this.calculateDistance();
+  },
   methods: {
     eliminar() {
-      // Aquí puedes implementar la lógica para eliminar el animal
       console.log('Animal eliminado');
+    },
+    editar() {
+      console.log('Animal editado');
+    },
+    calculateAge() {
+      const today = new Date();
+      const birthDate = new Date(this.birthDate);
+      const age = today.getFullYear() - birthDate.getFullYear();
+      const month = today.getMonth() - birthDate.getMonth();
+      if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+        this.age = age - 1;
+      } else {
+        this.age = age;
+      }
+    },
+    calculateDistance() {
+      const R = 6371;
+      const lat1 = this.punto1.latitud;
+      const lon1 = this.punto1.longitud;
+      const lat2 = this.punto2.latitud;
+      const lon2 = this.punto2.longitud;
+
+      const dLat = this.deg2rad(lat2 - lat1);
+      const dLon = this.deg2rad(lon2 - lon1);
+
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      this.distance = R * c;
+    },
+    deg2rad(deg) {
+      return deg * (Math.PI / 180);
     }
   }
 };
 </script>
+
 
 <style scoped>
 .whole-page {
@@ -136,7 +191,13 @@ export default {
   padding-left: 5%;
 }
 
-.position {
+.extra-details {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.age,
+.distance {
   margin-bottom: 5px;
 }
 
@@ -154,5 +215,21 @@ export default {
 
 .delete-button:hover {
   background-color: #d32f2f;
+}
+
+.edit-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #254629;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: #172d1a;
 }
 </style>

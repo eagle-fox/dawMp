@@ -45,7 +45,8 @@ setup(props) {
           const { latitude, longitude } = position.coords
           const map = L.map(mapElement.value).setView([latitude, longitude], 15)
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            maxZoom: 30,
+            minZoom: 3,
             attribution:
               '&copy; <a href="https://www.fbi.gov/investigate">FBI</a>',
           }).addTo(map)

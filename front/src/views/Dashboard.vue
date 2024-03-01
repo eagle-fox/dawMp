@@ -21,7 +21,6 @@ export default {
         return {
             userData: [],
             devicesData: [],
-            dateTest: "10/10/2015",
             showMap: true,
             loading: true,
         }
@@ -159,7 +158,7 @@ export default {
 
                         <!-- Right Site-->
                         <div v-if="showMap && devicesData.length > 0" ref="mapContainer" class="obergruppenführer">
-                            <Mapa :puntos="devicesData" :width="containerWidth"></Mapa>
+                            <Mapa :puntos="devicesData" width=""></Mapa>
                         </div>
                     </div>
                 </div>

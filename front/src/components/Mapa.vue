@@ -25,10 +25,6 @@ export default {
       type: Array,
       required: true,
     },
-      width: {
-          type: Number,
-          required: true,
-      },
   },
   data() {
     return {

@@ -5,6 +5,9 @@ import Query from '@/types/Query.js'
 import URL from '@/types/URL.js'
 import BasicAuth from '@/types/BasicAuth.js'
 import User from '@/types/User.js'
+import BearerToken from '@/types/BearerToken.js'
+
+
 export default {
     name: 'Login',
     components: {
@@ -50,17 +53,13 @@ export default {
                 this.$store
                     .dispatch('updateUserSession', userData)
                     .then(() => {
-                        console.log(this.$store.getters.getUserSession)
-
                         this.loadIotDevices();
-                        this.$router.push('/dashboard')
                     })
                     .catch((error) => {
-                    console.error('Error al crear la nueva userSession:', error)
+                        console.error('Error al crear la nueva userSession:', error)
                     })
 
 
-                console.log(userData);
             } catch (err) {
                 this.response = JSON.stringify(err, null, 2)
                 console.log(err);
@@ -80,21 +79,22 @@ export default {
                 this.response = JSON.stringify(err, null, 2)
             }
         },
-        async loadIotDevices(){
-            let myUrl = new URL('http', 'localhost', 2003)
-            let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token))
-            let response = await query.getIotDevicesBySelf()
-            response = response.data;
+        async loadIotDevices() {
+            try {
+                let myUrl = new URL('http', 'localhost', 2003);
+                let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token));
+                let response = await query.getIotDevicesBySelf();
+                response = response.data;
 
+                await this.$store.dispatch('setIotDevices', response);
 
-            this.$store
-                .dispatch('setIotDevices', response)
-                .then(() => {
-                console.log(this.$store.getters.getUserSession)
-                // console.log(this.$store.getters.getIotDevices + 'A')
-                });
-
-            return response
+                this.$router.push('/dashboard')
+                return response;
+            } catch (error) {
+                // Manejar el error según tus necesidades
+                console.error("Error al cargar los dispositivos IoT:", error);
+                throw error; // Puedes lanzar el error nuevamente si es necesario
+            }
         }
     },
     mounted() {

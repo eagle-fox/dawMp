@@ -28,26 +28,12 @@ export default {
             this.userData = {
                 name: this.$store.getters.getUserSession.name,
                 gmail: this.$store.getters.getUserSession.gmail,
-                iotDevices: [
-                    {
-                        petName: 'Charly',
-                        petDate: '12/09/2020',
-                        species: 'dog',
-                        latitud: 42.2266403,
-                        longitud: -8.712718,
-                    },
-                    {
-                        petName: 'Juan',
-                        petDate: '12/09/2020',
-                        species: 'cat',
-                        latitud: 42.3266403,
-                        longitud: -8.712718,
-                    },
-                ],
+                iotDevices: [],
             }
         },
         async getDevicesByMyself() {
             try {
+                console.log('Esperando mapa');
                 return this.$store.getters.getIotDevices
             } catch (err) {
                 let response = err
@@ -55,10 +41,9 @@ export default {
         },
     },
     mounted() {
-        console.log(this.$store.getters.getUserSession.name);
         this.getDevicesByMyself().then((response) => {
-            // console.log(response)
-            // this.devices = response
+            console.log('Datos cargados');
+            console.log(response);
 
             for (let cord in response) {
                 // Use response[cord] to get the value of the current property
@@ -67,10 +52,9 @@ export default {
                     latitud: response[cord].last_latitude,
                     longitud: response[cord].last_longitude
                 }
+
                 this.devicesData.push(coordAnimal);
             }
-
-            console.log(this.devicesData);
         })
         this.loadUserData()
     },

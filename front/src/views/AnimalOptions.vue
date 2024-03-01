@@ -7,31 +7,32 @@
           <img :src="imageUrl" :alt="petName" class="pet-image">
           <div class="pet-details">
             <h3 class="pet-name">{{ petName }}</h3>
-            <p class="pet-birthdate">Fecha de nacimiento: {{ birthDate }}</p>
+            <p class="pet-birthdate">{{ $t('animaloptions.fecha_nacimiento') }}: {{ birthDate }}</p>
           </div>
         </div>
         <div class="position-box">
           <div class="coordinates">
-            <h3 class="position">Posición</h3>
+            <h3 class="position">{{ $t('animaloptions.posicion') }}</h3>
             <h4>X: {{ positionX }}</h4>
             <h4>Y: {{ positionY }}</h4>
           </div>
         </div>
         <div class="position-box">
           <div class="extra-details">
-            <h3 class="age">Edad: {{ age }} años</h3>
-            <h3 class="distance">Distancia: {{ distance.toFixed(2) }} km</h3> <!-- Aquí se muestra la distancia -->
+            <h3 class="age">{{ $t('animaloptions.edad') }}: {{ age }} {{ age === 1 ? $t('animaloptions.anio') : $t('animaloptions.anios') }}</h3>
+            <h3 class="distance">{{ $t('animaloptions.distancia') }}: {{ distance.toFixed(2) }} km</h3>
           </div>
         </div>
       </div>
       <div class="d-flex flex-row bd-highlight mb-3">
-        <button @click="eliminar" class="delete-button">Eliminar</button>
-        <button @click="editar" class="edit-button">Editar</button>
+        <button @click="eliminar" class="delete-button">{{ $t('animaloptions.eliminar') }}</button>
+        <button @click="editar" class="edit-button">{{ $t('animaloptions.editar') }}</button>
       </div>
     </div>
     <FooterMain></FooterMain>
   </div>
 </template>
+
 
 
 <script>
@@ -49,7 +50,7 @@ export default {
       age: 0,
       distance: 0,
       punto1: { latitud: 1.5, longitud: 2 },
-      punto2: { latitud: 3, longitud: 3 }
+      punto2: { latitud: 3, longitud: 0.1 }
     }
   },
   props: {

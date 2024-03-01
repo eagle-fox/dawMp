@@ -32,11 +32,11 @@ export default {
             const diffYears = Math.floor(diffDays / 365.25)
 
             if (diffYears > 0) {
-                return `${diffYears} year${diffYears > 1 ? 's' : ''}`
+                return `${diffYears} ${this.$t('miscelaneus.years')}${diffYears > 1 ? 's' : ''}`
             } else if (diffMonths > 0) {
-                return `${diffMonths} month${diffMonths > 1 ? 's' : ''}`
+                return `${diffMonths} ${this.$t('miscelaneus.mounths')}${diffMonths > 1 ? 's' : ''}`
             } else {
-                return `${diffDays} day${diffDays > 1 ? 's' : ''}`
+                return `${diffDays} ${this.$t('miscelaneus.days')}${diffDays > 1 ? 's' : ''}`
             }
         },
     },
@@ -67,13 +67,13 @@ export default {
             <h5 class="card-title">{{ petName }}</h5>
             <div>
                 <div>
-                    <div>Date of Birth: {{ petDate.toLocaleDateString() }}
+                    <div>{{ $t('miscelaneus.birthday') }}: {{ petDate.toLocaleDateString() }}
                         <IconCake :size="20" class="mb-1"></IconCake>
                     </div>
                 </div>
                 <div>
                     <div class="d-flex aling-items-center gap-1">
-                        <div>Age: {{ calcAge() }} years</div>
+                        <div>{{ $t('miscelaneus.age') }}: {{ calcAge() }}</div>
                         <IconCalendar :size="20" class="mb-1"></IconCalendar>
                     </div>
                 </div>

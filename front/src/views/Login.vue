@@ -88,6 +88,7 @@ export default {
 
                 await this.$store.dispatch('setIotDevices', response);
 
+
                 this.$router.push('/dashboard')
                 return response;
             } catch (error) {

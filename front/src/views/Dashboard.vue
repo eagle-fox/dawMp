@@ -5,11 +5,8 @@ import Mapa from '@/components/Mapa.vue'
 import PetCard from '@/components/PetCard.vue'
 import Query from '@/types/Query.js'
 import URL from '@/types/URL.js'
-import BasicAuth from '@/types/BasicAuth.js'
-import User from '@/types/User.js'
 import Cookies from 'js-cookie'
 import BearerToken from '@/types/BearerToken.js'
-import { cookieSettings } from '@/assets/config.json'
 
 
 export default {
@@ -63,14 +60,14 @@ export default {
                     this.loadIotDevices().then((data) => {
 
                         for (let cord of data) {
-                            let coordAnimal = {
+                            let animalData = {
                                 petName: cord.name,
-                                latitud: cord.last_latitude,
-                                longitud: cord.last_longitude,
+                                latitud: parseFloat(cord.last_latitude),
+                                longitud: parseFloat(cord.last_longitude),
                                 petSpecie: cord.especie,
-                                petDate: cord.updated_at
+                                petDate: new Date(cord.created_at),
                             }
-                            this.devicesData.push(coordAnimal);
+                            this.devicesData.push(animalData);
                         }
                     });
                 }
@@ -152,7 +149,7 @@ export default {
 
                             <div class="d-inline-flex flex-column gap-4 p-2 scroll-container">
                                 <div v-for="pet in devicesData" :key="pet.id">
-                                    <PetCard :petDate="pet.petDate" :petName="pet.petName" :petSpecies="pet.petSpecie">
+                                    <PetCard :petCords="pet.petCords" :petDate="pet.petDate" :petName="pet.petName" :petSpecies="pet.petSpecie">
                                     </PetCard>
                                 </div>
                             </div>

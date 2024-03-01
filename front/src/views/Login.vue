@@ -1,13 +1,11 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
-import { styleAssets } from '@/assets/config.json'
+import { cookieSettings, styleAssets } from '@/assets/config.json'
 import Query from '@/types/Query.js'
 import URL from '@/types/URL.js'
 import BasicAuth from '@/types/BasicAuth.js'
-import User from '@/types/User.js'
 import Cookies from 'js-cookie'
 import BearerToken from '@/types/BearerToken.js'
-import { cookieSettings } from '@/assets/config.json'
 
 export default {
     name: 'Login',
@@ -37,6 +35,22 @@ export default {
                 sameSite: sameSiteConfig,
                 secure: secureStatus,
             })
+        },
+        showFailLongin(errorMessage) {
+            let form = document.getElementById('loginForm');
+            let failDiv = document.createElement('div');
+
+            failDiv.innerHTML =
+            `
+                        <div class="d-flex p-2 justify-content-center">
+                            <div class="bg-danger w-auto rounded text-center p-1 text-light">${errorMessage}</div>
+                        </div>
+            `;
+            failDiv.style.textAlign = 'center';
+            failDiv.style.padding = '5px';
+
+            form.appendChild(failDiv);
+            
         },
         async submitLogin() {
             try {
@@ -75,6 +89,8 @@ export default {
             } catch (err) {
                 this.response = JSON.stringify(err, null, 2)
                 console.log(err);
+                this.showFailLongin(this.$t('login.login_error'));
+                
             }
         },
         async login() {
@@ -115,7 +131,7 @@ export default {
             try{
                 if (this.$store.getters.getUserSession.token !== null) {
                     document.getElementById('loginPanel').style.filter = 'blur(5px)';
-                    this.loadIotDevices();  
+                    this.loadIotDevices()
                 }
             }catch (error) {
 
@@ -138,7 +154,7 @@ export default {
                     <img alt="Logo" src="../assets/logo_circle.svg" width="64" />
                 </div>
                 <div class="d-flex justify-content-center align-items-center flex-column gap-2">
-                    <form>
+                    <form id="loginForm">
                         <div class="mb-3">
                             <label class="form-label" for="name">{{
                                 $t('login.login_username')

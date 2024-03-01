@@ -65,6 +65,7 @@ export default {
                     .dispatch('updateUserSession', userData)
                     .then(() => {
                         this.loadIotDevices();
+                        this.setUserCookie(this.$store.getters.getUserSession.token);
                     })
                     .catch((error) => {
                         console.error('Error al crear la nueva userSession:', error)
@@ -99,6 +100,7 @@ export default {
 
                 await this.$store.dispatch('setIotDevices', response);
                 this.setUserCookie(this.$store.getters.getUserSession.token);
+                console.log(this.$store.getters.getUserSession.token);
                 this.$router.push('/dashboard')
                 return response;
             } catch (error) {

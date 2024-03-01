@@ -32,40 +32,12 @@ export default {
       this.$store
         .dispatch('createNewUserSession', userData)
         .then(() => {
-          console.log(this.$store.getters.getUserSession)
+
 
         })
         .catch((error) => {
           console.error('Error al crear la nueva userSession:', error)
         })
-    },
-    async loadUserSessionByCookie() {
-      if (Cookies.get('tokenCookie')) {
-        console.log(Cookies.get('tokenCookie'));
-        let myUrl = new URL('http', 'localhost', 2003);
-        let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
-        let response = await query.login();
-
-        console.log(response.user.nombre);
-
-        let userData = {
-          name: response.user.nombre,
-          email: response.user.email,
-          role: response.user.rol,
-          token: response.user.clients[0].token,
-        }
-
-        this.$store
-          .dispatch('updateUserSession', userData)
-          .then(() => {
-            console.log(this.$store.getters.getUserSession)
-          })
-          .catch((error) => {
-            console.error('Error al crear la nueva userSession:', error)
-          })
-
-        //console.log(response);
-      }
     },
     checkToken(token) {
       const regex =
@@ -86,6 +58,28 @@ export default {
           })
       }
     },
+    async loadUserSessionByCookie() {
+      if (Cookies.get('tokenCookie')) {
+        let myUrl = new URL('http', 'localhost', 2003);
+        let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
+        let response = await query.login();
+
+        let userData = {
+          name: response.user.nombre,
+          email: response.user.email,
+          role: response.user.rol,
+          token: response.user.clients[0].token,
+        }
+
+        this.$store
+          .dispatch('updateUserSession', userData)
+          .then(() =>{this.$router.push('/dashboard')})
+          .catch((error) => {
+            console.error('Error al crear la nueva userSession:', error)
+          })
+
+      }
+    }
   },
   mounted() {
     this.createNewUserSession(null);

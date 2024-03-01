@@ -19,8 +19,8 @@
         </div>
         <div class="position-box">
           <div class="extra-details">
-            <h3 class="age">Edad: {{ age }} {{ age === 1 ? 'año' : 'años' }}</h3>
-            <h3 class="distance">Distancia: {{ distance }}</h3>
+            <h3 class="age">Edad: {{ age }} años</h3>
+            <h3 class="distance">Distancia: {{ distance.toFixed(2) }} km</h3> <!-- Aquí se muestra la distancia -->
           </div>
         </div>
       </div>
@@ -32,6 +32,7 @@
     <FooterMain></FooterMain>
   </div>
 </template>
+
 
 <script>
 import FooterMain from '@/components/FooterMain.vue'
@@ -46,6 +47,10 @@ export default {
   data() {
     return {
       age: 0,
+      distance: 0,
+      // Aquí puedes definir las coordenadas de los dos puntos
+      punto1: { latitud: 1.5, longitud: 2 },
+      punto2: { latitud: 3, longitud: 3 }
     }
   },
   props: {
@@ -55,7 +60,7 @@ export default {
     },
     birthDate: {
       type: String,
-      default: '01/01/2022'
+      default: '01/01/2023'
     },
     species: {
       type: String,
@@ -68,7 +73,7 @@ export default {
     positionY: {
       type: Number,
       default: 0
-    },
+    }
   },
   computed: {
     imageUrl() {
@@ -90,6 +95,7 @@ export default {
   },
   created() {
     this.calculateAge();
+    this.calculateDistance();
   },
   methods: {
     eliminar() {
@@ -108,6 +114,25 @@ export default {
       } else {
         this.age = age;
       }
+    },
+    calculateDistance() {
+      const R = 6371; // Radio de la Tierra en kilómetros
+      const lat1 = this.punto1.latitud;
+      const lon1 = this.punto1.longitud;
+      const lat2 = this.punto2.latitud;
+      const lon2 = this.punto2.longitud;
+
+      const dLat = this.deg2rad(lat2 - lat1);
+      const dLon = this.deg2rad(lon2 - lon1);
+
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      this.distance = R * c;
+    },
+    deg2rad(deg) {
+      return deg * (Math.PI / 180);
     }
   }
 };

@@ -1,6 +1,5 @@
 <script>
 import { IconCake, IconCalendar, IconSettings } from '@tabler/icons-vue'
-import { styleAssets } from '@/assets/config.json'
 
 export default {
     name: 'PetCard',
@@ -11,10 +10,10 @@ export default {
     },
     data() {
         return {
-            calcAge: null,
-            petSpecieFileUrl: null,
-            switchAge: true,
-            
+            edadNacimiento: new Date(this.petDate),
+            edadDiff: new Date(Date.now() - this.edadNacimiento),
+            nombre: this.petName,
+            especie: this.petSpecies,
         }
     },
     props: {
@@ -24,43 +23,35 @@ export default {
         petCords: Array
     },
     methods: {
-        // calculateAge(birthday) {
-        //     let ageDifMs = Date.now() - birthday.getTime()
-        //     let ageDate = new Date(ageDifMs)
-        //     this.calcAge = Math.abs(ageDate.getUTCFullYear() - 1970)
+        calcAge() {
+            const now = new Date()
+            const birthDate = new Date(this.petDate)
+            const diffTime = Math.abs(now - birthDate)
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+            const diffMonths = Math.floor(diffDays / 30.44)
+            const diffYears = Math.floor(diffDays / 365.25)
 
-        //     if (this.calcAge < 12) {
-        //         this.switchAge = false
-        //     }
-        // },
-        // chargeSpecieImage(specie) {
-        //     let animalDictionary = styleAssets.animalPointers
-
-        //     if (specie in animalDictionary) {
-        //         this.petSpecieFileUrl = animalDictionary[specie]
-        //     } else {
-        //         let animalKeysArray = Object.keys(animalDictionary)
-        //         let animalAleatorio =
-        //             animalKeysArray[Math.floor(Math.random() * animalKeysArray.length)]
-
-        //         this.petSpecieFileUrl = animalDictionary[animalAleatorio]
-        //     }
-        // },
-        loadCurrentAnimalMap() {
-            
-        }
-    },
-    mounted() {
-        // this.calculateAge(this.petDate)
-        // this.chargeSpecieImage(this.petSpecies)
+            if (diffYears > 0) {
+                return `${diffYears} year${diffYears > 1 ? 's' : ''}`
+            } else if (diffMonths > 0) {
+                return `${diffMonths} month${diffMonths > 1 ? 's' : ''}`
+            } else {
+                return `${diffDays} day${diffDays > 1 ? 's' : ''}`
+            }
+        },
     },
     computed: {
-        // formattedDate() {
-        //     const day = this.petDate.getDate()
-        //     const month = this.petDate.getMonth() + 1 // getMonth() returns a zero-based value (where zero indicates the first month)
-        //     const year = this.petDate.getFullYear().toString().substr(-2) // get last two digits of year
-        //     return `${day}/${month}/${year}`
-        // },
+        icono() {
+            const species = this.petSpecies.toLowerCase()
+            if (['cow',
+                 'sheep',
+                 'dog',
+                 'cat'].includes(species)) {
+                return `${species}.svg`
+            } else {
+                return 'default.svg'
+            }
+        },
     },
 }
 </script>
@@ -68,7 +59,7 @@ export default {
 <template>
     <div class="card">
         <img
-            :src="'../src/assets/' + this.petSpecieFileUrl"
+            :src="'../src/assets/pointers/' + icono"
             alt=""
             class="animal-image"
         />
@@ -76,15 +67,13 @@ export default {
             <h5 class="card-title">{{ petName }}</h5>
             <div>
                 <div>
-                    <div>Date of Birth: {{ formattedDate }}
+                    <div>Date of Birth: {{ petDate.toLocaleDateString() }}
                         <IconCake :size="20" class="mb-1"></IconCake>
                     </div>
                 </div>
                 <div>
                     <div class="d-flex aling-items-center gap-1">
-                        {{ $t('miscelaneus.age') }}: {{ this.calcAge }}
-                        <p v-if="!switchAge">{{ this.$t('miscelaneus.mounths') }}</p>
-                        <p v-if="switchAge">{{ this.$t('miscelaneus.years') }}</p>
+                        <div>Age: {{ calcAge() }} years</div>
                         <IconCalendar :size="20" class="mb-1"></IconCalendar>
                     </div>
                 </div>
@@ -93,7 +82,7 @@ export default {
 
         <div class="d-flex gap-1">
             <button class="btn btn-primary">Mapa</button>
-            <button type="button" class="btn btn-light">
+            <button class="btn btn-light" type="button">
                 <IconSettings :size="32"></IconSettings>
             </button>
         </div>

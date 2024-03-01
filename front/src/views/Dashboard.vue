@@ -5,11 +5,8 @@ import Mapa from '@/components/Mapa.vue'
 import PetCard from '@/components/PetCard.vue'
 import Query from '@/types/Query.js'
 import URL from '@/types/URL.js'
-import BasicAuth from '@/types/BasicAuth.js'
-import User from '@/types/User.js'
 import Cookies from 'js-cookie'
 import BearerToken from '@/types/BearerToken.js'
-import { cookieSettings } from '@/assets/config.json'
 
 
 export default {
@@ -65,11 +62,10 @@ export default {
                         for (let cord of data) {
                             let animalData = {
                                 petName: cord.name,
-                                latitud: cord.last_latitude,
-                                longitud: cord.last_longitude,
+                                latitud: parseFloat(cord.last_latitude),
+                                longitud: parseFloat(cord.last_longitude),
                                 petSpecie: cord.especie,
-                                petDate: cord.updated_at,
-                                petCords: [cord.last_latitude,cord.last_longitude]
+                                petDate: new Date(cord.created_at),
                             }
                             this.devicesData.push(animalData);
                         }

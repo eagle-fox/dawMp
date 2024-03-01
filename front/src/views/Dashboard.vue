@@ -39,12 +39,14 @@ export default {
         this.getDevicesByMyself().then((response) => {
             for (let cord in response) {
                 // Use response[cord] to get the value of the current property
+                console.log(response[cord])
                 let coordAnimal = {
                     petName: response[cord].name,
                     latitud: response[cord].last_latitude,
-                    longitud: response[cord].last_longitude
+                    longitud: response[cord].last_longitude,
+                    petSpecie: response[cord].especie,
                 }
-
+                console.log(coordAnimal)
                 this.devicesData.push(coordAnimal);
             }
             console.log(this.devicesData);

@@ -112,12 +112,11 @@ setup(props) {
 .viewerMap {
     width: 100%;
     max-width: 100%;
-    height: 50vh;
+    height: 80vh;
     max-height: 100%;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 0;
+    overflow: hidden;
 }
 
 .loading-overlay {
@@ -133,24 +132,5 @@ setup(props) {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
-@media screen and (max-width: 700px) {
-  .viewerMap {
-    width: 500px;
-    height: 350px;
-  }
-}
-
-@media screen and (max-width: 550px) {
-  .viewerMap {
-    width: 350px;
-    height: 300px;
-  }
-
-  .buttonsSlayer {
-    flex-direction: column;
-  }
-}
-
 
 </style>

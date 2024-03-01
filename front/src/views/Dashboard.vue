@@ -113,6 +113,7 @@ export default {
         }
     },
     mounted() {
+
         this.loadUserSessionByCookie()
             .then(() => {
                 this.tryGetLoginData().then(() => {setTimeout(() => {this.loading = false},1000)});
@@ -142,7 +143,7 @@ export default {
                 </div>
                 <div v-else>
                     <h2>{{ $t('miscelaneus.welcome') }}, {{ userData.name }}</h2>
-                    <div class="d-flex gap-2 justify-content-between">
+                    <div class="d-flex gap-2 justify-content-between unterscharführer">
                         <!-- Left Site-->
                         <div class="d-inline-flex flex-column gap-2">
                             <h4>{{ $t('miscelaneus.pets') }}:</h4>
@@ -157,8 +158,8 @@ export default {
                         </div>
 
                         <!-- Right Site-->
-                        <div v-if="showMap && devicesData.length > 0">
-                            <Mapa :puntos="devicesData"></Mapa>
+                        <div v-if="showMap && devicesData.length > 0" ref="mapContainer" class="obergruppenführer">
+                            <Mapa :puntos="devicesData" :width="containerWidth"></Mapa>
                         </div>
                     </div>
                 </div>
@@ -171,9 +172,14 @@ export default {
 </template>
 
 <style scoped>
-.pets-view {
-    max-width: 500px;
+
+#pagePrincipal {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
 
 .scroll-container {
     max-height: 550px;
@@ -196,4 +202,27 @@ export default {
 .full {
     height: calc(80vh - 65px);
 }
+
+.obergruppenführer .unterscharführer {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.unterscharführer {
+    overflow: hidden;
+    height: 100%;
+}
+
+.obergruppenführer {
+    padding: 1em;
+    width: 100%;
+    height: calc(50vh);
+    border-radius: 10px;
+    position: relative;
+    z-index: 0;
+}
+
+
 </style>

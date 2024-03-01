@@ -77,6 +77,17 @@ let footer = {
     footer_mail: 'e-mail',
 }
 
+let animaloptions = {
+    fecha_nacimiento: "Fecha de nacimiento",
+    posicion: "Posición",
+    edad: "Edad",
+    anio: "año",
+    anios: "años",
+    distancia: "Distancia",
+    eliminar: "Eliminar",
+    editar: "Editar"
+  };  
+
 export default {
     home: homeTextPackage,
     lang: langTextPackage,
@@ -85,4 +96,5 @@ export default {
     miscelaneus: miscelaneusTextPackage,
     about: aboutTextPackage,
     footer: footer,
+    animaloptions: animaloptions
 }

@@ -51,6 +51,9 @@ export default {
   padding: 20px 0;
   margin-top: 10px;
   margin-bottom: 0px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
 
 .footer-logo {
@@ -70,4 +73,5 @@ export default {
   color: #fff;
   text-align: right;
 }
+
 </style>

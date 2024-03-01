@@ -106,6 +106,7 @@ export default {
     align-items: center;
     flex-direction: row;
     padding-right: 15px;
+
 }
 
 .animal-image {

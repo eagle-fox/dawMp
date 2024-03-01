@@ -38,11 +38,16 @@ export default {
                 secure: secureStatus,
             })
         },
-        showFailLongin() {
+        showFailLongin(errorMessage) {
             let form = document.getElementById('loginForm');
             let failDiv = document.createElement('div');
 
-            failDiv.innerHTML = this.$t('login.login_error');
+            failDiv.innerHTML =
+            `
+                        <div class="d-flex p-2 justify-content-center">
+                            <div class="bg-danger w-auto rounded text-center p-1 text-light">${errorMessage}</div>
+                        </div>
+            `;
             failDiv.style.textAlign = 'center';
             failDiv.style.padding = '5px';
 
@@ -86,8 +91,8 @@ export default {
             } catch (err) {
                 this.response = JSON.stringify(err, null, 2)
                 console.log(err);
-                this.showFailLongin();
-                //
+                this.showFailLongin(this.$t('login.login_error'));
+                
             }
         },
         async login() {

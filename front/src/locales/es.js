@@ -65,7 +65,7 @@ let loginTextPackage = {
     login_rpassword: 'Repite las contraseña',
     login_message: 'Nunca compartiremos tu correo electrónico con nadie.',
     login_message1: 'Crear cuenta',
-    login_error: 'Email y Contraseña incorrecta'
+    login_error: 'Email o contraseña incorrecta'
 }
 
 let aboutTextPackage = {

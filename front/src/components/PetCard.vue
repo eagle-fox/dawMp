@@ -39,6 +39,16 @@ export default {
                 return `${diffDays} ${this.$t('miscelaneus.days')}${diffDays > 1 ? 's' : ''}`
             }
         },
+        prepareMapButton() {
+            this.$store
+                .dispatch('updateCoordinates', this.petCords)
+                .then(() => {
+                    console.log(this.$store.getters.getCoordinates)
+                })
+                .catch((error) => {
+                    console.error('Error al crear la nueva userSession:', error)
+                })
+        }
     },
     computed: {
         icono() {
@@ -81,7 +91,7 @@ export default {
         </div>
 
         <div class="d-flex gap-1">
-            <button class="btn btn-primary">Mapa</button>
+            <button @click="prepareMapButton()" class="btn btn-primary">Mapa</button>
             <button class="btn btn-light" type="button">
                 <IconSettings :size="32"></IconSettings>
             </button>

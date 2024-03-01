@@ -2,9 +2,12 @@ import { createStore } from 'vuex'
 import userSession from '../assets/js/userSession'
 
 const store = createStore({
-    mutations: {
+    state: {
+        userSession: null, // Puedes mantener tu userSession original
+        coordinates: [],   // Nuevo estado para las coordenadas
+    },mutations: {
         setUserSession(state, userSession) {
-            state.userSession = userSession
+            state.userSession = userSession;
         },
         clearSession(state, clearData) {
             state.userSession.setData(
@@ -30,7 +33,10 @@ const store = createStore({
             )
         },setIotDevices(state,data){
             state.userSession.setIotDevicesData(data);
-        }
+        },
+        setCoordinates(state, coordinates) {
+            state.coordinates = coordinates;
+        },
     },
     actions: {
         createNewUserSession({ commit }, userData) {
@@ -100,12 +106,23 @@ const store = createStore({
                     reject(error)
                 }
             })
-        }
+        },
+        updateCoordinates({ commit }, coordinates) {
+            return new Promise((resolve, reject) => {
+                try {
+                    commit('setCoordinates', coordinates);
+                    resolve();
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        },
 
     },
     getters: {
         getUserSession: (state) => state.userSession,
-        getIotDevices: (state) => state.userSession.getIotDevices()
+        getIotDevices: (state) => state.userSession.getIotDevices(),
+        getCoordinates: (state) => state.coordinates
     },
 })
 

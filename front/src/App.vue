@@ -73,7 +73,9 @@ export default {
 
         this.$store
           .dispatch('updateUserSession', userData)
-          .then(() =>{this.$router.push('/dashboard')})
+          .then(() =>{
+            //this.$router.push('/dashboard')
+          })
           .catch((error) => {
             console.error('Error al crear la nueva userSession:', error)
           })

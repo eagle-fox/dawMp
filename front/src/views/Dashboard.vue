@@ -66,6 +66,7 @@ export default {
                                 longitud: parseFloat(cord.last_longitude),
                                 petSpecie: cord.especie,
                                 petDate: new Date(cord.created_at),
+                                petCords: [parseFloat(cord.last_latitude),parseFloat(cord.last_longitude)]
                             }
                             this.devicesData.push(animalData);
                         }

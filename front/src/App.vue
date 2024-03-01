@@ -22,12 +22,6 @@ export default {
       // API to obtain the information of the user, if the token is not
       // registered we create a visitor session.
 
-      // API Request in developtment
-
-      if (!this.checkToken(userToken)) {
-        return false
-      }
-
       let userData = {
         name: 'Unknow',
         email: 'unknow@gmail.com',
@@ -62,16 +56,6 @@ export default {
         }
 
         this.$store
-        .dispatch('createNewUserSession', userData)
-        .then(() => {
-          console.log(this.$store.getters.getUserSession)
-
-        })
-        .catch((error) => {
-          console.error('Error al crear la nueva userSession:', error)
-        })
-
-        this.$store
           .dispatch('updateUserSession', userData)
           .then(() => {
             console.log(this.$store.getters.getUserSession)
@@ -104,7 +88,7 @@ export default {
     },
   },
   mounted() {
-    //this.loadUserSessionCookie();
+    this.createNewUserSession(null);
     this.loadUserSessionByCookie();
   },
 }

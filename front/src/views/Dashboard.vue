@@ -191,10 +191,7 @@ export default {
 }
 
 .obergruppenführer .unterscharführer {
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+
 }
 
 .unterscharführer {
@@ -205,10 +202,10 @@ export default {
 .obergruppenführer {
     padding: 1em;
     width: 100%;
-    height: calc(50vh);
-    border-radius: 10px;
+    height: calc(60vh);
     position: relative;
     z-index: 0;
+    overflow: hidden;
 }
 
 </style>

@@ -112,12 +112,11 @@ setup(props) {
 .viewerMap {
     width: 100%;
     max-width: 100%;
-    height: 50vh;
+    height: 80vh;
     max-height: 100%;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 0;
+    overflow: hidden;
 }
 
 .loading-overlay {

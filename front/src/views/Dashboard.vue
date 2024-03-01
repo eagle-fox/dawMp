@@ -118,7 +118,7 @@ export default {
 
                     <div class="d-inline-flex flex-column gap-4 p-2 scroll-container">
                         <div v-for="pet in devicesData" :key="pet.id">
-                            <PetCard :petDate="dateTest" :petName="pet.petName" :petSpecies="pet.petSpecie"></PetCard>
+                            <PetCard :petDate="pet.birthDate" :petName="pet.petName" :petSpecies="pet.petSpecie"></PetCard>
                         </div>
                     </div>
 
@@ -143,20 +143,16 @@ export default {
     max-height: 550px;
     overflow: hidden;
     overflow-y: scroll;
-    /* Muestra la barra de desplazamiento solo cuando hay un desplazamiento real */
 }
 
 .scroll-container::-webkit-scrollbar {
     width: 12px;
-    /* Ancho de la barra de desplazamiento */
 }
 
 .scroll-container::-webkit-scrollbar-thumb {
     background-color: #888;
-    /* Color de la barra de desplazamiento */
 }
 
 .scroll-container::-webkit-scrollbar-thumb:hover {
     background-color: #555;
-    /* Cambia el color cuando el mouse está sobre la barra de desplazamiento */
 }</style>

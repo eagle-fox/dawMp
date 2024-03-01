@@ -1,13 +1,11 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
-import { styleAssets } from '@/assets/config.json'
+import { cookieSettings, styleAssets } from '@/assets/config.json'
 import Query from '@/types/Query.js'
 import URL from '@/types/URL.js'
 import BasicAuth from '@/types/BasicAuth.js'
-import User from '@/types/User.js'
 import Cookies from 'js-cookie'
 import BearerToken from '@/types/BearerToken.js'
-import { cookieSettings } from '@/assets/config.json'
 
 export default {
     name: 'Login',
@@ -115,7 +113,7 @@ export default {
             try{
                 if (this.$store.getters.getUserSession.token !== null) {
                     document.getElementById('loginPanel').style.filter = 'blur(5px)';
-                    this.loadIotDevices();  
+                    this.loadIotDevices()
                 }
             }catch (error) {
 

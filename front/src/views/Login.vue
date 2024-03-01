@@ -5,8 +5,9 @@ import Query from '@/types/Query.js'
 import URL from '@/types/URL.js'
 import BasicAuth from '@/types/BasicAuth.js'
 import User from '@/types/User.js'
+import Cookies from 'js-cookie'
 import BearerToken from '@/types/BearerToken.js'
-
+import { cookieSettings } from '@/assets/config.json'
 
 export default {
     name: 'Login',
@@ -26,6 +27,16 @@ export default {
     methods: {
         loadSvgFile() {
             this.svgFile = 'src/assets/' + styleAssets.svgData.typoBackground
+        },
+        setUserCookie(token){
+            let secureStatus = cookieSettings.secure
+            let sameSiteConfig = cookieSettings.sameSite
+
+            Cookies.set('tokenCookie', token, {
+                expires: 365,
+                sameSite: sameSiteConfig,
+                secure: secureStatus,
+            })
         },
         async submitLogin() {
             try {
@@ -87,8 +98,7 @@ export default {
                 response = response.data;
 
                 await this.$store.dispatch('setIotDevices', response);
-
-
+                this.setUserCookie(this.$store.getters.getUserSession.token);
                 this.$router.push('/dashboard')
                 return response;
             } catch (error) {
@@ -96,17 +106,30 @@ export default {
                 console.error("Error al cargar los dispositivos IoT:", error);
                 throw error; // Puedes lanzar el error nuevamente si es necesario
             }
+        },
+        async checkUserSession(){
+            // AutoLogin system, check if user token exists
+
+            try{
+                if (this.$store.getters.getUserSession.token !== null) {
+                    document.getElementById('loginPanel').style.filter = 'blur(5px)';
+                    this.loadIotDevices();  
+                }
+            }catch (error) {
+
+            }
         }
     },
     mounted() {
-        this.loadSvgFile()
+        this.loadSvgFile();
+        this.checkUserSession();
     },
 }
 </script>
 
 <template>
     <NavBar></NavBar>
-    <div :style="{ 'background-image': 'url(' + svgFile + ')' }" class="main-container svg-path">
+    <div :style="{ 'background-image': 'url(' + svgFile + ')' }" class="main-container svg-path" id="loginPanel">
         <div class="d-inline-block d-flex justify-content-center align-items-center all bg-light rounded">
             <div class="shadow p-4 rounded">
                 <div class="d-flex justify-content-center">

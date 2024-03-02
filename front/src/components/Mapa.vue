@@ -9,7 +9,6 @@
         <div class="loading-text">{{ $t('miscelaneus.loading') }}...</div>
       </div>
     </div>
-    <div class="d-flex justify-content-center mt-4 buttonsSlayer"></div>
   </div>
 </template>
 
@@ -48,10 +47,11 @@ export default {
             .bindPopup('Tu posición actual')
           this.state.map = map
           this.state.markers.push(marker)
+          console.log(this.puntos);
 
-          this.puntos.forEach((punto) => {
+          if (!Array.isArray(this.puntos)) {
             let iconUrl;
-            switch (punto.petSpecie) {
+            switch (this.puntos.petSpecie) {
               case 'dog':
                 iconUrl = 'src/assets/pointers/dog.svg';
                 break;
@@ -70,19 +70,55 @@ export default {
               default:
                 iconUrl = 'src/assets/pointers/animal.svg';
             }
-
             const animalIcon = L.divIcon({
               html: `<img src="${iconUrl}" width="50" height="50" style="top: 50%; left: 50%; transform: translate(-50%,-50%);">`,
               iconSize: [0, 0],
               iconAnchor: [0, 0],
             })
-            const marker = L.marker([punto.latitud, punto.longitud], {
+            const marker = L.marker([this.puntos.latitud, this.puntos.longitud], {
               icon: animalIcon,
             })
               .addTo(this.state.map)
-              .bindPopup(punto.petName)
+              .bindPopup(this.puntos.petName)
             this.state.markers.push(marker)
-          })
+            this.state.map.setView([this.puntos.latitud, this.puntos.longitud], 15);
+
+          } else {
+            this.puntos.forEach((punto) => {
+              let iconUrl;
+              switch (punto.petSpecie) {
+                case 'dog':
+                  iconUrl = 'src/assets/pointers/dog.svg';
+                  break;
+                case 'cat':
+                  iconUrl = 'src/assets/pointers/cat.svg';
+                  break;
+                case 'pig':
+                  iconUrl = 'src/assets/pointers/pig.svg';
+                  break;
+                case 'cow':
+                  iconUrl = 'src/assets/pointers/cow.svg';
+                  break;
+                case 'sheep':
+                  iconUrl = 'src/assets/pointers/sheep.svg';
+                  break;
+                default:
+                  iconUrl = 'src/assets/pointers/animal.svg';
+              }
+
+              const animalIcon = L.divIcon({
+                html: `<img src="${iconUrl}" width="50" height="50" style="top: 50%; left: 50%; transform: translate(-50%,-50%);">`,
+                iconSize: [0, 0],
+                iconAnchor: [0, 0],
+              })
+              const marker = L.marker([punto.latitud, punto.longitud], {
+                icon: animalIcon,
+              })
+                .addTo(this.state.map)
+                .bindPopup(punto.petName)
+              this.state.markers.push(marker)
+            })
+          }
 
           this.setLoadingStatus();
         })
@@ -112,15 +148,14 @@ export default {
 </script>
 
 <style scoped>
-
 .viewerMap {
-    width: 100%;
-    max-width: 100%;
-    height: 80vh;
-    max-height: 100%;
-    position: relative;
-    z-index: 0;
-    overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  height: 80vh;
+  max-height: 100%;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
 }
 
 .loading-overlay {
@@ -136,5 +171,4 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
 </style>

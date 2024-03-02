@@ -26,10 +26,10 @@ export default {
         }
     },
     methods: {
-        presetMapPoints(){
+        presetMapPoints() {
             console.log(this.$store.getters.getCoordinates)
-            if(this.$store.getters.getCoordinates){
-                this.mapPoints = {...this.$store.getters.getCoordinates};
+            if (this.$store.getters.getCoordinates) {
+                this.mapPoints = { ...this.$store.getters.getCoordinates };
             }
         }
     },
@@ -42,8 +42,8 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <div class="d-flex justify-content-center ">
-        <Mapa :puntos="mapPoints"></Mapa>
+    <div ref="mapContainer" class="obergruppenführer">
+        <Mapa :puntos="mapPoints" width=""></Mapa>
     </div>
 </template>
 
@@ -53,5 +53,26 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.full {
+    height: calc(80vh - 65px);
+}
+
+.obergruppenführer .unterscharführer {
+
+}
+
+.unterscharführer {
+    overflow: hidden;
+    height: 100%;
+}
+
+.obergruppenführer {
+    padding: 1em;
+    width: 100%;
+    height: calc(60vh);
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
 }
 </style>

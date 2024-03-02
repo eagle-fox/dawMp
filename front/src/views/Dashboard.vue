@@ -7,6 +7,7 @@ import Query from '@/types/Query.js'
 import URL from '@/types/URL.js'
 import Cookies from 'js-cookie'
 import BearerToken from '@/types/BearerToken.js'
+import { IconSearch } from '@tabler/icons-vue'
 
 
 export default {
@@ -16,6 +17,7 @@ export default {
         Mapa,
         PetCard,
         FooterMain,
+        IconSearch
     },
     data() {
         return {
@@ -23,6 +25,7 @@ export default {
             devicesData: [],
             showMap: true,
             loading: true,
+            searchTerm: '',
         }
     },
     methods: {
@@ -65,7 +68,7 @@ export default {
                                 longitud: parseFloat(cord.last_longitude),
                                 petSpecie: cord.especie,
                                 petDate: new Date(cord.created_at),
-                                petCords: [parseFloat(cord.last_latitude),parseFloat(cord.last_longitude)]
+                                petCords: [parseFloat(cord.last_latitude), parseFloat(cord.last_longitude)]
                             }
                             this.devicesData.push(animalData);
                         }
@@ -112,13 +115,18 @@ export default {
             }
         }
     },
+    computed: {
+        filteredPets() {
+            return this.devicesData.filter((pet) =>
+                pet.petName.toLowerCase().includes(this.searchTerm.toLowerCase())
+            );
+        }
+    },
     mounted() {
-
         this.loadUserSessionByCookie()
             .then(() => {
-                this.tryGetLoginData().then(() => {setTimeout(() => {this.loading = false},1000)});
+                this.tryGetLoginData().then(() => { setTimeout(() => { this.loading = false }, 1000) });
             })
-
 
     }
 }
@@ -146,15 +154,23 @@ export default {
                     <div class="d-flex gap-2 justify-content-between unterscharführer">
                         <!-- Left Site-->
                         <div class="d-inline-flex flex-column gap-2">
-                            <h4>{{ $t('miscelaneus.pets') }}:</h4>
-
-                            <div class="d-inline-flex flex-column gap-4 p-2 scroll-container">
-                                <div v-for="pet in devicesData" :key="pet.id">
-                                    <PetCard :petCords="pet" :petDate="pet.petDate" :petName="pet.petName" :petSpecies="pet.petSpecie">
-                                    </PetCard>
+                            <div class="d-inline-flex flex-column gap-1 p-2 ">
+                                <h4>{{ $t('miscelaneus.pets') }}:</h4>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        <IconSearch></IconSearch>
+                                    </span>
+                                    <input type="text" class="form-control" placeholder="Buscar mascota"
+                                        aria-label="Buscar mascota" aria-describedby="basic-addon1" v-model="searchTerm" />
+                                </div>
+                                <div class="d-inline-flex flex-column gap-1 scroll-container">
+                                    <div v-for="pet in filteredPets" :key="pet.id">
+                                        <PetCard :petCords="pet" :petDate="pet.petDate" :petName="pet.petName"
+                                            :petSpecies="pet.petSpecie">
+                                        </PetCard>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
 
                         <!-- Right Site-->
@@ -172,17 +188,18 @@ export default {
 </template>
 
 <style scoped>
-
 #pagePrincipal {
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
+    overflow-y: scroll;
 }
 
 
 .scroll-container {
-    max-height: calc(60vh);
+    max-height: calc(50vh - 20px);
     overflow: hidden;
     overflow-y: scroll;
 }
@@ -191,9 +208,7 @@ export default {
     height: calc(80vh - 65px);
 }
 
-.obergruppenführer .unterscharführer {
-
-}
+.obergruppenführer .unterscharführer {}
 
 .unterscharführer {
     overflow: hidden;
@@ -208,5 +223,4 @@ export default {
     z-index: 0;
     overflow: hidden;
 }
-
 </style>

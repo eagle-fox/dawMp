@@ -134,7 +134,7 @@ export default {
                     this.loadIotDevices()
                 }
             }catch (error) {
-
+                console.log(error);
             }
         }
     },

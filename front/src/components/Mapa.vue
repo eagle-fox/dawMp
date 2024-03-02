@@ -1,12 +1,12 @@
 <template>
   <div class="mt-4">
-      <div id="viewerMap" style="position: relative">
+    <div id="viewerMap" style="position: relative">
       <div ref="mapElement" class="viewerMap"></div>
       <div v-if="loading" class="loading-overlay">
         <div class="spinner-border text-primary loadSphere" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-          <div class="loading-text">{{ $t('miscelaneus.loading') }}...</div>
+        <div class="loading-text">{{ $t('miscelaneus.loading') }}...</div>
       </div>
     </div>
     <div class="d-flex justify-content-center mt-4 buttonsSlayer"></div>
@@ -28,55 +28,47 @@ export default {
   },
   data() {
     return {
-        loading: true,
+      loading: true,
     }
   },
-
-setup(props) {
-    const mapElement = ref(null)
-    let state = reactive({
-      map: null,
-      markers: [],
-    })
-
-    onMounted(() => {
+  methods: {
+    initializeMap() {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
           const { latitude, longitude } = position.coords
-          const map = L.map(mapElement.value).setView([latitude, longitude], 15)
+          const map = L.map(this.$refs.mapElement).setView([latitude, longitude], 15)
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 30,
             minZoom: 3,
-            attribution:
-              '&copy; <a href="https://www.fbi.gov/investigate">FBI</a>',
+            attribution: '&copy; <a href="https://www.fbi.gov/investigate">FBI</a>',
           }).addTo(map)
 
           const marker = L.marker([latitude, longitude])
             .addTo(map)
             .bindPopup('Tu posición actual')
-          state.map = map
-          state.markers.push(marker)
+          this.state.map = map
+          this.state.markers.push(marker)
 
-          props.puntos.forEach((punto) => {
+          this.puntos.forEach((punto) => {
             let iconUrl;
             switch (punto.petSpecie) {
-                case 'dog':
-                    iconUrl = 'src/assets/pointers/dog.svg';
-                    break;
-                case 'cat':
-                    iconUrl = 'src/assets/pointers/cat.svg';
-                    break;
-                case 'pig':
-                    iconUrl = 'src/assets/pointers/pig.svg';
-                    break;
-                case 'cow':
-                    iconUrl = 'src/assets/pointers/cow.svg';
-                    break;
-                case 'sheep':
-                    iconUrl = 'src/assets/pointers/sheep.svg';
-                    break;
-                default:
-                    iconUrl = 'src/assets/pointers/animal.svg';
+              case 'dog':
+                iconUrl = 'src/assets/pointers/dog.svg';
+                break;
+              case 'cat':
+                iconUrl = 'src/assets/pointers/cat.svg';
+                break;
+              case 'pig':
+                iconUrl = 'src/assets/pointers/pig.svg';
+                break;
+              case 'cow':
+                iconUrl = 'src/assets/pointers/cow.svg';
+                break;
+              case 'sheep':
+                iconUrl = 'src/assets/pointers/sheep.svg';
+                break;
+              default:
+                iconUrl = 'src/assets/pointers/animal.svg';
             }
 
             const animalIcon = L.divIcon({
@@ -87,19 +79,31 @@ setup(props) {
             const marker = L.marker([punto.latitud, punto.longitud], {
               icon: animalIcon,
             })
-              .addTo(state.map)
+              .addTo(this.state.map)
               .bindPopup(punto.petName)
-            state.markers.push(marker)
+            this.state.markers.push(marker)
           })
 
-            // this.loading = false // Indica que se ha cargado el mapa y los marcadores
+          this.setLoadingStatus();
         })
       } else {
         console.error('La geolocalización no es compatible con este navegador.')
       }
-    })
-
-    return { mapElement }
+    },
+    setLoadingStatus() {
+      this.loading = false
+    },
+  },
+  computed: {
+    state() {
+      return reactive({
+        map: null,
+        markers: [],
+      })
+    },
+  },
+  mounted() {
+    this.initializeMap();
   },
   components: {
     IconDog,

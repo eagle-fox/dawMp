@@ -118,9 +118,11 @@ export default {
 
                 this.$store
                     .dispatch('updateUserSession', userData)
+                    .then(() => {})
                     .catch((error) => {
                         console.error('Error al crear la nueva userSession:', error)
                     })
+                
 
                 return true;
 

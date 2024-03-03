@@ -49,6 +49,17 @@ export default {
                 .catch((error) => {
                     console.error('Error al crear la nueva userSession:', error)
                 })
+        },
+        prepareAnimalOptions() { 
+
+            this.$store
+                .dispatch('updateCoordinates', this.petCords)
+                .then(() => {
+                    this.$router.push('/animal')
+                })
+            
+        
+        
         }
     },
     computed: {
@@ -93,7 +104,7 @@ export default {
 
         <div class="d-flex gap-1">
             <button @click="prepareMapButton()" class="btn btn-primary">Mapa</button>
-            <button class="btn btn-light" type="button">
+            <button @click="prepareAnimalOptions()" class="btn btn-light" type="button">
                 <IconSettings :size="32"></IconSettings>
             </button>
         </div>

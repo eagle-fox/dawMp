@@ -128,9 +128,10 @@ export default {
       return deg * (Math.PI / 180);
     },
     setCoordinates() {
+      console.log(this.$store.getters.getCoordinates);
       const storedCoordinates = this.$store.getters.getCoordinates;
-      this.coordinates.x = storedCoordinates.x;
-      this.coordinates.y = storedCoordinates.y;
+      this.coordinates.x = storedCoordinates.latitud;
+      this.coordinates.y = storedCoordinates.longitud;
     }
   }
 };

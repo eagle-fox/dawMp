@@ -1,5 +1,9 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
+import Cookies from 'js-cookie'
+import URL from '@/types/URL.js'
+import Query from '@/types/Query.js'
+import BearerToken from '@/types/BearerToken.js'
 import ConnectionApi from '../assets/js/connectionApi.js'
 
 export default {
@@ -23,43 +27,42 @@ export default {
                 )
                 this.$router.push('/')
             }
-        },
-        loadLocalData(token) {
-            // Request to the API of the user's information through his authentication token.
-        },
-        testConnectionApi() {
-            const connectionApiInstance = new ConnectionApi()
-            connectionApiInstance.testAxios()
-        },
-        testAppendApi() {
-            const connectionApiInstance = new ConnectionApi()
+        },async loadUserSessionByCookie() {
+            if (Cookies.get('tokenCookie')) {
+                let myUrl = new URL('http', 'localhost', 2003);
+                let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
+                let response = await query.login();
+                
+                let userData = {
+                    name: response.user.nombre,
+                    email: response.user.email,
+                    role: response.user.rol,
+                    token: response.user.clients[0].token,
+                }
 
-            let userData = {
-                nombre: 'Yeison',
-                nombre_segundo: 'Rascado',
-                apellido_primero: 'González',
-                apellido_segundo: 'Rascado',
-                email: 'perico@yeison.com',
-                password: 'yeison',
+                this.$store
+                    .dispatch('updateUserSession', userData)
+                    .then(() => {
+                        console.log(this.$store.getters.getUserSession);
+                    })
+                    .catch((error) => {
+                        console.error('Error al crear la nueva userSession:', error)
+                    })
+
             }
-
-            connectionApiInstance.makeUser(userData)
-        },
+        }
+       
     },
     mounted() {
-        // this.checkValidationToken(this.$userSession.token);
-        this.testConnectionApi()
+        console.log(this.$store.getters.getUserSession)
+        this.loadUserSessionByCookie();
     },
 }
 </script>
 
 <template>
     <NavBar></NavBar>
-
     <div>
-        <button class="btn btn-primary" @click="testAppendApi">
-            Test Add User
-        </button>
     </div>
 </template>
 

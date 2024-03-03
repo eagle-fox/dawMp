@@ -1,6 +1,7 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
 import Mapa from '@/components/Mapa.vue'
+import MapaRegion from '@/components/MapaRegion.vue'
 import { cookieSettings, styleAssets } from '@/assets/config.json'
 import Query from '@/types/Query.js'
 import URL from '@/types/URL.js'
@@ -12,7 +13,8 @@ export default {
     name: 'Login',
     components: {
         NavBar,
-        Mapa
+        Mapa,
+        MapaRegion
     },
     data() {
         return {

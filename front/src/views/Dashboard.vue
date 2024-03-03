@@ -77,7 +77,9 @@ export default {
             } catch (err) {
 
             }
-        }, async loadIotDevices() {
+        }, 
+        // It makes a request to the API to get the animal data via the user's token.
+        async loadIotDevices() {
             try {
                 let myUrl = new URL('http', 'localhost', 2003);
                 let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token));
@@ -88,16 +90,24 @@ export default {
                 this.$router.push('/dashboard')
                 return response;
             } catch (error) {
-                // Manejar el error según tus necesidades
-                console.error("Error al cargar los dispositivos IoT:", error);
-                throw error; // Puedes lanzar el error nuevamente si es necesario
+                throw error;
             }
         },
+
+        // If the user has his token, returns false
+        // If it does not check for the cookie it calls `tokenCookie`, if it does, it makes the API request to get all the user's data.
+
         async loadUserSessionByCookie() {
+            if (this.$store.getters.getUserSession.token !== null) {
+                return false;
+            }
+
             if (Cookies.get('tokenCookie')) {
                 let myUrl = new URL('http', 'localhost', 2003);
                 let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
                 let response = await query.login();
+
+                console.log('entry');
 
                 let userData = {
                     name: response.user.nombre,
@@ -112,6 +122,8 @@ export default {
                         console.error('Error al crear la nueva userSession:', error)
                     })
 
+                return true;
+
             }
         }
     },
@@ -123,10 +135,32 @@ export default {
         }
     },
     mounted() {
+        // This method obtains the user's animal data via the cookie with the token, but first checks if this information already exists in the user's session.
+        //  - If it finds the data in the session it stops loading them from the cookie and does not make the API request.
+        // - If it does not find them, it makes the request to the API using the token stored in the cookie.
+
         this.loadUserSessionByCookie()
-            .then(() => {
-                this.tryGetLoginData().then(() => { setTimeout(() => { this.loading = false }, 1000) });
-            })
+            .then((result) => {
+                if (result) {
+                    this.tryGetLoginData().then(() => {
+                        setTimeout(() => {this.loading = false;}, 1000);
+                    });
+                } else {
+                    this.loading = false;
+                    this.loadUserData(this.$store.getters.getUserSession);
+                    for (let cord of this.$store.getters.getIotDevices) {
+                        let animalData = {
+                            petName: cord.name,
+                            latitud: parseFloat(cord.last_latitude),
+                            longitud: parseFloat(cord.last_longitude),
+                            petSpecie: cord.especie,
+                            petDate: new Date(cord.created_at),
+                            petCords: [parseFloat(cord.last_latitude), parseFloat(cord.last_longitude)]
+                        }
+                        this.devicesData.push(animalData);
+                    }
+                }
+            });
 
     }
 }
@@ -150,7 +184,7 @@ export default {
                     </div>
                 </div>
                 <div v-else>
-                    <h2>{{ $t('miscelaneus.welcome') }}, {{ userData.name }}</h2>
+                    <h3>{{ $t('miscelaneus.welcome') }}, {{ userData.name }}</h3>
                     <div class="d-flex gap-2 justify-content-between unterscharführer">
                         <!-- Left Site-->
                         <div class="d-inline-flex flex-column gap-2">
@@ -161,7 +195,8 @@ export default {
                                         <IconSearch></IconSearch>
                                     </span>
                                     <input type="text" class="form-control" placeholder="Buscar mascota"
-                                        aria-label="Buscar mascota" aria-describedby="basic-addon1" v-model="searchTerm" />
+                                        aria-label="Buscar mascota" aria-describedby="basic-addon1"
+                                        v-model="searchTerm" />
                                 </div>
                                 <div class="d-inline-flex flex-column gap-1 scroll-container">
                                     <div v-for="pet in filteredPets" :key="pet.id">

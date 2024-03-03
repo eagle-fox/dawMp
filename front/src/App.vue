@@ -31,6 +31,10 @@ export default {
 
       this.$store
         .dispatch('createNewUserSession', userData)
+        .then(() => {
+
+
+        })
         .catch((error) => {
           console.error('Error al crear la nueva userSession:', error)
         })
@@ -70,7 +74,7 @@ export default {
         this.$store
           .dispatch('updateUserSession', userData)
           .then(() =>{
-            this.$router.push('/dashboard')
+            //this.$router.push('/dashboard')
           })
           .catch((error) => {
             console.error('Error al crear la nueva userSession:', error)

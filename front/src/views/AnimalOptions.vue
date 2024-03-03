@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar></NavBar>
+    <navbar></navbar>
     <div class="whole-page">
       <div class="d-flex flex-row bd-highlight mb-3">
         <div class="pet-card">
@@ -13,8 +13,8 @@
         <div class="position-box">
           <div class="coordinates">
             <h3 class="position">{{ $t('animaloptions.posicion') }}</h3>
-            <h4>X: {{ positionX }}</h4>
-            <h4>Y: {{ positionY }}</h4>
+            <h4>X: {{ coordinates.x }}</h4>
+            <h4>Y: {{ coordinates.y }}</h4>
           </div>
         </div>
         <div class="position-box">
@@ -29,34 +29,34 @@
         <button @click="editar" class="edit-button">{{ $t('animaloptions.editar') }}</button>
       </div>
     </div>
-    <FooterMain></FooterMain>
+    <footermain></footermain>
   </div>
 </template>
 
-
-
 <script>
-import FooterMain from '@/components/FooterMain.vue'
-import NavBar from '@/components/NavBar.vue'
+import footermain from '@/components/FooterMain.vue'
+import navbar from '@/components/NavBar.vue'
 
 export default {
-  name: 'Animal',
+  name: 'animal',
   components: {
-    NavBar,
-    FooterMain
+    navbar,
+    footermain
   },
   data() {
     return {
       age: 0,
       distance: 0,
-      punto1: { latitud: 1.5, longitud: 2 },
-      punto2: { latitud: 3, longitud: 0.1 }
+      coordinates: {
+        x: 0,
+        y: 0
+      }
     }
   },
   props: {
     petName: {
       type: String,
-      default: 'Sancho'
+      default: 'sancho'
     },
     birthDate: {
       type: String,
@@ -65,14 +65,6 @@ export default {
     species: {
       type: String,
       default: 'dog'
-    },
-    positionX: {
-      type: Number,
-      default: 0
-    },
-    positionY: {
-      type: Number,
-      default: 0
     }
   },
   computed: {
@@ -96,13 +88,14 @@ export default {
   created() {
     this.calculateAge();
     this.calculateDistance();
+    this.setCoordinates();
   },
   methods: {
     eliminar() {
-      console.log('Animal eliminado');
+      console.log('animal eliminado');
     },
     editar() {
-      console.log('Animal editado');
+      console.log('animal editado');
     },
     calculateAge() {
       const today = new Date();
@@ -117,10 +110,10 @@ export default {
     },
     calculateDistance() {
       const R = 6371;
-      const lat1 = this.punto1.latitud;
-      const lon1 = this.punto1.longitud;
-      const lat2 = this.punto2.latitud;
-      const lon2 = this.punto2.longitud;
+      const lat1 = this.coordinates.x;
+      const lon1 = this.coordinates.y;
+      const lat2 = 3;
+      const lon2 = 0.1;
 
       const dLat = this.deg2rad(lat2 - lat1);
       const dLon = this.deg2rad(lon2 - lon1);
@@ -133,11 +126,15 @@ export default {
     },
     deg2rad(deg) {
       return deg * (Math.PI / 180);
+    },
+    setCoordinates() {
+      const storedCoordinates = this.$store.getters.getCoordinates;
+      this.coordinates.x = storedCoordinates.x;
+      this.coordinates.y = storedCoordinates.y;
     }
   }
 };
 </script>
-
 
 <style scoped>
 .whole-page {

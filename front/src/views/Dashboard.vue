@@ -75,9 +75,9 @@ export default {
                     });
                 }
             } catch (err) {
-
+                this.$router.push('/login')
             }
-        }, 
+        },
         // It makes a request to the API to get the animal data via the user's token.
         async loadIotDevices() {
             try {
@@ -90,6 +90,7 @@ export default {
                 this.$router.push('/dashboard')
                 return response;
             } catch (error) {
+                this.$router.push('/login')
                 throw error;
             }
         },
@@ -118,11 +119,11 @@ export default {
 
                 this.$store
                     .dispatch('updateUserSession', userData)
-                    .then(() => {})
+                    .then(() => { })
                     .catch((error) => {
                         console.error('Error al crear la nueva userSession:', error)
                     })
-                
+
 
                 return true;
 
@@ -144,9 +145,12 @@ export default {
         this.loadUserSessionByCookie()
             .then((result) => {
                 if (result) {
-                    this.tryGetLoginData().then(() => {
-                        setTimeout(() => {this.loading = false;}, 1000);
-                    });
+                    this.tryGetLoginData()
+                        .then(() => {
+                            setTimeout(() => { this.loading = false; }, 1000);
+                        })
+                        .catch(() => { this.$router.push('/login') });
+
                 } else {
                     this.loading = false;
                     this.loadUserData(this.$store.getters.getUserSession);
@@ -162,7 +166,8 @@ export default {
                         this.devicesData.push(animalData);
                     }
                 }
-            });
+            })
+            .catch(() => { this.$router.push('/login') });
 
     }
 }

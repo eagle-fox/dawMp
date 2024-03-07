@@ -7,7 +7,7 @@ import Query from '@/types/Query.js'
 import URL from '@/types/URL.js'
 import Cookies from 'js-cookie'
 import BearerToken from '@/types/BearerToken.js'
-import { IconSearch } from '@tabler/icons-vue'
+import { IconSearch,IconPlus } from '@tabler/icons-vue'
 
 
 export default {
@@ -17,7 +17,8 @@ export default {
         Mapa,
         PetCard,
         FooterMain,
-        IconSearch
+        IconSearch,
+        IconPlus
     },
     data() {
         return {
@@ -128,6 +129,11 @@ export default {
                 return true;
 
             }
+        },
+
+
+        letA(){
+            console.log('AAAAAAA');
         }
     },
     computed: {
@@ -191,12 +197,12 @@ export default {
                     </div>
                 </div>
                 <div v-else>
-                    <h3>{{ $t('miscelaneus.welcome') }}, {{ userData.name }}</h3>
+                    <h3 class="text-black">{{ $t('miscelaneus.welcome') }}, {{ userData.name }}</h3>
                     <div class="d-flex gap-2 justify-content-between unterscharführer">
                         <!-- Left Site-->
                         <div class="d-inline-flex flex-column gap-2">
                             <div class="d-inline-flex flex-column gap-1 p-2 ">
-                                <h4>{{ $t('miscelaneus.pets') }}:</h4>
+                                <h4 class="text-black">{{ $t('miscelaneus.pets') }}:</h4>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">
                                         <IconSearch></IconSearch>
@@ -206,6 +212,11 @@ export default {
                                         v-model="searchTerm" />
                                 </div>
                                 <div class="d-inline-flex flex-column gap-1 scroll-container">
+                                    <div @click="letA" class="card card-plus">
+                                        <div class="card-body gray-card d-flex justify-content-center">
+                                            <IconPlus></IconPlus>
+                                        </div>
+                                    </div>
                                     <div v-for="pet in filteredPets" :key="pet.id">
                                         <PetCard :petCords="pet" :petDate="pet.petDate" :petName="pet.petName"
                                             :petSpecies="pet.petSpecie">
@@ -237,6 +248,23 @@ export default {
     justify-content: space-between;
     overflow: hidden;
     overflow-y: scroll;
+}
+
+.gray-card{
+    background-color: rgb(223, 223, 223);
+}
+
+.gray-card:hover{
+    background-color: rgb(223, 218, 218);
+}
+
+.card-plus{
+    background-color: rgb(223, 223, 223);
+    border: 0.2em dashed #adadad;
+}
+
+.card-plus:hover{
+    background-color: rgb(223, 218, 218);
 }
 
 

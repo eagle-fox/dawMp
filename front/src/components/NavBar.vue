@@ -131,7 +131,7 @@ export default {
 
                     <li class="nav-item">
                         <router-link aria-current="page" class="nav-link active text-light" href="#" to="/dashboard">
-                            {{ $t('miscelaneus.home') }}
+                            {{ $t('miscelaneus.dashboard') }}
                         </router-link>
                     </li>
                 </ul>

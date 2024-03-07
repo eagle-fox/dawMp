@@ -2,6 +2,7 @@
 let miscelaneusTextPackage = {
     welcome: 'Bienvenido',
     home: 'Inicio',
+    dashboard: 'Panel Animales',
     loading: 'Cargando',
     mounths: 'Mes',
     days: 'Dia',

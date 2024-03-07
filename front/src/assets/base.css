@@ -76,6 +76,7 @@ h2 {
 
 h3 {
     font-size: 2.0069rem;
+    color: var( --color-text);
 }
 
 h4 {
@@ -112,6 +113,11 @@ small {
     border-color: var(--secondary);
 }
 
+.btn-primary:active{
+    background-color: var(--secondary-light) !important;
+    border-color: var(--secondary-light) !important;
+}
+
 /* Form styles */
 .form-control:focus {
     border: var(--primary-light);
@@ -146,6 +152,10 @@ small {
 
 label {
     color: var(--text-light);
+}
+
+a:hover {
+    color: var(--text-light) !important;
 }
 
 /* Color palette */
@@ -219,7 +229,10 @@ label {
         --color-heading: var(--vt-c-text-dark-1);
         --color-text: var(--text-dark);
     }
+
 }
+
+
 
 .dark {
     --color-background: var(--background-dark);
@@ -237,6 +250,7 @@ label {
     --accent-light: var(--accent-dark);
 
     --background-light-svg: var(--background-dark-svg);
+    
 }
 
 .border-accent {

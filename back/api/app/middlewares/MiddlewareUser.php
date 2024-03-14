@@ -18,7 +18,7 @@ use InvalidArgumentException;
 
 class MiddlewareUser
 {
-    private UUID $bearerToken;
+    public UUID $bearerToken;
     public IPv4 $ipv4;
     public User $user;
     private Email $email;
@@ -36,6 +36,8 @@ class MiddlewareUser
      */
     public function __construct(Rol $targetRol = Rol::ADMIN, int $targetId = null)
     {
+
+
         $this->targetRol = $targetRol;
         $this->targetId = $targetId;
         $this->debug = getenv("LEAF_DEV_TOOLS") === "true";
@@ -50,10 +52,9 @@ class MiddlewareUser
         if ($this->targetRol != Rol::GUEST) {
             $this->setCurrentUser();
             $this->updateTokenPerIp();
-
         }
 
-        if ($this->targetRol != Rol::IOT) {
+        if ($this->targetRol != Rol::IOT && $this->targetRol != Rol::GUEST) {
             $this->setClient();
         }
 
@@ -204,6 +205,10 @@ class MiddlewareUser
                 }
                 break;
             case Rol::USER:
+                if ($this->user->rol->equals(Rol::ADMIN) || $this->user->rol->equals(Rol::USER)) {
+                    $authorized = true;
+                    return;
+                }
                 if ($this->targetId != null && $this->user->id === $this->targetId) {
                     $authorized = true;
                 }

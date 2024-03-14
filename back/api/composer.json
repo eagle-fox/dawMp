@@ -30,7 +30,8 @@
         "leafs/auth": "^2.3",
         "leafs/db": "*",
         "leafs/devtools": "^0.1.0",
-        "cboden/ratchet": "^0.4.4"
+        "cboden/ratchet": "^0.4.4",
+        "leafs/mail": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.16",

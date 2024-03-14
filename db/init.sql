@@ -52,24 +52,6 @@ CREATE TABLE IF NOT EXISTS `log`
     FOREIGN KEY (`client`) REFERENCES `clients` (`id`)
 ) ENGINE = InnoDB;
 
-DELIMITER $$
-CREATE EVENT IF NOT EXISTS `delete_old_logs`
-    ON SCHEDULE EVERY 1 HOUR
-    DO
-    BEGIN
-        DECLARE `log_count` INT;
-        SELECT COUNT(*) INTO `log_count` FROM `log`;
-        IF `log_count` > 1024 THEN
-            CREATE TEMPORARY TABLE `temp_log` AS
-            SELECT `id` FROM `log` ORDER BY `created_at` LIMIT 512;
-
-            DELETE FROM `log` WHERE `id` IN (SELECT `id` FROM `temp_log`);
-
-            DROP TEMPORARY TABLE `temp_log`;
-        END IF;
-    END$$
-DELIMITER ;
-
 CREATE VIEW `v_log` AS
 SELECT `log`.`id`,
        `user`.`nombre`             AS `usuario`,
@@ -101,12 +83,10 @@ CREATE TABLE IF NOT EXISTS `iot_data`
 (
     `id`         int            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `device`     int            NOT NULL,
-    #`location`   POINT    NOT NULL,
     `latitude`   DECIMAL(10, 8) NOT NULL,
     `longitude`  DECIMAL(11, 8) NOT NULL,
     `created_at` datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    # SPATIAL INDEX `idx_location` (`location`),
     FOREIGN KEY (`device`) REFERENCES `iot_devices` (`id`)
 ) ENGINE = InnoDB;
 
@@ -125,12 +105,30 @@ END;
 //
 DELIMITER ;
 
-/** If data is older than 30 days, delete it */
+
 DELIMITER $$
 CREATE EVENT IF NOT EXISTS `delete_old_iot_data`
     ON SCHEDULE EVERY 1 DAY
     DO
     BEGIN
         DELETE FROM `iot_data` WHERE `created_at` < DATE_SUB(NOW(), INTERVAL 30 DAY);
+    END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE EVENT IF NOT EXISTS `delete_old_logs`
+    ON SCHEDULE EVERY 1 HOUR
+    DO
+    BEGIN
+        DECLARE `log_count` INT;
+        SELECT COUNT(*) INTO `log_count` FROM `log`;
+        IF `log_count` > 1024 THEN
+            CREATE TEMPORARY TABLE `temp_log` AS
+            SELECT `id` FROM `log` ORDER BY `created_at` LIMIT 512;
+
+            DELETE FROM `log` WHERE `id` IN (SELECT `id` FROM `temp_log`);
+
+            DROP TEMPORARY TABLE `temp_log`;
+        END IF;
     END$$
 DELIMITER ;

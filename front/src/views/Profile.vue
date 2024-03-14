@@ -1,63 +1,68 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
+import Cookies from 'js-cookie'
+import URL from '@/types/URL.js'
+import Query from '@/types/Query.js'
+import BearerToken from '@/types/BearerToken.js'
 import ConnectionApi from '../assets/js/connectionApi.js'
 
 export default {
     name: 'Profile',
     components: {
-        NavBar
+        NavBar,
     },
     data() {
         return {
             name: 'Testing',
         }
-    }
+    },
 
-
-    , methods: {
+    methods: {
         checkValidationToken(token) {
             // Verification to avoid accessing the profile without a valid user token
 
             if (token == null || !token) {
-                console.error(`Redirecting to home, /profile is not allowed | token: ${token}`)
-                this.$router.push('/');
+                console.error(
+                    `Redirecting to home, /profile is not allowed | token: ${token}`,
+                )
+                this.$router.push('/')
             }
-        },
-        loadLocalData(token) {
-            // Request to the API of the user's information through his authentication token.
+        },async loadUserSessionByCookie() {
+            if (Cookies.get('tokenCookie')) {
+                let myUrl = new URL('http', 'localhost', 2003);
+                let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
+                let response = await query.login();
+                
+                let userData = {
+                    name: response.user.nombre,
+                    email: response.user.email,
+                    role: response.user.rol,
+                    token: response.user.clients[0].token,
+                }
 
+                this.$store
+                    .dispatch('updateUserSession', userData)
+                    .then(() => {
+                        console.log(this.$store.getters.getUserSession);
+                    })
+                    .catch((error) => {
+                        console.error('Error al crear la nueva userSession:', error)
+                    })
 
-        }, testConnectionApi() {
-            const connectionApiInstance = new ConnectionApi();
-            connectionApiInstance.testAxios();
-        }, testAppendApi() {
-            const connectionApiInstance = new ConnectionApi();
-
-            let userData = {
-                nombre: 'Yeison',
-                nombre_segundo: 'Rascado',
-                apellido_primero: 'González',
-                apellido_segundo: 'Rascado',
-                email: 'perico@yeison.com',
-                password: 'yeison',
             }
-
-            connectionApiInstance.makeUser(userData);
         }
-    }
-    , mounted() {
-        // this.checkValidationToken(this.$userSession.token);
-        this.testConnectionApi();
-    }
+       
+    },
+    mounted() {
+        console.log(this.$store.getters.getUserSession)
+        this.loadUserSessionByCookie();
+    },
 }
-
 </script>
 
 <template>
     <NavBar></NavBar>
-
     <div>
-        <button class="btn btn-primary" @click="testAppendApi">Test Add User</button>
     </div>
 </template>
 

@@ -1,12 +1,11 @@
 import axios from 'axios'
 
 // Import configuration
-
 import config from '../config.json'
+
 let devConfig = config.devConfig
 
 class ConnectionApi {
-
   constructor() {
     if (!ConnectionApi.instance) {
       this.axiosInstance = axios.create()
@@ -30,6 +29,12 @@ class ConnectionApi {
     }
   }
 
+  async getUserData(userToken) {
+    try {
+    } catch (error) {
+    }
+  }
+
   async makeUser(userData) {
     try {
       const formData = new FormData()
@@ -50,7 +55,7 @@ class ConnectionApi {
           console.error(`Campo obligatorio '${key}' no proporcionado.`)
         }
       })
-      
+
       formData.append('rol', 'ADMIN')
 
       const headers = {

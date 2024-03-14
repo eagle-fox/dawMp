@@ -24,13 +24,20 @@ class DemoController extends Controller
         ];
 
         $totalUsers = 32;
-        $totalClientsPerUser = 4;
+        $totalClientsPerUser = 2;
         $totalDevicesPerUser = 32;
-        $totalDataPerDevice = 1024;
+        $totalDataPerDevice = 128;
 
         $totalOperations = $totalUsers * ($totalClientsPerUser + $totalDevicesPerUser * $totalDataPerDevice);
         $completedOperations = 0;
         $etaFormatted = "Calculating...";
+
+        $species = [
+            'cow',
+            'sheep',
+            'cat',
+            'dog'
+        ];
 
         for ($i = 0; $i < $totalUsers; $i++) {
             $faker = $fakers[$i % 4];
@@ -59,7 +66,7 @@ class DemoController extends Controller
                 $device->token = new UUID();
                 $device->icon = $faker->word;
                 $device->name = $faker->word;
-                $device->especie = $faker->word;
+                $device->especie = $species[$j % 4];
                 $device->save();
                 $completedOperations++;
 

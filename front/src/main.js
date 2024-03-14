@@ -4,14 +4,17 @@ import router from './router'
 import store from './store'
 import dotenv from 'dotenv'
 
-dotenv.config();
+const apiServer = process.env.REACT_APP_PHP_SERVER || "http://localhost:2003";
 
 const config = {
   "devConfig": {
-    "apiServer": process.env.PHP_SERVER ? process.env.PHP_SERVER : "http://localhost:2003",
-    "authCode": process.env.REACT_APP_AUTH_CODE
+    "apiServer": apiServer,
   }
 };
+
+// Ahora puedes usar la configuración en tu aplicación
+console.log(config);
+
 
 
 // Paquete para la gestion de idiomas.

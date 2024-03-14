@@ -1,0 +1,34 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../assets/base.css";
+
+$themes: (
+        light: (
+                text: #040316,
+                background: #fbfbfe,
+                primary: #007c8f,
+                secondary: #99c2ff,
+                accent: #336138,
+        ),
+        dark: (
+                text: #eae9fc,
+                background: #010104,
+                primary: #70ecff,
+                secondary: #002966,
+                accent: #9ecca3,
+        ),
+);
+
+// Selecciona el tema que deseas usar
+$theme: map-get($themes, light);
+
+// Asigna los colores del tema a las variables de Bootstrap
+$primary: map-get($theme, primary);
+$secondary: map-get($theme, secondary);
+$success: map-get($theme, accent);
+$body-bg: map-get($theme, background);
+$body-color: map-get($theme, text);
+
+@import "../../node_modules/bootstrap/scss/bootstrap";

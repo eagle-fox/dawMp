@@ -45,30 +45,5 @@ export default {
 </script>
 
 <style scoped>
-.footer {
-    background-color: #181818;
-    color: #fff;
-    padding: 20px 0;
-    position: relative;
-    width: 100%;
-}
-
-.footer-logo {
-    max-width: 100px;
-}
-
-.nav-link {
-    color: #fff;
-}
-
-.nav-link:hover {
-    color: #1f4233;
-    text-decoration: underline;
-}
-
-.contact-info {
-    color: #fff;
-    text-align: right;
-}
 
 </style>

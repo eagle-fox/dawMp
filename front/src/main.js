@@ -2,6 +2,17 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import dotenv from 'dotenv'
+
+dotenv.config();
+
+const config = {
+  "devConfig": {
+    "apiServer": process.env.PHP_SERVER ? process.env.PHP_SERVER : "http://localhost:2003",
+    "authCode": process.env.REACT_APP_AUTH_CODE
+  }
+};
+
 
 // Paquete para la gestion de idiomas.
 // Vue I18n -> https://kazupon.github.io/vue-i18n
@@ -29,3 +40,4 @@ app.use(router).use(store).use(i18n).mount('#app')
 
 const userSessionInstance = new userSession('', '', '')
 app.config.globalProperties.$userSession = userSessionInstance
+app.config.globalProperties.$config = config;

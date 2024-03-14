@@ -237,9 +237,19 @@ export default {
             myBearerToken: '',
         }
     },
+    parseUrl(url) {
+      const urlObj = new URL(url);
+      const protocol = urlObj.protocol.replace(':', '');
+      const hostname = urlObj.hostname;
+      const port = urlObj.port || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
+
+      return [protocol, hostname, port];
+    },
 
     created() {
-        this.myUrl = new URL('http', 'localhost', 2003)
+        let connectData = this.parseUrl(this.$config.devConfig.apiServer);
+
+        this.myUrl = new URL(connectData[0], connectData[1], connectData[2])
         this.query = new Query(this.myUrl).withAuth(new BasicAuth('admin@admin.com', 'admin'))
         this.faker = faker
 

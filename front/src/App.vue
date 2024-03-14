@@ -57,10 +57,19 @@ export default {
             console.error('Error al crear la nueva userSession:', error)
           })
       }
+    },parseUrl(url) {
+      const urlObj = new URL(url);
+      const protocol = urlObj.protocol.replace(':', '');
+      const hostname = urlObj.hostname;
+      const port = urlObj.port || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
+
+      return [protocol, hostname, port];
     },
     async loadUserSessionByCookie() {
+      let connectData = this.parseUrl(this.$config.devConfig.apiServer);
+
       if (Cookies.get('tokenCookie')) {
-        let myUrl = new URL('http', 'localhost', 2003);
+        let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
         let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
         let response = await query.login();
 

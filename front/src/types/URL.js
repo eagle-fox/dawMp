@@ -33,6 +33,7 @@ class URL {
     toString() {
         return `${this.protocol}://${this.hostname}:${this.port}/`
     }
+    
 }
 
 export default URL

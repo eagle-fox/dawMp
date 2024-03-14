@@ -51,6 +51,13 @@ export default {
 
             form.appendChild(failDiv);
             
+        },parseUrl(url) {
+            const urlObj = new URL(url);
+            const protocol = urlObj.protocol.replace(':', '');
+            const hostname = urlObj.hostname;
+            const port = urlObj.port || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
+
+            return [protocol, hostname, port];
         },
         async submitLogin() {
             try {
@@ -58,7 +65,9 @@ export default {
 
                     // Log in using Gmail and Password 
 
-                    this.myUrl = new URL('http', 'localhost', 2003)
+                    let connectData = this.parseUrl(this.$config.devConfig.apiServer);
+
+                    this.myUrl = new URL(connectData[0], connectData[1], connectData[2])
                     this.query = new Query(this.myUrl).withAuth(new BasicAuth(this.name, this.password))
                 }
 
@@ -107,9 +116,17 @@ export default {
                 this.response = JSON.stringify(err, null, 2)
             }
         },
+        parseUrl(url) {
+            const urlObj = new URL(url);
+            const protocol = urlObj.protocol.replace(':', '');
+            const hostname = urlObj.hostname;
+            const port = urlObj.port || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
+
+            return [protocol, hostname, port];
+        },
         async loadIotDevices() {
             try {
-                let myUrl = new URL('http', 'localhost', 2003);
+                let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
                 let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token));
                 let response = await query.getIotDevicesBySelf();
                 response = response.data;

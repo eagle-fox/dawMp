@@ -1,6 +1,7 @@
 import URL from '@/types/URL.js'
 import Query from '@/types/Query.js'
 import BearerToken from '@/types/BearerToken.js'
+import parseUrl from './miscelaneus'
 
 class userSession {
     static #instance
@@ -42,15 +43,6 @@ class userSession {
         return this.iotDevices;
     } 
 
-    parseUrl(url) {
-        const urlObj = new URL(url);
-        const protocol = urlObj.protocol.replace(':', '');
-        const hostname = urlObj.hostname;
-        const port = urlObj.port || (protocol === 'https' ? '443' : '80');
-  
-        return [protocol, hostname, port];
-    }
-
     #checkTokenFormat(token) {
         return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
             token,
@@ -58,7 +50,7 @@ class userSession {
     }
 
     async #getIotDevicesData(token){
-        let connectData = this.parseUrl(this.$config.devConfig.apiServer);
+        let connectData = parseUrl(this.$config.devConfig.apiServer);
         let myUrl = new URL(connectData[0], connectData[1], connectData[2])
         let query = new Query(myUrl).withAuth(new BearerToken(this.token))
         let response = await query.getIotDevicesBySelf()

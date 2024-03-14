@@ -6,6 +6,7 @@ import URL from '@/types/URL.js'
 import BasicAuth from '@/types/BasicAuth.js'
 import Cookies from 'js-cookie'
 import BearerToken from '@/types/BearerToken.js'
+import parseUrl from '@/assets/js/miscelaneus'
 
 export default {
     name: 'Login',
@@ -51,13 +52,6 @@ export default {
 
             form.appendChild(failDiv);
             
-        },parseUrl(url) {
-            const urlObj = new URL(url);
-            const protocol = urlObj.protocol.replace(':', '');
-            const hostname = urlObj.hostname;
-            const port = urlObj.port || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
-
-            return [protocol, hostname, port];
         },
         async submitLogin() {
             try {
@@ -65,7 +59,7 @@ export default {
 
                     // Log in using Gmail and Password 
 
-                    let connectData = this.parseUrl(this.$config.devConfig.apiServer);
+                    let connectData = parseUrl(this.$config.devConfig.apiServer);
 
                     this.myUrl = new URL(connectData[0], connectData[1], connectData[2])
                     this.query = new Query(this.myUrl).withAuth(new BasicAuth(this.name, this.password))
@@ -115,14 +109,6 @@ export default {
             } catch (err) {
                 this.response = JSON.stringify(err, null, 2)
             }
-        },
-        parseUrl(url) {
-            const urlObj = new URL(url);
-            const protocol = urlObj.protocol.replace(':', '');
-            const hostname = urlObj.hostname;
-            const port = urlObj.port || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
-
-            return [protocol, hostname, port];
         },
         async loadIotDevices() {
             try {

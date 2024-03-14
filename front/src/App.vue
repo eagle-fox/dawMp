@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 import URL from '@/types/URL.js'
 import Query from '@/types/Query.js'
 import BearerToken from '@/types/BearerToken.js'
+import parseUrl from './assets/js/miscelaneus'
 
 
 export default {
@@ -56,21 +57,14 @@ export default {
             console.error('Error al crear la nueva userSession:', error)
           })
       }
-    },parseUrl(url) {
-          const parts = url.split('/');
-          const protocol = parts[0].replace(':', '');
-          const hostname = parts[2].split(':')[0];
-          const port = parts[2].split(':')[1] || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
-          console.log(protocol, hostname, port)
-          return [protocol, hostname, port];
     },
     async loadUserSessionByCookie() {
-        let url = JSON.stringify(this.$config.devConfig.apiServer);
-        console.log(url)
+      let url = JSON.stringify(this.$config.devConfig.apiServer);
+      console.log(url)
 
-      let connectData = this.parseUrl(url);
-        console.log(connectData[0])
-        if (Cookies.get('tokenCookie')) {
+      let connectData = parseUrl(url);
+      console.log(connectData[0])
+      if (Cookies.get('tokenCookie')) {
         let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
         let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
         let response = await query.login();
@@ -84,7 +78,7 @@ export default {
 
         this.$store
           .dispatch('updateUserSession', userData)
-          .then(() =>{
+          .then(() => {
             //this.$router.push('/dashboard')
           })
           .catch((error) => {

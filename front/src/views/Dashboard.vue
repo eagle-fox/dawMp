@@ -8,6 +8,7 @@ import URL from '@/types/URL.js'
 import Cookies from 'js-cookie'
 import BearerToken from '@/types/BearerToken.js'
 import { IconSearch,IconPlus } from '@tabler/icons-vue'
+import parseUrl from '@/assets/js/miscelaneus'
 
 
 export default {
@@ -78,18 +79,11 @@ export default {
             } catch (err) {
                 this.$router.push('/login')
             }
-        },parseUrl(url) {
-            const urlObj = new URL(url);
-            const protocol = urlObj.protocol.replace(':', '');
-            const hostname = urlObj.hostname;
-            const port = urlObj.port || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
-
-            return [protocol, hostname, port];
         },
         // It makes a request to the API to get the animal data via the user's token.
         async loadIotDevices() {
             try {
-                let connectData = this.parseUrl(this.$config.devConfig.apiServer);
+                let connectData = parseUrl(this.$config.devConfig.apiServer);
                 let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
                 let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token));
                 let response = await query.getIotDevicesBySelf();
@@ -103,15 +97,6 @@ export default {
                 throw error;
             }
         },
-        parseUrl(url) {
-            const urlObj = new URL(url);
-            const protocol = urlObj.protocol.replace(':', '');
-            const hostname = urlObj.hostname;
-            const port = urlObj.port || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
-
-            return [protocol, hostname, port];
-        },
-
         // If the user has his token, returns false
         // If it does not check for the cookie it calls `tokenCookie`, if it does, it makes the API request to get all the user's data.
 
@@ -121,7 +106,7 @@ export default {
             }
 
             if (Cookies.get('tokenCookie')) {
-                let connectData = this.parseUrl(this.$config.devConfig.apiServer);
+                let connectData = parseUrl(this.$config.devConfig.apiServer);
 
                 let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
                 let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));

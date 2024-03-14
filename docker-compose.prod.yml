@@ -64,6 +64,8 @@ services:
     working_dir: /app
     volumes:
       - fox-bun:/app/
+    environment:
+      - PHP_SERVER = "https://api.foxtrot.pedroseoaneprado.es"
     ports:
       - '2004:2024'
     networks:

@@ -3,17 +3,14 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import dotenv from 'dotenv'
+import * as process from 'process'
 
 const apiServer = process.env.REACT_APP_PHP_SERVER || "http://localhost:2003";
-
-const config = {
+const configApi = {
   "devConfig": {
     "apiServer": apiServer,
   }
 };
-
-// Ahora puedes usar la configuración en tu aplicación
-console.log(config);
 
 
 
@@ -38,9 +35,9 @@ const i18n = createI18n({
 })
 
 const app = createApp(App)
-
+app.config.globalProperties.$config = configApi;
 app.use(router).use(store).use(i18n).mount('#app')
 
 const userSessionInstance = new userSession('', '', '')
 app.config.globalProperties.$userSession = userSessionInstance
-app.config.globalProperties.$config = config;
+console.log(app.config.globalProperties.$config )

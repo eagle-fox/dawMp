@@ -21,7 +21,6 @@ export default {
       // With the token of the user we must make the request to the
       // API to obtain the information of the user, if the token is not
       // registered we create a visitor session.
-
       let userData = {
         name: 'Unknow',
         email: 'unknow@gmail.com',
@@ -58,17 +57,20 @@ export default {
           })
       }
     },parseUrl(url) {
-      const urlObj = new URL(url);
-      const protocol = urlObj.protocol.replace(':', '');
-      const hostname = urlObj.hostname;
-      const port = urlObj.port || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
-
-      return [protocol, hostname, port];
+          const parts = url.split('/');
+          const protocol = parts[0].replace(':', '');
+          const hostname = parts[2].split(':')[0];
+          const port = parts[2].split(':')[1] || (protocol === 'https' ? '443' : '80'); // Si no hay puerto, establece el puerto predeterminado basado en el protocolo
+          console.log(protocol, hostname, port)
+          return [protocol, hostname, port];
     },
     async loadUserSessionByCookie() {
-      let connectData = this.parseUrl(this.$config.devConfig.apiServer);
+        let url = JSON.stringify(this.$config.devConfig.apiServer);
+        console.log(url)
 
-      if (Cookies.get('tokenCookie')) {
+      let connectData = this.parseUrl(url);
+        console.log(connectData[0])
+        if (Cookies.get('tokenCookie')) {
         let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
         let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
         let response = await query.login();

@@ -63,14 +63,14 @@ services:
       dockerfile: ../docker/Dockerfile-bunjs
     working_dir: /app
     volumes:
-      - ./front/:/app/
+      - fox-bun:/app/
     environment:
-      - REACT_APP_PHP_SERVER = "https://api.foxtrot.pedroseoaneprado.es"
+      - PHP_SERVER = "https://api.foxtrot.pedroseoaneprado.es"
     ports:
       - '2004:2024'
     networks:
       - foxtrot-bridge
-    command: [ 'sh', '-c', 'bun vite' ]
+    command: [ 'sh', '-c', 'bun run dev' ]
 
   mysql:
     container_name: fox-mysql

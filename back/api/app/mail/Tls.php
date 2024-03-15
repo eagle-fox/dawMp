@@ -14,18 +14,28 @@ class Tls {
 
         try {
             // Configurar el servidor SMTP
+            // $mail->isSMTP();
+            // $mail->Host       = getenv('MAIL_HOST'); // Cambia 'smtp.example.com' por tu servidor SMTP
+            // $mail->SMTPAuth   = false;
+            // $mail->Username   = getenv('MAIL_USERNAME'); // Cambia 'tu_correo@example.com' por tu correo electrónico
+            // $mail->Password   = getenv('MAIL_PASSWORD'); // Cambia 'tu_contraseña' por tu contraseña de correo electrónico
+            // $mail->SMTPAutoTLS = false;
+            // $mail->SMTPSecure = '';
+            // $mail->Port       = getenv('MAIL_PORT');
+
             $mail->isSMTP();
             $mail->Host       = getenv('MAIL_HOST'); // Cambia 'smtp.example.com' por tu servidor SMTP
-            //$mail->SMTPAuth   = true;
+            $mail->SMTPAuth   = true;
             $mail->Username   = getenv('MAIL_USERNAME'); // Cambia 'tu_correo@example.com' por tu correo electrónico
             $mail->Password   = getenv('MAIL_PASSWORD'); // Cambia 'tu_contraseña' por tu contraseña de correo electrónico
-            $mail->SMTPAutoTLS = false;
-            $mail->SMTPSecure = '';
+            $mail->SMTPSecure = 'tls';
             $mail->Port       = getenv('MAIL_PORT');
+            $mail->SMTPDebug=2;
+
 
         
             // Configurar el remitente y el destinatario
-            $mail->setFrom('phpmailer@pedroseoaneprado.es', 'Tu Nombre');
+            $mail->setFrom(getenv('MAIL_USERNAME'), 'Tu Nombre');
             $mail->addAddress($destinatario);
 
             // Contenido del correo
@@ -37,7 +47,7 @@ class Tls {
             $mail->send();
             return true; // Envío exitoso
         } catch (Exception $e) {
-            error_log($e);
+            error_log(getenv('MAIL_HOST'));
             error_log($e);
             return false; // Error en el envío
         }

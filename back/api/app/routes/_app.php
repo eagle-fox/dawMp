@@ -4,6 +4,7 @@ declare(strict_types=1);
 use app\mail\Email;
 use app\mail\EmailConnector;
 use app\models\IotDevice;
+use app\mail\Tls;
 
 require_once __DIR__ . "/user.php";
 require_once __DIR__ . "/iotDevices.php";
@@ -28,15 +29,12 @@ app()->get("/cumpleaños", function () {
 });
 
 app()->get("/testemail", function () {
-    $emailConnector = new EmailConnector();
-    $email = new Email($emailConnector);
-    $email->sendEmail(
-        'Prueba de correo', // subject
-        'HOLA', // body
-        'info@pedroseoaneprado.es', // recipientEmail
-        'Pedro Seoane Prado', // recipientName
-        'phpmailer@pedroseoaneprado.es', // senderEmail
-        'Your Name' // senderName
+    $emailConnector = new Tls();
+    $email = new Tls();
+    $email->enviar(
+        'yeisonrascado@gmail.com', 
+        'Prima', 
+        'Prima'
     );
     response()->json(["message" => "Email sent"]);
 });

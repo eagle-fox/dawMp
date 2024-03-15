@@ -1,62 +1,25 @@
-/* color palette from <https://github.com/vuejs/theme> */
-:root {
-    --vt-c-white: #ffffff;
-    --vt-c-white-soft: #f8f8f8;
-    --vt-c-white-mute: #f2f2f2;
-
-    --vt-c-black: #181818;
-    --vt-c-black-soft: #222222;
-    --vt-c-black-mute: #282828;
-
-    --vt-c-indigo: #2c3e50;
-
-    --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-    --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-    --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-    --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-    --vt-c-text-light-1: var(--vt-c-indigo);
-    --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-    --vt-c-text-dark-1: var(--vt-c-white);
-    --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
-
-    --text: #0e1415;
-    --background: #d5e1e6;
-    --primary: #4cb8a0;
-    --secondary: #1f4233;
-    --accent: #2c5848;
-
+/* Fonts */
+@font-face {
+    font-family: 'BaseFont';
+    src: url('../assets/fonts/PTSans-Regular.ttf');
 }
 
-/* semantic color variables for this project */
-:root {
-    --color-background: var(--background);
-    --color-background-soft: var(--vt-c-white-soft);
-    --color-background-mute: var(--vt-c-white-mute);
-
-    --color-border: var(--vt-c-divider-light-2);
-    --color-border-hover: var(--vt-c-divider-light-1);
-
-    --color-heading: var(--vt-c-text-light-1);
-    --color-text: var(--text);
-
-    --section-gap: 160px;
+@font-face {
+    font-family: 'BaseFontTest';
+    src: url('../assets/fonts/Outfit-Regular.ttf');
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --color-background: var(--vt-c-black);
-        --color-background-soft: var(--vt-c-black-soft);
-        --color-background-mute: var(--vt-c-black-mute);
-
-        --color-border: var(--vt-c-divider-dark-2);
-        --color-border-hover: var(--vt-c-divider-dark-1);
-
-        --color-heading: var(--vt-c-text-dark-1);
-        --color-text: var(--vt-c-text-dark-2);
-    }
+@font-face {
+    font-family: 'BaseFontTest2';
+    src: url('../assets/fonts/Outfit-Light.ttf');
 }
 
+@font-face {
+    font-family: 'Monoescape';
+    src: url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+}
+
+/* Base styles */
 *,
 *::before,
 *::after {
@@ -65,18 +28,84 @@
     font-weight: normal;
 }
 
-.primary-style{
-    background-color: var(--primary) ;
+body {
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    text-rendering: optimizeLegibility;
+    transition: color 0.5s,
+    background-color 0.5s;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-transition: color 0.5s,
+    background-color 0.5s;
+    -moz-transition: color 0.5s,
+    background-color 0.5s;
+    -ms-transition: color 0.5s,
+    background-color 0.5s;
+    -o-transition: color 0.5s,
+    background-color 0.5s;
 }
 
-.btn-primary{
-    background-color: var(--primary);
-    border-color: var(--primary);
+* {
+    font-family: 'BaseFontTest2', sans-serif;
+}
+
+/* Headings */
+h1 {
+    font-size: 3.21rem;
+}
+
+h2 {
+    font-size: 2.358rem;
+}
+
+h3 {
+    font-size: 2.0069rem;
+    color: var( --color-text);
+}
+
+h4 {
+    font-size: 1.577rem;
+}
+
+h5 {
+    font-size: 1.333rem;
+}
+
+/* Small text */
+small {
+    font-size: 0.75rem;
+}
+
+/* Primary styles */
+.primary-style {
+    background-color: var(--primary-light);
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: var(--primary-light);
+    border-color: var(--primary-light);
 }
 
 .btn-primary:hover {
-    background-color: var(--secondary);
-    border-color: var(--secondary);
+    background-color: var(--secondary-light);
+    border-color: var(--secondary-light);
 }
 
 .btn-primary:focus {
@@ -84,75 +113,156 @@
     border-color: var(--secondary);
 }
 
+.btn-primary:active{
+    background-color: var(--secondary-light) !important;
+    border-color: var(--secondary-light) !important;
+}
+
+/* Form styles */
 .form-control:focus {
-    box-shadow: 0 0 14px 1px var(--primary);
-    border: var(--primary);
+    border: var(--primary-light);
+    box-shadow: 0 0 14px 1px var(--primary-light);
 }
 
-body {
-    min-height: 100vh;
-    color: var(--color-text);
-    background: var(--color-background);
-    transition:
-        color 0.5s,
-        background-color 0.5s;
-    line-height: 1.6;
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        'Segoe UI',
-        Roboto,
-        Oxygen,
-        Ubuntu,
-        Cantarell,
-        'Fira Sans',
-        'Droid Sans',
-        'Helvetica Neue',
-        sans-serif;
-    font-size: 15px;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+/* NavBar styles */
+
+.navbar {
+    background-color: var(--primary-light) !important;
+    border-bottom: var(--secondary-light) 2px solid !important;
+}
+
+.footer {
+    background-color: var(--primary-light) !important;
+    border-top: var(--secondary-light) 2px solid !important;
+}
+
+/* SVG */
+
+.svg-path {
+    background-color: var(--background-light-svg);
+}
+
+.form-label {
+    color: var(--forms-text-color) !important;
+}
+
+.text {
+    color: var(--forms-text-color) !important;
+}
+
+label {
+    color: var(--text-light);
+}
+
+a:hover {
+    color: var(--text-light) !important;
+}
+
+/* Color palette */
+:root {
+    --vt-c-black: #181818;
+    --vt-c-black-mute: #282828;
+    --vt-c-black-soft: #222222;
+    --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+    --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+    --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+    --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+    --vt-c-indigo: #2c3e50;
+    --vt-c-text-dark-1: var(--vt-c-white);
+    --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+    --vt-c-text-light-1: var(--vt-c-indigo);
+    --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+    --vt-c-white: #ffffff;
+    --vt-c-white-mute: #f2f2f2;
+    --vt-c-white-soft: #f8f8f8;
+
+    --accent: #a37e2c;
+    --background: #d5e1e6;
+    --primary: #254629;
+    --secondary: #172d1a;
+    --text: #0e1415;
+
+    --color-background: var(--background);
+    --color-background-mute: var(--vt-c-white-mute);
+    --color-background-soft: var(--vt-c-white-soft);
+    --color-border: var(--vt-c-divider-light-2);
+    --color-border-hover: var(--vt-c-divider-light-1);
+    --color-heading: var(--vt-c-text-light-1);
+    --color-text: var(--text);
+
+    --section-gap: 160px;
+
+    /* https://www.realtimecolors.com/?colors=eaf0f1-2b363b-47b39b-bde0d1-a7d3c3&fonts=Gafata-Outfit Color Palette */
+
+    /* Light View */
+
+    --text-light: #0e1415;
+    --background-light: #c4cfd4;
+    --primary-light: #3f9784;
+    --secondary-light: #1f4233;
+    --accent-light: #2c5848;
+
+    /* Dark View */
+
+    --text-dark: #eaf0f1;
+    --background-dark: #2b363b;
+    --primary-dark: #26574d; /* Variation -> Original #47b39b */
+    --secondary-dark: #bde0d1;
+    --accent-dark: #bde0d1;
+
+    /* SVG Colors  .svg-path */
+
+    --background-light-svg: #ece9ef;
+    --background-dark-svg: var(--background-dark);
+
+    /* Inmutable Color */
+    --forms-text-color: #0e1415;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-background: var(--background-dark);
+        --color-background-mute: var(--vt-c-black-mute);
+        --color-background-soft: var(--vt-c-black-soft);
+        --color-border: var(--vt-c-divider-dark-2);
+        --color-border-hover: var(--vt-c-divider-dark-1);
+        --color-heading: var(--vt-c-text-dark-1);
+        --color-text: var(--text-dark);
+    }
+
 }
 
 
-/*
+
+.dark {
+    --color-background: var(--background-dark);
+    --color-background-mute: var(--vt-c-black-mute);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--text-dark);
+
+    --text-light: var(--text-dark);
+    --background-light: var(--background-dark);
+    --primary-light: var(--primary-dark);
+    --secondary-light: var(--secondary-dark);
+    --accent-light: var(--accent-dark);
+
+    --background-light-svg: var(--background-dark-svg);
     
-*/
-
-* {
-    font-family: 'BaseFontTest2';
 }
 
-@font-face {
-    font-family: 'BaseFont';
-    src: url("../assets/fonts/PTSans-Regular.ttf");
+.border-accent {
+    border-color: var(--accent);
 }
 
-@font-face {
-    font-family: 'BaseFontTest';
-    src: url("../assets/fonts/Outfit-Regular.ttf");
+.heroLogoEagle:hover {
+    transform: scale(1.25);
+    transition: 0.5s;
 }
 
-@font-face {
-    font-family: 'BaseFontTest2';
-    src: url("../assets/fonts/Outfit-Light.ttf");
+.logoEagle:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
 }
-
-
-
-html {font-size: 100%;} 
-
-h1 {font-size: 3.210rem; }
-
-h2 {font-size: 2.358rem;}
-
-h3 {font-size: 2.0069rem; }
-
-h4 {font-size: 1.777rem; }
-
-h5 {font-size: 1.333rem;}
-
-small {font-size: 0.750rem; }
-

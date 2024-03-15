@@ -1,84 +1,101 @@
 <script>
-import { IconCalendar, IconCake, IconSettings } from '@tabler/icons-vue';
-import { styleAssets } from '@/assets/config.json';
+import { IconCake, IconCalendar, IconSettings } from '@tabler/icons-vue'
 
 export default {
     name: 'PetCard',
     components: {
         IconCalendar,
         IconCake,
-        IconSettings
+        IconSettings,
     },
     data() {
         return {
-            calcAge: null,
-            petSpecieFileUrl: null,
-            switchAge: true,
+            edadNacimiento: new Date(this.petDate),
+            edadDiff: new Date(Date.now() - this.edadNacimiento),
+            nombre: this.petName,
+            especie: this.petSpecies,
         }
     },
     props: {
         petName: String,
-        petDate: String,
+        petDate: Date,
         petSpecies: String,
-    }, methods: {
-        
-        calculateAge(birthday) {
-            let birthday_arr = birthday.split("/");
-            let birthday_date = new Date(birthday_arr[2], birthday_arr[1] - 1, birthday_arr[0]);
-            let ageDifMs = Date.now() - birthday_date.getTime();
-            let ageDate = new Date(ageDifMs);
-            let calculatedAgeYears = Math.abs(ageDate.getUTCFullYear() - 1970);
+        petCords: Array
+    },
+    methods: {
+        calcAge() {
+            const now = new Date()
+            const birthDate = new Date(this.petDate)
+            const diffTime = Math.abs(now - birthDate)
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+            const diffMonths = Math.floor(diffDays / 30.44)
+            const diffYears = Math.floor(diffDays / 365.25)
 
-            if (calculatedAgeYears === 0) {
-                var calculatedAgeMonths = ageDate.getUTCMonth();
-                this.calcAge = calculatedAgeMonths;
-                this.switchAge = false;
-
-                console.log(this.switchAge)
+            if (diffYears > 0) {
+                return `${diffYears} ${this.$t('miscelaneus.years')}${diffYears > 1 ? 's' : ''}`
+            } else if (diffMonths > 0) {
+                return `${diffMonths} ${this.$t('miscelaneus.mounths')}${diffMonths > 1 ? 's' : ''}`
             } else {
-                this.calcAge = calculatedAgeYears;
-                this.switchAge = true;
+                return `${diffDays} ${this.$t('miscelaneus.days')}${diffDays > 1 ? 's' : ''}`
             }
         },
-        chargeSpecieImage(specie){
+        prepareMapButton() {
+            this.$store
+                .dispatch('updateCoordinates', this.petCords)
+                .then(() => {
+                    console.log(this.$store.getters.getCoordinates)
+                    this.$router.push('/myanimal')
+                })
+                .catch((error) => {
+                    console.error('Error al crear la nueva userSession:', error)
+                })
+        },
+        prepareAnimalOptions() { 
 
-            let animalDictionary = styleAssets.animalPointers;
-
-            if (specie in animalDictionary){
-                this.petSpecieFileUrl = animalDictionary[specie];
-            }else{
-                let  animalKeysArray = Object.keys(animalDictionary);
-                let animalAleatorio = animalKeysArray[Math.floor(Math.random() * animalKeysArray.length)];
-
-                this.petSpecieFileUrl = animalDictionary[animalAleatorio];
-
-            }
-
+            this.$store
+                .dispatch('updateCoordinates', this.petCords)
+                .then(() => {
+                    this.$router.push('/animal')
+                })
+            
+        
+        
         }
-
-    }, mounted() {
-        this.calculateAge(this.petDate);
-        this.chargeSpecieImage(this.petSpecies);
-    }
-
+    },
+    computed: {
+        icono() {
+            const species = this.petSpecies.toLowerCase()
+            if (['cow',
+                 'sheep',
+                 'dog',
+                 'cat'].includes(species)) {
+                return `${species}.svg`
+            } else {
+                return 'default.svg'
+            }
+        },
+    },
 }
-
 </script>
 
 <template>
     <div class="card">
-        <img :src="'../src/assets/' + this.petSpecieFileUrl " class="animal-image" alt="">
+        <img
+            :src="'../src/assets/pointers/' + icono"
+            alt=""
+            class="animal-image"
+        />
         <div class="card-body">
             <h5 class="card-title">{{ petName }}</h5>
             <div>
-                <div>{{ $t('miscelaneus.date') }}: {{ petDate }}
-                    <IconCake :size="20" class="mb-1"></IconCake>
+                <div>
+                    <div>{{ $t('miscelaneus.birthday') }}: {{ petDate.toLocaleDateString() }}
+                        <IconCake :size="20" class="mb-1"></IconCake>
+                    </div>
                 </div>
                 <div>
                     <div class="d-flex aling-items-center gap-1">
-                        {{ $t('miscelaneus.age') }}: {{ this.calcAge }} 
-                        <p v-if="!switchAge">{{ this.$t('miscelaneus.mounths') }}</p>
-                        <p v-if="switchAge">{{ this.$t('miscelaneus.years') }}</p>
+                        <div>{{ $t('miscelaneus.age') }}: {{ calcAge() }}</div>
                         <IconCalendar :size="20" class="mb-1"></IconCalendar>
                     </div>
                 </div>
@@ -86,11 +103,10 @@ export default {
         </div>
 
         <div class="d-flex gap-1">
-            <button class="btn btn-primary">Mapa</button>
-            <button type="button" class="btn btn-light">
+            <button @click="prepareMapButton()" class="btn btn-primary">Mapa</button>
+            <button @click="prepareAnimalOptions()" class="btn btn-light" type="button">
                 <IconSettings :size="32"></IconSettings>
             </button>
-
         </div>
     </div>
 </template>
@@ -102,10 +118,12 @@ export default {
     align-items: center;
     flex-direction: row;
     padding-right: 15px;
+
 }
 
 .animal-image {
     width: 55px;
     margin-bottom: 10px;
     margin-left: 15px;
-}</style>
+}
+</style>

@@ -1,0 +1,51 @@
+// Required
+@import "../../node_modules/bootstrap/scss/functions";
+
+$white: #ffffff;
+$light: #ffffff;
+$dark: #121416;
+$primary: #146C48;
+$secondary: #006896;
+$info: #9BAEBC;
+$accent: #A37E2C;
+$success: #A2BE6A;
+$warning: #ce7520;
+$danger: #9F412F;
+
+// Continúa redefiniendo las demás variables de Bootstrap de la misma manera
+// Required
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/variables-dark";
+@import "../../node_modules/bootstrap/scss/maps";
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/root";
+
+// Optional Bootstrap components here
+@import "../../node_modules/bootstrap/scss/reboot";
+@import "../../node_modules/bootstrap/scss/type";
+
+// Tu código personalizado aquí
+
+.navbar {
+  background-color: $primary;
+  border-bottom: .25em solid $accent;
+}
+
+.navbar:hover {
+}
+
+.footer {
+  background-color: $primary;
+  border-top: .25em solid $accent;
+}
+
+.card {
+  background-color: $primary;
+  border-bottom: .25em solid $accent;
+  border-top: .15em solid $accent;
+}
+
+body {
+  background-color: $dark;
+  color: $light;
+}

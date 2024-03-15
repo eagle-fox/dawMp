@@ -1,50 +1,72 @@
+import URL from '@/types/URL.js'
+import Query from '@/types/Query.js'
+import BearerToken from '@/types/BearerToken.js'
+import parseUrl from './miscelaneus'
+
 class userSession {
-    static #instance;
+    static #instance
     constructor(name, email, role, token) {
         // Verificamos si ya hay una instancia, si no existe la crea.
         if (userSession.#instance) {
-            return userSession.#instance;
+            return userSession.#instance
         }
 
         // userSession variables
-        this.name = name;
-        this.email = email;
+        this.name = name
+        this.email = email
         this.role = role
 
-        if(!this.#checkTokenFormat()){
-            token = null;
+        if (!this.#checkTokenFormat()) {
+            token = null
         }
-        this.token = token;
+        this.token = token
 
-        userSession.#instance = this;
-    }
-
-    getData() {
-        return this.data;
-    }
-
-    #checkTokenFormat(token) {
-        return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(token);
-    }
-
-    setData(name, email,role ,token) {
-        this.name = name;
-        this.email = email;
-        this.role = role;
-        
-        if(!this.#checkTokenFormat()){
-            token = null;
-        }
-        this.token = token;
+        userSession.#instance = this
     }
 
     static getInstance() {
         if (!userSession.#instance) {
-            userSession.#instance = new userSession();
+            userSession.#instance = new userSession()
         }
-        return userSession.#instance;
+        return userSession.#instance
     }
+
+    getData() {
+        return this.data
+    }
+
+    setIotDevicesData(data) {
+        this.iotDevices = data;
+    }
+
+    getIotDevices() {
+        return this.iotDevices;
+    } 
+
+    #checkTokenFormat(token) {
+        return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
+            token,
+        )
+    }
+
+    async #getIotDevicesData(token){
+        let connectData = parseUrl(this.$config.devConfig.apiServer);
+        let myUrl = new URL(connectData[0], connectData[1], connectData[2])
+        let query = new Query(myUrl).withAuth(new BearerToken(this.token))
+        let response = await query.getIotDevicesBySelf()
+        response = response.data;
+
+        console.log(response);
+    }
+
+    setData(name, email, role, token) {
+        this.name = name
+        this.email = email
+        this.role = role
+        this.token = token
+    }
+
+
 }
 
-
-export default userSession;
+export default userSession

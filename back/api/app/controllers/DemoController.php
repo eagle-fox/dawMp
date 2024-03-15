@@ -23,14 +23,21 @@ class DemoController extends Controller
             Factory::create('de_DE'),
         ];
 
-        $totalUsers = 128;
-        $totalClientsPerUser = 128;
-        $totalDevicesPerUser = 128;
+        $totalUsers = 32;
+        $totalClientsPerUser = 2;
+        $totalDevicesPerUser = 32;
         $totalDataPerDevice = 128;
 
         $totalOperations = $totalUsers * ($totalClientsPerUser + $totalDevicesPerUser * $totalDataPerDevice);
         $completedOperations = 0;
         $etaFormatted = "Calculating...";
+
+        $species = [
+            'cow',
+            'sheep',
+            'cat',
+            'dog'
+        ];
 
         for ($i = 0; $i < $totalUsers; $i++) {
             $faker = $fakers[$i % 4];
@@ -59,15 +66,22 @@ class DemoController extends Controller
                 $device->token = new UUID();
                 $device->icon = $faker->word;
                 $device->name = $faker->word;
-                $device->especie = $faker->word;
+                $device->especie = $species[$j % 4];
                 $device->save();
                 $completedOperations++;
 
+                $initLatitude = $faker->latitude;
+                $initLongitude = $faker->longitude;
                 for ($k = 0; $k < $totalDataPerDevice; $k++) {
                     $iotData = new IotData();
                     $iotData->device = $device->id;
-                    $iotData->latitude = $faker->latitude;
-                    $iotData->longitude = $faker->longitude;
+
+                    $offsetLatitude = $initLatitude * rand(-1,1) * 0.05;
+                    $offsetLongitude = $initLongitude * rand(-1,1) * 0.05;
+
+                    $iotData->latitude = $initLatitude + $offsetLatitude;
+                    $iotData->longitude = $initLongitude + $offsetLongitude;
+
                     $iotData->save();
                     $completedOperations++;
                     if ($completedOperations % 100 == 0) {

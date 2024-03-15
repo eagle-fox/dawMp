@@ -35,6 +35,7 @@ class IotDevice extends Model
         "especie"        => "",
         "last_latitude"  => null,
         "last_longitude" => null,
+
     ];
 
     /**
@@ -70,7 +71,7 @@ class IotDevice extends Model
      *
      * @var array
      */
-    protected $fillable = ["token", "user", "name", "icon", "especie"];
+    protected $fillable = ["token", "user", "name", "icon", "especie","created_at","updated_at","last_latitude","last_longitude"];
 
     /**
      * Todas va con sellado de tiempo.

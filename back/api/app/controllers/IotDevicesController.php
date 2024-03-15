@@ -11,6 +11,7 @@ use Exception;
 class IotDevicesController extends Controller
 {
 
+
     public function index(): void
     {
         try {
@@ -122,5 +123,7 @@ class IotDevicesController extends Controller
             response()->json(["message" => $message], 500);
         }
     }
+
+
 
 }

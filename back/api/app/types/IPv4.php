@@ -25,7 +25,7 @@ class IPv4 implements JsonSerializable
             return;
         }
 
-        throw new InvalidArgumentException("Invalid argument type for IPv4 address");
+        throw new InvalidArgumentException("Invalid argument type for IPv4.js address");
     }
 
     public function jsonSerialize(): string

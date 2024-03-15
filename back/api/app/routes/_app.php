@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+use app\mail\Email;
+use app\mail\EmailConnector;
 use app\models\IotDevice;
 
 require_once __DIR__ . "/user.php";
@@ -23,4 +25,18 @@ app()->get("/cumpleaños", function () {
             error_log("Device updated: " . json_encode($device));
         }
         response()->json(["message" => "Cumpleaños actualizados"]);
+});
+
+app()->get("/testemail", function () {
+    $emailConnector = new EmailConnector();
+    $email = new Email($emailConnector);
+    $email->sendEmail(
+        'Prueba de correo', // subject
+        'HOLA', // body
+        'info@pedroseoaneprado.es', // recipientEmail
+        'Pedro Seoane Prado', // recipientName
+        'phpmailer@pedroseoaneprado.es', // senderEmail
+        'Your Name' // senderName
+    );
+    response()->json(["message" => "Email sent"]);
 });

@@ -29,7 +29,7 @@ app()->get("/cumpleaños", function () {
 });
 
 app()->get("/testemail", function () {
-    $emailConnector = new Tls();
+    //$emailConnector = new Tls();
     $email = new Tls();
     $email->enviar(
         'yeisonrascado@gmail.com', 

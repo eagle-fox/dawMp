@@ -35,6 +35,9 @@ class IotDevicesController extends Controller
             $auth = new MiddlewareUser(Rol::USER, $ownership);
             $uuidIotDevice = new UUID(app()->request()->get("uuid"));
             $newDevice = new IotDevice();
+            $newDevice->name = app()->request()->get("name");
+            $newDevice->especie = app()->request()->get("especie");
+            $newDevice->cumpleanos = new \DateTime(app()->request()->get("cumpleaños"));
             $newDevice->token = $uuidIotDevice;
             $newDevice->user = $ownership;
             $newDevice->name = app()->request()->get("name");

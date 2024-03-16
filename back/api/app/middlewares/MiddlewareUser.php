@@ -117,20 +117,20 @@ class MiddlewareUser
                     }
                     $user = User::query()->where("id", $device->user)->first();
                     if (!$user instanceof User) {
-                        throw new Exception('User not found, provided token was: ' . $this->bearerToken);
+                        throw new Exception('User not found, data provided: ' . $this->bearerToken);
                     }
                 } else {
                     $client = Client::query()->where("token", $this->bearerToken)->first();
                     if (!$client instanceof Client) {
-                        throw new Exception('Client not found, provided token was: ' . $this->bearerToken);
+                        throw new Exception('Client not found data provided: ' . $this->bearerToken);
                     }
-                    $user = Client::query()->where("id", $client->user)->first();
-                    if (!$user instanceof Client) {
-                        throw new Exception('User not found');
+                    $user = User::query()->where("id", $client->user)->first();
+                    if (!$user instanceof User) {
+                        throw new Exception('User not found data provided: ' . $this->bearerToken);
                     }
-                    // if ($user->locked) {
-                    //     throw new Exception('User is locked');
-                    // }
+                    if ($user->locked) {
+                        throw new Exception('User is locked' . $this->bearerToken);
+                    }
                 }
                 $this->user = $user;
                 break;

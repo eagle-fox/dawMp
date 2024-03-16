@@ -121,11 +121,11 @@ class MiddlewareUser
                     }
                 } else {
                     $client = Client::query()->where("token", $this->bearerToken)->first();
-                    if (!$client instanceof User) {
+                    if (!$client instanceof Client) {
                         throw new Exception('Client not found, provided token was: ' . $this->bearerToken);
                     }
-                    $user = User::query()->where("id", $client->user)->first();
-                    if (!$user instanceof User) {
+                    $user = Client::query()->where("id", $client->user)->first();
+                    if (!$user instanceof Client) {
                         throw new Exception('User not found');
                     }
                     if ($user->locked) {

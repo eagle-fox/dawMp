@@ -67,6 +67,7 @@ class DemoController extends Controller
                 $device->icon = $faker->word;
                 $device->name = $faker->word;
                 $device->especie = $species[$j % 4];
+                $device->cumpleanos = $faker->dateTimeThisCentury;
                 $device->save();
                 $completedOperations++;
 

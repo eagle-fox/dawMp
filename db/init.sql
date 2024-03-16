@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS `iot_devices`
     `token`          CHAR(36)     NOT NULL UNIQUE COMMENT '128 bits UUID (RFC 4122)',
     `name`           varchar(255)          DEFAULT 'IoT',
     `especie`        varchar(255)          DEFAULT 'Mascota',
+    `cumpleanos` date DEFAULT NULL,
     `icon`           varchar(255) NOT NULL,
     `user`           int          NOT NULL,
     `last_latitude`  DECIMAL(10, 8)        DEFAULT NULL,

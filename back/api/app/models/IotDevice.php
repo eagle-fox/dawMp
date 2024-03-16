@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\models;
 
 use app\types\UUID;
+use DateTime;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Leaf\Model;
@@ -14,6 +15,7 @@ use Leaf\Model;
  * @property UUID $token
  * @property User $user
  * @property IotData $data
+ * @property DateTime $cumpleanos
  * @property string $name
  * @property string $icon
  * @property string especie
@@ -31,6 +33,7 @@ class IotDevice extends Model
         "token"          => "",
         "user"           => "",
         "name"           => "",
+        "cumpleanos" => "",
         "icon"           => "",
         "especie"        => "",
         "last_latitude"  => null,
@@ -71,7 +74,18 @@ class IotDevice extends Model
      *
      * @var array
      */
-    protected $fillable = ["token", "user", "name", "icon", "especie","created_at","updated_at","last_latitude","last_longitude"];
+    protected $fillable = [
+        "token",
+        "user",
+        "name",
+        "icon",
+        "especie",
+        "created_at",
+        "updated_at",
+        "last_latitude",
+        "last_longitude",
+        "cumpleanos"
+    ];
 
     /**
      * Todas va con sellado de tiempo.
@@ -108,6 +122,19 @@ class IotDevice extends Model
     public function iotData()
     {
         return $this->hasMany(IotData::class, 'device');
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getCumpleanosAttribute($value): DateTime
+    {
+        return new DateTime($value);
+    }
+
+    public function setCumpleanosAttribute(DateTime $date): void
+    {
+        $this->attributes['cumpleanos'] = $date->format($this->dateFormat);
     }
 
 }

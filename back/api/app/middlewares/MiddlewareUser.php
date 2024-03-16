@@ -16,6 +16,14 @@ use app\types\UUID;
 use Exception;
 use InvalidArgumentException;
 
+/**
+ * Class MiddlewareUser
+ *
+ * Esta clase se encarga de gestionar la autenticación y autorización de los usuarios.
+ * @param Rol $targetRol Rol al que se quiere acceder (ADMIN, USER, IOT, GUEST) pero es opcional por defecto es ADMIN.
+ * @param int $targetId Id del usuario al que se quiere acceder, pero es opcional.
+ * @returns User | False | Exception en función de la autenticación y autorización.
+ */
 class MiddlewareUser
 {
     public UUID $bearerToken;
@@ -109,7 +117,7 @@ class MiddlewareUser
                     }
                     $user = User::query()->where("id", $device->user)->first();
                     if (!$user instanceof User) {
-                        throw new Exception('User not found');
+                        throw new Exception('User not found, provided token was: ' . $this->bearerToken);
                     }
                 } else {
                     $client = Client::query()->where("token", $this->bearerToken)->first();

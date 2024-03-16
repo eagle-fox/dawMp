@@ -12,8 +12,18 @@ use app\types\IPv4;
 use app\types\UUID;
 use Faker\Factory;
 
+/**
+ * Clase DemoController
+ *
+ * Esta clase se encarga de crear datos de prueba para la aplicación.
+ */
 class DemoController extends Controller
 {
+    /**
+     * Clase DemoController
+     *
+     * Esta clase se encarga de crear datos de prueba para la aplicación usando Faker.
+     */
     public function create(): void
     {
         $fakers = [

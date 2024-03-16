@@ -9,7 +9,13 @@ use Exception;
 
 class IotDataController extends Controller
 {
-
+    /**
+     * Método index
+     *
+     * Este método devuelve los datos de los dispositivos IoT.
+     * Si el usuario es un administrador, devuelve todos los datos.
+     * Si el usuario es un usuario normal, solo devuelve sus propios datos.
+     */
     public function index(): void
     {
         try {
@@ -39,6 +45,11 @@ class IotDataController extends Controller
         }
     }
 
+    /**
+     * Método store
+     *
+     * Este método crea un nuevo dato de un dispositivo IoT.
+     */
     public function store(): void
     {
         try {
@@ -65,6 +76,11 @@ class IotDataController extends Controller
 
     }
 
+    /**
+     * Método show
+     *
+     * Este método devuelve un dato de un dispositivo IoT específico.
+     */
     public function show($id): void
     {
         try {
@@ -85,11 +101,22 @@ class IotDataController extends Controller
         }
     }
 
+    /**
+     * Método update
+     *
+     * Este método no está permitido y devuelve un error 405. (referenciado por $id)
+     * No tiene sentido permitir a un IoT hacer correciones espacio temporales!
+     */
     public function update($id): void
     {
         response()->json(["message" => "Method not allowed"], 405);
     }
 
+    /**
+     * Método destroy
+     *
+     * Este método elimina un dato de un dispositivo IoT específico (referenciado por $id)
+     */
     public function destroy($id): void
     {
         try {

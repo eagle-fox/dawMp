@@ -31,6 +31,7 @@ services:
       - .env
     environment:
       LEAF_DEV_TOOLS: 'true'
+      TZ: Europe/Madrid
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
@@ -46,6 +47,8 @@ services:
   phpdoc:
     container_name: fox-phpdoc
     image: phpdoc/phpdoc
+    environment:
+      TZ: Europe/Madrid
     volumes:
       - './back/api/app:/data'
     networks:
@@ -61,6 +64,8 @@ services:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - '2005:3306'
+    environment:
+      TZ: Europe/Madrid
     env_file:
       - .env
     networks:

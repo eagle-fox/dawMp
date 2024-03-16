@@ -8,10 +8,19 @@ use app\types\Rol;
 use app\types\UUID;
 use Exception;
 
+/**
+ * Clase IotDevicesController
+ *
+ * Esta clase se encarga de gestionar los dispositivos IoT.
+ */
 class IotDevicesController extends Controller
 {
 
-
+    /**
+     * Método index
+     *
+     * Este método devuelve todos los dispositivos IoT, sólo es accesible por un administrador.
+     */
     public function index(): void
     {
         try {
@@ -28,6 +37,11 @@ class IotDevicesController extends Controller
         }
     }
 
+    /**
+     * Método store
+     *
+     * Este método crea un nuevo dispositivo IoT a nombre del usuario autenticado.
+     */
     public function store(): void
     {
         try {
@@ -52,6 +66,12 @@ class IotDevicesController extends Controller
         }
     }
 
+    /**
+     * Método show
+     *
+     * Este método devuelve un dispositivo IoT específico, sólo es accesible por el propietario del dispositivo
+     * o en su defecto por un administrador.
+     */
     public function show($id): void
     {
         try {
@@ -72,6 +92,12 @@ class IotDevicesController extends Controller
         }
     }
 
+    /**
+     * Método update
+     *
+     * Este método actualiza un dispositivo IoT específico, sólo es accesible por el propietario del dispositivo
+     * o en su defecto por un administrador.
+     */
     public function update($id): void
     {
         try {
@@ -106,6 +132,12 @@ class IotDevicesController extends Controller
         }
     }
 
+    /**
+     * Método destroy
+     *
+     * Este método elimina un dispositivo IoT específico, sólo es accesible por el propietario del dispositivo
+     * o en su defecto por un administrador.
+     */
     public function destroy($id): void
     {
         try {

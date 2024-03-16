@@ -239,7 +239,8 @@ export default {
         }
     },
     created() {
-        let connectData = parseUrl(this.$config.devConfig.apiServer);
+        let url = JSON.stringify(this.$config.devConfig.apiServer);
+        let connectData = parseUrl(url);
 
         this.myUrl = new URL(connectData[0], connectData[1], connectData[2])
         this.query = new Query(this.myUrl).withAuth(new BasicAuth('admin@admin.com', 'admin'))

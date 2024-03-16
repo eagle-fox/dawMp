@@ -191,12 +191,13 @@ class Query {
    * @param {Object} iotDevice - The IoT device data
    */
   async postIotDevice(iotDevice) {
-    await this.client
-        .post(this.url + 'iotDevices', iotDevice, { responseType: 'json' })
-        .catch((error) => {
-          throw error
-        })
-  }
+    try {
+        const response = await this.client.post(this.url + 'iotDevices', iotDevice, { responseType: 'json' });
+        return response.data; 
+    } catch (error) {
+        throw error;
+    }
+}
 
   /**
    * @method putIotDevice - Update an existing IoT device

@@ -128,9 +128,9 @@ class MiddlewareUser
                     if (!$user instanceof Client) {
                         throw new Exception('User not found');
                     }
-                    if ($user->locked) {
-                        throw new Exception('User is locked');
-                    }
+                    // if ($user->locked) {
+                    //     throw new Exception('User is locked');
+                    // }
                 }
                 $this->user = $user;
                 break;

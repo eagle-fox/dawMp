@@ -1,11 +1,13 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
 import { styleAssets } from '@/assets/config.json'
+import AnimalFormVue from '@/components/AnimalForm.vue'
 
 export default {
     name: 'About',
     components: {
         NavBar,
+        AnimalFormVue
     },
     data() {
         return {
@@ -30,6 +32,8 @@ export default {
             <h1>{{ $t('about.about_h1') }}</h1>
             <div class="d-inline-flex shadow rounded bg-light p-4"></div>
         </div>
+
+        <AnimalFormVue></AnimalFormVue>
     </main>
 </template>
 

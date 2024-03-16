@@ -37,6 +37,11 @@ const store = createStore({
         setCoordinates(state, coordinates) {
             state.coordinates = coordinates;
         },
+        setToken(state, token){
+            state.userSession.setToken(
+                token
+            )
+        }
     },
     actions: {
         createNewUserSession({ commit }, userData) {
@@ -101,6 +106,16 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 try {
                     commit('setIotDevices', iotData)
+                    resolve()
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        },
+        setToken({commit}, token){
+            return new Promise((resolve, reject) => {
+                try {
+                    commit('setToekn', token)
                     resolve()
                 } catch (error) {
                     reject(error)

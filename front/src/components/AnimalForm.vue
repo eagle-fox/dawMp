@@ -9,7 +9,6 @@ import BasicAuth from '@/types/BasicAuth.js'
 import Cookies from 'js-cookie'
 import BearerToken from '@/types/BearerToken.js'
 import { faker, fakerDE, fakerES, fakerPT_PT } from '@faker-js/faker'
-import UUID from '@/types/UUID';
 
 export default {
     name: 'AnimalForm',
@@ -38,15 +37,21 @@ export default {
                 let connectData = parseUrl(url);
                 console.log(connectData);
                 let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
-                let uuid = faker.string.uuid();
 
-                let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token));
-                let response = await query.postIotDevice(
-                    { uuid: new UUID, name: 'Federico', especie: 'Alacran', cumpleaños: '10-10-2003' }
+                console.log(this.$store.getters.getUserSession.token);
+                let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
+                let responseMakeAnimal = await query.postIotDevice(
+                    { uuid: '251617ab-5b31-4303-a181-b275a9ca04c0', name: 'Federico', especie: 'Alacran', cumpleaños: '10-10-2003' }
                 );
 
-                console.log(response);
-                return response;
+                console.log(responseMakeAnimal);
+
+                console.log(responseMakeAnimal.device.id)
+                let responseAddRandomPos = await query.postIotDataPosition(
+                    {device: responseMakeAnimal.device.id,latitude:faker.location.latitude() ,longitude: faker.location.longitude() }
+                );
+
+                return responseAddRandomPos;
                 
             } catch (error) {
                 console.error("Error al enviar la solicitud:", error);

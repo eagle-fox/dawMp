@@ -256,6 +256,16 @@ class Query {
     }
     return response.data
   }
+
+
+  async postIotDataPosition(IotData) {
+    try {
+      const response = await this.client.post(this.url + 'iotData', IotData, { responseType: 'json' });
+      return response.data; 
+  } catch (error) {
+      throw error;
+  }
+  }
 }
 
 export default Query

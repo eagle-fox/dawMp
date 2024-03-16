@@ -20,6 +20,7 @@ class UUID {
     data[6] = (data[6] & 0x0f) | 0x40
     data[8] = (data[8] & 0x3f) | 0x80
     const hex = [...data].map((b) => b.toString(16).padStart(2, '0'))
+    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
     return `${hex.slice(0, 4).join('')}-${hex.slice(4, 6).join('')}-${hex.slice(6, 8).join('')}-${hex
         .slice(8, 10)
         .join('')}-${hex.slice(10, 16).join('')}`

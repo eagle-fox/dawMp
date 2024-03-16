@@ -67,6 +67,10 @@ class userSession {
         this.token = token
     }
 
+    setToken(token){
+        this.token = token
+    }
+
 
 }
 

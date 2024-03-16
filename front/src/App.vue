@@ -60,10 +60,7 @@ export default {
     },
     async loadUserSessionByCookie() {
       let url = JSON.stringify(this.$config.devConfig.apiServer);
-      console.log(url)
-
       let connectData = parseUrl(url);
-      console.log(connectData[0])
       if (Cookies.get('tokenCookie')) {
         let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
         let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));

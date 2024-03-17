@@ -228,3 +228,10 @@ Se genera cada vez que reconstruyes el contenedor de PHP, por lo que, si haces u
 se generará la documentación de PHP y se dejará en la carpeta `/docs/phpdoc`.
 
 Se hace de modo automático sin tener que hacer nada más y aparece en github pages automáticamente.
+
+## Esquema de red
+
+La notoriedad aquí es que solo PHP tiene acceso a MySQL dado que, no está expuesto cara al público,
+por tanto es PHP contra quien manejas los datos, nunca contra MySQL ni se da posibilidad de ello.
+
+![Esquema de red](diagramaDocker.svg)

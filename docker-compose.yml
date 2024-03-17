@@ -51,9 +51,11 @@ services:
       TZ: Europe/Madrid
     volumes:
       - './back/api/app:/data'
+      - './docs/phpdoc:/output'
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
+    command: [ "-d", "/data", "-t", "/output" ]
 
   mysql:
     container_name: fox-mysql

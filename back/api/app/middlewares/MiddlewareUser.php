@@ -26,6 +26,22 @@ use InvalidArgumentException;
  */
 class MiddlewareUser
 {
+    /**
+     * @throws InvalidArgumentException en casos de que pida al MiddlewareUser que haga algo que no puede hacer o falta de argumentos
+     * @throws Exception en casos de problemas SQL
+     * @var UUID $bearerToken Token de autenticación
+     * @var IPv4 $ipv4 Dirección IP del cliente
+     * @var User $user Usuario autenticado, puede ser NULL si no se ha autenticado correctamente
+     * @var Email $email Email del usuario
+     * @var Password $password Contraseña del usuario, depende de la variable de entorno LEAF_DEV_TOOLS
+     * @var Client $client Cliente autenticado, puede ser NULL si no se ha autenticado correctamente
+     * @var Rol $targetRol OPCIONAL Rol al que se quiere acceder (ADMIN, USER, IOT, GUEST) pero es opcional por defecto es ADMIN.
+     * @var AuthMethods $authMethod Método de autenticación, puede ser BEARER o BASIC
+     * @var bool $debug Variable de entorno LEAF_DEV_TOOLS
+     * @var string $headers Cabeceras de la petición
+     * @var Log $log Log de la petición
+     * @var mixed $targetId Id del usuario al que se quiere acceder, pero es opcional.
+     */
     public UUID $bearerToken;
     public IPv4 $ipv4;
     public User $user;

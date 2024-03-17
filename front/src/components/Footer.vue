@@ -8,14 +8,4 @@
 </template>
 
 <style scoped>
-.footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-top: var(--accent) 2px solid;
-    background-color: #1e1e1e;
-}
-
-
 </style>

@@ -55,7 +55,7 @@ services:
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
-    command: [ "-d", "/data", "-t", "/output" ]
+    command: [ "-d", "/data", "-t", "/output", "-s", "template.color=deep-purple" ]
 
   mysql:
     container_name: fox-mysql

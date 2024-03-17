@@ -20,9 +20,7 @@ use Faker\Factory;
 class DemoController extends Controller
 {
     /**
-     * Clase DemoController
-     *
-     * Esta clase se encarga de crear datos de prueba para la aplicación usando Faker.
+     * Crea datos de prueba para la aplicación.
      */
     public function create(): void
     {

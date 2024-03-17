@@ -19,49 +19,74 @@ use InvalidArgumentException;
 /**
  * Class MiddlewareUser
  *
- * Esta clase se encarga de gestionar la autenticación y autorización de los usuarios.
- * @param Rol $targetRol Rol al que se quiere acceder (ADMIN, USER, IOT, GUEST) pero es opcional por defecto es ADMIN.
- * @param int $targetId Id del usuario al que se quiere acceder, pero es opcional.
- * @returns User | False | Exception en función de la autenticación y autorización.
+ * Esta clase se encarga de gestionar la autenticación y autorización de los usuarios..
  */
 class MiddlewareUser
 {
     /**
-     * @throws InvalidArgumentException en casos de que pida al MiddlewareUser que haga algo que no puede hacer o falta de argumentos
-     * @throws Exception en casos de problemas SQL
-     * @var UUID $bearerToken Token de autenticación
-     * @var IPv4 $ipv4 Dirección IP del cliente
-     * @var User $user Usuario autenticado, puede ser NULL si no se ha autenticado correctamente
-     * @var Email $email Email del usuario
-     * @var Password $password Contraseña del usuario, depende de la variable de entorno LEAF_DEV_TOOLS
-     * @var Client $client Cliente autenticado, puede ser NULL si no se ha autenticado correctamente
-     * @var Rol $targetRol OPCIONAL Rol al que se quiere acceder (ADMIN, USER, IOT, GUEST) pero es opcional por defecto es ADMIN.
-     * @var AuthMethods $authMethod Método de autenticación, puede ser BEARER o BASIC
-     * @var bool $debug Variable de entorno LEAF_DEV_TOOLS
-     * @var string $headers Cabeceras de la petición
-     * @var Log $log Log de la petición
-     * @var mixed $targetId Id del usuario al que se quiere acceder, pero es opcional.
+     * @var UUID Token de autenticación
      */
     public UUID $bearerToken;
+
+    /**
+     * @var IPv4 Dirección IP del cliente
+     */
     public IPv4 $ipv4;
+
+    /**
+     * @var User Usuario autenticado, puede ser NULL si no se ha autenticado correctamente
+     */
     public User $user;
-    private Email $email;
-    private Password $password;
+    /**
+     * @var Client Cliente autenticado, puede ser NULL si no se ha autenticado correctamente
+     */
     public Client $client;
+    /**
+     * @var Email Email del usuario
+     */
+    private Email $email;
+    /**
+     * @var Password Contraseña del usuario, depende de la variable de entorno LEAF_DEV_TOOLS
+     */
+    private Password $password;
+    /**
+     * @var Rol OPCIONAL Rol al que se quiere acceder (ADMIN, USER, IOT, GUEST) pero es opcional por defecto es ADMIN.
+     */
     private Rol $targetRol;
+
+    /**
+     * @var AuthMethods Método de autenticación, puede ser BEARER o BASIC
+     */
     private AuthMethods $authMethod;
+
+    /**
+     * @var bool Variable de entorno LEAF_DEV_TOOLS
+     */
     private bool $debug;
+
+    /**
+     * @var string Cabeceras de la petición
+     */
     private string $headers;
+
+    /**
+     * @var Log Log de la petición
+     */
     private Log $log;
+
+    /**
+     * @var mixed Id del usuario al que se quiere acceder, pero es opcional.
+     */
     private mixed $targetId;
 
     /**
-     * @throws Exception
+     * Constructor de la clase MiddlewareUser, se encarga de gestionar la autenticación y autorización de los usuarios.
+     * @param Rol $targetRol Rol al que se quiere acceder (ADMIN, USER, IOT, GUEST) pero es opcional por defecto es ADMIN.
+     * @param int|null $targetId Id del usuario al que se quiere acceder, pero es opcional.
+     * @throws Exception en casos de problemas SQL
      */
     public function __construct(Rol $targetRol = Rol::ADMIN, int $targetId = null)
     {
-
-
         $this->targetRol = $targetRol;
         $this->targetId = $targetId;
         $this->debug = getenv("LEAF_DEV_TOOLS") === "true";
@@ -85,6 +110,10 @@ class MiddlewareUser
         $this->checkRol();
     }
 
+    /**
+     * Lee las cabeceras de la petición y las guarda en la variable $headers
+     * @throws InvalidArgumentException si no se encuentra la cabecera de autenticación o si no es soportada, actualmente solo soporta Bearer y Basic.
+     */
     private function setHeaders(): void
     {
         $buffer = app()->request()->headers("Authorization");
@@ -95,6 +124,10 @@ class MiddlewareUser
         throw new InvalidArgumentException("No Authorization or unsupported header found");
     }
 
+    /**
+     * Establece el método de autenticación, puede ser BEARER o BASIC
+     * @throws InvalidArgumentException si no es soportado, actualmente solo soporta Bearer y Basic.
+     */
     private function setAuthMethod(): void
     {
         $parts = explode(" ", $this->headers);
@@ -113,13 +146,17 @@ class MiddlewareUser
         }
     }
 
+    /**
+     * Establece la dirección IP del cliente, se obtiene de la petición.
+     */
     private function setCurrentIp(): void
     {
         $this->ipv4 = new IPv4(app()->request()->getIp());
     }
 
     /**
-     * @throws Exception
+     * Establece el usuario autenticado, dependiendo del método de autenticación.
+     * @throws Exception si no se encuentra el usuario o si el usuario está bloqueado.
      */
     private function setCurrentUser(): void
     {
@@ -172,12 +209,20 @@ class MiddlewareUser
         }
     }
 
+    /**
+     * Lee el token de autenticación Bearer, y lo asigna al tipo para verificar si es un dispositivo IOT o un cliente.
+     * Si el token no es válido, se lanza una excepción desde el tipo UUID.
+     */
     private function readBearerToken(): void
     {
+
         $parts = explode(" ", $this->headers);
         $this->bearerToken = new UUID($parts[1]);
     }
 
+    /**
+     * Actualiza el token de autenticación por IP, si el cliente ya tiene un token, se le asigna, si no, se le crea uno nuevo.
+     */
     private function updateTokenPerIp(): void
     {
         $clients = Client::query()->where("user", $this->user->id)->get();
@@ -190,6 +235,10 @@ class MiddlewareUser
         $this->bearerToken = new UUID();
     }
 
+    /**
+     * Establece el cliente autenticado, si no existe, se crea uno nuevo.
+     * @throws Exception si no se encuentra el cliente o si el cliente no se puede crear.
+     */
     private function setClient(): void
     {
         $client = Client::query()->where("user", $this->user->id)->where("ipv4", $this->ipv4)->where("token", $this->bearerToken)->first();
@@ -202,6 +251,9 @@ class MiddlewareUser
         $this->registerClient();
     }
 
+    /**
+     * Registra un nuevo cliente, si no existe.
+     */
     private function registerClient(): void
     {
         $this->client = new Client();
@@ -212,6 +264,8 @@ class MiddlewareUser
     }
 
     /**
+     * Comprueba si el usuario tiene permisos para acceder a la ruta, dependiendo del rol suministrado y requerido, así
+     * mismo si está presente el id del usuario al que se quiere acceder si corresponde.
      * @throws Exception
      */
     private function checkRol(): void

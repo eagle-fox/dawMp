@@ -21,24 +21,24 @@
     --text-xxxxl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
     --text-xxxxxl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
 
-    --color-hue-red: 4;
-    --color-hue-pink: 340;
-    --color-hue-purple: 291;
-    --color-hue-deep-purple: 262;
-    --color-hue-indigo: 231;
-    --color-hue-blue: 207;
-    --color-hue-light-blue: 199;
-    --color-hue-cyan: 187;
-    --color-hue-teal: 174;
-    --color-hue-green: 122;
-    --color-hue-phpdocumentor-green: 96;
-    --color-hue-light-green: 88;
-    --color-hue-lime: 66;
-    --color-hue-yellow: 54;
-    --color-hue-amber: 45;
-    --color-hue-orange: 36;
-    --color-hue-deep-orange: 14;
-    --color-hue-brown: 16;
+    --color-hue-red:     4;
+    --color-hue-pink:     340;
+    --color-hue-purple:     291;
+    --color-hue-deep-purple:     262;
+    --color-hue-indigo:     231;
+    --color-hue-blue:     207;
+    --color-hue-light-blue:     199;
+    --color-hue-cyan:     187;
+    --color-hue-teal:     174;
+    --color-hue-green:     122;
+    --color-hue-phpdocumentor-green:     96;
+    --color-hue-light-green:     88;
+    --color-hue-lime:     66;
+    --color-hue-yellow:     54;
+    --color-hue-amber:     45;
+    --color-hue-orange:     36;
+    --color-hue-deep-orange:     14;
+    --color-hue-brown:     16;
 
     /* Colors */
     --primary-color-hue: var(--color-hue-deep-purple, --color-hue-phpdocumentor-green);
@@ -164,7 +164,8 @@ body {
 .phpdocumentor h3 .headerlink,
 .phpdocumentor h4 .headerlink,
 .phpdocumentor h5 .headerlink,
-.phpdocumentor h6 .headerlink {
+.phpdocumentor h6 .headerlink
+{
     display: none;
 }
 
@@ -1057,7 +1058,7 @@ is too big a fix and needs to be done in a new design iteration.
     margin: 0;
 }
 
-.phpdocumentor .phpdocumentor-search-results__title {
+.phpdocumentor  .phpdocumentor-search-results__title {
     font-size: var(--text-xl);
     margin-bottom: 0;
 }
@@ -1145,7 +1146,7 @@ is too big a fix and needs to be done in a new design iteration.
     position: relative;
     padding: 2em;
     box-sizing: border-box;
-    max-width: 100vw;
+    max-width:100vw;
 }
 
 .phpdocumentor-modal__close {
@@ -1190,7 +1191,7 @@ is too big a fix and needs to be done in a new design iteration.
 
     .phpdocumentor-on-this-page__content::-webkit-scrollbar-thumb,
     [scrollbars]::-webkit-scrollbar-thumb {
-        background: rgba(128, 134, 139, 0.26);
+        background: rgba(128,134,139,0.26);
         border-radius: 8px;
     }
 

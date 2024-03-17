@@ -221,3 +221,10 @@ O bien
 cd front/
 bun dev
 ```
+
+### PHPDoc
+
+Se genera cada vez que reconstruyes el contenedor de PHP, por lo que, si haces un `docker-compose up --build`,
+se generará la documentación de PHP y se dejará en la carpeta `/docs/phpdoc`.
+
+Se hace de modo automático sin tener que hacer nada más y aparece en github pages automáticamente.

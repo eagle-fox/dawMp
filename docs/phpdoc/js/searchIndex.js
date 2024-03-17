@@ -339,61 +339,61 @@ Search.appendIndex(
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003A__construct\u0028\u0029',
             'name': '__construct',
-            'summary': '',
+            'summary': 'Constructor\u0020de\u0020la\u0020clase\u0020MiddlewareUser,\u0020se\u0020encarga\u0020de\u0020gestionar\u0020la\u0020autenticaci\u00F3n\u0020y\u0020autorizaci\u00F3n\u0020de\u0020los\u0020usuarios.',
             'url': 'classes/app-middlewares-MiddlewareUser.html#method___construct',
         },
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003AsetHeaders\u0028\u0029',
             'name': 'setHeaders',
-            'summary': '',
+            'summary': 'Lee\u0020las\u0020cabeceras\u0020de\u0020la\u0020petici\u00F3n\u0020y\u0020las\u0020guarda\u0020en\u0020la\u0020variable\u0020\u0024headers',
             'url': 'classes/app-middlewares-MiddlewareUser.html#method_setHeaders',
         },
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003AsetAuthMethod\u0028\u0029',
             'name': 'setAuthMethod',
-            'summary': '',
+            'summary': 'Establece\u0020el\u0020m\u00E9todo\u0020de\u0020autenticaci\u00F3n,\u0020puede\u0020ser\u0020BEARER\u0020o\u0020BASIC',
             'url': 'classes/app-middlewares-MiddlewareUser.html#method_setAuthMethod',
         },
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003AsetCurrentIp\u0028\u0029',
             'name': 'setCurrentIp',
-            'summary': '',
+            'summary': 'Establece\u0020la\u0020direcci\u00F3n\u0020IP\u0020del\u0020cliente,\u0020se\u0020obtiene\u0020de\u0020la\u0020petici\u00F3n.',
             'url': 'classes/app-middlewares-MiddlewareUser.html#method_setCurrentIp',
         },
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003AsetCurrentUser\u0028\u0029',
             'name': 'setCurrentUser',
-            'summary': '',
+            'summary': 'Establece\u0020el\u0020usuario\u0020autenticado,\u0020dependiendo\u0020del\u0020m\u00E9todo\u0020de\u0020autenticaci\u00F3n.',
             'url': 'classes/app-middlewares-MiddlewareUser.html#method_setCurrentUser',
         },
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003AreadBearerToken\u0028\u0029',
             'name': 'readBearerToken',
-            'summary': '',
+            'summary': 'Lee\u0020el\u0020token\u0020de\u0020autenticaci\u00F3n\u0020Bearer,\u0020y\u0020lo\u0020asigna\u0020al\u0020tipo\u0020para\u0020verificar\u0020si\u0020es\u0020un\u0020dispositivo\u0020IOT\u0020o\u0020un\u0020cliente.',
             'url': 'classes/app-middlewares-MiddlewareUser.html#method_readBearerToken',
         },
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003AupdateTokenPerIp\u0028\u0029',
             'name': 'updateTokenPerIp',
-            'summary': '',
+            'summary': 'Actualiza\u0020el\u0020token\u0020de\u0020autenticaci\u00F3n\u0020por\u0020IP,\u0020si\u0020el\u0020cliente\u0020ya\u0020tiene\u0020un\u0020token,\u0020se\u0020le\u0020asigna,\u0020si\u0020no,\u0020se\u0020le\u0020crea\u0020uno\u0020nuevo.',
             'url': 'classes/app-middlewares-MiddlewareUser.html#method_updateTokenPerIp',
         },
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003AsetClient\u0028\u0029',
             'name': 'setClient',
-            'summary': '',
+            'summary': 'Establece\u0020el\u0020cliente\u0020autenticado,\u0020si\u0020no\u0020existe,\u0020se\u0020crea\u0020uno\u0020nuevo.',
             'url': 'classes/app-middlewares-MiddlewareUser.html#method_setClient',
         },
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003AregisterClient\u0028\u0029',
             'name': 'registerClient',
-            'summary': '',
+            'summary': 'Registra\u0020un\u0020nuevo\u0020cliente,\u0020si\u0020no\u0020existe.',
             'url': 'classes/app-middlewares-MiddlewareUser.html#method_registerClient',
         },
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003AcheckRol\u0028\u0029',
             'name': 'checkRol',
-            'summary': '',
+            'summary': 'Comprueba\u0020si\u0020el\u0020usuario\u0020tiene\u0020permisos\u0020para\u0020acceder\u0020a\u0020la\u0020ruta,\u0020dependiendo\u0020del\u0020rol\u0020suministrado\u0020y\u0020requerido,\u0020as\u00ED\nmismo\u0020si\u0020est\u00E1\u0020presente\u0020el\u0020id\u0020del\u0020usuario\u0020al\u0020que\u0020se\u0020quiere\u0020acceder\u0020si\u0020corresponde.',
             'url': 'classes/app-middlewares-MiddlewareUser.html#method_checkRol',
         },
         {
@@ -433,6 +433,12 @@ Search.appendIndex(
             'url': 'classes/app-middlewares-MiddlewareUser.html#property_user',
         },
         {
+            'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003A\u0024client',
+            'name': 'client',
+            'summary': '',
+            'url': 'classes/app-middlewares-MiddlewareUser.html#property_client',
+        },
+        {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003A\u0024email',
             'name': 'email',
             'summary': '',
@@ -443,12 +449,6 @@ Search.appendIndex(
             'name': 'password',
             'summary': '',
             'url': 'classes/app-middlewares-MiddlewareUser.html#property_password',
-        },
-        {
-            'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003A\u0024client',
-            'name': 'client',
-            'summary': '',
-            'url': 'classes/app-middlewares-MiddlewareUser.html#property_client',
         },
         {
             'fqsen': '\\app\\middlewares\\MiddlewareUser\u003A\u003A\u0024targetRol',
@@ -1295,5 +1295,5 @@ Search.appendIndex(
             'name': 'types',
             'summary': '',
             'url': 'namespaces/app-types.html',
-        }],
-)
+        }]
+);

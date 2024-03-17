@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://www.phpdoc.org/phpdoc.xsd">
+
+    <title>Eagle-Fox API</title>
+
+    <parser>
+        <target>./docs</target>
+    </parser>
+
+    <transformer>
+        <target>./docs</target>
+    </transformer>
+
+    <transformations>
+        <template name="clean"/>
+    </transformations>
+
+    <files>
+        <directory>.</directory>
+        <ignore>vendor/</ignore>
+    </files>
+
+</phpdoc>

@@ -6,6 +6,7 @@ use app\mail\EmailConnector;
 use app\models\IotDevice;
 use app\mail\Dinahosting;
 use Faker\Factory;
+use app\controllers\MailController;
 
 require_once __DIR__ . "/user.php";
 require_once __DIR__ . "/iotDevices.php";
@@ -30,41 +31,10 @@ app()->get("/cumpleaños", function () {
 });
 
 app()->get("/testemail", function () {
-    $fakers = [
-        Factory::create('es_ES'),
-        Factory::create('en_UK'),
-        Factory::create('pt_PT'),
-        Factory::create('de_DE'),
-    ];
 
-    $msg = "";
+    $mailPHP = new MailController();
+    $mailPHP->send('yeisonrascado@gmail.com', 'Hola', '', 'Yeison');
 
-    for ($i = 0; $i < 4; $i++) {
-        $faker = $fakers[$i];
-        if ($i === 0) {
-            $language = 'es';
-        } else if ($i === 1) {
-            $language = 'en';
-        } else if ($i === 2) {
-            $language = 'pt';
-        } else {
-            $language = 'de';
-        }
-
-        $msg .= "<h1>Idioma: " . strtoupper($language) . "</h1>";
-        $msg .= "<h2>Nombre: " . $faker->name . "</h2>";
-        $msg .= "<p>" . $faker->realText(1024) . "</p>";
-
-        $avatarUrl = $faker->imageUrl(100, 100, 'people');
-        $msg .= "<p><img src='{$avatarUrl}' alt='Avatar aleatorio'></p>";
-    }
-
-    $email = new Dinahosting();
-    $email->enviar(
-        'yeisonrascado@gmail.com',
-        'Prueba de PHP Mailer',
-        $msg
-    );
 
     response()->json(["message" => "Email sent"]);
 });

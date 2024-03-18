@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\Exception;
 class Dinahosting
 {
     // Método para enviar un correo electrónico
-    public static function enviar($destinatario, $asunto, $cuerpo)
+    public static function enviar($destinatario, $asunto, $cuerpo, $nombre)
     {
         $mail = new PHPMailer(true);
 
@@ -24,7 +24,7 @@ class Dinahosting
             $mail->Port = getenv('MAIL_PORT');
             $mail->SMTPDebug = 2;
 
-            $mail->setFrom(getenv('MAIL_USERNAME'), 'Tu Nombre');
+            $mail->setFrom(getenv('MAIL_USERNAME'), $nombre);
             $mail->addAddress($destinatario);
 
             $mail->isHTML(true);

@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 
+use app\mail\Email;
+use app\mail\EmailConnector;
 use app\models\IotDevice;
+use app\mail\Tls;
 
 require_once __DIR__ . "/user.php";
 require_once __DIR__ . "/iotDevices.php";
@@ -23,4 +26,15 @@ app()->get("/cumpleaños", function () {
             error_log("Device updated: " . json_encode($device));
         }
         response()->json(["message" => "Cumpleaños actualizados"]);
+});
+
+app()->get("/testemail", function () {
+    //$emailConnector = new Tls();
+    $email = new Tls();
+    $email->enviar(
+        'yeisonrascado@gmail.com', 
+        'Prima', 
+        'Prima'
+    );
+    response()->json(["message" => "Email sent"]);
 });

@@ -50,8 +50,7 @@ class userSession {
     }
 
     async #getIotDevicesData(token){
-        let url = JSON.stringify(this.$config.devConfig.apiServer);
-        let connectData = parseUrl(url);
+        let connectData = parseUrl(this.$config.devConfig.apiServer);
         let myUrl = new URL(connectData[0], connectData[1], connectData[2])
         let query = new Query(myUrl).withAuth(new BearerToken(this.token))
         let response = await query.getIotDevicesBySelf()
@@ -64,10 +63,6 @@ class userSession {
         this.name = name
         this.email = email
         this.role = role
-        this.token = token
-    }
-
-    setToken(token){
         this.token = token
     }
 

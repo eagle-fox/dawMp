@@ -83,9 +83,8 @@ export default {
         // It makes a request to the API to get the animal data via the user's token.
         async loadIotDevices() {
             try {
-                let url = JSON.stringify(this.$config.devConfig.apiServer);
-                let connectData = parseUrl(url);
-                let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
+                let connectData = parseUrl(this.$config.devConfig.apiServer);
+                let myUrl = new URL('http', 'localhost', 2003)
                 let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token));
                 let response = await query.getIotDevicesBySelf();
                 response = response.data;
@@ -107,10 +106,9 @@ export default {
             }
 
             if (Cookies.get('tokenCookie')) {
-                let url = JSON.stringify(this.$config.devConfig.apiServer);
-                let connectData = parseUrl(url);
+                let connectData = parseUrl(this.$config.devConfig.apiServer);
 
-                let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
+                let myUrl = new URL('http', 'localhost', 2003)
                 let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
                 let response = await query.login();
 

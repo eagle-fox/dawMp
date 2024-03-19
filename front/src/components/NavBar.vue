@@ -182,5 +182,13 @@ export default {
 </template>
 
 <style scoped>
+.flag-icon {
+    margin-left: 3px;
+}
 
+#navbar {
+    background-color: #1e1e1e;
+    border-bottom: var(--accent) 2px solid;
+    padding: 1em 4em;
+}
 </style>

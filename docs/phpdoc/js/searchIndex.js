@@ -106,15 +106,25 @@ Search.appendIndex(
             "summary": "M\u00E9todo\u0020destroy",
             "url": "classes/app-controllers-IotDevicesController.html#method_destroy"
         },                {
+            "fqsen": "\\app\\controllers\\MailController",
+            "name": "MailController",
+            "summary": "",
+            "url": "classes/app-controllers-MailController.html"
+        },                {
+            "fqsen": "\\app\\controllers\\MailController\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "",
+            "url": "classes/app-controllers-MailController.html#method_send"
+        },                {
+            "fqsen": "\\app\\controllers\\MailController\u003A\u003AmakeFakeData\u0028\u0029",
+            "name": "makeFakeData",
+            "summary": "",
+            "url": "classes/app-controllers-MailController.html#method_makeFakeData"
+        },                {
             "fqsen": "\\app\\controllers\\UsersController",
             "name": "UsersController",
             "summary": "",
             "url": "classes/app-controllers-UsersController.html"
-        },                {
-            "fqsen": "\\app\\controllers\\UsersController\u003A\u003Asend\u0028\u0029",
-            "name": "send",
-            "summary": "",
-            "url": "classes/app-controllers-UsersController.html#method_send"
         },                {
             "fqsen": "\\app\\controllers\\UsersController\u003A\u003Aindex\u0028\u0029",
             "name": "index",
@@ -236,45 +246,15 @@ Search.appendIndex(
             "summary": "Run\u0020the\u0020database\u0020seeds.",
             "url": "classes/App-Database-Seeds-UsersSeeder.html#method_run"
         },                {
-            "fqsen": "\\app\\mail\\Email",
-            "name": "Email",
+            "fqsen": "\\app\\mail\\Dinahosting",
+            "name": "Dinahosting",
             "summary": "",
-            "url": "classes/app-mail-Email.html"
+            "url": "classes/app-mail-Dinahosting.html"
         },                {
-            "fqsen": "\\app\\mail\\Email\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "",
-            "url": "classes/app-mail-Email.html#method___construct"
-        },                {
-            "fqsen": "\\app\\mail\\Email\u003A\u003AsendEmail\u0028\u0029",
-            "name": "sendEmail",
-            "summary": "",
-            "url": "classes/app-mail-Email.html#method_sendEmail"
-        },                {
-            "fqsen": "\\app\\mail\\Email\u003A\u003A\u0024emailConnector",
-            "name": "emailConnector",
-            "summary": "",
-            "url": "classes/app-mail-Email.html#property_emailConnector"
-        },                {
-            "fqsen": "\\app\\mail\\EmailConnector",
-            "name": "EmailConnector",
-            "summary": "",
-            "url": "classes/app-mail-EmailConnector.html"
-        },                {
-            "fqsen": "\\app\\mail\\EmailConnector\u003A\u003AgetConfig\u0028\u0029",
-            "name": "getConfig",
-            "summary": "",
-            "url": "classes/app-mail-EmailConnector.html#method_getConfig"
-        },                {
-            "fqsen": "\\app\\mail\\Tls",
-            "name": "Tls",
-            "summary": "",
-            "url": "classes/app-mail-Tls.html"
-        },                {
-            "fqsen": "\\app\\mail\\Tls\u003A\u003Aenviar\u0028\u0029",
+            "fqsen": "\\app\\mail\\Dinahosting\u003A\u003Aenviar\u0028\u0029",
             "name": "enviar",
             "summary": "",
-            "url": "classes/app-mail-Tls.html#method_enviar"
+            "url": "classes/app-mail-Dinahosting.html#method_enviar"
         },                {
             "fqsen": "\\app\\middlewares\\MiddlewareUser",
             "name": "MiddlewareUser",

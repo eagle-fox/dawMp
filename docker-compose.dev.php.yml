@@ -20,7 +20,7 @@ services:
     container_name: fox-php8
     hostname: php8.fox
     build:
-      context: back/
+      context: back-php/
       dockerfile: ../docker/Dockerfile-php
     volumes:
       - './back/api/:/var/www/html/api'

@@ -454,5 +454,6 @@ dist/
 
 # End of https://www.toptal.com/developers/gitignore/api/vue,vuejs,laravel,phpstorm,visualstudiocode,intellij,webstorm+all,go,goland
 /chema/output/
-/back/api/app/.phpdoc/
-/back/api/app/docs/
+/back-php/api/app/.phpdoc/
+/back-php/api/app/docs/
+/.vscode/

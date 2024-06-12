@@ -60,9 +60,12 @@ export default {
     },
     async loadUserSessionByCookie() {
       let url = JSON.stringify(this.$config.devConfig.apiServer);
+      console.log(url)
+
       let connectData = parseUrl(url);
+      console.log(connectData[0])
       if (Cookies.get('tokenCookie')) {
-        let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
+        let myUrl = new URL('http', 'localhost', 2003)
         let query = new Query(myUrl).withAuth(new BearerToken(Cookies.get('tokenCookie')));
         let response = await query.login();
 
@@ -97,5 +100,30 @@ export default {
 </template>
 
 <style scoped>
+header {
+  line-height: 1.5;
+}
 
+.logo {
+  display: block;
+  margin: 0 auto 2rem;
+}
+
+@media (min-width: 1024px) {
+  header {
+    display: flex;
+    place-items: center;
+    padding-right: calc(var(--section-gap) / 2);
+  }
+
+  .logo {
+    margin: 0 2rem 0 0;
+  }
+
+  header .wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+  }
+}
 </style>

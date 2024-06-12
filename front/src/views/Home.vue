@@ -93,7 +93,7 @@ export default {
         </div>
 
         <div
-            class="card w-100 d-flex justify-content-center align-items-center p-4 flex-md-row flex-column primary-style"
+            class="w-100 d-flex justify-content-center align-items-center p-4 flex-md-row flex-column primary-style"
         >
             <div class="max-width-xxl p-4 text-light textFormat">
                 <h4 class="text-center">{{ $t('home.home_t3') }}</h4>

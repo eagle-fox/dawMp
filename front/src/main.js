@@ -23,7 +23,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 
 // Aplicar estilos globales
-import './scss/custom.css';
+import './assets/base.css';
 
 import userSession from './assets/js/userSession.js'
 

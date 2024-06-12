@@ -1,11 +1,15 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
 import { styleAssets } from '@/assets/config.json'
+import AnimalFormVue from '@/components/AnimalForm.vue'
+import parseUrl from '@/assets/js/miscelaneus'
+
 
 export default {
     name: 'About',
     components: {
         NavBar,
+        AnimalFormVue
     },
     data() {
         return {
@@ -25,12 +29,16 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <main :style="{ 'background-image': 'url(' + svgFile + ')' }">
-        <div class="d-flex flex-column align-items-center p-4 gap-4">
-            <h1>{{ $t('about.about_h1') }}</h1>
-            <div class="d-inline-flex shadow rounded bg-light p-4"></div>
-        </div>
+    <main class="main-container" :style="{ 'background-image': 'url(' + svgFile + ')' }">
+        <AnimalFormVue></AnimalFormVue>
     </main>
 </template>
 
-<style></style>
+<style scoped>
+.main-container {
+    height: calc(97vh - 58px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>

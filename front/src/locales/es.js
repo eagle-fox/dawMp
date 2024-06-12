@@ -11,8 +11,7 @@ let miscelaneusTextPackage = {
     age: 'Edad',
     name_page: 'Eagle Fox',
     pets: 'Macotas',
-    birthday: 'Cumpleaños',
-    birthday_date: 'Fecha de nacimiento'
+    birthday: 'Cumpleaños'
 }
 
 let langTextPackage = {

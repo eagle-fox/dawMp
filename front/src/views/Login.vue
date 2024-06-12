@@ -61,7 +61,8 @@ export default {
 
                     let connectData = parseUrl(this.$config.devConfig.apiServer);
 
-                    this.myUrl = new URL(connectData[0], connectData[1], connectData[2])
+                    // this.myUrl = new URL(connectData[0], connectData[1], parseInt(connectData[2]))
+                    this.myUrl = new URL('http', 'localhost', 2003)
                     this.query = new Query(this.myUrl).withAuth(new BasicAuth(this.name, this.password))
                 }
 
@@ -112,9 +113,7 @@ export default {
         },
         async loadIotDevices() {
             try {
-                let url = JSON.stringify(this.$config.devConfig.apiServer);
-                let connectData = parseUrl(url);
-                let myUrl = new URL(connectData[0], connectData[1], connectData[2]);
+                let myUrl = new URL('http', 'localhost', 2003)
                 let query = new Query(myUrl).withAuth(new BearerToken(this.$store.getters.getUserSession.token));
                 let response = await query.getIotDevicesBySelf();
                 response = response.data;

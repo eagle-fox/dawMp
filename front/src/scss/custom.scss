@@ -1,34 +1,134 @@
-@import "../../node_modules/bootstrap/scss/bootstrap";
-@import "../../node_modules/bootstrap/scss/variables";
-@import "../../node_modules/bootstrap/scss/mixins";
-@import "../../node_modules/bootstrap/scss/functions";
-@import "../assets/base.css";
+@import "./../../node_modules/bootstrap/scss/functions";
 
-$themes: (
-        light: (
-                text: #040316,
-                background: #fbfbfe,
-                primary: #007c8f,
-                secondary: #99c2ff,
-                accent: #336138,
-        ),
-        dark: (
-                text: #eae9fc,
-                background: #010104,
-                primary: #70ecff,
-                secondary: #002966,
-                accent: #9ecca3,
-        ),
+// CONFIGURACIÓN PRIMITIVA DE BOOSTRAP
+
+$background: #fbfbfe;
+$primary: #336138;
+$secondary: #007C8FFF;
+$accent: #336138FF;
+$success: #006737;
+$info: #17a2b8;
+$warning: #ffc107;
+$danger: #bb1535;
+
+$body-bg: $background;
+$body-bg-dark: #001e33;
+
+$body-color: $primary;
+$body-color-dark: #ffffff;
+
+$font-family-base: "xunta-sans";
+$font-family-monospace: "Ubuntu Sans Mono";
+
+$border-radius: .1rem;
+$justify-content: center;
+$align-items: center;
+$align-content: center;
+$form-control-width: 100%;
+$focus-ring-color: $accent;
+
+$headings-color: $primary;
+$headings-color-dark: $background;
+
+$color: $primary;
+$color-dark: $background;
+
+$font-size-base: 1rem;
+
+$input-color: $primary;
+$input-color-dark: $background;
+
+$input-focus-color: $accent;
+
+$table-primary: $primary;
+
+@import "./../../node_modules/bootstrap-icons/font/bootstrap-icons";
+@import "fonts.scss";
+
+@import "./../../node_modules/bootstrap/scss/variables";
+@import "./../../node_modules/bootstrap/scss/variables-dark";
+@import "./../../node_modules/bootstrap/scss/maps";
+@import "./../../node_modules/bootstrap/scss/mixins";
+@import "./../../node_modules/bootstrap/scss/utilities";
+@import "./../../node_modules/bootstrap/scss/root";
+@import "./../../node_modules/bootstrap/scss/reboot";
+
+@import "./../../node_modules/bootstrap/scss/type";
+@import "./../../node_modules/bootstrap/scss/images";
+@import "./../../node_modules/bootstrap/scss/containers";
+@import "./../../node_modules/bootstrap/scss/grid";
+@import "./../../node_modules/bootstrap/scss/tables";
+
+@import "./../../node_modules/bootstrap/scss/toasts";
+@import "./../../node_modules/bootstrap/scss/forms";
+@import "./../../node_modules/bootstrap/scss/buttons";
+@import "./../../node_modules/bootstrap/scss/transitions";
+@import "./../../node_modules/bootstrap/scss/dropdown";
+@import "./../../node_modules/bootstrap/scss/button-group";
+@import "./../../node_modules/bootstrap/scss/nav";
+@import "./../../node_modules/bootstrap/scss/navbar"; // Requires nav
+@import "./../../node_modules/bootstrap/scss/card";
+@import "./../../node_modules/bootstrap/scss/breadcrumb";
+@import "./../../node_modules/bootstrap/scss/accordion";
+@import "./../../node_modules/bootstrap/scss/pagination";
+@import "./../../node_modules/bootstrap/scss/badge";
+@import "./../../node_modules/bootstrap/scss/alert";
+@import "./../../node_modules/bootstrap/scss/progress";
+@import "./../../node_modules/bootstrap/scss/list-group";
+@import "./../../node_modules/bootstrap/scss/close";
+@import "./../../node_modules/bootstrap/scss/toasts";
+@import "./../../node_modules/bootstrap/scss/modal"; // Requires transitions
+@import "./../../node_modules/bootstrap/scss/tooltip";
+@import "./../../node_modules/bootstrap/scss/popover";
+@import "./../../node_modules/bootstrap/scss/carousel";
+@import "./../../node_modules/bootstrap/scss/spinners";
+@import "./../../node_modules/bootstrap/scss/offcanvas"; // Requires transitions
+@import "./../../node_modules/bootstrap/scss/placeholders";
+
+// Helpers
+@import "./../../node_modules/bootstrap/scss/helpers";
+
+// Utilities
+@import "./../../node_modules/bootstrap/scss/utilities/api";
+
+// SOBREESCRITURAS
+
+$table-variants: (
+        "primary": $primary,
+        "secondary": $secondary,
+        "success": $success,
+        "info": $info,
+        "warning": $warning,
+        "danger": $danger,
+        "light": $light,
+        "dark": $dark,
 );
 
-// Selecciona el tema que deseas usar
-$theme: map-get($themes, light);
+@each $variant, $color in $table-variants {
+        .table-#{$variant} {
+                background-color: $color;
+                color: $color;
+        }
+}
 
-// Asigna los colores del tema a las variables de Bootstrap
-$primary: map-get($theme, primary);
-$secondary: map-get($theme, secondary);
-$success: map-get($theme, accent);
-$body-bg: map-get($theme, background);
-$body-color: map-get($theme, text);
 
-@import "../../node_modules/bootstrap/scss/bootstrap";
+//
+// ESTILOS PERSONALIZADOS
+//
+
+// TEMA CLARO
+[data-bs-theme="light"] {
+
+}
+
+// TEMA OSCURO
+[data-bs-theme="dark"] {
+
+}
+
+
+
+
+@media print {
+
+}

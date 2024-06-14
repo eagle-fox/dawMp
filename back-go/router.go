@@ -1,6 +1,9 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/eagle-fox/dawMp/controllers"
+	"github.com/gin-gonic/gin"
+)
 
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
@@ -14,6 +17,24 @@ func SetupRouter() *gin.Engine {
 			"access":  "El acceso es REST.",
 		})
 	})
+
+	iotDataGroup := router.Group("/iotData")
+	{
+		iotDataGroup.GET("/", controllers.IotDataControllerIndex)
+		// iotDataGroup.POST("/", controllers.IotDataControllerStore)
+		// iotDataGroup.GET("/:id", controllers.IotDataControllerShow)
+		// iotDataGroup.PUT("/:id", controllers.IotDataControllerUpdate)
+		// iotDataGroup.DELETE("/:id", controllers.IotDataControllerDestroy)
+	}
+
+	iotDeviceGroup := router.Group("/iotDevice")
+	{
+		iotDeviceGroup.GET("/", controllers.IotDeviceControllerIndex)
+		iotDeviceGroup.POST("/", controllers.IotDeviceControllerStore)
+		iotDeviceGroup.GET("/:id", controllers.IotDeviceControllerShow)
+		iotDeviceGroup.PUT("/:id", controllers.IotDeviceControllerUpdate)
+		iotDeviceGroup.DELETE("/:id", controllers.IotDeviceControllerDestroy)
+	}
 
 	return router
 }

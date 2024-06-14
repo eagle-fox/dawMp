@@ -17,4 +17,5 @@ func (r Rol) String() string {
 	case IOT:
 		return "IOT"
 	}
+	return "UNKNOWN"
 }

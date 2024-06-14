@@ -2,6 +2,7 @@ package types
 
 import (
 	"crypto/sha256"
+	"database/sql/driver"
 	"encoding/hex"
 	"errors"
 	"os"
@@ -48,10 +49,6 @@ func NewPassword(password interface{}) (*Password, error) {
 	return p, nil
 }
 
-func (p *Password) GetHashedPassword() string {
-	return p.hashedPassword
-}
-
 func (p *Password) validatePassword(password string) error {
 	if len(password) < 12 {
 		return errors.New("password must be at least 12 characters long")
@@ -71,13 +68,26 @@ func (p *Password) validatePassword(password string) error {
 	return nil
 }
 
-func (p *Password) GetPassword() string {
-	if p.debug {
-		return p.hashedPassword
-	}
-	return "Unauthorized access to hashed password. Debug mode is off."
-}
-
 func (p *Password) String() string {
 	return p.hashedPassword
+}
+
+// Value implements the driver Valuer interface.
+func (p Password) Value() (driver.Value, error) {
+	return p.hashedPassword, nil
+}
+
+// Scan implements the Scanner interface.
+func (p *Password) Scan(value interface{}) error {
+	if value == nil {
+		return errors.New("password cannot be null")
+	}
+
+	hashedPassword, ok := value.(string)
+	if !ok {
+		return errors.New("invalid password type")
+	}
+
+	p.hashedPassword = hashedPassword
+	return nil
 }

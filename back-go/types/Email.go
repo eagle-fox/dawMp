@@ -1,6 +1,7 @@
 package types
 
 import (
+	"database/sql/driver"
 	"errors"
 	"strings"
 )
@@ -41,22 +42,35 @@ func NewEmail(email interface{}) (*Email, error) {
 	return e, nil
 }
 
-func (e *Email) GetLocalPart() string {
-	return e.LocalPart
-}
-
-func (e *Email) GetDomain() string {
-	return e.Domain
-}
-
-func (e *Email) GetExtension() string {
-	return e.Extension
+func (e *Email) String() string {
+	return e.GetEmail()
 }
 
 func (e *Email) GetEmail() string {
 	return e.LocalPart + "@" + e.Domain + "." + e.Extension
 }
 
-func (e *Email) String() string {
-	return e.GetEmail()
+// Value implements the driver Valuer interface.
+func (e Email) Value() (driver.Value, error) {
+	return e.String(), nil
+}
+
+// Scan implements the Scanner interface.
+func (e *Email) Scan(value interface{}) error {
+	if value == nil {
+		return errors.New("email cannot be null")
+	}
+
+	emailString, ok := value.(string)
+	if !ok {
+		return errors.New("invalid email type")
+	}
+
+	parsedEmail, err := NewEmail(emailString)
+	if err != nil {
+		return err
+	}
+
+	*e = *parsedEmail
+	return nil
 }

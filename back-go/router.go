@@ -21,10 +21,10 @@ func SetupRouter() *gin.Engine {
 	iotDataGroup := router.Group("/iotData")
 	{
 		iotDataGroup.GET("/", controllers.IotDataControllerIndex)
-		// iotDataGroup.POST("/", controllers.IotDataControllerStore)
-		// iotDataGroup.GET("/:id", controllers.IotDataControllerShow)
-		// iotDataGroup.PUT("/:id", controllers.IotDataControllerUpdate)
-		// iotDataGroup.DELETE("/:id", controllers.IotDataControllerDestroy)
+		iotDataGroup.POST("/", controllers.IotDataControllerStore)
+		iotDataGroup.GET("/:id", controllers.IotDataControllerShow)
+		iotDataGroup.PUT("/:id", controllers.IotDataControllerUpdate)
+		iotDataGroup.DELETE("/:id", controllers.IotDataControllerDestroy)
 	}
 
 	iotDeviceGroup := router.Group("/iotDevice")
@@ -34,6 +34,16 @@ func SetupRouter() *gin.Engine {
 		iotDeviceGroup.GET("/:id", controllers.IotDeviceControllerShow)
 		iotDeviceGroup.PUT("/:id", controllers.IotDeviceControllerUpdate)
 		iotDeviceGroup.DELETE("/:id", controllers.IotDeviceControllerDestroy)
+	}
+
+	userGroup := router.Group("/user")
+	{
+		userGroup.GET("/", controllers.UsersIndex)
+		userGroup.POST("/", controllers.UsersStore)
+		userGroup.GET("/:id", controllers.UsersShow)
+		userGroup.PUT("/:id", controllers.UsersUpdate)
+		userGroup.DELETE("/:id", controllers.UsersDestroy)
+		userGroup.POST("/login", controllers.UsersLogin)
 	}
 
 	return router

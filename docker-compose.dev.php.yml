@@ -23,7 +23,7 @@ services:
       context: back-php/
       dockerfile: ../docker/Dockerfile-php
     volumes:
-      - './back/api/:/var/www/html/api'
+      - './back-php/api/:/var/www/html/api'
       - './.env:/var/www/html/api/.env'
     ports:
       - '2003:80'

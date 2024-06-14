@@ -4,12 +4,13 @@ import (
 	"github.com/eagle-fox/dawMp/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func IotDataControllerIndex(c *gin.Context) {
 	var data []models.IoTData
 
-	if err := models.DB.Find(&data).Error; err != nil {
+	if err := models.DB.Limit(1024).Find(&data).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error getting data"})
 		return
 	}
@@ -17,82 +18,89 @@ func IotDataControllerIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
-// // IotDataControllerStore maneja la solicitud para crear un nuevo dato de un dispositivo IoT.
-// func IotDataControllerStore(c *gin.Context) {
-// 	var inputData struct {
-// 		Device    string  `json:"device" binding:"required"`
-// 		Latitude  float64 `json:"latitude" binding:"required"`
-// 		Longitude float64 `json:"longitude" binding:"required"`
-// 	}
-//
-// 	if err := c.ShouldBindJSON(&inputData); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid data format"})
-// 		return
-// 	}
-//
-// 	newData := models.IotData{
-// 		Device:    inputData.Device,
-// 		Latitude:  inputData.Latitude,
-// 		Longitude: inputData.Longitude,
-// 	}
-//
-// 	if err := models.DB.Create(&newData).Error; err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error creating data"})
-// 		return
-// 	}
-//
-// 	c.JSON(http.StatusOK, gin.H{"message": "Data created", "data": newData})
-// }
-//
-// // IotDataControllerShow maneja la solicitud para obtener un dato específico de un dispositivo IoT.
-// func IotDataControllerShow(c *gin.Context) {
-// 	id, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid ID"})
-// 		return
-// 	}
-//
-// 	var data models.IotData
-// 	if err := models.DB.First(&data, id).Error; err != nil {
-// 		c.JSON(http.StatusNotFound, gin.H{"message": "Data not found"})
-// 		return
-// 	}
-//
-// 	c.JSON(http.StatusOK, gin.H{"message": "Data found", "data": data})
-// }
-//
-// // IotDataControllerUpdate maneja la solicitud para actualizar un dato de un dispositivo IoT (aunque no está permitido, devuelve un error 405).
-// func IotDataControllerUpdate(c *gin.Context) {
-// 	c.JSON(http.StatusMethodNotAllowed, gin.H{"message": "Method not allowed"})
-// }
-//
-// // IotDataControllerDestroy maneja la solicitud para eliminar un dato específico de un dispositivo IoT.
-// func IotDataControllerDestroy(c *gin.Context) {
-// 	id, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid ID"})
-// 		return
-// 	}
-//
-// 	var data models.IotData
-// 	if err := models.DB.First(&data, id).Error; err != nil {
-// 		c.JSON(http.StatusNotFound, gin.H{"message": "Data not found"})
-// 		return
-// 	}
-//
-// 	if err := models.DB.Delete(&data).Error; err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error deleting data"})
-// 		return
-// 	}
-//
-// 	c.JSON(http.StatusOK, gin.H{"message": "Data deleted"})
-// }
-//
-// // getUserFromContext es una función de utilidad para obtener el usuario del contexto de Gin.
-// func getUserFromContext(c *gin.Context) *types.User {
-// 	user, _ := c.Get("user")
-// 	if u, ok := user.(*types.User); ok {
-// 		return u
-// 	}
-// 	return nil
-// }
+func IotDataControllerStore(c *gin.Context) {
+	var input struct {
+		DeviceID  string `json:"device"`
+		Latitude  string `json:"latitude"`
+		Longitude string `json:"longitude"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	deviceID, err := strconv.Atoi(input.DeviceID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid device ID"})
+		return
+	}
+
+	latitude, err := strconv.ParseFloat(input.Latitude, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid latitude"})
+		return
+	}
+
+	longitude, err := strconv.ParseFloat(input.Longitude, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid longitude"})
+		return
+	}
+
+	data := models.IoTData{
+		Device:    deviceID,
+		Latitude:  latitude,
+		Longitude: longitude,
+	}
+
+	if err := models.DB.Create(&data).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error creating data"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+func IotDataControllerShow(c *gin.Context) {
+	var data models.IoTData
+	id := c.Param("id")
+
+	if err := models.DB.First(&data, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Data not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+func IotDataControllerUpdate(c *gin.Context) {
+	var data models.IoTData
+	id := c.Param("id")
+
+	if err := models.DB.First(&data, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Data not found"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	models.DB.Save(&data)
+	c.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+func IotDataControllerDestroy(c *gin.Context) {
+	var data models.IoTData
+	id := c.Param("id")
+
+	if err := models.DB.First(&data, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Data not found"})
+		return
+	}
+
+	models.DB.Delete(&data)
+	c.JSON(http.StatusOK, gin.H{"data": true})
+}

@@ -6,7 +6,7 @@ import (
 
 type IoTData struct {
 	gorm.Model
-	DeviceID  int     `gorm:"not null"`
+	Device    int     `gorm:"not null"`
 	Latitude  float64 `gorm:"not null"`
 	Longitude float64 `gorm:"not null"`
 }

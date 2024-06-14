@@ -51,12 +51,27 @@ services:
     environment:
       TZ: Europe/Madrid
     volumes:
-      - './back/api/app:/data'
+      - './back-php/api/app:/data'
       - './docs/phpdoc:/output'
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
     command: [ "-d", "/data", "-t", "/output", "-s", "template.color=deep-purple" ]
+
+  doxygen:
+    container_name: fox-doxygen
+    image: greenbone/doxygen
+    environment:
+      TZ: Europe/Madrid
+    volumes:
+      - './back-php/api:/data'
+      - './docs/doxygen:/output'
+    working_dir: /data
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+    command: [ "sh", "-c", "doxygen ./Doxyfile"]
+
 
   mysql:
     container_name: fox-mysql

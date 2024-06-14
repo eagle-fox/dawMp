@@ -1,53 +1,103 @@
 package middlewares
 
 import (
+	"encoding/base64"
+	"net/http"
 	"strings"
 
-	"crypto/sha256"
-	"crypto/subtle"
-
+	"github.com/eagle-fox/dawMp/models"
 	"github.com/gin-gonic/gin"
-	"github.com/vsouza/go-gin-boilerplate/config"
+	"gorm.io/gorm"
 )
 
-func sha256Sum(s string) []byte {
-	sum := sha256.Sum256([]byte(s))
-	arr := make([]byte, len(sum))
-	copy(arr, sum[:])
+// Asumiendo que tienes una variable global para tu conexión a la base de datos
+var db *gorm.DB
 
-	return arr
-}
-
-// secureCompare calculates sha256 hash of parameters a and b and does constant time comparison
-// to avoid time based attacks.
-func secureCompare(a, b string) int {
-	aSum := sha256Sum(a)
-	bSum := sha256Sum(b)
-
-	return subtle.ConstantTimeCompare(aSum, bSum)
-}
-
+// AuthMiddleware realiza la autenticación usando Basic Auth o Bearer token.
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		config := config.GetConfig()
-		reqKey := c.Request.Header.Get("X-Auth-Key")
-		reqSecret := c.Request.Header.Get("X-Auth-Secret")
+		authHeader := c.GetHeader("Authorization")
 
-		var key string
-		var secret string
-		if key = config.GetString("http.auth.key"); len(strings.TrimSpace(key)) == 0 {
-			c.AbortWithStatus(500)
-		}
-		if secret = config.GetString("http.auth.secret"); len(strings.TrimSpace(secret)) == 0 {
-			c.AbortWithStatus(401)
-		}
-
-		isKeysEqual := secureCompare(key, reqKey) == 1
-		isSecretsEqual := secureCompare(secret, reqSecret) == 1
-		if !isKeysEqual || !isSecretsEqual {
-			c.AbortWithStatus(401)
+		// Verificar si se proporciona Authorization header
+		if authHeader == "" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Authorization header missing"})
 			return
 		}
-		c.Next()
+
+		// Manejar autenticación Basic
+		if strings.HasPrefix(authHeader, "Basic ") {
+			// Decodificar credenciales
+			payload, err := base64.StdEncoding.DecodeString(authHeader[6:])
+			if err != nil {
+				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid base64"})
+				return
+			}
+			pair := strings.SplitN(string(payload), ":", 2)
+
+			// Verificar que se proporcionen usuario y contraseña
+			if len(pair) != 2 {
+				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid basic auth format"})
+				return
+			}
+
+			username := pair[0]
+			password := pair[1]
+
+			// Validar contra la base de datos (ejemplo)
+			user, err := getUserByUsernameAndPassword(username, password)
+			if err != nil {
+				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+				return
+			}
+
+			// Guardar el usuario en el contexto
+			c.Set("user", user)
+			c.Next()
+			return
+		}
+
+		// Manejar autenticación Bearer
+		if strings.HasPrefix(authHeader, "Bearer ") {
+			token := authHeader[7:]
+
+			// Validar contra la base de datos
+			user, err := getUserByBearerToken(token)
+			if err != nil {
+				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+				return
+			}
+
+			// Guardar el usuario en el contexto
+			c.Set("user", user)
+			c.Next()
+			return
+		}
+
+		// Si no es ni Basic ni Bearer
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Unsupported authentication method"})
 	}
+}
+
+// Función para obtener usuario por nombre de usuario y contraseña
+func getUserByUsernameAndPassword(username, password string) (*models.User, error) {
+	var user models.User
+	if err := db.Where("username = ? AND password = ?", username, password).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+// Función para obtener usuario por token Bearer
+func getUserByBearerToken(token string) (*models.User, error) {
+	var client models.Client
+	if err := db.Where("token = ?", token).First(&client).Error; err != nil {
+		return nil, err
+	}
+
+	var user models.User
+	if err := db.Where("id = ?", client.User).First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }

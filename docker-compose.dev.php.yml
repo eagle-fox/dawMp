@@ -1,41 +1,29 @@
 version: '3'
 services:
-  webhook:
-    container_name: fox-webhook
-    build:
-      context: webhook
-      dockerfile: ../docker/Dockerfile-webhook-go
-    ports:
-      - '2002:2002'
-    volumes:
-      - '.:/go/src/app/dawMp'
-    env_file:
-      - .env
-    networks:
-      - foxtrot-bridge
 
-  iot:
-    container_name: fox-iot
-    build:
-      context: iot
-      dockerfile: ../docker/Dockerfile-iot-go
-    ports:
-      - '2006:2006'
-    volumes:
-      - '.:/go/src/app/dawMp'
-    env_file:
-      - .env
-    networks:
-      - foxtrot-bridge
+#  iot:
+#    container_name: fox-iot
+#    build:
+#      context: iot
+#      dockerfile: ../docker/Dockerfile-iot-go
+#    ports:
+#      - '2006:2006'
+#    volumes:
+#      - '.:/go/src/app/dawMp'
+#    env_file:
+#      - .env
+#    networks:
+#      - foxtrot-api-lan
+#      - foxtrot-bridge
 
   php8:
     container_name: fox-php8
     hostname: php8.fox
     build:
-      context: back/
+      context: back-php/
       dockerfile: ../docker/Dockerfile-php
     volumes:
-      - './back/api/:/var/www/html/api'
+      - './back-php/api/:/var/www/html/api'
       - './.env:/var/www/html/api/.env'
     ports:
       - '2003:80'
@@ -43,6 +31,7 @@ services:
       - .env
     environment:
       LEAF_DEV_TOOLS: 'true'
+      TZ: Europe/Madrid
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
@@ -55,22 +44,19 @@ services:
       'composer update && apache2-foreground'
     ]
 
-  bun:
-    container_name: fox-bun
-    hostname: bun.fox
-    build:
-      context: front/
-      dockerfile: ../docker/Dockerfile-bunjs
-    working_dir: /app
-    volumes:
-      - fox-bun:/app/
+
+  phpdoc:
+    container_name: fox-phpdoc
+    image: phpdoc/phpdoc
     environment:
-      - REACT_APP_PHP_SERVER = "https://api.foxtrot.pedroseoaneprado.es"
-    ports:
-      - '2004:2024'
+      TZ: Europe/Madrid
+    volumes:
+      - './back/api/app:/data'
+      - './docs/phpdoc:/output'
     networks:
       - foxtrot-bridge
-    command: [ 'sh', '-c', 'bun run dev' ]
+      - foxtrot-api-lan
+    command: [ "-d", "/data", "-t", "/output", "-s", "template.color=deep-purple" ]
 
   mysql:
     container_name: fox-mysql
@@ -78,11 +64,15 @@ services:
     image: mysql:latest
     volumes:
       - fox-eagle-db:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - '2005:3306'
+    environment:
+      TZ: Europe/Madrid
     env_file:
       - .env
     networks:
+      - foxtrot-bridge
       - foxtrot-api-lan
 
 networks:

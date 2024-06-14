@@ -1,0 +1,39 @@
+# Build stage
+FROM golang:latest AS builder
+
+# Enable Go modules
+ENV GO111MODULE=on
+
+# Set the Current Working Directory inside the container
+WORKDIR /app
+
+# Copy go.mod and go.sum files to the workspace
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Install dependencies  from go.mod
+RUN go mod tidy
+
+# This layer will only be re-built when these files change
+COPY . .
+
+# Build the application
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+# Final stage
+FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates
+
+WORKDIR /root/
+
+# Copy the binary from the builder stage
+COPY --from=builder /app/main .
+
+# Expose port 8080
+EXPOSE 8080
+
+# Run the binary
+CMD ["./main"]

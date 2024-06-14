@@ -1,0 +1,50 @@
+version: '3'
+services:
+
+  go-app:
+    container_name: fox-go
+    hostname: go.fox
+    build:
+      context: ./back-go
+      dockerfile: ../Docker/Dockerfile-go
+    volumes:
+      - './back-go/:/go/src/app'
+      - '.env:/go/src/app/.env'
+    ports:
+      - '2003:8080'
+    env_file:
+      - .env
+    environment:
+      TZ: Europe/Madrid
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+
+  mysql:
+    container_name: fox-mysql
+    hostname: mysql.fox
+    image: mysql:latest
+    volumes:
+      - fox-eagle-db:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - '2005:3306'
+    environment:
+      TZ: Europe/Madrid
+    env_file:
+      - .env
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+
+networks:
+  foxtrot-api-lan:
+    internal: true
+  foxtrot-bridge:
+    driver: bridge
+volumes:
+  fox-eagle-db:
+  fox-bun:
+  fox-php:

@@ -74,5 +74,5 @@ func main() {
 	models.DB = db
 
 	// Configurar y ejecutar el enrutador
-	router.Run(":8080")
+	router.Run(":2003")
 }

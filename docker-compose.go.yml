@@ -11,7 +11,7 @@ services:
       - './back-go/go.sum:/go/src/app/go.sum'
       - 'go-cache:/go/pkg'
     ports:
-      - '2003:8080'
+      - '2003:2003'
     env_file:
       - .env
     environment:

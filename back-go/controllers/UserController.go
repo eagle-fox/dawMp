@@ -1,3 +1,4 @@
+// Package controllers provides the handlers for the HTTP endpoints of the application.
 package controllers
 
 import (
@@ -9,9 +10,10 @@ import (
 	"strings"
 )
 
+// UserControllerIndex handles the GET request to fetch all users.
+// It returns a list of user records in JSON format.
+// @param c *gin.Context - The context of the request.
 func UserControllerIndex(c *gin.Context) {
-
-	// Si el usuario es un administrador, proceder como de costumbre
 	var users []models.User
 	if err := models.DB.Find(&users).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error getting data"})
@@ -21,6 +23,9 @@ func UserControllerIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
 
+// UserControllerStore handles the POST request to create a new user record.
+// It expects JSON input with user details.
+// @param c *gin.Context - The context of the request.
 func UserControllerStore(c *gin.Context) {
 	var input struct {
 		Nombre          string `json:"nombre"`
@@ -54,10 +59,12 @@ func UserControllerStore(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"user": user})
-
 }
 
-// Función para obtener usuario por email y contraseña
+// getUserByEmailAndPassword retrieves a user by their email and password.
+// @param email string - The user's email.
+// @param password string - The user's password.
+// @return *models.User, error - The user object and an error, if any.
 func getUserByEmailAndPassword(email, password string) (*models.User, error) {
 	var user models.User
 	if err := models.DB.Where("email = ? AND password = ?", email, password).First(&user).Error; err != nil {
@@ -66,6 +73,9 @@ func getUserByEmailAndPassword(email, password string) (*models.User, error) {
 	return &user, nil
 }
 
+// UserControllerLogin handles the login request using basic or bearer authentication.
+// It validates the user credentials and returns the user record if successful.
+// @param c *gin.Context - The context of the request.
 func UserControllerLogin(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 
@@ -124,6 +134,9 @@ func UserControllerLogin(c *gin.Context) {
 	c.JSON(http.StatusBadRequest, gin.H{"error": "Unsupported authentication method"})
 }
 
+// getUserByBearerToken retrieves a user by their bearer token.
+// @param token string - The user's bearer token.
+// @return *models.User, error - The user object and an error, if any.
 func getUserByBearerToken(token string) (*models.User, error) {
 	var client models.Client
 	if err := models.DB.Where("token = ?", token).First(&client).Error; err != nil {
@@ -138,6 +151,9 @@ func getUserByBearerToken(token string) (*models.User, error) {
 	return &user, nil
 }
 
+// UserControllerShow handles the GET request to fetch a specific user by ID.
+// It returns the user record in JSON format.
+// @param c *gin.Context - The context of the request.
 func UserControllerShow(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -152,6 +168,9 @@ func UserControllerShow(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
+// UserControllerUpdate handles the PUT request to update a specific user by ID.
+// It expects JSON input to update the user record.
+// @param c *gin.Context - The context of the request.
 func UserControllerUpdate(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -170,6 +189,9 @@ func UserControllerUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
+// UserControllerDestroy handles the DELETE request to delete a specific user by ID.
+// It returns a confirmation message in JSON format.
+// @param c *gin.Context - The context of the request.
 func UserControllerDestroy(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

@@ -1,3 +1,4 @@
+// Package router sets up the routes for the web server using the Gin framework.
 package router
 
 import (
@@ -6,11 +7,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SetupRouter configures the Gin engine with routes, middleware, and templates.
+// It returns the configured *gin.Engine.
+//
+// The routes are organized into groups based on functionality:
+// - IoT Data: CRUD operations for IoT data, protected by authentication middleware.
+// - IoT Device: CRUD operations for IoT devices, protected by authentication middleware.
+// - Users: User management including login, protected by authentication middleware.
+//
+// The root route serves a simple HTML page with API information.
 func SetupRouter() *gin.Engine {
+	// Initialize a Gin router with default middleware (logger and recovery)
 	router := gin.Default()
 
+	// Load HTML templates from the "templates" directory
 	router.LoadHTMLGlob("templates/*")
 
+	// Define the root route to serve an HTML page
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(200, "index.html", gin.H{
 			"title":   "EAGLE-FOX API",
@@ -19,6 +32,7 @@ func SetupRouter() *gin.Engine {
 		})
 	})
 
+	// Group routes for IoT Data with authentication middleware
 	iotDataGroup := router.Group("/iotData", middlewares.AuthMiddleware())
 	{
 		iotDataGroup.GET("/", controllers.IotDataControllerIndex)
@@ -28,6 +42,7 @@ func SetupRouter() *gin.Engine {
 		iotDataGroup.DELETE("/:id", controllers.IotDataControllerDestroy)
 	}
 
+	// Group routes for IoT Device with authentication middleware
 	iotDeviceGroup := router.Group("/iotDevice", middlewares.AuthMiddleware())
 	{
 		iotDeviceGroup.GET("/", controllers.IotDeviceControllerIndex)
@@ -37,6 +52,7 @@ func SetupRouter() *gin.Engine {
 		iotDeviceGroup.DELETE("/:id", controllers.IotDeviceControllerDestroy)
 	}
 
+	// Group routes for Users with authentication middleware
 	userGroup := router.Group("/users", middlewares.AuthMiddleware())
 	{
 		userGroup.GET("/", controllers.UserControllerIndex)
@@ -47,5 +63,6 @@ func SetupRouter() *gin.Engine {
 		userGroup.POST("/login", controllers.UserControllerLogin)
 	}
 
+	// Return the configured router
 	return router
 }

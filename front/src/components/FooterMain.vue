@@ -11,9 +11,9 @@
           </div>
           <div class="col-md-6">
             <ul class="nav justify-content-center">
-              <li class="nav-item">
-                <a class="nav-link" href="#inicio">Inicio</a>
-              </li>
+                <router-link aria-current="page" class="nav-link active text-light" href="#" to="/">
+                            {{ $t('miscelaneus.home') }}
+                        </router-link>
               <li class="nav-item">
                 <a class="nav-link" href="#acerca-de">Acerca de</a>
               </li>

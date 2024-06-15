@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type IoTDevice struct {
+type IotDevice struct {
 	gorm.Model
 	Token         string `gorm:"type:char(36);not null;unique"`
 	Name          string `gorm:"default:'IoT'"`
@@ -15,4 +15,8 @@ type IoTDevice struct {
 	User          int     `gorm:"not null"`
 	LastLatitude  float64 `gorm:"default:null"`
 	LastLongitude float64 `gorm:"default:null"`
+}
+
+func (IotDevice) TableName() string {
+	return "iot_device"
 }

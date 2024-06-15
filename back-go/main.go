@@ -6,6 +6,7 @@ import (
 	"back-go/middlewares"
 	"back-go/models"
 	"back-go/router"
+	"back-go/types"
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -20,59 +21,90 @@ import (
 // main is the entry point of the application. It loads environment variables,
 // sets up the database connection, and starts the Gin server with middlewares and routes.
 func main() {
+	initDb()
+	initGinContext()
+	initRouter()
+}
 
-	// Load .env file
+func initDb() {
+	log.Println("Starting server...")
+	dbParams, err := loadEnv()
+	if err != nil {
+		log.Fatalf("Error loading environment variables: %v", err)
+		return
+	}
+	db := dbConnect(dbParams)
+	log.Println("Database connected")
+	loadModels(db)
+	doMigrations(db)
+	generateFakeData()
+}
+
+func initGinContext() {
+	r := gin.Default()
+	initSecurity(r)
+	initMiddleware(r)
+}
+
+func initRouter() {
+	router := router.SetupRouter()
+	router.Run(":2003")
+}
+
+func initSecurity(r *gin.Engine) gin.IRoutes {
+	return r.Use(cors.Default())
+}
+
+func initMiddleware(r *gin.Engine) {
+	r.Use(gin.Logger())                 // STD Logger
+	r.Use(gin.Recovery())               // Recovery in case of panic
+	r.Use(middlewares.AuthMiddleware()) // Our old PHP middleware migrated to Golang
+}
+
+func loadModels(db *gorm.DB) {
+	log.Println("Loading models...")
+	models.DB = db
+	log.Println("Models loaded")
+}
+
+func doMigrations(db *gorm.DB) {
+	log.Println("Running migrations...")
+	db.AutoMigrate(
+		&models.User{},
+		&models.Client{},
+		&models.IoTDevice{},
+		&models.IoTData{},
+	)
+	log.Println("Migrations done")
+}
+
+func loadEnv() (*types.DbParams, error) {
+	log.Println("Loading environment variables...")
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")
+		return nil, err
 	}
+	log.Println("Environment variables loaded")
+	dbParams := &types.DbParams{
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		User:     os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		Schema:   os.Getenv("DB_NAME"),
+	}
+	return dbParams, nil
+}
 
-	// Get database connection details from environment variables
-	DB_HOST := os.Getenv("DB_HOST")
-	DB_PORT := os.Getenv("DB_PORT")
-	DB_USER := os.Getenv("DB_USER")
-	DB_PASSWORD := os.Getenv("DB_PASSWORD")
-	DB_NAME := os.Getenv("DB_NAME")
-
-	// Construct the DSN (Data Source Name) for connecting to the MySQL database
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
-
-	// Open the database connection
+func dbConnect(params *types.DbParams) *gorm.DB {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", params.User, params.Password, params.Host, params.Port, params.Schema)
+	log.Println("Connecting to database...")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
-
-	// Automigrate the User model to keep the schema up-to-date
-	db.AutoMigrate(&models.User{})
-
 	if err != nil {
 		log.Fatalf("failed to connect database: %v", err)
 	}
-
-	// Create a new Gin router
-	r := gin.Default()
-	r.Use(cors.Default())
-
-	// Use Gin's default Logger and Recovery middlewares
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
-
-	// Use custom authentication middleware
-	r.Use(middlewares.AuthMiddleware())
-
-	// Set the global database connection
-	models.DB = db
-
-	// allow Access to XMLHttpRequest at 'http://localhost:2003/users/login' from origin 'http://localhost:2004' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
-	router := router.SetupRouter()
-
-	// Otros middlewares y configuraciones
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
-
-	// Asignar la conexión global de base de datos
-	models.DB = db
-
-	// Configurar y ejecutar el enrutador
-	router.Run(":2003")
+	log.Println("Database connected")
+	return db
 }

@@ -7,7 +7,6 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"net/http"
 	"strconv"
 	"strings"
@@ -119,23 +118,6 @@ func UserControllerLogin(c *gin.Context) {
 			return
 		}
 
-		// Si no tiene ningun Cliente asociado, crear uno
-		if len(user.Clients) == 0 {
-			client := models.Client{
-				UserID: user.ID,
-				Token:  uuid.New().String(),
-				IPv4:   c.ClientIP(),
-			}
-
-			if err := models.DB.Create(&client).Error; err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating client"})
-				return
-			}
-		}
-
-		// Precargar la relación Clients
-		models.DB.Preload("Clients").First(&user)
-
 		c.JSON(http.StatusOK, gin.H{"user": user})
 		return
 	}
@@ -150,9 +132,6 @@ func UserControllerLogin(c *gin.Context) {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
-
-		// Precargar la relación Clients
-		models.DB.Preload("Clients").First(&user)
 
 		c.JSON(http.StatusOK, gin.H{"user": user})
 		return

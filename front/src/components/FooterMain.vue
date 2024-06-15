@@ -30,7 +30,7 @@
                         <strong>{{ $t('footer.footer_direction') }}</strong> Dirección de tu
                         empresa<br />
                         <strong>{{ $t('footer.footer_number') }}</strong> +1234567890<br />
-                        <strong>{{ $t('footer.footer_mail') }}</strong> info@empresa.com
+                        <strong>{{ $t('footer.footer_mail') }}</strong> eaglefoxOfficial@empresa.com
                     </p>
                 </div>
             </div>

@@ -89,8 +89,17 @@ let animaloptions = {
     anios: "años",
     distancia: "Distancia",
     eliminar: "Eliminar",
-    editar: "Editar"
-  };  
+    name: "Nombre",
+    specie: "Especie",
+    dog: "Perro",
+    pig: "Cerdo",
+    cat: "Gato",
+    cow:"Vaca",
+    sheep: "Oveja",
+    edit: "Editar",
+    save: "Guardar",
+    cancel: "Cancelar"
+  };
 
 export default {
     home: homeTextPackage,

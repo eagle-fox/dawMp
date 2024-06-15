@@ -35,7 +35,7 @@ class Client extends Model
         "ipv4",
         "token",
         "locked",
-        "user",
+        "user_id",
     ];
 
     public $timestamps = true;

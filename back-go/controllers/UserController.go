@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"net/http"
 	"strconv"
 	"strings"
@@ -17,7 +18,7 @@ import (
 // @param c *gin.Context - The context of the request.
 func UserControllerIndex(c *gin.Context) {
 	var users []models.User
-	if err := models.DB.Find(&users).Error; err != nil {
+	if err := models.DB.Preload("Clients").Find(&users).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error getting data"})
 		return
 	}
@@ -118,6 +119,23 @@ func UserControllerLogin(c *gin.Context) {
 			return
 		}
 
+		// Si no tiene ningun Cliente asociado, crear uno
+		if len(user.Clients) == 0 {
+			client := models.Client{
+				UserID: user.ID,
+				Token:  uuid.New().String(),
+				IPv4:   c.ClientIP(),
+			}
+
+			if err := models.DB.Create(&client).Error; err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating client"})
+				return
+			}
+		}
+
+		// Precargar la relación Clients
+		models.DB.Preload("Clients").First(&user)
+
 		c.JSON(http.StatusOK, gin.H{"user": user})
 		return
 	}
@@ -132,6 +150,9 @@ func UserControllerLogin(c *gin.Context) {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
 		}
+
+		// Precargar la relación Clients
+		models.DB.Preload("Clients").First(&user)
 
 		c.JSON(http.StatusOK, gin.H{"user": user})
 		return
@@ -150,7 +171,7 @@ func getUserByBearerToken(token string) (*models.User, error) {
 		return nil, err
 	}
 	var user models.User
-	if err := models.DB.Preload("Clients").Where("id = ?", client.User).First(&user).Error; err != nil {
+	if err := models.DB.Preload("Clients").First(&user, client.UserID).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -165,10 +186,11 @@ func UserControllerShow(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
 	}
-	user, err := models.GetUserByID(id)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching user"})
+	var user models.User
+	if err := models.DB.Preload("Clients").First(&user, id).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error getting user"})
 		return
+
 	}
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
@@ -177,7 +199,7 @@ func UserControllerShow(c *gin.Context) {
 // It expects JSON input to update the user record.
 // @param c *gin.Context - The context of the request.
 func UserControllerUpdate(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	_, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
@@ -187,11 +209,17 @@ func UserControllerUpdate(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := models.UpdateUserByID(id, &user); err != nil {
+
+	// Carga los clientes que tenga asociados el usuario
+	// es decir BUSCA EN LA TABLA CLIENTS where USER = user.ID
+	if err := models.DB.Preload("Clients").Save(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating user"})
 		return
 	}
+
+	// Actualiza el usuario
 	c.JSON(http.StatusOK, gin.H{"user": user})
+
 }
 
 // UserControllerDestroy handles the DELETE request to delete a specific user by ID.
@@ -203,9 +231,11 @@ func UserControllerDestroy(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
 	}
-	if err := models.DeleteUserByID(id); err != nil {
+
+	if err := models.DB.Delete(&models.User{}, id).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error deleting user"})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
 }

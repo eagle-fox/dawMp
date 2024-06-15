@@ -3,7 +3,9 @@ package controllers
 
 import (
 	"back-go/models"
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -43,11 +45,14 @@ func UserControllerStore(c *gin.Context) {
 		return
 	}
 
+	hash := sha256.Sum256([]byte(input.Password))
+	hashedPassword := hex.EncodeToString(hash[:])
+
 	user := models.User{
 		Nombre:          input.Nombre,
 		NombreSegundo:   input.NombreSegundo,
 		Email:           input.Email,
-		Password:        input.Password,
+		Password:        hashedPassword,
 		ApellidoPrimero: input.ApellidoPrimero,
 		ApellidoSegundo: input.ApellidoSegundo,
 		Rol:             input.Rol,
@@ -67,7 +72,9 @@ func UserControllerStore(c *gin.Context) {
 // @return *models.User, error - The user object and an error, if any.
 func getUserByEmailAndPassword(email, password string) (*models.User, error) {
 	var user models.User
-	if err := models.DB.Where("email = ? AND password = ?", email, password).First(&user).Error; err != nil {
+	hash := sha256.Sum256([]byte(password))
+	hashedPassword := hex.EncodeToString(hash[:])
+	if err := models.DB.Preload("Clients").Where("email = ? AND password = ?", email, hashedPassword).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -141,13 +148,11 @@ func getUserByBearerToken(token string) (*models.User, error) {
 	var client models.Client
 	if err := models.DB.Where("token = ?", token).First(&client).Error; err != nil {
 		return nil, err
-
 	}
 	var user models.User
-	if err := models.DB.Where("id = ?", client.ID).First(&user).Error; err != nil {
+	if err := models.DB.Preload("Clients").Where("id = ?", client.User).First(&user).Error; err != nil {
 		return nil, err
 	}
-
 	return &user, nil
 }
 

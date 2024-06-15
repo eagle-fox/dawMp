@@ -8,13 +8,15 @@ var db *gorm.DB
 
 type User struct {
 	gorm.Model
+	UserID          int
 	Nombre          string `gorm:"not null"`
 	NombreSegundo   string
-	ApellidoPrimero string `gorm:"not null"`
-	ApellidoSegundo string `gorm:"not null"`
-	Email           string `gorm:"not null;unique"`
-	Password        string `gorm:"not null"`
-	Rol             string `gorm:"type:enum('ADMIN', 'USER');default:'USER'"`
+	ApellidoPrimero string   `gorm:"not null"`
+	ApellidoSegundo string   `gorm:"not null"`
+	Email           string   `gorm:"not null;unique"`
+	Password        string   `gorm:"not null"`
+	Rol             string   `gorm:"type:enum('ADMIN', 'USER');default:'USER'"`
+	Clients         []Client `gorm:"foreignKey:UserID"`
 }
 
 func (User) TableName() string {
@@ -23,11 +25,11 @@ func (User) TableName() string {
 
 // GetUserByID busca un usuario en la base de datos utilizando el ID proporcionado
 func GetUserByID(id int) (*User, error) {
-	var user User
-	if err := db.Where("id = ?", id).First(&user).Error; err != nil {
+	var model User
+	if err := db.Preload("Clients").First(&model, id).Error; err != nil {
 		return nil, err
 	}
-	return &user, nil
+	return &model, nil
 }
 
 // UpdateUserByID actualiza un usuario en la base de datos utilizando el ID proporcionado

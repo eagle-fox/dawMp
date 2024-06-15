@@ -60,9 +60,27 @@ func SetupRouter() *gin.Engine {
 		userGroup.GET("/:id", controllers.UserControllerShow)
 		userGroup.PUT("/:id", controllers.UserControllerUpdate)
 		userGroup.DELETE("/:id", controllers.UserControllerDestroy)
-		userGroup.POST("/login", controllers.UserControllerLogin)
 	}
+
+	router.POST("/users/login", CORSMiddleware(), controllers.UserControllerLogin)
+	router.OPTIONS("/users/login", CORSMiddleware(), controllers.UserControllerLogin)
 
 	// Return the configured router
 	return router
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }

@@ -7,6 +7,7 @@ import (
 	"back-go/models"
 	"back-go/router"
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -50,6 +51,7 @@ func main() {
 
 	// Create a new Gin router
 	r := gin.Default()
+	r.Use(cors.Default())
 
 	// Use Gin's default Logger and Recovery middlewares
 	r.Use(gin.Logger())
@@ -61,9 +63,16 @@ func main() {
 	// Set the global database connection
 	models.DB = db
 
-	// Setup the routes
+	// allow Access to XMLHttpRequest at 'http://localhost:2003/users/login' from origin 'http://localhost:2004' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 	router := router.SetupRouter()
 
-	// Run the server on port 8080
+	// Otros middlewares y configuraciones
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+
+	// Asignar la conexión global de base de datos
+	models.DB = db
+
+	// Configurar y ejecutar el enrutador
 	router.Run(":8080")
 }

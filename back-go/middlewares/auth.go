@@ -1,32 +1,33 @@
 package middlewares
 
 import (
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
+	"log"
 	"net/http"
 	"strings"
 
-	"github.com/eagle-fox/dawMp/models"
+	"back-go/models"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-// Asumiendo que tienes una variable global para tu conexión a la base de datos
-var db *gorm.DB
-
-// AuthMiddleware realiza la autenticación usando Basic Auth o Bearer token.
+// AuthMiddleware returns a middleware function for user authentication.
+// It handles both Basic and Bearer authentication methods.
+//
+// Basic authentication: Expects the header "Authorization: Basic base64(username:password)".
+// Bearer authentication: Expects the header "Authorization: Bearer token".
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 
-		// Verificar si se proporciona Authorization header
 		if authHeader == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Authorization header missing"})
 			return
 		}
 
-		// Manejar autenticación Basic
+		// Handle Basic authentication
 		if strings.HasPrefix(authHeader, "Basic ") {
-			// Decodificar credenciales
 			payload, err := base64.StdEncoding.DecodeString(authHeader[6:])
 			if err != nil {
 				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid base64"})
@@ -34,7 +35,6 @@ func AuthMiddleware() gin.HandlerFunc {
 			}
 			pair := strings.SplitN(string(payload), ":", 2)
 
-			// Verificar que se proporcionen usuario y contraseña
 			if len(pair) != 2 {
 				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid basic auth format"})
 				return
@@ -43,59 +43,77 @@ func AuthMiddleware() gin.HandlerFunc {
 			username := pair[0]
 			password := pair[1]
 
-			// Validar contra la base de datos (ejemplo)
-			user, err := getUserByUsernameAndPassword(username, password)
+			// Hash the provided password
+			hash := sha256.Sum256([]byte(password))
+			hashedPassword := hex.EncodeToString(hash[:])
+
+			user, err := getUserByUsernameAndPassword(username, hashedPassword)
 			if err != nil {
 				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 				return
 			}
 
-			// Guardar el usuario en el contexto
 			c.Set("user", user)
 			c.Next()
 			return
 		}
 
-		// Manejar autenticación Bearer
+		// Handle Bearer authentication
 		if strings.HasPrefix(authHeader, "Bearer ") {
 			token := authHeader[7:]
 
-			// Validar contra la base de datos
 			user, err := getUserByBearerToken(token)
 			if err != nil {
 				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 				return
 			}
 
-			// Guardar el usuario en el contexto
 			c.Set("user", user)
 			c.Next()
 			return
 		}
 
-		// Si no es ni Basic ni Bearer
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Unsupported authentication method"})
 	}
 }
 
-// Función para obtener usuario por nombre de usuario y contraseña
+// getUserByUsernameAndPassword retrieves a user from the database by their username and hashed password.
+// It returns the user if found, or an error if the user does not exist or another error occurs.
+//
+// Parameters:
+//   - username: The username provided in the Basic authentication header.
+//   - password: The hashed password of the user.
+//
+// Returns:
+//   - *models.User: The authenticated user.
+//   - error: An error if the user is not found or another error occurs.
 func getUserByUsernameAndPassword(username, password string) (*models.User, error) {
 	var user models.User
-	if err := db.Where("username = ? AND password = ?", username, password).First(&user).Error; err != nil {
+	log.Default().Println(username, password)
+
+	if err := models.DB.Where("email = ? AND password = ?", username, password).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
 }
 
-// Función para obtener usuario por token Bearer
+// getUserByBearerToken retrieves a user from the database by their Bearer token.
+// It returns the user if found, or an error if the user does not exist or another error occurs.
+//
+// Parameters:
+//   - token: The Bearer token provided in the Authorization header.
+//
+// Returns:
+//   - *models.User: The authenticated user.
+//   - error: An error if the user is not found or another error occurs.
 func getUserByBearerToken(token string) (*models.User, error) {
 	var client models.Client
-	if err := db.Where("token = ?", token).First(&client).Error; err != nil {
+	if err := models.DB.Where("token = ?", token).First(&client).Error; err != nil {
 		return nil, err
 	}
 
 	var user models.User
-	if err := db.Where("id = ?", client.User).First(&user).Error; err != nil {
+	if err := models.DB.Where("id = ?", client.ID).First(&user).Error; err != nil {
 		return nil, err
 	}
 

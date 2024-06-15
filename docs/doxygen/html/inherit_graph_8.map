@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$classapp_1_1models_1_1Client.html" title="app\\models\\Client" alt="" coords="127,5,267,32"/>
+<area shape="rect" id="node3" href="$classapp_1_1models_1_1IotData.html" title="app\\models\\IotData" alt="" coords="121,56,272,83"/>
+<area shape="rect" id="node4" href="$classapp_1_1models_1_1IotDevice.html" title="app\\models\\IotDevice" alt="" coords="115,107,279,133"/>
+<area shape="rect" id="node5" href="$classapp_1_1models_1_1Log.html" title="app\\models\\Log" alt="" coords="134,157,259,184"/>
+<area shape="rect" id="node6" href="$classapp_1_1models_1_1User.html" title="app\\models\\User" alt="" coords="131,208,263,235"/>
+</map>

@@ -1,12 +1,16 @@
+// Package controllers provides the handlers for the HTTP endpoints of the application.
 package controllers
 
 import (
-	"github.com/eagle-fox/dawMp/models"
+	"back-go/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
+// IotDataControllerIndex handles the GET request to fetch all IoT data.
+// It returns a list of IoT data records in JSON format.
+// @param c *gin.Context - The context of the request.
 func IotDataControllerIndex(c *gin.Context) {
 	var data []models.IoTData
 
@@ -18,6 +22,9 @@ func IotDataControllerIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
+// IotDataControllerStore handles the POST request to create a new IoT data record.
+// It expects JSON input with device ID, latitude, and longitude.
+// @param c *gin.Context - The context of the request.
 func IotDataControllerStore(c *gin.Context) {
 	var input struct {
 		DeviceID  string `json:"device"`
@@ -62,6 +69,9 @@ func IotDataControllerStore(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
+// IotDataControllerShow handles the GET request to fetch a specific IoT data record by ID.
+// It returns the IoT data record in JSON format.
+// @param c *gin.Context - The context of the request.
 func IotDataControllerShow(c *gin.Context) {
 	var data models.IoTData
 	id := c.Param("id")
@@ -74,6 +84,9 @@ func IotDataControllerShow(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
+// IotDataControllerUpdate handles the PUT request to update a specific IoT data record by ID.
+// It expects JSON input to update the record.
+// @param c *gin.Context - The context of the request.
 func IotDataControllerUpdate(c *gin.Context) {
 	var data models.IoTData
 	id := c.Param("id")
@@ -92,6 +105,9 @@ func IotDataControllerUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
+// IotDataControllerDestroy handles the DELETE request to delete a specific IoT data record by ID.
+// It returns a confirmation message in JSON format.
+// @param c *gin.Context - The context of the request.
 func IotDataControllerDestroy(c *gin.Context) {
 	var data models.IoTData
 	id := c.Param("id")

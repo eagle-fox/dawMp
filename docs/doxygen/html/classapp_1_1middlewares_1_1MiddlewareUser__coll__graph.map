@@ -1,0 +1,6 @@
+<map id="app\middlewares\MiddlewareUser" name="app\middlewares\MiddlewareUser">
+<area shape="rect" id="node2" href="$classapp_1_1types_1_1UUID.html" title="app\\types\\UUID" alt="" coords="5,81,129,108"/>
+<area shape="rect" id="node6" href="$classapp_1_1types_1_1IPv4.html" title="app\\types\\IPv4" alt="" coords="153,81,272,108"/>
+<area shape="rect" id="node4" href="$classapp_1_1models_1_1Client.html" title="app\\models\\Client" alt="" coords="296,81,436,108"/>
+<area shape="rect" id="node7" href="$classapp_1_1models_1_1User.html" title="app\\models\\User" alt="" coords="460,81,592,108"/>
+</map>

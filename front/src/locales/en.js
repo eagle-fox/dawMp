@@ -76,9 +76,12 @@ let aboutTextPackage = {
 }
 
 let footer = {
-footer_direction: 'Address',
-footer_number: 'Phone',
+  footer_direction: 'Address',
+  footer_number: 'Phone',
   footer_mail: 'Email',
+  footer_about: 'About Us',
+  footer_services: 'Services',
+  footer_contact: 'Contact Us',
 }
 
 let animaloptions = {

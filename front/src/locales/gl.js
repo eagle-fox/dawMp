@@ -79,6 +79,10 @@ let footer = {
 footer_direction: 'Enderezo',
 footer_number: 'Teléfono',
   footer_mail: 'Correo electrónico',
+  footer_about: 'Sobre Nos',
+  footer_services: 'Servicios',
+  footer_contact: 'Contacto',
+
 }
 
 let animaloptions = {

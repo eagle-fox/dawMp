@@ -79,6 +79,10 @@ let footer = {
 footer_direction: 'Adresse',
 footer_number: 'Telefonnummer',
   footer_mail: 'E-Mail',
+  footer_about: 'Über uns',
+  footer_services: 'Dienste',
+  footer_contact: 'Kontakt',
+
 }
 
 let animaloptions = {

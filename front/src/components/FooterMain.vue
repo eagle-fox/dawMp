@@ -15,13 +15,13 @@
                             {{ $t('miscelaneus.home') }}
                         </router-link>
               <li class="nav-item">
-                <a class="nav-link" href="#acerca-de">Acerca de</a>
+                <a class="nav-link" href="#acerca-de">{{ $t('footer.footer_about') }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#servicios">Servicios</a>
+                <a class="nav-link" href="#servicios">{{ $t('footer.footer_services') }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#contacto">Contacto</a>
+                <a class="nav-link" href="#contacto">{{ $t('footer.footer_contact') }}</a>
               </li>
             </ul>
           </div>

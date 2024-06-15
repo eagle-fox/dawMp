@@ -22,6 +22,18 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
 
+  go-doc:
+    container_name: fox-go-doc
+    image: golang:latest
+    volumes:
+      - './back-go/:/go/src/app'
+    command: [ 'godoc', '-http=:6060' ]
+    ports:
+      - '6060:6060'
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+
   mysql:
     container_name: fox-mysql
     hostname: mysql.fox

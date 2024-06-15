@@ -39,18 +39,26 @@ export default {
         },
         showFailLongin(errorMessage) {
             let form = document.getElementById('loginForm');
-            let failDiv = document.createElement('div');
-
-            failDiv.innerHTML =
-            `
+    
+                // Busca si ya existe un mensaje de error
+                let existingFailDiv = document.getElementById('failMessage');
+                
+                // Si no existe, crea y agrega el mensaje de error
+                if (!existingFailDiv) {
+                    let failDiv = document.createElement('div');
+                    
+                    failDiv.id = 'failMessage'; // Asigna un id al mensaje de error para poder identificarlo
+                    failDiv.innerHTML =
+                    `
                         <div class="d-flex p-2 justify-content-center">
                             <div class="bg-danger w-auto rounded text-center p-1 text-light">${errorMessage}</div>
                         </div>
-            `;
-            failDiv.style.textAlign = 'center';
-            failDiv.style.padding = '5px';
+                    `;
+                    failDiv.style.textAlign = 'center';
+                    failDiv.style.padding = '5px';
 
-            form.appendChild(failDiv);
+                    form.appendChild(failDiv);
+                }
             
         },
         async submitLogin() {

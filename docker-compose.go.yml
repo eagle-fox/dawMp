@@ -4,12 +4,11 @@ services:
   go-app:
     container_name: fox-go
     hostname: go.fox
-    build:
-      context: ./back-go
-      dockerfile: ../Docker/Dockerfile-go
+    image: golang:latest
     volumes:
       - './back-go/:/go/src/app'
-      - '.env:/go/src/app/.env'
+      - './back-go/go.mod:/go/src/app/go.mod'
+      - './back-go/go.sum:/go/src/app/go.sum'
     ports:
       - '2003:8080'
     env_file:
@@ -21,13 +20,15 @@ services:
       - foxtrot-api-lan
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+    working_dir: /go/src/app
+    command: ["go", "run", "main.go"]
 
   go-doc:
     container_name: fox-go-doc
     image: golang:latest
     volumes:
       - './back-go/:/go/src/app'
-    command: [ 'godoc', '-http=:6060' ]
+    command: [ 'sh', '-c', 'go install golang.org/x/tools/cmd/godoc@latest && godoc -http=:6060' ]
     ports:
       - '6060:6060'
     networks:
@@ -50,6 +51,23 @@ services:
     networks:
       - foxtrot-bridge
       - foxtrot-api-lan
+
+  bun:
+    container_name: fox-bun
+    hostname: bun.fox
+    build:
+      context: front/
+      dockerfile: ../docker/Dockerfile-bunjs
+    working_dir: /app
+    volumes:
+      - fox-bun:/app/
+    environment:
+      - REACT_APP_PHP_SERVER = "https://api.foxtrot.pedroseoaneprado.es"
+    ports:
+      - '2004:2024'
+    networks:
+      - foxtrot-bridge
+    command: [ 'sh', '-c', 'bun run dev' ]
 
 networks:
   foxtrot-api-lan:

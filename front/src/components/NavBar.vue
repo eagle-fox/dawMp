@@ -71,6 +71,9 @@ export default {
                     console.error('Error al crear la nueva userSession:', error)
                 })
         },
+        logout() {
+
+        }
     },
     data() {
         return {
@@ -123,7 +126,7 @@ export default {
 
             <div id="navbarNavAltMarkup" class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+                    <li class="logout">
                         <router-link aria-current="page" class="nav-link active text-light" href="#" to="/">
                             {{ $t('miscelaneus.home') }}
                         </router-link>
@@ -137,13 +140,15 @@ export default {
                 </ul>
 
                 <div class="d-flex gap-4 align-items-center">
-                    <!-- <button  class="btn btn-primary" @click="clearSession()">Log Out</button> -->
                     <div class="form-check form-switch d-flex">
                         <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-right: 45px">🌞</label>
                         <input id="flexSwitchCheckDefault" v-model="darkMode" class="form-check-input" role="switch"
                             type="checkbox" />
                         <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-left: 4px">🌙</label>
                     </div>
+
+                
+                    
 
                     <div class="dropstart">
                         <button aria-expanded="false" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
@@ -174,6 +179,11 @@ export default {
                             </li>
                         </ul>
                     </div>
+
+                    <div class="nav-item nav-link active text-light" @click="changeLanguage('spain')">
+                        <button  class="btn btn-primary" @click="clearSession()"> {{$t('miscelaneus.logout') }}</button>
+                    </div>
+
                 </div>
             </div>
         </div>

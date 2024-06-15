@@ -2,6 +2,7 @@ let miscelaneusTextPackage = {
   welcome: 'Welcome',
   home: 'Home',
   loading: 'Loading',
+  logout: 'Log Out',
   months: 'Months',
   years: 'Years',
   date: 'Date',
@@ -53,7 +54,7 @@ let animalRegisterForm = {
 
 let loginTextPackage = {
   login_t1: 'Login',
-  login_username: 'Username',
+  login_username: 'Email',
   login_secondName: 'Second Name',
   login_firtsSubname: 'First Surname',
   login_secondSubname: 'Second Surname',

@@ -26,7 +26,9 @@
       </div>
       <div class="d-flex flex-row bd-highlight mb-3">
         <button @click="eliminar" class="delete-button">{{ $t('animaloptions.eliminar') }}</button>
-        <button @click="editar" class="edit-button">{{ $t('animaloptions.editar') }}</button>
+        <button @click="editar" class="edit-button"><router-link aria-current="page" class="nav-link active text-light" href="#" to="/editanimal">
+                            {{ $t('animaloptions.editar') }}
+                        </router-link></button>
       </div>
     </div>
     <footermain></footermain>

@@ -1,33 +1,37 @@
 <template>
+    <div class="animal-edit-page">
       <navbar></navbar>
-      <div class="form-container">
-        <h2>{{ $t('animaloptions.edit') }}</h2>
-        <form @submit.prevent="submitForm">
-          <div class="form-group">
-            <label for="petName">{{ $t('animaloptions.name') }}</label>
-            <input type="text" v-model="formData.petName" id="petName" required>
-          </div>
-          <div class="form-group">
-            <label for="species">{{ $t('animaloptions.specie') }}</label>
-            <select v-model="formData.species" id="species" required>
-              <option value="dog">{{ $t('animaloptions.dog') }}</option>
-              <option value="cat">{{ $t('animaloptions.cat') }}</option>
-              <option value="pig">{{ $t('animaloptions.pig') }}</option>
-              <option value="cow">{{ $t('animaloptions.cow') }}</option>
-              <option value="sheep">{{ $t('animaloptions.sheep') }}</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="birthDate">{{ $t('animaloptions.fecha_nacimiento') }}</label>
-            <input type="date" v-model="formData.birthDate" id="birthDate" required>
-          </div>
-          <div class="form-actions">
-            <button type="submit">{{ $t('animaloptions.save') }}</button>
-            <button type="button" @click="cancelEdit">{{ $t('animaloptions.cancel') }}</button>
-          </div>
-        </form>
+      <div class="content">
+        <div class="form-container">
+          <h2>{{ $t('animaloptions.edit') }}</h2>
+          <form @submit.prevent="submitForm">
+            <div class="form-group">
+              <label for="petName">{{ $t('animaloptions.name') }}</label>
+              <input type="text" v-model="formData.petName" id="petName" required>
+            </div>
+            <div class="form-group">
+              <label for="species">{{ $t('animaloptions.specie') }}</label>
+              <select v-model="formData.species" id="species" required>
+                <option value="dog">{{ $t('animaloptions.dog') }}</option>
+                <option value="cat">{{ $t('animaloptions.cat') }}</option>
+                <option value="pig">{{ $t('animaloptions.pig') }}</option>
+                <option value="cow">{{ $t('animaloptions.cow') }}</option>
+                <option value="sheep">{{ $t('animaloptions.sheep') }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="birthDate">{{ $t('animaloptions.fecha_nacimiento') }}</label>
+              <input type="date" v-model="formData.birthDate" id="birthDate" required>
+            </div>
+            <div class="form-actions">
+              <button type="submit">{{ $t('animaloptions.save') }}</button>
+              <button type="button" @click="cancelEdit">{{ $t('animaloptions.cancel') }}</button>
+            </div>
+          </form>
+        </div>
       </div>
       <footermain></footermain>
+    </div>
   </template>
   
   <script>
@@ -64,9 +68,17 @@
   .animal-edit-page {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 2rem;
+    min-height: 100vh;
     background-color: #f9f9f9;
+  }
+  
+  .content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
   
   .form-container {

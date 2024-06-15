@@ -80,10 +80,10 @@ export default {
                 this.response = 'Logged in successfully \n' + JSON.stringify(response, null, 2)
 
                 let userData = {
-                    name: response.user.nombre,
-                    email: response.user.email,
-                    role: response.user.rol,
-                    token: response.user.clients[0].token,
+                    name: response.user.Nombre,
+                    email: response.user.Email,
+                    role: response.user.Rol,
+                    token: response.user.Clients[0].Token,
 
                 }
 

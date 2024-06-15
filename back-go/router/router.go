@@ -1,7 +1,8 @@
-package main
+package router
 
 import (
-	"github.com/eagle-fox/dawMp/controllers"
+	"back-go/controllers"
+	"back-go/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +19,7 @@ func SetupRouter() *gin.Engine {
 		})
 	})
 
-	iotDataGroup := router.Group("/iotData")
+	iotDataGroup := router.Group("/iotData", middlewares.AuthMiddleware())
 	{
 		iotDataGroup.GET("/", controllers.IotDataControllerIndex)
 		iotDataGroup.POST("/", controllers.IotDataControllerStore)
@@ -27,7 +28,7 @@ func SetupRouter() *gin.Engine {
 		iotDataGroup.DELETE("/:id", controllers.IotDataControllerDestroy)
 	}
 
-	iotDeviceGroup := router.Group("/iotDevice")
+	iotDeviceGroup := router.Group("/iotDevice", middlewares.AuthMiddleware())
 	{
 		iotDeviceGroup.GET("/", controllers.IotDeviceControllerIndex)
 		iotDeviceGroup.POST("/", controllers.IotDeviceControllerStore)
@@ -36,7 +37,7 @@ func SetupRouter() *gin.Engine {
 		iotDeviceGroup.DELETE("/:id", controllers.IotDeviceControllerDestroy)
 	}
 
-	userGroup := router.Group("/users")
+	userGroup := router.Group("/users", middlewares.AuthMiddleware())
 	{
 		userGroup.GET("/", controllers.UserControllerIndex)
 		userGroup.POST("/", controllers.UserControllerStore)

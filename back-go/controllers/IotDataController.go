@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/eagle-fox/dawMp/models"
+	"back-go/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

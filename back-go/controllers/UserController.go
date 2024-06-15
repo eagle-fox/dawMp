@@ -1,8 +1,8 @@
 package controllers
 
 import (
+	"back-go/models"
 	"encoding/base64"
-	"github.com/eagle-fox/dawMp/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -10,13 +10,15 @@ import (
 )
 
 func UserControllerIndex(c *gin.Context) {
-	var user []models.User
-	if err := models.DB.Find(&user).Error; err != nil {
+
+	// Si el usuario es un administrador, proceder como de costumbre
+	var users []models.User
+	if err := models.DB.Find(&users).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error getting data"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": user})
+	c.JSON(http.StatusOK, gin.H{"data": users})
 }
 
 func UserControllerStore(c *gin.Context) {
@@ -62,7 +64,6 @@ func getUserByEmailAndPassword(email, password string) (*models.User, error) {
 		return nil, err
 	}
 	return &user, nil
-
 }
 
 func UserControllerLogin(c *gin.Context) {

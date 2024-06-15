@@ -2,6 +2,7 @@
 let miscelaneusTextPackage = {
     welcome: 'Bienvenido',
     home: 'Inicio',
+    logout: 'Cerrar sesion',
     dashboard: 'Panel Animales',
     loading: 'Cargando',
     mounths: 'Mes',
@@ -59,7 +60,7 @@ let animalRegisterForm = {
 
 let loginTextPackage = {
     login_t1: 'Iniciar Sesion',
-    login_username: 'Nombre',
+    login_username: 'Email',
     login_secondName: 'Segundo Nombre',
     login_firtsSubname: 'Primer Apellido',
     login_secondSubname: 'Segundo Apellido',

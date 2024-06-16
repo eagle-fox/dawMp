@@ -1,0 +1,82 @@
+version: '3'
+services:
+
+  go-app:
+    container_name: fox-go
+    hostname: go.fox
+    image: golang:latest
+    volumes:
+      - './back-go/:/go/src/app'
+      - './back-go/go.mod:/go/src/app/go.mod'
+      - './back-go/go.sum:/go/src/app/go.sum'
+      - 'go-cache:/go/pkg'
+    ports:
+      - '2003:2003'
+    env_file:
+      - .env
+    environment:
+      TZ: Europe/Madrid
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    working_dir: /go/src/app
+    command: ["go", "run", "main.go"]
+
+  go-doc:
+    container_name: fox-go-doc
+    image: golang:latest
+    volumes:
+      - './back-go/:/go/src/app'
+    command: [ 'sh', '-c', 'go install golang.org/x/tools/cmd/godoc@latest && godoc -http=:6060' ]
+    ports:
+      - '6060:6060'
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+
+  mysql:
+    container_name: fox-mysql
+    hostname: mysql.fox
+    image: mysql:latest
+    volumes:
+      - fox-eagle-db:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - '2005:3306'
+    environment:
+      TZ: Europe/Madrid
+    env_file:
+      - .env
+    networks:
+      - foxtrot-bridge
+      - foxtrot-api-lan
+
+  bun:
+    container_name: fox-bun
+    hostname: bun.fox
+    build:
+      context: front/
+      dockerfile: ../docker/Dockerfile-bunjs
+    working_dir: /app
+    volumes:
+      - fox-bun:/app/
+    environment:
+      - REACT_APP_PHP_SERVER = "https://api.foxtrot.pedroseoaneprado.es"
+    ports:
+      - '2004:2024'
+    networks:
+      - foxtrot-bridge
+    command: [ 'sh', '-c', 'bun run dev' ]
+
+networks:
+  foxtrot-api-lan:
+    internal: true
+  foxtrot-bridge:
+    driver: bridge
+volumes:
+  fox-eagle-db:
+  fox-bun:
+  fox-php:
+  go-cache:

@@ -2,6 +2,7 @@
 let miscelaneusTextPackage = {
     welcome: 'Bienvenido',
     home: 'Inicio',
+    logout: 'Cerrar sesion',
     dashboard: 'Panel Animales',
     loading: 'Cargando',
     mounths: 'Mes',
@@ -59,7 +60,7 @@ let animalRegisterForm = {
 
 let loginTextPackage = {
     login_t1: 'Iniciar Sesion',
-    login_username: 'Nombre',
+    login_username: 'Email',
     login_secondName: 'Segundo Nombre',
     login_firtsSubname: 'Primer Apellido',
     login_secondSubname: 'Segundo Apellido',
@@ -89,8 +90,17 @@ let animaloptions = {
     anios: "años",
     distancia: "Distancia",
     eliminar: "Eliminar",
-    editar: "Editar"
-  };  
+    name: "Nombre",
+    specie: "Especie",
+    dog: "Perro",
+    pig: "Cerdo",
+    cat: "Gato",
+    cow:"Vaca",
+    sheep: "Oveja",
+    edit: "Editar",
+    save: "Guardar",
+    cancel: "Cancelar"
+  };
 
 export default {
     home: homeTextPackage,

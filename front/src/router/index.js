@@ -47,6 +47,11 @@ const routes = [
     name: 'MyAnimal',
     component: () => import('../views/MyAnimal.vue'), // Lazy load component
   },
+  {
+    path: '/editanimal',
+    name: 'EditAnimal',
+    component: () => import('../views/EditAnimal.vue'), // Lazy load component
+  },
 ]
 
 const router = createRouter({

@@ -12,7 +12,7 @@ import (
 // It returns a list of IoT data records in JSON format.
 // @param c *gin.Context - The context of the request.
 func IotDataControllerIndex(c *gin.Context) {
-	var data []models.IoTData
+	var data []models.IotData
 
 	if err := models.DB.Limit(1024).Find(&data).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error getting data"})
@@ -55,7 +55,7 @@ func IotDataControllerStore(c *gin.Context) {
 		return
 	}
 
-	data := models.IoTData{
+	data := models.IotData{
 		Device:    deviceID,
 		Latitude:  latitude,
 		Longitude: longitude,
@@ -73,7 +73,7 @@ func IotDataControllerStore(c *gin.Context) {
 // It returns the IoT data record in JSON format.
 // @param c *gin.Context - The context of the request.
 func IotDataControllerShow(c *gin.Context) {
-	var data models.IoTData
+	var data models.IotData
 	id := c.Param("id")
 
 	if err := models.DB.First(&data, id).Error; err != nil {
@@ -88,7 +88,7 @@ func IotDataControllerShow(c *gin.Context) {
 // It expects JSON input to update the record.
 // @param c *gin.Context - The context of the request.
 func IotDataControllerUpdate(c *gin.Context) {
-	var data models.IoTData
+	var data models.IotData
 	id := c.Param("id")
 
 	if err := models.DB.First(&data, id).Error; err != nil {
@@ -109,7 +109,7 @@ func IotDataControllerUpdate(c *gin.Context) {
 // It returns a confirmation message in JSON format.
 // @param c *gin.Context - The context of the request.
 func IotDataControllerDestroy(c *gin.Context) {
-	var data models.IoTData
+	var data models.IotData
 	id := c.Param("id")
 
 	if err := models.DB.First(&data, id).Error; err != nil {

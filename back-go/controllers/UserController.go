@@ -3,7 +3,9 @@ package controllers
 
 import (
 	"back-go/models"
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -15,10 +17,11 @@ import (
 // @param c *gin.Context - The context of the request.
 func UserControllerIndex(c *gin.Context) {
 	var users []models.User
-	if err := models.DB.Find(&users).Error; err != nil {
+	if err := models.DB.Preload("Clients").Find(&users).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error getting data"})
 		return
 	}
+	// disable Access-Control-Allow-Origin
 
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
@@ -43,11 +46,14 @@ func UserControllerStore(c *gin.Context) {
 		return
 	}
 
+	hash := sha256.Sum256([]byte(input.Password))
+	hashedPassword := hex.EncodeToString(hash[:])
+
 	user := models.User{
 		Nombre:          input.Nombre,
 		NombreSegundo:   input.NombreSegundo,
 		Email:           input.Email,
-		Password:        input.Password,
+		Password:        hashedPassword,
 		ApellidoPrimero: input.ApellidoPrimero,
 		ApellidoSegundo: input.ApellidoSegundo,
 		Rol:             input.Rol,
@@ -67,7 +73,9 @@ func UserControllerStore(c *gin.Context) {
 // @return *models.User, error - The user object and an error, if any.
 func getUserByEmailAndPassword(email, password string) (*models.User, error) {
 	var user models.User
-	if err := models.DB.Where("email = ? AND password = ?", email, password).First(&user).Error; err != nil {
+	hash := sha256.Sum256([]byte(password))
+	hashedPassword := hex.EncodeToString(hash[:])
+	if err := models.DB.Preload("Clients").Where("email = ? AND password = ?", email, hashedPassword).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -141,13 +149,11 @@ func getUserByBearerToken(token string) (*models.User, error) {
 	var client models.Client
 	if err := models.DB.Where("token = ?", token).First(&client).Error; err != nil {
 		return nil, err
-
 	}
 	var user models.User
-	if err := models.DB.Where("id = ?", client.ID).First(&user).Error; err != nil {
+	if err := models.DB.Preload("Clients").First(&user, client.UserID).Error; err != nil {
 		return nil, err
 	}
-
 	return &user, nil
 }
 
@@ -160,10 +166,11 @@ func UserControllerShow(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
 	}
-	user, err := models.GetUserByID(id)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching user"})
+	var user models.User
+	if err := models.DB.Preload("Clients").First(&user, id).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error getting user"})
 		return
+
 	}
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
@@ -172,7 +179,7 @@ func UserControllerShow(c *gin.Context) {
 // It expects JSON input to update the user record.
 // @param c *gin.Context - The context of the request.
 func UserControllerUpdate(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	_, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
@@ -182,11 +189,17 @@ func UserControllerUpdate(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := models.UpdateUserByID(id, &user); err != nil {
+
+	// Carga los clientes que tenga asociados el usuario
+	// es decir BUSCA EN LA TABLA CLIENTS where USER = user.ID
+	if err := models.DB.Preload("Clients").Save(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating user"})
 		return
 	}
+
+	// Actualiza el usuario
 	c.JSON(http.StatusOK, gin.H{"user": user})
+
 }
 
 // UserControllerDestroy handles the DELETE request to delete a specific user by ID.
@@ -198,9 +211,11 @@ func UserControllerDestroy(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
 	}
-	if err := models.DeleteUserByID(id); err != nil {
+
+	if err := models.DB.Delete(&models.User{}, id).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error deleting user"})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
 }

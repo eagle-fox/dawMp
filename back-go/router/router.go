@@ -33,36 +33,57 @@ func SetupRouter() *gin.Engine {
 	})
 
 	// Group routes for IoT Data with authentication middleware
-	iotDataGroup := router.Group("/iotData", middlewares.AuthMiddleware())
+	iotDataGroup := router.Group("/iotData", CORSMiddleware(), middlewares.AuthMiddleware())
 	{
 		iotDataGroup.GET("/", controllers.IotDataControllerIndex)
-		iotDataGroup.POST("/", controllers.IotDataControllerStore)
-		iotDataGroup.GET("/:id", controllers.IotDataControllerShow)
-		iotDataGroup.PUT("/:id", controllers.IotDataControllerUpdate)
-		iotDataGroup.DELETE("/:id", controllers.IotDataControllerDestroy)
+		iotDataGroup.POST("/", middlewares.AuthMiddleware(), controllers.IotDataControllerStore)
+		iotDataGroup.GET("/:id", middlewares.AuthMiddleware(), controllers.IotDataControllerShow)
+		iotDataGroup.PUT("/:id", middlewares.AuthMiddleware(), controllers.IotDataControllerUpdate)
+		iotDataGroup.DELETE("/:id", middlewares.AuthMiddleware(), controllers.IotDataControllerDestroy)
 	}
 
-	// Group routes for IoT Device with authentication middleware
-	iotDeviceGroup := router.Group("/iotDevice", middlewares.AuthMiddleware())
+	iotDevicesGroup := router.Group("/iotDevices", CORSMiddleware(), middlewares.AuthMiddleware())
 	{
-		iotDeviceGroup.GET("/", controllers.IotDeviceControllerIndex)
-		iotDeviceGroup.POST("/", controllers.IotDeviceControllerStore)
-		iotDeviceGroup.GET("/:id", controllers.IotDeviceControllerShow)
-		iotDeviceGroup.PUT("/:id", controllers.IotDeviceControllerUpdate)
-		iotDeviceGroup.DELETE("/:id", controllers.IotDeviceControllerDestroy)
+		iotDevicesGroup.GET("/:id", controllers.IotDeviceControllerShow)
+		iotDevicesGroup.GET("/", controllers.IotDeviceControllerIndex)
+		iotDevicesGroup.POST("/", controllers.IotDeviceControllerStore)
+		iotDevicesGroup.PUT("/:id", controllers.IotDeviceControllerUpdate)
+		iotDevicesGroup.DELETE("/:id", controllers.IotDeviceControllerDestroy)
 	}
 
 	// Group routes for Users with authentication middleware
-	userGroup := router.Group("/users", middlewares.AuthMiddleware())
+	userGroup := router.Group("/users", CORSMiddleware(), middlewares.AuthMiddleware())
 	{
 		userGroup.GET("/", controllers.UserControllerIndex)
 		userGroup.POST("/", controllers.UserControllerStore)
 		userGroup.GET("/:id", controllers.UserControllerShow)
 		userGroup.PUT("/:id", controllers.UserControllerUpdate)
 		userGroup.DELETE("/:id", controllers.UserControllerDestroy)
-		userGroup.POST("/login", controllers.UserControllerLogin)
 	}
+
+	router.GET("/fix/myself", CORSMiddleware(), controllers.GetIotDevicesByMyself)
+	router.OPTIONS("/fix/myself", CORSMiddleware(), controllers.GetIotDevicesByMyself)
+
+	// Unprotected routes for user login
+	router.POST("/users/login", CORSMiddleware(), controllers.UserControllerLogin)
+	router.OPTIONS("/users/login", CORSMiddleware(), controllers.UserControllerLogin)
 
 	// Return the configured router
 	return router
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
+
+		// alow OPTIONS
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }

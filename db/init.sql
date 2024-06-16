@@ -16,6 +16,10 @@ CREATE TABLE IF NOT EXISTS `user`
     `updated_at`       datetime               NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
+ALTER TABLE `user`
+    ADD INDEX `idx_email` (`email`),
+    ADD INDEX `idx_password` (`password`);
+
 INSERT INTO `user` (`nombre`, `apellido_primero`, `apellido_segundo`, `email`, `password`, `rol`)
 VALUES ('admin', 'admin', 'admin', 'admin@admin.com', SHA2('admin', 256), 'ADMIN');
 

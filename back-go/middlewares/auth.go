@@ -19,6 +19,10 @@ import (
 // Bearer authentication: Expects the header "Authorization: Bearer token".
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
+
 		authHeader := c.GetHeader("Authorization")
 
 		if authHeader == "" {
@@ -40,14 +44,14 @@ func AuthMiddleware() gin.HandlerFunc {
 				return
 			}
 
-			username := pair[0]
+			email := pair[0]
 			password := pair[1]
 
 			// Hash the provided password
 			hash := sha256.Sum256([]byte(password))
 			hashedPassword := hex.EncodeToString(hash[:])
 
-			user, err := getUserByUsernameAndPassword(username, hashedPassword)
+			user, err := getUserByUsernameAndPassword(email, hashedPassword)
 			if err != nil {
 				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 				return
@@ -87,13 +91,15 @@ func AuthMiddleware() gin.HandlerFunc {
 // Returns:
 //   - *models.User: The authenticated user.
 //   - error: An error if the user is not found or another error occurs.
-func getUserByUsernameAndPassword(username, password string) (*models.User, error) {
+func getUserByUsernameAndPassword(email, password string) (*models.User, error) {
 	var user models.User
-	log.Default().Println(username, password)
+	log.Default().Println(email, password)
 
-	if err := models.DB.Where("email = ? AND password = ?", username, password).First(&user).Error; err != nil {
+	if err := models.DB.Where("email = ? AND password = ?", email, password).First(&user).Error; err != nil {
 		return nil, err
+		log.Println("Error al autenticar con el usuario: ", email)
 	}
+	log.Println("Autenticado con éxito con el usuario: ", user.Email)
 	return &user, nil
 }
 

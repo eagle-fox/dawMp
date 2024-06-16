@@ -245,7 +245,7 @@ class Query {
   async getIotDevicesBySelf() {
     let response = null
     try {
-      response = await this.client.get(this.url + 'iotDevices/ByMyself', {
+      response = await this.client.get(this.url + 'fix/myself', {
         responseType: 'json',
       })
     } catch (error) {

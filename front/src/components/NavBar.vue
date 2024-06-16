@@ -66,6 +66,8 @@ export default {
                 .then(() => {
                     console.log(this.$store.getters.getUserSession)
                     Cookies.remove('sessionCookie')
+                    this.$router.push('/')  // Redirige a la ruta /login
+                    
                 })
                 .catch((error) => {
                     console.error('Error al crear la nueva userSession:', error)
@@ -81,6 +83,7 @@ export default {
             languageToggleIcon: 'src/assets/flags/es.svg',
             currentLanguageFlagAltText: 'es_flag',
             darkMode: false,
+            isButtonVisible:true
         }
     },
     mounted() {
@@ -141,19 +144,21 @@ export default {
 
                 <div class="d-flex gap-4 align-items-center">
                     <div class="form-check form-switch d-flex">
-                        <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-right: 45px">🌞</label>
+                        <label class="form-check-label" for="flexSwitchCheckChecked"
+                            style="margin-right: 45px">🌞</label>
                         <input id="flexSwitchCheckDefault" v-model="darkMode" class="form-check-input" role="switch"
                             type="checkbox" />
                         <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-left: 4px">🌙</label>
                     </div>
 
-                
-                    
+
+
 
                     <div class="dropstart">
                         <button aria-expanded="false" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                             type="button">
-                            <img :alt="currentLanguageFlagAltText" :src="languageToggleIcon" class="flag-icon" width="32" />
+                            <img :alt="currentLanguageFlagAltText" :src="languageToggleIcon" class="flag-icon"
+                                width="32" />
                         </button>
 
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
@@ -169,7 +174,8 @@ export default {
                             </li>
                             <li class="d-flex justify-content-center align-items-center">
                                 <img alt="sh_flag" src="../assets/flags/sh.svg" width="32" />
-                                <a class="dropdown-item w-50" href="#" @click="changeLanguage('uk')">{{ $t('lang.lang_sh')
+                                <a class="dropdown-item w-50" href="#" @click="changeLanguage('uk')">{{
+                                    $t('lang.lang_sh')
                                 }}</a>
                             </li>
                             <li class="d-flex justify-content-center align-items-center">
@@ -180,9 +186,9 @@ export default {
                         </ul>
                     </div>
 
-                    <div class="nav-item nav-link active text-light" @click="changeLanguage('spain')">
-                        <button  class="btn btn-primary" @click="clearSession()"> {{$t('miscelaneus.logout') }}</button>
-                    </div>
+                    <button v-if="isButtonVisible" class="btn btn-primary" @click="clearSession()">
+                        {{ $t('miscelaneus.logout') }}
+                    </button>
 
                 </div>
             </div>

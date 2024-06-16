@@ -141,7 +141,8 @@ export default {
             // AutoLogin system, check if user token exists
 
             try{
-                if (this.$store.getters.getUserSession.token !== null) {
+                if (this.$store.getters.getUserSession.token !== null && this.$store.getters.getUserSession.token !== "") {
+                    console.log(this.$store.getters.getUserSession.token)
                     document.getElementById('loginPanel').style.filter = 'blur(5px)';
                     this.loadIotDevices()
                 }

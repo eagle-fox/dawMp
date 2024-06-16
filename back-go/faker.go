@@ -2,26 +2,70 @@ package main
 
 import (
 	"back-go/models"
-	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
 	"github.com/go-faker/faker/v4"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 	"log"
-	"math/big"
 )
 
 func generateFakeData() {
 
+	// Disable default transaction
+	models.DB = models.DB.Session(&gorm.Session{SkipDefaultTransaction: true})
+
 	var demoPassword = "userpassword"
 	var demoHashedPassword = getHashDemoPassword(demoPassword)
-
-	generateFakeUser(demoHashedPassword)
-	generateFakeClient()
 
 	if !checkDatabaseEmpty() {
 		return
 	}
+
+	// Variables de configuración
+	var numberUsers = 128
+	var numberClientsPerUser = 8
+	var numberIotDevicesPerClient = 32
+	var numberIotDataPerDevice = 128
+
+	totalOperations := numberUsers * (1 + numberClientsPerUser + (numberClientsPerUser * numberIotDevicesPerClient) + (numberClientsPerUser * numberIotDevicesPerClient * numberIotDataPerDevice))
+	progress := make(chan int, totalOperations)
+
+	log.Println("Generating fake data...")
+	for i := 0; i < numberUsers; i++ {
+		go func(i int) {
+			err := models.DB.Transaction(func(tx *gorm.DB) error {
+				log.Printf("Generating user %d", i)
+				user := generateFakeUser(tx, demoHashedPassword)
+				progress <- 1
+
+				for j := 0; j < numberClientsPerUser; j++ {
+					log.Printf("Generating client %d for user %d", j, i)
+					client := generateFakeClient(tx, user.ID)
+					progress <- 1
+
+					for k := 0; k < numberIotDevicesPerClient; k++ {
+						log.Printf("Generating IoT device %d for client %d", k, j)
+						iotDevice := generateFakeIotDevice(tx, client.UserID)
+						progress <- 1
+
+						for l := 0; l < numberIotDataPerDevice; l++ {
+							log.Printf("Generating IoT data %d for IoT device %d", l, k)
+							generateFakeIotData(tx, iotDevice.ID)
+							progress <- 1
+						}
+					}
+				}
+				return nil
+			})
+			if err != nil {
+				log.Fatalf("Error during transaction: %v", err)
+			}
+		}(i)
+
+	}
+
+	models.DB = models.DB.Session(&gorm.Session{SkipDefaultTransaction: false})
 
 }
 
@@ -37,57 +81,48 @@ func getHashDemoPassword(password string) string {
 	return hex.EncodeToString(hash[:])
 }
 
-func generateFakeUser(demoHashedPassword string) {
-	var user models.User
-
-	user.Nombre = faker.Name()
-	user.ApellidoPrimero = faker.LastName()
-	user.ApellidoSegundo = faker.LastName()
-	user.Email = faker.Email()
-	user.Password = demoHashedPassword
-	user.Rol = "ADMIN"
-
-	models.DB.Create(&user)
-	return
-}
-
-func generateFakeClient() {
-	var client models.Client
-
-	client.IPv4 = faker.IPv4()
-	client.Token = uuid.New().String()
-	client.Locked = false
-	client.UserID = getRandUserId()
-
-	models.DB.Create(&client)
-	return
-}
-
-func generateFakeIotDevice() {
-	var iotDevice models.IotDevice
-
-	iotDevice.Token = uuid.New().String()
-	iotDevice.Name = faker.Name()
-	iotDevice.Especie = faker.Name()
-	iotDevice.Icon = faker.Name()
-	iotDevice.User = int(getRandUserId())
-
-	models.DB.Create(&iotDevice)
-	return
-}
-
-// getRandUserId returns a random user ID from the database counting the range
-// preventing broking the FK constraint
-func getRandUserId() uint {
-	var user models.User
-	var count int64
-	models.DB.Model(&models.User{}).Count(&count)
-
-	index, err := rand.Int(rand.Reader, big.NewInt(count))
-	if err != nil {
-		log.Fatalf("failed to generate random number: %v", err)
+func generateFakeUser(tx *gorm.DB, demoHashedPassword string) models.User {
+	user := models.User{
+		Nombre:          faker.Name(),
+		ApellidoPrimero: faker.LastName(),
+		ApellidoSegundo: faker.LastName(),
+		Email:           faker.Email(),
+		Password:        demoHashedPassword,
+		Rol:             "ADMIN",
 	}
+	tx.Create(&user)
+	return user
+}
 
-	models.DB.First(&user, uint(index.Int64())+1)
-	return user.ID
+func generateFakeClient(tx *gorm.DB, userID uint) models.Client {
+	client := models.Client{
+		IPv4:   faker.IPv4(),
+		Token:  uuid.New().String(),
+		Locked: false,
+		UserID: userID,
+	}
+	tx.Create(&client)
+	return client
+}
+
+func generateFakeIotDevice(tx *gorm.DB, userID uint) models.IotDevice {
+	iotDevice := models.IotDevice{
+		Token:   uuid.New().String(),
+		Name:    faker.Name(),
+		Especie: faker.Name(),
+		Icon:    faker.Name(),
+		User:    int(userID),
+	}
+	tx.Create(&iotDevice)
+	return iotDevice
+}
+
+func generateFakeIotData(tx *gorm.DB, deviceID uint) models.IotData {
+	iotData := models.IotData{
+		Device:    int(deviceID),
+		Latitude:  faker.Latitude(),
+		Longitude: faker.Longitude(),
+	}
+	tx.Create(&iotData)
+	return iotData
 }

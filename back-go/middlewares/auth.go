@@ -19,6 +19,10 @@ import (
 // Bearer authentication: Expects the header "Authorization: Bearer token".
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
+
 		authHeader := c.GetHeader("Authorization")
 
 		if authHeader == "" {

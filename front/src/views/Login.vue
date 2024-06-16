@@ -39,14 +39,14 @@ export default {
         },
         showFailLongin(errorMessage) {
             let form = document.getElementById('loginForm');
-    
+
                 // Busca si ya existe un mensaje de error
                 let existingFailDiv = document.getElementById('failMessage');
-                
+
                 // Si no existe, crea y agrega el mensaje de error
                 if (!existingFailDiv) {
                     let failDiv = document.createElement('div');
-                    
+
                     failDiv.id = 'failMessage'; // Asigna un id al mensaje de error para poder identificarlo
                     failDiv.innerHTML =
                     `
@@ -59,13 +59,13 @@ export default {
 
                     form.appendChild(failDiv);
                 }
-            
+
         },
         async submitLogin() {
             try {
                 if (this.authType === 'Basic') {
 
-                    // Log in using Gmail and Password 
+                    // Log in using Gmail and Password
 
                     let connectData = parseUrl(this.$config.devConfig.apiServer);
 
@@ -74,17 +74,43 @@ export default {
                     this.query = new Query(this.myUrl).withAuth(new BasicAuth(this.name, this.password))
                 }
 
-                // When I get the data, I dump it into the user's session. 
+                // When I get the data, I dump it into the user's session.
 
                 const response = await this.query.login()
                 this.response = 'Logged in successfully \n' + JSON.stringify(response, null, 2)
 
-                let userData = {
-                    name: response.user.nombre,
-                    email: response.user.email,
-                    role: response.user.rol,
-                    token: response.user.clients[0].token,
+                /*
+                {
+                "user": {
+                    "ID": 4,
+                    "CreatedAt": "2024-06-16T13:52:57.709+02:00",
+                    "UpdatedAt": "2024-06-16T13:52:57.709+02:00",
+                    "DeletedAt": null,
+                    "Nombre": "Lord Carlo Mertz",
+                    "NombreSegundo": "",
+                    "ApellidoPrimero": "Pagac",
+                    "ApellidoSegundo": "Effertz",
+                    "Email": "biFtvMM@OLgAenu.biz",
+                    "Password": "616104ebd93e67ae20bac90c86483da3cae1ee5b1c1483f739372a88ff1e79f9",
+                    "Rol": "ADMIN",
+                    "Clients": [
+                        {
+                            "ID": 1,
+                            "CreatedAt": "2024-06-16T13:52:57.711+02:00",
+                            "UpdatedAt": "2024-06-16T13:52:57.711+02:00",
+                            "DeletedAt": null,
+                            "IPv4": "20.0.2.66",
+                            "Token": "a8cde192-9db4-4eff-9e86-d07251ed2064",
+                            "Locked": false,
+                            "UserID": 4
+                        },
+                 */
 
+                let userData = {
+                    name: response.user.Nombre,
+                    email: response.user.Email,
+                    role: response.user.Rol,
+                    token: response.user.Clients[0].Token,
                 }
 
                 this.$store
@@ -102,7 +128,7 @@ export default {
                 this.response = JSON.stringify(err, null, 2)
                 console.log(err);
                 this.showFailLongin(this.$t('login.login_error'));
-                
+
             }
         },
         async login() {

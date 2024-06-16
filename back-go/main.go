@@ -1,7 +1,6 @@
 package main
 
 import (
-	"back-go/middlewares"
 	"back-go/models"
 	"back-go/router"
 	"back-go/types"
@@ -54,9 +53,8 @@ func initSecurity(r *gin.Engine) gin.IRoutes {
 }
 
 func initMiddleware(r *gin.Engine) {
-	r.Use(gin.Logger())                 // STD Logger
-	r.Use(gin.Recovery())               // Recovery in case of panic
-	r.Use(middlewares.AuthMiddleware()) // Our old PHP middleware migrated to Golang
+	r.Use(gin.Logger())   // STD Logger
+	r.Use(gin.Recovery()) // Recovery in case of panic
 }
 
 func loadModels(db *gorm.DB) {

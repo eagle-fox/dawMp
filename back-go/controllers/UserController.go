@@ -21,6 +21,7 @@ func UserControllerIndex(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error getting data"})
 		return
 	}
+	// disable Access-Control-Allow-Origin
 
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }

@@ -111,7 +111,7 @@ func generateFakeIotDevice(tx *gorm.DB, userID uint) models.IotDevice {
 		Name:    faker.Name(),
 		Especie: faker.Name(),
 		Icon:    faker.Name(),
-		User:    int(userID),
+		User:    userID,
 	}
 	tx.Create(&iotDevice)
 	return iotDevice

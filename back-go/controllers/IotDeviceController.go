@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
+	"strings"
 )
 
 // IotDeviceControllerIndex handles the GET request to fetch all IoT devices.
@@ -80,6 +81,9 @@ func IotDeviceControllerUpdate(c *gin.Context) {
 
 	result = models.DB.Save(&device)
 	if result.Error != nil {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
@@ -95,8 +99,14 @@ func IotDeviceControllerDestroy(c *gin.Context) {
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+			c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+			c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
 			c.JSON(http.StatusNotFound, gin.H{"error": "Device not found"})
 		} else {
+			c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+			c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+			c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
 			c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		}
 		return
@@ -104,9 +114,53 @@ func IotDeviceControllerDestroy(c *gin.Context) {
 
 	result = models.DB.Delete(&device)
 	if result.Error != nil {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Device deleted"})
+}
+
+// GetIotDevicesByMyself returns the IoT devices for the authenticated user.
+func GetIotDevicesByMyself(c *gin.Context) {
+	// Get the bearer token from the request header
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "No Authorization header provided"})
+		return
+	}
+
+	// Extract the token from the Authorization header
+	token := strings.TrimPrefix(authHeader, "Bearer ")
+
+	// Get the user by the bearer token
+	user, err := getUserByBearerToken(token)
+	if err != nil {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	// Get the IoT devices for the user
+	var devices []models.IotDevice
+	result := models.DB.Where("user = ?", user.ID).Find(&devices)
+
+	if result.Error != nil {
+		c.Writer.Header().Set("Content-Type", "application/json")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+
+	c.JSON(http.StatusOK, devices)
 }

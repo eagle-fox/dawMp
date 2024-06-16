@@ -208,6 +208,7 @@ func UserControllerUpdate(c *gin.Context) {
 func UserControllerDestroy(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
+
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
 	}

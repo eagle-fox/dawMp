@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -132,6 +133,7 @@ func GetIotDevicesByMyself(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
+		log.Println("No Authorization header provided")
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "No Authorization header provided"})
 		return
 	}
@@ -145,6 +147,7 @@ func GetIotDevicesByMyself(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
+		log.Println("Invalid token")
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 		return
 	}
@@ -156,10 +159,11 @@ func GetIotDevicesByMyself(c *gin.Context) {
 	if result.Error != nil {
 		c.Writer.Header().Set("Content-Type", "application/json")
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		log.Println(result.Error.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
-
+	log.Println(devices)
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 
 	c.JSON(http.StatusOK, devices)

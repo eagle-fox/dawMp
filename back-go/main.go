@@ -1,5 +1,3 @@
-// main package sets up the application, loads environment variables, initializes the database,
-// and starts the server with necessary middlewares and routes.
 package main
 
 import (
@@ -72,8 +70,8 @@ func doMigrations(db *gorm.DB) {
 	db.AutoMigrate(
 		&models.User{},
 		&models.Client{},
-		&models.IoTDevice{},
-		&models.IoTData{},
+		&models.IotDevice{},
+		&models.IotData{},
 	)
 	log.Println("Migrations done")
 }

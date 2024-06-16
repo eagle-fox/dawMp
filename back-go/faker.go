@@ -23,6 +23,32 @@ func generateFakeData() {
 		return
 	}
 
+	var numberUsers = 128
+	var numberClients = 512
+	var numberIotDevices = 2048
+	var numberIotData = 10240
+
+	log.Println("Generating fake data...")
+	for i := 0; i < numberUsers; i++ {
+		log.Printf("Generating user %d", i)
+		generateFakeUser(demoHashedPassword)
+	}
+
+	for i := 0; i < numberClients; i++ {
+		log.Printf("Generating client %d", i)
+		generateFakeClient()
+	}
+
+	for i := 0; i < numberIotDevices; i++ {
+		log.Printf("Generating IoT device %d", i)
+		generateFakeIotDevice()
+	}
+
+	for i := 0; i < numberIotData; i++ {
+		log.Printf("Generating IoT data %d", i)
+		generateFakeIotData()
+	}
+
 }
 
 func checkDatabaseEmpty() bool {
@@ -74,6 +100,31 @@ func generateFakeIotDevice() {
 
 	models.DB.Create(&iotDevice)
 	return
+}
+
+func generateFakeIotData() {
+	var iotData models.IotData
+
+	iotData.Device = int(getRandIotDeviceId())
+	iotData.Latitude = faker.Latitude()
+	iotData.Longitude = faker.Longitude()
+
+	models.DB.Create(&iotData)
+	return
+}
+
+func getRandIotDeviceId() int {
+	var iotDevice models.IotDevice
+	var count int64
+	models.DB.Model(&models.IotDevice{}).Count(&count)
+
+	index, err := rand.Int(rand.Reader, big.NewInt(count))
+	if err != nil {
+		log.Fatalf("failed to generate random number: %v", err)
+	}
+
+	models.DB.First(&iotDevice, uint(index.Int64())+1)
+	return int(iotDevice.ID)
 }
 
 // getRandUserId returns a random user ID from the database counting the range

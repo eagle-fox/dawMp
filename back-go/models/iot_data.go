@@ -4,7 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type IoTData struct {
+type IotData struct {
 	gorm.Model
 	Device    int     `gorm:"not null"`
 	Latitude  float64 `gorm:"not null"`
@@ -12,6 +12,6 @@ type IoTData struct {
 }
 
 // TableName sobrescribe el nombre de la tabla para IoTData
-func (IoTData) TableName() string {
+func (IotData) TableName() string {
 	return "iot_data"
 }

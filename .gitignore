@@ -4,7 +4,9 @@
 ### C++ ###
 # Prerequisites
 *.d
-
+.env
+go.env
+back-go/go.env
 # Compiled Object files
 *.slo
 *.lo

@@ -144,7 +144,6 @@ export default {
         this.loadUserData(this.$store.getters.getUserSession)
         this.getDevicesByMyself()
             .then((data) => {
-                console.log('Dispositivos IoT:', data)
                 for (let cord of data) {
                     let animalData = {
                         petName: cord.Name,
@@ -154,6 +153,7 @@ export default {
                         petDate: new Date(cord.CreatedAt),
                         petCords: [parseFloat(cord.LastLatitude), parseFloat(cord.LastLongitude)],
                     }
+                    console.log(animalData)
                     this.devicesData.push(animalData)
                 }
             })

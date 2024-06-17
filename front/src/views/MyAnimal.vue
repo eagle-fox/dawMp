@@ -44,7 +44,7 @@ export default {
 
 <template>
     <NavBar></NavBar>
-    <div ref="mapContainer" class="obergruppenführer">
+    <div ref="mapContainer" class="cssrandom0">
         <Mapa :puntos="mapPoints" width=""></Mapa>
     </div>
 </template>
@@ -60,16 +60,16 @@ export default {
     height: calc(80vh - 65px);
 }
 
-.obergruppenführer .unterscharführer {
+.cssrandom0 .cssrandom1 {
 
 }
 
-.unterscharführer {
+.cssrandom1 {
     overflow: hidden;
     height: 100%;
 }
 
-.obergruppenführer {
+.cssrandom0 {
     padding: 1em;
     width: 100%;
     height: calc(60vh);

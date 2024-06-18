@@ -27,7 +27,7 @@ export default {
         loadSvgFile() {
             this.svgFile = 'src/assets/' + styleAssets.svgData.typoBackground
         },
-        setUserCookie(token){
+        setUserCookie(token) {
             let secureStatus = cookieSettings.secure
             let sameSiteConfig = cookieSettings.sameSite
 
@@ -37,72 +37,59 @@ export default {
                 secure: secureStatus,
             })
         },
-        showFailLongin(errorMessage) {
+        showFailLogin(errorMessage) {
             let form = document.getElementById('loginForm');
-    
-                // Busca si ya existe un mensaje de error
-                let existingFailDiv = document.getElementById('failMessage');
-                
-                // Si no existe, crea y agrega el mensaje de error
-                if (!existingFailDiv) {
-                    let failDiv = document.createElement('div');
-                    
-                    failDiv.id = 'failMessage'; // Asigna un id al mensaje de error para poder identificarlo
-                    failDiv.innerHTML =
-                    `
-                        <div class="d-flex p-2 justify-content-center">
-                            <div class="bg-danger w-auto rounded text-center p-1 text-light">${errorMessage}</div>
-                        </div>
-                    `;
-                    failDiv.style.textAlign = 'center';
-                    failDiv.style.padding = '5px';
 
-                    form.appendChild(failDiv);
-                }
-            
+            // Busca si ya existe un mensaje de error
+            let existingFailDiv = document.getElementById('failMessage');
+
+            // Si no existe, crea y agrega el mensaje de error
+            if (!existingFailDiv) {
+                let failDiv = document.createElement('div');
+
+                failDiv.id = 'failMessage'; // Asigna un id al mensaje de error para poder identificarlo
+                failDiv.innerHTML = `
+                    <div class="d-flex p-2 justify-content-center">
+                        <div class="bg-danger w-auto rounded text-center p-1 text-light">${errorMessage}</div>
+                    </div>
+                `;
+                failDiv.style.textAlign = 'center';
+                failDiv.style.padding = '5px';
+
+                form.appendChild(failDiv);
+            }
         },
         async submitLogin() {
             try {
                 if (this.authType === 'Basic') {
-
-                    // Log in using Gmail and Password 
-
+                    // Log in using Gmail and Password
                     let connectData = parseUrl(this.$config.devConfig.apiServer);
-
-                    // this.myUrl = new URL(connectData[0], connectData[1], parseInt(connectData[2]))
                     this.myUrl = new URL('http', 'localhost', 2003)
                     this.query = new Query(this.myUrl).withAuth(new BasicAuth(this.name, this.password))
                 }
 
-                // When I get the data, I dump it into the user's session. 
-
+                // When I get the data, I dump it into the user's session.
                 const response = await this.query.login()
                 this.response = 'Logged in successfully \n' + JSON.stringify(response, null, 2)
 
                 let userData = {
-                    name: response.user.nombre,
-                    email: response.user.email,
-                    role: response.user.rol,
-                    token: response.user.clients[0].token,
-
+                    name: response.user.Nombre,
+                    email: response.user.Email,
+                    role: response.user.Rol,
+                    token: response.user.Clients[0].Token,
                 }
 
-                this.$store
-                    .dispatch('updateUserSession', userData)
-                    .then(() => {
-                        this.loadIotDevices();
-                        this.setUserCookie(this.$store.getters.getUserSession.token);
-                    })
-                    .catch((error) => {
-                        console.error('Error al crear la nueva userSession:', error)
-                    })
+                // Save the response.user.Clients[0].Token in a cookie called TOKEN
+                await this.$store.dispatch('updateUserSession', userData)
+                this.setUserCookie(this.$store.getters.getUserSession.token);
+                console.log('Se ha guardado la cookie: ' + this.$store.getters.getUserSession.token);
 
-
+                // Load IoT devices
+                await this.loadIotDevices();
             } catch (err) {
                 this.response = JSON.stringify(err, null, 2)
                 console.log(err);
-                this.showFailLongin(this.$t('login.login_error'));
-                
+                this.showFailLogin(this.$t('login.login_error'));
             }
         },
         async login() {
@@ -127,26 +114,23 @@ export default {
                 response = response.data;
 
                 await this.$store.dispatch('setIotDevices', response);
-                this.setUserCookie(this.$store.getters.getUserSession.token);
                 console.log(this.$store.getters.getUserSession.token);
                 this.$router.push('/dashboard')
                 return response;
             } catch (error) {
-                // Manejar el error según tus necesidades
                 console.error("Error al cargar los dispositivos IoT:", error);
-                throw error; // Puedes lanzar el error nuevamente si es necesario
+                throw error;
             }
         },
-        async checkUserSession(){
+        async checkUserSession() {
             // AutoLogin system, check if user token exists
-
-            try{
+            try {
                 if (this.$store.getters.getUserSession.token !== null) {
                     document.getElementById('loginPanel').style.filter = 'blur(5px)';
-                    this.loadIotDevices()
+                    await this.loadIotDevices()
                 }
-            }catch (error) {
-                console.log(error);
+            } catch (error) {
+                console.log('Error al consultar la cookie chekarla: ' + error);
             }
         }
     },
@@ -169,8 +153,8 @@ export default {
                     <form id="loginForm">
                         <div class="mb-3">
                             <label class="form-label" for="name">{{
-                                $t('login.login_username')
-                            }}</label>
+                                    $t('login.login_username')
+                                                                 }}</label>
                             <input id="name" v-model="name" aria-describedby="name" class="form-control" type="text" />
                             <div id="name" class="form-text">
                                 {{ $t('login.login_message') }}
@@ -178,16 +162,16 @@ export default {
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="exampleInputPassword1">{{
-                                $t('login.login_password')
-                            }}</label>
+                                    $t('login.login_password')
+                                                                                  }}</label>
                             <input v-model="password" id="exampleInputPassword1" class="form-control" type="password" />
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <a class="btn btn-primary" @click="submitLogin()">{{
-                                $t('login.login_t1')
-                            }}</a>
+                                    $t('login.login_t1')
+                                                                              }}</a>
                             <router-link class="btn btn-primary" to="/register" type="submit">{{ $t('login.login_message1')
-                            }}
+                                                                                              }}
                             </router-link>
                         </div>
                     </form>

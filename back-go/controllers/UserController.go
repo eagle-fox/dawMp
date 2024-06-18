@@ -21,6 +21,7 @@ func UserControllerIndex(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error getting data"})
 		return
 	}
+	// disable Access-Control-Allow-Origin
 
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
@@ -207,6 +208,7 @@ func UserControllerUpdate(c *gin.Context) {
 func UserControllerDestroy(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
+
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
 	}

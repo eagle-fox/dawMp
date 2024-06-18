@@ -8,12 +8,12 @@ var db *gorm.DB
 
 type User struct {
 	gorm.Model
-	Nombre          string `gorm:"not null"`
-	NombreSegundo   string
-	ApellidoPrimero string   `gorm:"not null"`
-	ApellidoSegundo string   `gorm:"not null"`
-	Email           string   `gorm:"not null;unique"`
-	Password        string   `gorm:"not null"`
+	Nombre          string   `gorm:"type:varchar(128);not null"`
+	NombreSegundo   string   `gorm:"type:varchar(128)"`
+	ApellidoPrimero string   `gorm:"type:varchar(128);not null"`
+	ApellidoSegundo string   `gorm:"type:varchar(128);not null"`
+	Email           string   `gorm:"type:varchar(256);not null;unique;index"`
+	Password        string   `gorm:"type:char(64);not null;index"`
 	Rol             string   `gorm:"type:enum('ADMIN', 'USER');default:'USER'"`
 	Clients         []Client `gorm:"foreignKey:UserID"`
 }

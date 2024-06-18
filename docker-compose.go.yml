@@ -9,11 +9,12 @@ services:
       - './back-go/:/go/src/app'
       - './back-go/go.mod:/go/src/app/go.mod'
       - './back-go/go.sum:/go/src/app/go.sum'
+      - './back-go/.env:/go/src/app/.env'
       - 'go-cache:/go/pkg'
     ports:
       - '2003:2003'
     env_file:
-      - .env
+      - go.env
     environment:
       TZ: Europe/Madrid
     networks:
@@ -22,7 +23,7 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     working_dir: /go/src/app
-    command: ["go", "run", "main.go"]
+    command: ["go", "run", "."]
 
   go-doc:
     container_name: fox-go-doc
